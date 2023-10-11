@@ -1,4 +1,7 @@
 ---
+
+import Shell from "../components/AppShell.vue"
+
 interface Props {
 	title: string;
 }
@@ -17,6 +20,10 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
+
+		<Shell client:only//>
+
+		
 		<slot />
 	</body>
 </html>
