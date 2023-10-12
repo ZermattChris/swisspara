@@ -1,6 +1,7 @@
 ---
 
-import Shell from "../components/AppShell.vue"
+import Navbar from "../components/Navbar.astro"
+import Footer from '../components/Footer.astro';
 
 interface Props {
 	title: string;
@@ -21,10 +22,12 @@ const { title } = Astro.props;
 	</head>
 	<body>
 
-		<Shell client:only//>
-
+		<Navbar />
 		
 		<slot />
+
+		<Footer />
+		
 	</body>
 </html>
 <style is:global>
