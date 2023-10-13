@@ -55,12 +55,13 @@ const { title } = Astro.props;
 	/* ----------- Site wide CSS settings ----------- */
 
 	/* Nav + menu & Footer */
-	nav#navbar, footer#footbar, #navMenu {
+	nav#navbar, footer#footbar {
 		background-color: #1d1d1d;
 	}
 
 	footer nav > div > a, #navMenu a {
 		color: white;
+		text-shadow: 0 0 3px black, 0 0 3px black;
 	}
 	footer nav > div > a:hover, #navMenu a:hover {
 		color: rgb(233 213 255);
