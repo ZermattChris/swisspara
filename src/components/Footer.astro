@@ -1,7 +1,6 @@
-
-  <footer class="fixed bottom-0 z-40 left-0 w-screen bg-[#1d1d1d]">
-    <div class="mx-auto pl-[200] py-4 overflow-hidden">
-        <nav class="mb-3 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
+<footer class="z-40 left-0 w-screen bg-[#1d1d1d]">
+    <div class="mx-auto py-4 overflow-hidden">
+        <nav class="mb-3 pl-12 columns-2 sm:flex sm:justify-center sm:space-x-12" aria-label="Footer">
             <div class="pb-3">
                 <a class="pb-0 pt-0 block hover:text-purple-400" href="/book-now"  aria-label="Book your flight directly online. See what flights, times and available pilots for your desired flight date.">
                     <!-- SVG Book Now! Button  -->
@@ -54,3 +53,14 @@
     document.getElementById("year").innerHTML = new Date().getFullYear() + ''
 
 </script>
+
+<style>
+
+    /* Hide Footer on very short screen heights */
+    @media (max-height: 40rem) {
+        footer {
+            display: none;
+        }
+    }
+
+</style>
