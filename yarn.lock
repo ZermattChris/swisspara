@@ -59,7 +59,15 @@
   dependencies:
     "prismjs" "^1.29.0"
 
-"@astrojs/tailwind@^5.0.1":
+"@astrojs/sitemap@^3.0.1":
+  "integrity" "sha512-ErCthOQF0Yt6KkvaS+v/7CM6TxztOPHJjla4cbM3fBAFsDQbCS3tvoWSMqPJtmTFiy7veQ1eC5gH58FhPe85zg=="
+  "resolved" "https://registry.npmjs.org/@astrojs/sitemap/-/sitemap-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "sitemap" "^7.1.1"
+    "zod" "3.21.1"
+
+"@astrojs/tailwind@^5.0.2":
   "integrity" "sha512-oXqeqmBlkQmsltrsU9nEWeXOtrZIAHW8dcmX7BCdrjzPnU6dPwWzAwhddNQ9ihKiWwsLnlbwQZIo2CDigcZlIA=="
   "resolved" "https://registry.npmjs.org/@astrojs/tailwind/-/tailwind-5.0.2.tgz"
   "version" "5.0.2"
@@ -520,10 +528,22 @@
   dependencies:
     "@types/unist" "^2"
 
+"@types/node@*", "@types/node@^17.0.5", "@types/node@>= 14":
+  "integrity" "sha512-w+tIMs3rq2afQdsPJlODhoUEKzFP1ayaoyl1CcnwtIlsVe7K7bA1NGm4s3PraqTLlXnbIN84zuBlxBWo1u9BLw=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.45.tgz"
+  "version" "17.0.45"
+
 "@types/parse5@^6.0.0":
   "integrity" "sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g=="
   "resolved" "https://registry.npmjs.org/@types/parse5/-/parse5-6.0.3.tgz"
   "version" "6.0.3"
+
+"@types/sax@^1.2.1":
+  "integrity" "sha512-9jWta97bBVC027/MShr3gLab8gPhKy4l6qpb+UJLF5pDm3501NvA7uvqVCW+REFtx00oTi6Cq9JzLwgq6evVgw=="
+  "resolved" "https://registry.npmjs.org/@types/sax/-/sax-1.2.5.tgz"
+  "version" "1.2.5"
+  dependencies:
+    "@types/node" "*"
 
 "@types/unist@*", "@types/unist@^3.0.0":
   "integrity" "sha512-MFETx3tbTjE7Uk6vvnWINA/1iJ7LuMdO4fcq8UfF0pRbj01aGLduVvQcRyswuACJdpnHgg8E3rQLhaRdNEJS0w=="
@@ -711,7 +731,7 @@
     "normalize-path" "^3.0.0"
     "picomatch" "^2.0.4"
 
-"arg@^5.0.2":
+"arg@^5.0.0", "arg@^5.0.2":
   "integrity" "sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg=="
   "resolved" "https://registry.npmjs.org/arg/-/arg-5.0.2.tgz"
   "version" "5.0.2"
@@ -3169,6 +3189,16 @@
   "resolved" "https://registry.npmjs.org/sisteransi/-/sisteransi-1.0.5.tgz"
   "version" "1.0.5"
 
+"sitemap@^7.1.1":
+  "integrity" "sha512-mK3aFtjz4VdJN0igpIJrinf3EO8U8mxOPsTBzSsy06UtjZQJ3YY3o3Xa7zSc5nMqcMrRwlChHZ18Kxg0caiPBg=="
+  "resolved" "https://registry.npmjs.org/sitemap/-/sitemap-7.1.1.tgz"
+  "version" "7.1.1"
+  dependencies:
+    "@types/node" "^17.0.5"
+    "@types/sax" "^1.2.1"
+    "arg" "^5.0.0"
+    "sax" "^1.2.4"
+
 "source-map-js@^1.0.2":
   "integrity" "sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw=="
   "resolved" "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
@@ -3321,7 +3351,7 @@
   "resolved" "https://registry.npmjs.org/svg-tags/-/svg-tags-1.0.0.tgz"
   "version" "1.0.0"
 
-"tailwindcss@^3.0.24":
+"tailwindcss@^3.0.24", "tailwindcss@^3.3.3":
   "integrity" "sha512-A0KgSkef7eE4Mf+nKJ83i75TMyq8HqY3qmFIJSWy8bNt0v1lG7jUcpGpoTFxAwYcWOphcTBLPPJg+bDfhDf52w=="
   "resolved" "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.3.3.tgz"
   "version" "3.3.3"
