@@ -1,28 +1,16 @@
 ---
 import Layout from '@layouts/Layout.astro';
 
-import CTABook from '@components/CTA-Book.astro';
+import VideoHero from '@components/VideoHero.astro';
 
 ---
 
 <Layout title="Swiss Paraglide Zermatt - Tandem Paragliding Flights in front of the Matterhorn.">
 	<main>
 
+		<VideoHero />
 		
-		
-		<section id="hero" class="relative h-screen flex flex-col border-0 shadow-none items-center justify-center text-center text-white py-0 px-0">
-			
-			<div class="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
-				<video class="min-w-full min-h-full absolute object-cover" src="/video/paragliding-intro.mp4"  autoplay muted loop>
-					<source type="video/mp4"/>
-				</video>
-			</div>
-			<div class="video-content" >
-				<img class="h-[18rem] mx-auto" src="/images/Swiss-Paraglide-Round-Logo-v1.0.svg" alt="Swiss Paraglide Zermatt - Logo" style="filter: drop-shadow(0px 0px 0px rgba(255, 255, 255, 1));">
-				<h1 class="font-light text-6xl">full Hero Video</h1>
-				<h3 class="font-light text-3xl">with TailwindCSS</h3>
-			</div>
-		</section>
+
 
 
 	</main>
@@ -30,30 +18,3 @@ import CTABook from '@components/CTA-Book.astro';
 
 
 
-<style>
-
-	html {
-		width: 100vw;
-		overflow-x: hidden
-	}
-
-	.video-docker video {
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.video-docker::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1;
-}
-
-.video-content {
-  z-index: 2;
-}
-</style>
