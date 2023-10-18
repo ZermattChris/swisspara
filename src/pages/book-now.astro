@@ -1,7 +1,7 @@
 ---
 import Layout from '@layouts/Layout.astro';
 
-import Test from '@components/booking/test.astro';
+import Pages from '@components/booking/Pages.vue';
 
 
 
@@ -10,7 +10,7 @@ import Test from '@components/booking/test.astro';
 <Layout title="Swiss Paraglide Zermatt - Book your Tandem Paragliding Flight directly online!">
 	<main>
 		
-		<Test />
+		<Pages client:load/>
 		  
 
 	</main>
