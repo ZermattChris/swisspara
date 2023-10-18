@@ -1,19 +1,18 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import CTABook from '@components/CTA-Book.astro';
+
+import Test from '@components/booking/test.vue';
+
+
 
 ---
 
-<Layout title="Swiss Paraglide :: Book your Paragliding Flight directly online with Swiss Paraglide Zermatt">
+<Layout title="Swiss Paraglide Zermatt - Book your Tandem Paragliding Flight directly online!">
 	<main>
-
-		<CTABook title="Book your flight now"/>
+		
+		<Test client:only />
 		  
-
 
 	</main>
 </Layout>
 
-<style>
-
-</style>
