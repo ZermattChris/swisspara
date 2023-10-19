@@ -1,5 +1,5 @@
 <template>
-    <div id="app" class="w-full h-24 outline">
+    <div id="app" class="w-full min-h-[450px] outline">
         <component :is="currPage" />
     </div>
 
@@ -10,7 +10,7 @@
     <p>Current Page: {{ currentPage }} - Name: {{ currentPageName }}</p>
 
     <!-- Previous/Next Buttons -->
-    <div class="flex justify-around mt-10 max-w-xl mx-auto" >
+    <div class="flex justify-around mt-10 mb-10 max-w-xl mx-auto" >
 
         <button @click="prevPage" type="button" 
             class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
