@@ -1,5 +1,6 @@
 <template>
-      <div><h1>Select Flight page.</h1>
+      <div>
+        <h1 class="text-center">Select Flight page.</h1>
       </div>
     </template>
     <script>

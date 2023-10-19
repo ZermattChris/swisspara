@@ -1,11 +1,11 @@
 <template>
-      <div class="w-full">
-        <h1 class="text-center">Select Date page.</h1>
+      <div>
+        <h1 class="text-center">Time Slot page.</h1>
       </div>
     </template>
     <script>
     export default {
-      name: 'Test_1',
+      name: 'Time',
       props: {
         msg: String
       }
