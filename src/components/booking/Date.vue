@@ -35,7 +35,7 @@
       inline 
       auto-apply
       @update:model-value="onDateSelect"
-      class="px-2 pt-2 "
+      class="px-2 pt-8"
     >
     </VueDatePicker>
 
@@ -154,7 +154,7 @@
     --dp-common-padding: 10px; /*Common padding used*/
     --dp-input-icon-padding: 35px; /*Padding on the left side of the input if icon is present*/
     --dp-input-padding: 6px 30px 6px 12px; /*Padding in the input*/
-    --dp-menu-min-width: 400px; /*Adjust the min width of the menu*/
+    --dp-menu-min-width: 350px; /*Adjust the min width of the menu*/
     --dp-action-buttons-padding: 2px 5px; /*Adjust padding for the action buttons in action row*/
     --dp-row-margin:  5px 0; /*Adjust the spacing between rows in the calendar*/
     --dp-calendar-header-cell-padding:  0.5rem; /*Adjust padding in calendar header cells*/
