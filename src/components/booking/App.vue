@@ -77,6 +77,9 @@
     import PagePassengers from '@components/booking/Passengers.vue'
     import PagePay from '@components/booking/Payment.vue'
 
+    // import PageSuccess from '@components/booking/PaymentSuccess.vue'
+    // import PageFail from '@components/booking/PaymentFail.vue'
+
     // Store
     import {pagesStore} from '@stores/vPagesStore.js' 
     
@@ -89,7 +92,9 @@
             PageFlight,
             PageTime,
             PagePassengers,
-            PagePay
+            PagePay,
+            // PageSuccess,
+            // PageFail,
         },
 
         data() {
@@ -129,21 +134,21 @@
             },
 
 
-            breadcrumbsList() {
+            // breadcrumbsList() {
 
-                let breadPagesList = []
+            //     let breadPagesList = []
 
-                for (let index of Object.keys(pagesStore.pageItems)) {
-                    const aPage = pagesStore.pageItems[index]
-                    //console.log(aPage)
-                    breadPagesList.push(
-                        { name: aPage.name, current: false, completed: false }
-                    )
-                }
+            //     for (let index of Object.keys(pagesStore.pageItems)) {
+            //         const aPage = pagesStore.pageItems[index]
+            //         //console.log(aPage)
+            //         breadPagesList.push(
+            //             { name: aPage.name, current: false, completed: false }
+            //         )
+            //     }
 
-                return breadPagesList
+            //     return breadPagesList
 
-            }
+            // }
 
         }, // computed
 

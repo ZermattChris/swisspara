@@ -1,11 +1,12 @@
 <template>
 
   <div id="sizeBox"
-    class="max-w-3xl mx-auto p-4 pt-6"
+    class="max-w-3xl mx-auto p-4 pt-6 min-h-[40em]"
+    @click="onBackgroundClick"
   >
 
     <div>
-      <span class="w-12 h-12  text-4xl font-black  drop-shadow-lg border-white border-1  pt-0.5  inline-block   rounded-full bg-indigo-600 text-white">
+      <span class="w-14 h-14  text-4xl font-black  drop-shadow-lg border-black border-2  pt-1.5 pl-1  inline-block   rounded-full bg-indigo-600 text-white">
         <span class="pl-2">1.</span>
       </span>
 
@@ -18,11 +19,14 @@
 
         Pick your Flight Date:
       </label>
-      <div class="mt-2">
-        <input type="input" name="date" id="date" 
+      <div class="mt-6">
+        <input type="input" name="flightDateInput" id="flightDateInput" 
           :value="displayDate"
-          readonly disabled
+          readonly 
+          @click="onDateInputClick('flightDateInput', $event)"
+          placeholder="Click to enter your flight date..."
           class="block w-full rounded-md border-0 py-2 px-2 
+          cursor-pointer
           read-only:bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
         />
@@ -30,12 +34,17 @@
     </div>
 
     <VueDatePicker 
+      id="flightDatePicker"
+      v-show="showFlightDatePicker"
       v-model="cal"
       :enable-time-picker="false"
       inline 
       auto-apply
+      :min-date="new Date()"
+      :max-date="getMaxFutureDate()"
+      prevent-min-max-navigation 
       @update:model-value="onDateSelect"
-      class="px-2 pt-8"
+      class="px-2 pt-8 drop-shadow-lg"
     >
     </VueDatePicker>
 
@@ -64,6 +73,7 @@
         return {
           cal: null,
           flightDate: null,
+          showFlightDatePicker: false
         };
     },
 
@@ -79,7 +89,7 @@
         const d = this.flightDate.getDay()   // (0-6) Sunday - Saturday
         const DD = this.flightDate.getDate() // (1-31)
         const mm = this.flightDate.getMonth()
-        return (this.getDayString(d) + ' ' + this.getMonthString(mm) + ' ' + DD + ', ' + YYYY)
+        return (this.getDayString(d) + ' - ' + this.getMonthString(mm) + ' ' + DD + this.getLocalizedDayPostfix(DD) + ', ' + YYYY)
       },
 
 
@@ -91,8 +101,34 @@
 
       onDateSelect(modelData) {
         this.flightDate = modelData
+        this.showFlightDatePicker = false
       },
 
+      onDateInputClick(el, ev) {
+        // console.log('clicked', el, ev)
+        // Flight Date Picker is initially shown, as soon as user clicks a date, it hides itself
+        // and the Arrive & Depart Dates are displayed.
+        this.showFlightDatePicker = true
+        ev.stopPropagation()
+      },
+
+
+      onBackgroundClick() {
+        // close Flight picker on outside click.
+        this.showFlightDatePicker = false
+      },
+
+
+      // Only allow date picking to today + 9 months
+      getMaxFutureDate() {
+        const monthOffset = 9
+        const today = new Date()
+        return new Date(today.setMonth( today.getMonth() + monthOffset ));
+      },
+
+
+
+      // TODO - pull this out into a little date lib. 
       getMonthString(monthInt) {
         if ( monthInt < 0 || monthInt > 12 ) return 'Invalid Month Int.'
         const months = {
@@ -124,6 +160,25 @@
           6: 'Saturday'
         }
         return days[dayInt]
+      },
+
+      getLocalizedDayPostfix(dayOfMonthInt) {
+        if ( dayOfMonthInt < 1 || dayOfMonthInt > 31 ) return 'Invalid Month Day Int.'
+        let postfix = ''
+        switch (dayOfMonthInt) {
+          case 1:
+            postfix = 'st'
+            break;
+          case 2:
+            postfix = 'nd'
+            break;
+          case 3:
+            postfix = 'rd'
+            break;
+          default:
+            postfix = 'th'
+        }
+        return postfix
       },
 
     } // methods.
@@ -193,7 +248,4 @@
     justify-content: center;
   }
 
-  #date {
-
-  }
 </style>
