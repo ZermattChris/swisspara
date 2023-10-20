@@ -135,7 +135,7 @@
 
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
   :root {
     /*General*/
     --dp-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", roboto, oxygen, ubuntu, cantarell, "Open Sans",
@@ -154,7 +154,7 @@
     --dp-common-padding: 10px; /*Common padding used*/
     --dp-input-icon-padding: 35px; /*Padding on the left side of the input if icon is present*/
     --dp-input-padding: 6px 30px 6px 12px; /*Padding in the input*/
-    --dp-menu-min-width: 260px; /*Adjust the min width of the menu*/
+    --dp-menu-min-width: 400px; /*Adjust the min width of the menu*/
     --dp-action-buttons-padding: 2px 5px; /*Adjust padding for the action buttons in action row*/
     --dp-row-margin:  5px 0; /*Adjust the spacing between rows in the calendar*/
     --dp-calendar-header-cell-padding:  0.5rem; /*Adjust padding in calendar header cells*/
@@ -172,7 +172,20 @@
     --dp-animation-duration: 0.1s; /*Transition duration*/
     --dp-menu-appear-transition-timing: cubic-bezier(.4, 0, 1, 1); /*Timing on menu appear animation*/
     --dp-transition-timing: ease-out; /*Timing on slide animations*/
+
   } 
+
+
+  /* Custom Calendar tweaks */
+
+  /* Changing the colors and font weights of each day in calendar */
+  .dp__cell_inner {
+    font-weight: bold;
+  }
+  .dp__cell_offset {
+    font-weight: normal;
+    color: rgba(0,0,0, 0.5);
+  }
 
 
     /* Center the calendar display  */
