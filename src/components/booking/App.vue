@@ -28,7 +28,7 @@
 
 
     <!-- Dynamic Vue 'Page' components being swapped out  -->
-    <div id="app" class="w-full min-h-[450px]">
+    <div id="app" class="w-full min-h-[450px] overflow-hidden">
         <component :is="currPage" />
     </div>
 
