@@ -1,19 +1,48 @@
 <template>
-    <div id="app" class="w-full min-h-[450px] outline">
+
+
+
+
+<!-- <nav class="flex border-b border-t border-gray-200 bg-white" aria-label="Breadcrumb">
+    <ol role="list" class="mx-auto flex w-full max-w-screen-md space-x-4 px-4 sm:px-6 lg:px-8"> -->
+      <!-- <li class="flex">
+        <div class="flex items-center">
+          <a href="#" class="text-gray-400 hover:text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+            </svg>
+            <span class="sr-only">Home</span>
+          </a>
+        </div>
+      </li> -->
+      <!-- <li v-for="crumb in breadcrumbsList" :key="crumb.name" class="flex">
+        <div class="flex items-center">
+          <svg class="h-full w-6 flex-shrink-0 text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" aria-hidden="true">
+            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+          </svg>
+          <a :href="crumb.name" @click="goToPage(crumb.name, $event)" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" :aria-current="crumb.current ? 'page' : undefined">{{ crumb.name }}</a>
+        </div>
+      </li>
+    </ol>
+  </nav> -->
+
+
+    <!-- Dynamic Vue 'Page' components being swapped out  -->
+    <div id="app" class="w-full min-h-[450px]">
         <component :is="currPage" />
     </div>
 
-    {{ isFirstPage }}
+    <!-- {{ isFirstPage }}
 
     {{isLastPage}}
 
-    <p>Current Page: {{ currentPage }} - Name: {{ currentPageName }}</p>
+    <p>Current Page: {{ currentPage }} - Name: {{ currentPageName }}</p> -->
 
     <!-- Previous/Next Buttons -->
     <div class="flex justify-around mt-10 mb-10 max-w-xl mx-auto" >
 
         <button @click="prevPage" type="button" 
-            class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             :class="{ disabled: isFirstPage }"
         >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -24,7 +53,7 @@
 
 
         <button @click="nextPage" type="button" 
-            class="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             :class="{ disabled: isLastPage }"
         >
             Next 
@@ -40,13 +69,17 @@
 
 <script>
 
+
+    // Pages.
     import PageDate from '@components/booking/Date.vue'
     import PageFlight from '@components/booking/Flight.vue'
     import PageTime from '@components/booking/Time.vue'
     import PagePassengers from '@components/booking/Passengers.vue'
     import PagePay from '@components/booking/Payment.vue'
 
-    import {pagesStore} from '@stores/vPagesStore.js'    
+    // Store
+    import {pagesStore} from '@stores/vPagesStore.js' 
+    
 
     export default {
 
@@ -67,8 +100,17 @@
 
         mounted() {
             // Send our page list as strings to the store.
-            pagesStore.initNav(['PageDate', 'PageFlight', 'PageTime', 'PagePassengers', 'PagePay'])
+            // Need to add 'label' and 'icon' to use in Breadcrumbs.
+            pagesStore.initNav([
+                'PageDate', 
+                'PageFlight', 
+                'PageTime', 
+                'PagePassengers', 
+                'PagePay'
+            ])
         },
+
+
 
         computed: {
 
@@ -82,12 +124,31 @@
             isFirstPage() {
                 return pagesStore.isNavStart()
             },
-
             isLastPage() {
                 return pagesStore.isNavEnd()
+            },
+
+
+            breadcrumbsList() {
+
+                let breadPagesList = []
+
+                for (let index of Object.keys(pagesStore.pageItems)) {
+                    const aPage = pagesStore.pageItems[index]
+                    //console.log(aPage)
+                    breadPagesList.push(
+                        { name: aPage.name, current: false, completed: false }
+                    )
+                }
+
+                return breadPagesList
+
             }
 
         }, // computed
+
+
+
 
         methods: {
 
@@ -99,6 +160,16 @@
             nextPage() {
                 if (this.isLastPage) return
                 pagesStore.next()
+            },
+
+            goToPage( pageName, ev ) {
+                // Need checks if in list and available to click on (completed)
+                // - If the current page is 'invalid/not-completed', find closest
+                //   Previous page to go to.
+                // TODO
+                // -> Needs to update in the store first.
+                ev.preventDefault()
+                this.currPage = pageName
             },
 
 

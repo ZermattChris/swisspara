@@ -16,11 +16,10 @@
     "@astrojs/vue": "^3.0.1",
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
-    "@nanostores/persistent": "^0.9.1",
     "@nanostores/vue": "^0.10.0",
+    "@vuepic/vue-datepicker": "^7.2.0",
     "astro": "^3.3.2",
     "flowbite": "^1.8.1",
-    "nanostores": "^0.9.4",
     "tailwindcss": "^3.3.3",
     "vue": "^3.2.30"
   }
