@@ -1,10 +1,5 @@
 <template>
 
-  <div id="sizeBox"
-    class="max-w-3xl mx-auto p-4 pt-6 min-h-[40em]"
-    @click="onBackgroundClick"
-  >
-
     <div>
       <span class="w-14 h-14  text-4xl font-black  drop-shadow-lg border-black border-2  pt-1.5 pl-1  inline-block   rounded-full bg-indigo-600 text-white">
         <span class="pl-2">1.</span>
@@ -49,7 +44,11 @@
       class="px-2 pt-8 drop-shadow-lg"
     ></VueDatePicker>
 
-  </div>
+
+  <!-- <div id="catchClickBox" class="absolute top-0 right-0 bottom-0 left-0"
+    @click="onBackgroundClick"
+  ></div> -->
+
 
 </template>
 
@@ -85,6 +84,17 @@
           flightDate: flightDateStore.getFlightDate(),    // get from Store.
           showFlightDatePicker: false
         };
+    },
+
+
+    mounted() {
+        //console.log("Date component mounted")
+        window.addEventListener('click', this.onBackgroundClick)
+    },
+    unmounted() {
+        //console.log("-> Date component unmounted")
+        window.removeEventListener('click', this.onBackgroundClick)
+        
     },
 
     computed: {
@@ -128,7 +138,7 @@
         ev.stopPropagation()
       },
 
-      onBackgroundClick() {
+      onBackgroundClick: function (event) {
         // close Flight picker on outside click.
         this.showFlightDatePicker = false
       },

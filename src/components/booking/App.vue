@@ -3,7 +3,19 @@
     <!-- Dynamic Vue 'Page' components being swapped out  -->
     <!-- Listen to current page's validity events.  -->
     <div id="app" class="absolute top-[5em] w-full min-h-[450px] overflow-hidden">
-        <component :is="currPage" @pagevalid="onPageValid" />
+        <div id="sizeBox"
+            class="max-w-3xl mx-auto 
+            p-4 md:px-10
+            pt-6 
+            md:border border-silver"
+            @click="onBackgroundClick"
+        >
+
+            <component :is="currPage"
+                @pagevalid="onPageValidEvent"
+            ></component>
+
+        </div>
     </div>
 
 
@@ -20,10 +32,12 @@
             Previous
         </button>
 
+    Page is valid: {{ isPageValid }}
+
 
         <button @click="nextPage" type="button" 
             class="min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            :class="{ disabled: isLastPage }"
+            :class="{ disabled: nextBtnDisabled }"
         >
             Next 
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -65,6 +79,9 @@
     import PagePassengers from '@components/booking/Passengers.vue'
     import PagePay from '@components/booking/Payment.vue'
 
+    // import PagePaySuccess from '@components/booking/Success.vue'
+    // import PagePayFailed from '@components/booking/Failed.vue'
+
     // Store
     import {pagesStore} from '@stores/pageStore.js' 
     
@@ -78,11 +95,15 @@
             PageTime,
             PagePassengers,
             PagePay,
+
+            // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
+            // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
         },
 
         data() {
             return {
-                currPage: "PageDate",
+                currPage: pagesStore.currentPageName(),
+                isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
             };
         },
 
@@ -102,11 +123,16 @@
 
         computed: {
 
-            currentPage() {
-                return pagesStore.page
-            },
             currentPageName() {
                 return pagesStore.currentPageName()
+            },
+
+            /**
+             * Used to control the 'disabled' .class of the Next button.
+             */
+            nextBtnDisabled() {
+                if ( this.isLastPage ) return true
+                return !this.isPageValid
             },
 
             isFirstPage() {
@@ -123,8 +149,15 @@
 
         methods: {
 
-            onPageValid(pageName, isValid) {
+            /**
+             * This handles the custom event that is fired from each Page (via the _Page base class)
+             * Here is where we manage enabling/disabling the Prev|Next buttons (Breadcrumbs...)
+             * @param {String} pageName 
+             * @param {Bool} isValid 
+             */
+            onPageValidEvent(pageName, isValid) {
                 console.log("pageName:", pageName, "isValid:", isValid)
+                this.isPageValid = isValid
             },
 
             prevPage() {
@@ -133,26 +166,15 @@
             },
 
             nextPage() {
-                if (this.isLastPage) return
+                if (this.isLastPage || this.nextBtnDisabled) return
                 pagesStore.next()
             },
-
-            goToPage( pageName, ev ) {
-                // Need checks if in list and available to click on (completed)
-                // - If the current page is 'invalid/not-completed', find closest
-                //   Previous page to go to.
-                // TODO
-                // -> Needs to update in the store first.
-                ev.preventDefault()
-                this.currPage = pageName
-            },
-
 
         }, // methods
 
         watch: {
-            // whenever question changes, this function will run
-            currentPageName(newPage, oldPage) {
+            // Update when the current Page name changes.
+            currentPageName(newPage) {
                 //console.log("newPage: ", newPage)
                 this.currPage = newPage
             }

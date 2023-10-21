@@ -12,7 +12,7 @@ export const pagesStore = reactive({
 
     let x = 1
     for (const aPage of listOfPageNames) {
-        this.pageItems[x] = { 'name': aPage, 'completed': 0 }
+        this.pageItems[x] = { 'name': aPage }
         x++
     }
 
