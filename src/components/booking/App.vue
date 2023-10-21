@@ -6,8 +6,9 @@
         <component :is="currPage" @pagevalid="onPageValid" />
     </div>
 
+
     <!-- Previous/Next Buttons -->
-    <div class="flex justify-around mt-10 mb-10 max-w-xl mx-auto" >
+    <div class="fixed bottom-0 right-0 left-0   flex justify-around pt-3 pb-10 max-w-xl mx-auto bg-white" >
 
         <button @click="prevPage" type="button" 
             class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -30,7 +31,26 @@
             </svg>
         </button>    
 
+
+        <footer id="footbar" 
+            class="z-40 absolute left-0 right-0 -bottom-2 w-screen h-8 "
+        >
+            <p class="pt-1 text-center text-[0.7em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
+        </footer>
+
+        
     </div>
+
+    <!-- <div class="fixed bottom-3 right-0 left-0 rounded overflow-auto p-6">
+        <div class="flex justify-center">
+            <div class="animate-bounce bg-white dark:bg-slate-800 p-2 w-8 h-8 ring-1 ring-slate-900/5 dark:ring-slate-200/20 shadow rounded-full flex items-center justify-center">
+                <svg class="w-6 h-6 text-violet-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </div>
+    </div> -->
+
 
 </template>
 

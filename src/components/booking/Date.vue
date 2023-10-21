@@ -10,9 +10,7 @@
         <span class="pl-2">1.</span>
       </span>
 
-      <label for="date" class="text-2xl inline pl-2 drop-shadow-lg font-medium text-gray-900">
-
-
+      <label for="flightDateInput" class="text-2xl inline pl-2 drop-shadow-lg font-medium text-gray-900">
         Pick your Flight Date:
       </label>
       <div class="mt-6">
