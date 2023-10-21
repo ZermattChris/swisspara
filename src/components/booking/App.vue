@@ -8,7 +8,7 @@
 
 
     <!-- Previous/Next Buttons -->
-    <div class="fixed bottom-0 right-0 left-0   flex justify-around pt-3 pb-10 max-w-xl mx-auto bg-white" >
+    <div class="fixed bottom-0 right-0 left-0  z-40  flex justify-around pt-3 pb-10 max-w-xl mx-auto bg-white" >
 
         <button @click="prevPage" type="button" 
             class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -33,7 +33,7 @@
 
 
         <footer id="footbar" 
-            class="z-40 absolute left-0 right-0 -bottom-2 w-screen h-8 "
+            class="absolute -bottom-2 w-screen h-8 "
         >
             <p class="pt-1 text-center text-[0.7em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
         </footer>
