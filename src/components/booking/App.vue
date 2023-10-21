@@ -2,7 +2,7 @@
 
     <!-- Dynamic Vue 'Page' components being swapped out  -->
     <!-- Listen to current page's validity events.  -->
-    <div id="app" class="w-full min-h-[450px] overflow-hidden">
+    <div id="app" class="absolute top-[5em] w-full min-h-[450px] overflow-hidden">
         <component :is="currPage" @pagevalid="onPageValid" />
     </div>
 
@@ -11,7 +11,7 @@
     <div class="fixed bottom-0 right-0 left-0  z-40  flex justify-around pt-3 pb-10 max-w-xl mx-auto bg-white" >
 
         <button @click="prevPage" type="button" 
-            class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             :class="{ disabled: isFirstPage }"
         >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -22,7 +22,7 @@
 
 
         <button @click="nextPage" type="button" 
-            class="min-w-[9em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            class="min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             :class="{ disabled: isLastPage }"
         >
             Next 
