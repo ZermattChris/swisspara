@@ -4,9 +4,11 @@
     <!-- Listen to current page's validity events.  -->
     <div id="app" class="absolute top-[5em] w-full min-h-[450px] overflow-hidden">
         <div id="sizeBox"
-            class="max-w-3xl mx-auto 
-            p-4 md:px-10
-            pt-6 
+            class="
+            w-full md:w-11/12
+            mx-auto 
+            px-4 md:px-10
+            py-6 md:py-16
             md:border border-silver"
             @click="onBackgroundClick"
         >
@@ -20,11 +22,18 @@
 
 
     <!-- Previous/Next Buttons -->
-    <div class="fixed bottom-0 right-0 left-0  z-40  flex justify-around pt-3 pb-10 max-w-xl mx-auto bg-white" >
+    <div class="fixed bottom-0 right-0 left-0  z-40  
+            flex justify-around 
+            pt-3 pb-10 md:pb-20
+            max-w-xl 
+            mx-auto 
+            bg-white" >
 
         <button @click="prevPage" type="button" 
-            class="min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            :class="{ disabled: isFirstPage }"
+            class="
+                text-sm lg:text-lg
+                min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5  font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            :class="{ invisible: isFirstPage }"
         >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                 <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-4.28 9.22a.75.75 0 000 1.06l3 3a.75.75 0 101.06-1.06l-1.72-1.72h5.69a.75.75 0 000-1.5h-5.69l1.72-1.72a.75.75 0 00-1.06-1.06l-3 3z" clip-rule="evenodd" />
@@ -32,12 +41,14 @@
             Previous
         </button>
 
-    Page is valid: {{ isPageValid }}
+    valid: {{ isPageValid }}
 
 
         <button @click="nextPage" type="button" 
-            class="min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            :class="{ disabled: nextBtnDisabled }"
+            class="
+                text-sm lg:text-lg min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 font-semibold text-white shadow-sm  outline outline-2 outline-offset-2 outline-indigo-600"
+            :class="[nextBtnHidden, nextBtnDisabledClass, { 'hover:bg-indigo-500': nextBtnDisabledProp }]"
+            :disabled="nextBtnDisabledProp"
         >
             Next 
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
@@ -130,9 +141,14 @@
             /**
              * Used to control the 'disabled' .class of the Next button.
              */
-            nextBtnDisabled() {
-                if ( this.isLastPage ) return true
-                return !this.isPageValid
+            nextBtnHidden() {
+                if ( this.isLastPage ) return 'invisible' 
+            },
+            nextBtnDisabledClass() {
+                if ( !this.isPageValid ) return 'disabled:opacity-50'
+            },
+            nextBtnDisabledProp() {
+                if ( !this.isPageValid ) return true
             },
 
             isFirstPage() {

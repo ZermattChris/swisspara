@@ -23,7 +23,7 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
-        return false
+        return true
       },
 
     }, // computed

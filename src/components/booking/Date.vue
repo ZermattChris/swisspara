@@ -1,11 +1,12 @@
 <template>
 
-    <div>
-      <span class="w-14 h-14  text-4xl font-black  drop-shadow-lg border-black border-2  pt-1.5 pl-1  inline-block   rounded-full bg-indigo-600 text-white">
-        <span class="pl-2">1.</span>
-      </span>
+    <div class="mx-auto p-4 sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] bg-slate-50">
+        <!-- (1) -->
+        <span class="w-14 h-14  text-4xl font-black  drop-shadow-lg border-black border-2  pt-1.5 pl-1  inline-block   rounded-full bg-indigo-600 text-white">
+            <span class="pl-2">1.</span>
+        </span>
 
-      <label for="flightDateInput" class="text-2xl inline pl-2 drop-shadow-lg font-medium text-gray-900">
+      <label for="flightDateInput" class="text-2xl inline pl-2 drop-shadow font-medium text-gray-900">
         Pick your Flight Date:
       </label>
       <div class="mt-6 pl-4">
