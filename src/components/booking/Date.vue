@@ -11,21 +11,22 @@
       </span>
 
       <label for="date" class="text-2xl inline pl-2 drop-shadow-lg font-medium text-gray-900">
-        <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-          class="w-6 h-6 inline-block mb-1 "
-        >
-          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-        </svg> -->
+
 
         Pick your Flight Date:
       </label>
       <div class="mt-6">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+          class="w-6 h-6 inline-block mb-1 "
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+        </svg>
         <input type="input" name="flightDateInput" id="flightDateInput" 
           :value="displayDate"
           readonly 
           @click="onDateInputClick('flightDateInput', $event)"
           placeholder="Click to enter your flight date..."
-          class="block w-full rounded-md border-0 py-2 px-2 
+          class="inline-block  rounded-md border-0 py-2 px-2 
           cursor-pointer
           read-only:bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
@@ -45,8 +46,7 @@
       prevent-min-max-navigation 
       @update:model-value="onDateSelect"
       class="px-2 pt-8 drop-shadow-lg"
-    >
-    </VueDatePicker>
+    ></VueDatePicker>
 
   </div>
 
@@ -56,31 +56,46 @@
 
 
 <script>
+  // Parent component for all "Pages"
+  import _Page from './_Page.vue'
 
+  // Store
+  import {flightDateStore} from '@stores/flightDateStore.js' 
+
+  // Calendar Utils.
+  import {calendarUtils as calUtils} from './calendarUtils.js'
+  
+  // Components
   import VueDatePicker from '@vuepic/vue-datepicker';
   import '@vuepic/vue-datepicker/dist/main.css'
 
+
   export default {
-    name: 'Test_1',
+    name: 'PageDate',
+    extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+    
     components: {
       VueDatePicker
-    },
-    props: {
-      msg: String
     },
 
     data() {
         return {
           cal: null,
-          flightDate: null,
+          flightDate: flightDateStore.getFlightDate(),    // get from Store.
           showFlightDatePicker: false
         };
     },
 
-
-    
-
     computed: {
+
+      /**
+       * This computed value is requried by the base '_Page' class.
+       * It is tightly coupled, but lets the base handle all event
+       * work for all child Pages in the same manner.
+       */
+      _isPageValid() {
+        return flightDateStore.isPageValid()
+      },
 
       displayDate() {
         if ( this.flightDate === null ) return ''
@@ -89,18 +104,18 @@
         const d = this.flightDate.getDay()   // (0-6) Sunday - Saturday
         const DD = this.flightDate.getDate() // (1-31)
         const mm = this.flightDate.getMonth()
-        return (this.getDayString(d) + ' - ' + this.getMonthString(mm) + ' ' + DD + this.getLocalizedDayPostfix(DD) + ', ' + YYYY)
+        return (calUtils.getDayString(d) + ' - ' + calUtils.getMonthString(mm) + ' ' + DD + calUtils.getLocalizedDayPostfix(DD) + ', ' + YYYY)
       },
 
 
     }, // computed
 
 
-
     methods: {
 
       onDateSelect(modelData) {
         this.flightDate = modelData
+        flightDateStore.setFlightDate(modelData)    // set in Store.
         this.showFlightDatePicker = false
       },
 
@@ -112,73 +127,16 @@
         ev.stopPropagation()
       },
 
-
       onBackgroundClick() {
         // close Flight picker on outside click.
         this.showFlightDatePicker = false
       },
-
 
       // Only allow date picking to today + 9 months
       getMaxFutureDate() {
         const monthOffset = 9
         const today = new Date()
         return new Date(today.setMonth( today.getMonth() + monthOffset ));
-      },
-
-
-
-      // TODO - pull this out into a little date lib. 
-      getMonthString(monthInt) {
-        if ( monthInt < 0 || monthInt > 12 ) return 'Invalid Month Int.'
-        const months = {
-          0: 'January',
-          1: 'February',
-          2: 'March',
-          3: 'April',
-          4: 'May',
-          5: 'June',
-          6: 'July',
-          7: 'August',
-          8: 'September',
-          9: 'October',
-          10: 'November',
-          11: 'December'
-        }
-        return months[monthInt]
-      },
-
-      getDayString(dayInt) {
-        if ( dayInt < 0 || dayInt > 6 ) return 'Invalid Day Int.'
-        const days = {
-          0: 'Sunday',
-          1: 'Monday',
-          2: 'Tuesday',
-          3: 'Wednesday',
-          4: 'Thursday',
-          5: 'Friday',
-          6: 'Saturday'
-        }
-        return days[dayInt]
-      },
-
-      getLocalizedDayPostfix(dayOfMonthInt) {
-        if ( dayOfMonthInt < 1 || dayOfMonthInt > 31 ) return 'Invalid Month Day Int.'
-        let postfix = ''
-        switch (dayOfMonthInt) {
-          case 1:
-            postfix = 'st'
-            break;
-          case 2:
-            postfix = 'nd'
-            break;
-          case 3:
-            postfix = 'rd'
-            break;
-          default:
-            postfix = 'th'
-        }
-        return postfix
       },
 
     } // methods.

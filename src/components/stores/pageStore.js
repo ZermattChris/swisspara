@@ -15,6 +15,8 @@ export const pagesStore = reactive({
         this.pageItems[x] = { 'name': aPage, 'completed': 0 }
         x++
     }
+
+    this._savePage()
     //console.log('pageItems', this.pageItems[1]);
 
   },
@@ -56,10 +58,14 @@ export const pagesStore = reactive({
 
   //---------------------
 
+  _savePage(pageInt) {
+    localStorage.page = this.page
+  },
+
   // Internal. Call via prev() or next() to move to a different page.
   _navigate(directionInt) {
     this.page = this.page + directionInt
-    localStorage.page = this.page
+    this._savePage()
     // console.log("this.page: ", this.page)
   },
 

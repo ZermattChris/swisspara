@@ -1,42 +1,10 @@
 <template>
 
-
-
-
-<!-- <nav class="flex border-b border-t border-gray-200 bg-white" aria-label="Breadcrumb">
-    <ol role="list" class="mx-auto flex w-full max-w-screen-md space-x-4 px-4 sm:px-6 lg:px-8"> -->
-      <!-- <li class="flex">
-        <div class="flex items-center">
-          <a href="#" class="text-gray-400 hover:text-gray-500">
-            <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-            </svg>
-            <span class="sr-only">Home</span>
-          </a>
-        </div>
-      </li> -->
-      <!-- <li v-for="crumb in breadcrumbsList" :key="crumb.name" class="flex">
-        <div class="flex items-center">
-          <svg class="h-full w-6 flex-shrink-0 text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" aria-hidden="true">
-            <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-          </svg>
-          <a :href="crumb.name" @click="goToPage(crumb.name, $event)" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700" :aria-current="crumb.current ? 'page' : undefined">{{ crumb.name }}</a>
-        </div>
-      </li>
-    </ol>
-  </nav> -->
-
-
     <!-- Dynamic Vue 'Page' components being swapped out  -->
+    <!-- Listen to current page's validity events.  -->
     <div id="app" class="w-full min-h-[450px] overflow-hidden">
-        <component :is="currPage" />
+        <component :is="currPage" @pagevalid="onPageValid" />
     </div>
-
-    <!-- {{ isFirstPage }}
-
-    {{isLastPage}}
-
-    <p>Current Page: {{ currentPage }} - Name: {{ currentPageName }}</p> -->
 
     <!-- Previous/Next Buttons -->
     <div class="flex justify-around mt-10 mb-10 max-w-xl mx-auto" >
@@ -77,11 +45,8 @@
     import PagePassengers from '@components/booking/Passengers.vue'
     import PagePay from '@components/booking/Payment.vue'
 
-    // import PageSuccess from '@components/booking/PaymentSuccess.vue'
-    // import PageFail from '@components/booking/PaymentFail.vue'
-
     // Store
-    import {pagesStore} from '@stores/vPagesStore.js' 
+    import {pagesStore} from '@stores/pageStore.js' 
     
 
     export default {
@@ -93,8 +58,6 @@
             PageTime,
             PagePassengers,
             PagePay,
-            // PageSuccess,
-            // PageFail,
         },
 
         data() {
@@ -133,29 +96,16 @@
                 return pagesStore.isNavEnd()
             },
 
-
-            // breadcrumbsList() {
-
-            //     let breadPagesList = []
-
-            //     for (let index of Object.keys(pagesStore.pageItems)) {
-            //         const aPage = pagesStore.pageItems[index]
-            //         //console.log(aPage)
-            //         breadPagesList.push(
-            //             { name: aPage.name, current: false, completed: false }
-            //         )
-            //     }
-
-            //     return breadPagesList
-
-            // }
-
         }, // computed
 
 
 
 
         methods: {
+
+            onPageValid(pageName, isValid) {
+                console.log("pageName:", pageName, "isValid:", isValid)
+            },
 
             prevPage() {
                 if (this.isFirstPage) return
@@ -183,7 +133,7 @@
         watch: {
             // whenever question changes, this function will run
             currentPageName(newPage, oldPage) {
-                console.log("newPage, oldPage: ", newPage)
+                //console.log("newPage: ", newPage)
                 this.currPage = newPage
             }
         }, // watch

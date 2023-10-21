@@ -3,28 +3,33 @@
         <h1 class="text-center">Passengers details page.</h1>
       </div>
     </template>
-    <script>
-    export default {
-      name: 'Passenger',
-      props: {
-        msg: String
-      }
-    }
-    </script>
-    <!-- Add "scoped" attribute to limit CSS to this component only -->
-    <style scoped>
-    h3 {
-      margin: 40px 0 0;
-    }
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    li {
-      display: inline-block;
-      margin: 0 10px;
-    }
-    a {
-      color: #42b983;
-    }
-    </style>
+
+<script>
+
+  // Parent component for all "Pages"
+  import _Page from './_Page.vue'
+
+
+  export default {
+    name: 'PagePassengers',
+    extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+    
+
+    computed: {
+
+      /**
+       * This computed value is requried by the base '_Page' class.
+       * It is tightly coupled, but lets the base handle all event
+       * work for all child Pages in the same manner.
+       */
+      _isPageValid() {
+        return true
+      },
+
+    }, // computed
+
+
+  }
+
+
+</script>
