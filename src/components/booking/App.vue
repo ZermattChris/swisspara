@@ -2,13 +2,13 @@
 
     <!-- Dynamic Vue 'Page' components being swapped out  -->
     <!-- Listen to current page's validity events.  -->
-    <div id="app" class="absolute top-[5em] w-full min-h-[450px] overflow-hidden">
+    <div id="app" class="absolute top-[4em] w-full min-h-[450px] overflow-hidden">
         <div id="sizeBox"
             class="
-            w-full md:w-11/12
+            w-full max-[320px]:w-11/12
             mx-auto 
-            px-4 md:px-10
-            py-6 md:py-16
+            px-0 sm:px-10
+            py-6 sm:py-16
             md:border border-silver"
             @click="onBackgroundClick"
         >
@@ -41,7 +41,7 @@
             Previous
         </button>
 
-    valid: {{ isPageValid }}
+        {{ isPageValid ? 'valid': 'invalid' }}
 
 
         <button @click="nextPage" type="button" 
@@ -172,7 +172,7 @@
              * @param {Bool} isValid 
              */
             onPageValidEvent(pageName, isValid) {
-                console.log("pageName:", pageName, "isValid:", isValid)
+                console.log("pageName:", pageName + '.', " isValid:", isValid)
                 this.isPageValid = isValid
             },
 

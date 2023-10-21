@@ -1,33 +1,49 @@
 <template>
 
-    <div class="mx-auto p-4 sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] bg-slate-50">
+    <div id="flightDateBox"
+        class="mx-auto pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] bg-slate-50">
         <!-- (1) -->
-        <span class="w-14 h-14  text-4xl font-black  drop-shadow-lg border-black border-2  pt-1.5 pl-1  inline-block   rounded-full bg-indigo-600 text-white">
+        <!-- <span class="w-12 h-12  sm:w-14 sm:h-14
+            text-3xl sm:text-4xl 
+            pt-1 sm:pt-1.5 pl-1 
+            font-black  drop-shadow-lg border-black border-2   inline-block   rounded-full bg-indigo-600 text-white">
             <span class="pl-2">1.</span>
-        </span>
+        </span> -->
 
-      <label for="flightDateInput" class="text-2xl inline pl-2 drop-shadow font-medium text-gray-900">
-        Pick your Flight Date:
-      </label>
-      <div class="mt-6 pl-4">
+      <label for="flightDateInput" class="text-xl md:text-2xl inline pl-2 drop-shadow font-medium text-gray-900">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
-          class="w-6 h-6 inline-block mb-1 "
+          class="w-6 h-6 inline-block mb-1 text-indigo-600"
         >
           <path 
             stroke-linecap="round" stroke-linejoin="round" 
             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" 
           />
         </svg>
+        1. Pick your Flight Date:
+      </label>
+      <div id="dateInputBox" class="mt-3 pl-0 md:pl-4">
+       
         <input type="input" name="flightDateInput" id="flightDateInput" 
           :value="displayDate"
           readonly 
           @click="onDateInputClick('flightDateInput', $event)"
           placeholder="Click to enter your flight date..."
-          class="inline-block  rounded-md border-0 ml-2 py-2 px-2 min-w-[17em] overflow-hidden
+          class="inline-block  rounded-md border-0 
+          ml-2 py-2 px-2 
+          w-72 sm:w-80
+          overflow-clip
           cursor-pointer
           read-only:bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 " 
         />
+        <!-- This would make a good sep component.  -->
+        <svg 
+            class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600"
+            :class="[!flightDate ? 'hidden' : '']"
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+        </svg>
+
       </div>
     </div>
 
@@ -110,12 +126,13 @@
       },
 
       displayDate() {
-        if ( this.flightDate === null ) return ''
-        // console.log(this.flightDate.toLocaleDateString())
-        const YYYY = this.flightDate.getFullYear()
-        const d = this.flightDate.getDay()   // (0-6) Sunday - Saturday
-        const DD = this.flightDate.getDate() // (1-31)
-        const mm = this.flightDate.getMonth()
+        if ( this.flightDate === null || this.flightDate === '' ) return ''
+        //console.log('-> displayDate(): ', this.flightDate)
+        const myDate = new Date( this.flightDate )
+        const YYYY = myDate.getFullYear()
+        const d = myDate.getDay()   // (0-6) Sunday - Saturday
+        const DD = myDate.getDate() // (1-31)
+        const mm = myDate.getMonth()
         return (calUtils.getDayString(d) + ' - ' + calUtils.getMonthString(mm) + ' ' + DD + calUtils.getLocalizedDayPostfix(DD) + ', ' + YYYY)
       },
 

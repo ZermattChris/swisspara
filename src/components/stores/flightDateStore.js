@@ -4,9 +4,9 @@ import { reactive } from 'vue'
 
 export const flightDateStore = reactive({
 
-  flightDate: localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ) : null,
-  arriveDate: localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ) : null,
-  departDate: localStorage.departDate ? new Date( Date.parse(localStorage.departDate) ) : null,
+  flightDate: localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ).toDateString() : '',
+  arriveDate: localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ).toDateString() : '',
+  departDate: localStorage.departDate ? new Date( Date.parse(localStorage.departDate) ).toDateString() : '',
   
   
 
@@ -15,10 +15,15 @@ export const flightDateStore = reactive({
   // Get if this 'Page' is valid or not. Used to manage the Prev/Next
   // buttons and breadcrumbs.
   isPageValid() {
-    // - if flightDate is after today(), then reset to null.
+    const today = new Date().toDateString()
+
+    console.log("today:", today)
     let result = true
-    if ( this.flightDate === null ) result = false
-    if ( this.flightDate < new Date() ) result = false
+    if ( this.flightDate === '' ) result = false
+    if ( new Date(this.getFlightDate()) < new Date(today) ) {
+      //console.log("Stale Flight Date in PageValid:", this.flightDate)
+      result = false
+    }
     return result
   },
 
@@ -26,12 +31,19 @@ export const flightDateStore = reactive({
 
   // Flight Date.
   getFlightDate() {
-    // if ( this.flightDate < new Date() ) this.flightDate = this.setFlightDate('')  // reset flight date if old.
+    // delete Flight Date if the date is old (stale data)
+    const today = new Date().toDateString()
+    if ( new Date(this.flightDate) < new Date(today)  ) {
+      console.log("Stale Flight Date in getFlightDate:", this.flightDate)
+      this.setFlightDate('') 
+    }
     return this.flightDate
   },
   setFlightDate(flDate) {
     this.flightDate = flDate
-    localStorage.flightDate = this.flightDate
+
+    // Strip out timezone and hours:mins:secs
+    localStorage.flightDate = new Date(this.flightDate).toDateString()
   },
 
   // Arrival Date.
@@ -40,7 +52,9 @@ export const flightDateStore = reactive({
   },
   setArriveDate(flDate) {
     this.arriveDate = flDate
-    localStorage.arriveDate = this.arriveDate
+
+    // Strip out timezone and hours:mins:secs
+    localStorage.arriveDate = new Date(this.arriveDate).toDateString()
   },
 
   // Departure Date.
@@ -49,8 +63,9 @@ export const flightDateStore = reactive({
   },
   setDepartDate(flDate) {
     this.departDate = flDate
-    localStorage.departDate = this.departDate
+    // Strip out timezone and hours:mins:secs
+    localStorage.departDate = new Date(this.departDate).toDateString()
   },
 
-});
+})
 
