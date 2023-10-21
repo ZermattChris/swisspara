@@ -1,8 +1,10 @@
 <template>
-      <div>
-        <h1 class="text-center">Passengers details page.</h1>
-      </div>
-    </template>
+
+	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+		4. Passenger Infos
+	</h1>
+
+</template>
 
 <script>
 

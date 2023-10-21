@@ -1,8 +1,11 @@
 <template>
-    <div>
-      <h1 class="text-center">Payment page.</h1>
-    </div>
-  </template>
+
+	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+		5. Complete Your Booking
+	</h1>
+
+</template>
+
 
 <script>
 

@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <h1 class="text-center">Select Flight page.</h1>
-  </div>
+
+	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+		2. Select a Flight
+	</h1>
+
 </template>
 
 

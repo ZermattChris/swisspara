@@ -1,7 +1,12 @@
 <template>
 
+    <h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+        1. Get Started
+    </h1>
+
+
     <div id="flightDateBox"
-        class="mx-auto pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] bg-slate-50">
+        class="mx-auto pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
         <!-- (1) -->
         <!-- <span class="w-12 h-12  sm:w-14 sm:h-14
             text-3xl sm:text-4xl 
@@ -10,7 +15,7 @@
             <span class="pl-2">1.</span>
         </span> -->
 
-      <label for="flightDateInput" class="text-xl md:text-2xl inline pl-2 drop-shadow font-medium text-gray-900">
+      <label for="flightDateInput" class="text-xl md:text-2xl inline pl-2 font-medium text-gray-900">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
           class="w-6 h-6 inline-block mb-1 text-indigo-600"
         >
@@ -19,7 +24,7 @@
             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" 
           />
         </svg>
-        1. Pick your Flight Date:
+        Pick your Flight Date:
       </label>
       <div id="dateInputBox" class="mt-3 pl-0 md:pl-4">
        

@@ -1,7 +1,9 @@
 <template>
-  <div>
-    <h1 class="text-center">Time Slot page.</h1>
-  </div>
+
+	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+		3. Choose a Time
+	</h1>
+
 </template>
 
 <script>
