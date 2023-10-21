@@ -60,7 +60,7 @@
         <footer id="footbar" 
             class="absolute -bottom-2 w-screen h-8 "
         >
-            <p class="pt-1 text-center text-[0.7em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
+            <p class="pt-1 text-center text-[0.75em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
         </footer>
 
         
