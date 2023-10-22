@@ -58,6 +58,11 @@ export const pagesStore = reactive({
 
   //---------------------
 
+  resetLocalStorage() {
+    localStorage.clear()
+  },
+
+
   _savePage(pageInt) {
     localStorage.page = this.page
   },

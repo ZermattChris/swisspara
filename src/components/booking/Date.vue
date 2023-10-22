@@ -123,8 +123,8 @@
                 inline
                 teleport-center
                 auto-apply
-                :min-date="getMinArriveDate()"
-                :max-date="getMaxArriveDate()"
+                :min-date="getMinDepartDate()"
+                :max-date="getMaxDepartDate()"
                 prevent-min-max-navigation 
                 @update:model-value="onDepartDateSelect"
                 class="absolute z-[98] drop-shadow-xl"
@@ -134,8 +134,6 @@
 
         </div>
     </div>
-
-
 
     <!-- Arrive Date input and Calendar.  -->
     <div id="arriveDateBox"
@@ -151,7 +149,6 @@
 
         Arriving in Zermatt:
 
-        <!-- This would make a good sep component.  -->
         <svg 
             class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600"
             :class="[!arriveDate ? 'hidden' : '']"
@@ -193,7 +190,6 @@
 
         Departing Zermatt:
 
-        <!-- This would make a good sep component.  -->
         <svg 
             class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600"
             :class="[!departDate ? 'hidden' : '']"
@@ -369,7 +365,22 @@
         return minDate.toDateString()
       },
       getMaxArriveDate() {
-        return new Date(this.flightDate ).toDateString()
+        return new Date(this.flightDate).toDateString()
+      },
+
+
+      // Depart Date must be >= today
+      getMinDepartDate() {
+        console.log('-> minDepartDate(): ', new Date().toDateString())
+        return new Date().toDateString()
+      },
+      getMaxDepartDate() {
+        const daysOffset = 14
+        const flightDate = new Date(this.flightDate)
+        // console.log('-> flightDate(): ', flightDate)
+        flightDate.setDate( flightDate.getDate() + daysOffset )
+        console.log('-> after: ', flightDate)
+        return flightDate.toDateString()
       },
 
     } // methods.

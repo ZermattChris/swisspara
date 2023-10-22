@@ -40,7 +40,7 @@
             Previous
         </button>
 
-        {{ isPageValid ? 'valid': 'invalid' }}
+        <span id="reset" @dblclick="onResetLocalStorage">{{ isPageValid ? 'valid': 'invalid' }}</span>
 
 
         <button @click="nextPage" type="button" 
@@ -184,6 +184,16 @@
                 if (this.isLastPage || this.nextBtnDisabled) return
                 pagesStore.next()
             },
+
+
+            // Test method.
+            onResetLocalStorage() {
+                console.log("-> RESET LocalStorage")
+                pagesStore.resetLocalStorage()
+                location.reload() 
+                let span = document.getElementById('reset');
+                span.appendChild( document.createTextNode(" - Reset") );
+            }
 
         }, // methods
 
