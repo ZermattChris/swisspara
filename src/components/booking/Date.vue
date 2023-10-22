@@ -145,7 +145,7 @@
         v-if="flightDate"
         class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
-        <label for="arriveDateInput" class="text-xl md:text-xl inline pl-2 font-normal text-gray-900">
+        <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
         <svg 
             class="w-6 h-6 inline-block mb-1 text-indigo-600"
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
@@ -185,7 +185,7 @@
         v-if="arriveDate"
         class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
-        <label for="departDateInput" class="text-xl md:text-xl inline pl-2 font-normal text-gray-900">
+        <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
         <svg 
             class="w-6 h-6 inline-block mb-1 text-indigo-600"
             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >

@@ -1,5 +1,7 @@
 import { reactive } from 'vue'
 
+import { addDays, subDays, isAfter, isBefore, isEqual } from 'date-fns'
+
 
 
 export const flightDateStore = reactive({
@@ -15,15 +17,13 @@ export const flightDateStore = reactive({
   // Get if this 'Page' is valid or not. Used to manage the Prev/Next
   // buttons and breadcrumbs.
   isPageValid() {
-    const today = new Date().toDateString()
-
-    //console.log("today:", today)
     let result = true
 
     // -> Flight Date checks.
     if ( this.flightDate === '' ) result = false
-    if ( new Date(this.getFlightDate()) < new Date(today) ) {
-      //console.log("Stale Flight Date in PageValid:", this.flightDate)
+
+    // date-fns update
+    if ( isBefore( new Date(this.getFlightDate()), new Date(new Date().toDateString()) ) ) {  // toDateString() kills time and Timezone.
       result = false
     }
 
@@ -40,10 +40,8 @@ export const flightDateStore = reactive({
 
   // ---- Flight Date ----.
   getFlightDate() {
-    // delete Flight Date if the date is old (stale data)
-    const today = new Date().toDateString()
-    if ( new Date(this.flightDate) < new Date(today)  ) {
-      console.log("Stale Flight Date in getFlightDate:", this.flightDate)
+    if ( isBefore( new Date(this.flightDate), new Date(new Date().toDateString()) ) ) {
+      //console.log("Stale Flight Date in getFlightDate:", this.flightDate)
       this.setFlightDate('') 
     }
     return this.flightDate
@@ -56,14 +54,14 @@ export const flightDateStore = reactive({
 
   // ---- Arrival Date ----.
   getArriveDate() {
-    const today = new Date().toDateString()
-    if ( new Date(this.arriveDate) > new Date(this.flightDate)  ) {
-      console.log("Stale Arrive Date in getArriveDate:", this.arriveDate)
+    if ( isAfter( new Date(this.arriveDate), new Date(this.flightDate) ) ) {
+      //console.log("Stale Arrive Date in getArriveDate:", this.arriveDate)
       this.setArriveDate('') 
     }
     return this.arriveDate
   },
   setArriveDate(arrDate) {
+    if ( arrDate === '') return   // stops saving "Invalid Date" to local storage.
     this.arriveDate = arrDate
 
     // Strip out timezone and hours:mins:secs
@@ -75,15 +73,18 @@ export const flightDateStore = reactive({
 
   // Departure Date.
   getDepartDate() {
-    const today = new Date().toDateString()
-    if ( new Date(this.departDate) < new Date(today)  ) {
-      console.log("Stale Depart Date in getDepartDate:", this.departDate)
+    // const today = new Date().toDateString()
+
+    // date-fns update
+    if ( isBefore( new Date(this.departDate), new Date(new Date().toDateString()) ) ) {  // toDateString() kills time and Timezone.
+      //console.log("Stale Depart Date in getDepartDate:", this.departDate)
       this.setDepartDate('') 
     }
     return this.departDate
   },
-  setDepartDate(flDate) {
-    this.departDate = flDate
+  setDepartDate(dpDate) {
+    if ( dpDate === '') return   // stops saving "Invalid Date" to local storage.
+    this.departDate = dpDate
     // Strip out timezone and hours:mins:secs
     localStorage.departDate = new Date(this.departDate).toDateString()
   },
