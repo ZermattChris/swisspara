@@ -84,6 +84,7 @@
                 v-if="showFlightDatePicker"
                 id="flightDatePicker"
                 v-model="flightCal"
+                :model-value="flightDate"
                 :enable-time-picker="false"
                 inline
                 teleport-center
@@ -102,6 +103,8 @@
                 v-if="showArriveDatePicker"
                 id="arriveDatePicker"
                 v-model="arriveCal"
+                :model-value="arriveDate"
+				:markers="getFlightDateMakerObj()"
                 :enable-time-picker="false"
                 inline
                 teleport-center
@@ -119,6 +122,8 @@
                 v-if="showDepartDatePicker"
                 id="departDatePicker"
                 v-model="departCal"
+                :model-value="departDate"
+				:markers="getFlightDateMakerObj()"
                 :enable-time-picker="false"
                 inline
                 teleport-center
@@ -138,7 +143,7 @@
     <!-- Arrive Date input and Calendar.  -->
     <div id="arriveDateBox"
         v-if="flightDate"
-        class="pb-8 md:pb-12 pl-12 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+        class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
         <label for="arriveDateInput" class="text-xl md:text-xl inline pl-2 font-normal text-gray-900">
         <svg 
@@ -178,7 +183,7 @@
     <!-- Depart Date input and Calendar.  -->
     <div id="departDateBox"
         v-if="arriveDate"
-        class="pb-8 md:pb-12 pl-12 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+        class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
         <label for="departDateInput" class="text-xl md:text-xl inline pl-2 font-normal text-gray-900">
         <svg 
@@ -231,6 +236,7 @@
 
   // Calendar Utils.
   import {calendarUtils as calUtils} from './calendarUtils.js'
+	// import addDays from 'date-fns/addDays';
   
   // Components
   import VueDatePicker from '@vuepic/vue-datepicker';
@@ -239,8 +245,10 @@
 
   export default {
     name: 'PageDate',
-    extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
     
+    extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+    emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+
     components: {
       VueDatePicker
     },
@@ -295,6 +303,12 @@
       onDateSelect(modelData) {
         this.flightDate = modelData
         flightDateStore.setFlightDate(modelData)    // set in Store.
+		// Reset Arrive & Depart.
+		this.arriveDate = ''
+		flightDateStore.setArriveDate('')
+		this.departDateDate = ''
+		flightDateStore.setDepartDate('')
+		// Hide Calendar.
         this.showFlightDatePicker = false
       },
       onDateInputClick(el, ev) {
@@ -347,6 +361,7 @@
         // close Calendar pickers on outside click.
         this.showFlightDatePicker = false
         this.showArriveDatePicker = false
+        this.showDepartDatePicker = false
       },
 
       // Only allow date picking to today + 9 months
@@ -371,8 +386,8 @@
 
       // Depart Date must be >= today
       getMinDepartDate() {
-        console.log('-> minDepartDate(): ', new Date().toDateString())
-        return new Date().toDateString()
+        // console.log('-> minDepartDate(): ', new Date(this.flightDate).toDateString())
+        return new Date(this.flightDate).toDateString()
       },
       getMaxDepartDate() {
         const daysOffset = 14
@@ -382,6 +397,19 @@
         console.log('-> after: ', flightDate)
         return flightDate.toDateString()
       },
+
+
+		getFlightDateMakerObj() {
+			const markers = [{
+				date: new Date(this.flightDate),
+				type: 'line',
+				color: 'green',
+				tooltip: [
+					{ text:'Your Flight', color:'green' },
+				],
+			}]
+			return markers
+		},
 
     } // methods.
 

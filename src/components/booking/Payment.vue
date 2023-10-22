@@ -15,8 +15,11 @@
 
   export default {
     name: 'PagePayment',
-    extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-    
+	
+  extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+  emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+
+  
 
     computed: {
 

@@ -14,9 +14,11 @@ import _Page from './_Page.vue'
 
 export default {
   name: 'PageTime',
+	
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-  
+  emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
+  
   computed: {
 
     /**

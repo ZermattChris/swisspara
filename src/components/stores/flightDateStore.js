@@ -19,11 +19,20 @@ export const flightDateStore = reactive({
 
     //console.log("today:", today)
     let result = true
+
+    // -> Flight Date checks.
     if ( this.flightDate === '' ) result = false
     if ( new Date(this.getFlightDate()) < new Date(today) ) {
       //console.log("Stale Flight Date in PageValid:", this.flightDate)
       result = false
     }
+
+    // Arrive Date checks.
+    if ( this.arriveDate === '' ) result = false
+
+    // Depart Date checks.
+    if ( this.departDate === '' ) result = false
+
     return result
   },
 
@@ -41,7 +50,6 @@ export const flightDateStore = reactive({
   },
   setFlightDate(flDate) {
     this.flightDate = flDate
-
     // Strip out timezone and hours:mins:secs
     localStorage.flightDate = new Date(this.flightDate).toDateString()
   },
@@ -49,7 +57,7 @@ export const flightDateStore = reactive({
   // ---- Arrival Date ----.
   getArriveDate() {
     const today = new Date().toDateString()
-    if ( new Date(this.arriveDate) < new Date(today)  ) {
+    if ( new Date(this.arriveDate) > new Date(this.flightDate)  ) {
       console.log("Stale Arrive Date in getArriveDate:", this.arriveDate)
       this.setArriveDate('') 
     }
