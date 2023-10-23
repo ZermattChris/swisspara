@@ -52,18 +52,20 @@
       </div>
     </div>
 
-
+	<!-- Modal Calendar pop ups here.  -->
 	<Transition name="fade">
     <div 
         v-if="showFlightDatePicker || showArriveDatePicker || showDepartDatePicker"
         id="calendarModal"
         class="fixed inset-0 z-[97] w-screen bg-gray-500 bg-opacity-90 overflow-y-auto"
     >
-        <div class="flex flex-col place-content-center gap-4    min-h-screen p-4 text-center ">
+        <div 
+			class="flex flex-col place-content-center gap-4  p-4 text-center h-screen "
+		>
             
             <div 
                 v-if="showFlightDatePicker"
-                class="flex place-self-center justify-center  w-60 text-2xl text-black bg-white py-2 px-4 rounded-3xl font-bold drop-shadow-lg ">
+                class="flex -mt-32 place-self-center justify-center  w-60 text-2xl text-black bg-white py-2 px-4 rounded-3xl font-bold drop-shadow-lg ">
 
 				<svg 
 					class="w-6 h-6 inline-block mt-1 mr-2 text-indigo-600"
@@ -79,7 +81,7 @@
 
             <div 
                 v-if="showArriveDatePicker"
-                class="flex place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-2 rounded-3xl drop-shadow-lg ">
+                class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-2 rounded-3xl drop-shadow-lg ">
 				<svg 
 					class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600"
 					xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
@@ -90,7 +92,7 @@
 
             <div 
                 v-if="showDepartDatePicker"
-                class="flex place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-4 rounded-3xl drop-shadow-lg ">
+                class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-4 rounded-3xl drop-shadow-lg ">
 				<svg 
 					class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600"
 					xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
@@ -290,6 +292,8 @@
 				departDate: flightDateStore.getDepartDate(),    // get from Store.
 				departCal: null,
 				showDepartDatePicker: false,
+
+				// viewPortH: 0,
 			};
 		},
 
@@ -429,7 +433,7 @@
 				const flightDate = new Date(this.flightDate)
 				// console.log('-> flightDate(): ', flightDate)
 				flightDate.setDate( flightDate.getDate() + daysOffset )
-				console.log('-> after: ', flightDate)
+				//console.log('-> after: ', flightDate)
 				return flightDate.toDateString()
 			},
 
