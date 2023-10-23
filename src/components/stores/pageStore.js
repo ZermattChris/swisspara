@@ -1,10 +1,13 @@
-import { reactive } from 'vue'
+import { reactive, markRaw  } from 'vue'
 
 
 
 export const pagesStore = reactive({
 
   page: +localStorage.page || 1,
+
+  // pageIndex: ComponentObject: {}
+  // { 1: Object: {name: 'PagePassengers', ...}}
   pageItems: {},
 
   // Set up the list of Navigation Page names. Called from App.
@@ -12,9 +15,11 @@ export const pagesStore = reactive({
 
     let x = 1
     for (const aPage of listOfPageNames) {
-        this.pageItems[x] = { 'name': aPage }
+        this.pageItems[x] = { 'name': markRaw(aPage) }
         x++
     }
+
+    console.log('pageItems', this.pageItems)
 
     this._savePage()
     //console.log('pageItems', this.pageItems[1]);

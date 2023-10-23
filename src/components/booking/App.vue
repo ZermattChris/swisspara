@@ -121,11 +121,11 @@
             // Send our page list as strings to the store.
             // Need to add 'label' and 'icon' to use in Breadcrumbs.
             pagesStore.initNav([
-                'PageDate', 
-                'PageFlight', 
-                'PageTime', 
-                'PagePassengers', 
-                'PagePay'
+                PageDate, 
+                PageFlight, 
+                PageTime, 
+                PagePassengers, 
+                PagePay,
             ])
         },
 
