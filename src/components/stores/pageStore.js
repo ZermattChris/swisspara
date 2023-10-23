@@ -67,23 +67,38 @@ export const pagesStore = reactive({
 	// },
 
 
+	/**
+	 * This is where we need the logic that checks for valid pages
+	 * before this page is displayed and returns the last valid page.
+	 * For example: the current page number is 5 (payment), but the
+	 * flight date has become stale, making page 1 invalid. We need to
+	 * send the user back to page 1 to fix missing data.
+	 * @returns {String} pageName
+	 */
+	currentPageName() {
+		const nrPageItems = this._nrOfPageItems()
+		if ( nrPageItems == 0 ) return
 
-  // grab the current Page's string name. 
-  currentPageName() {
+		//----------- Check for previous invalid pages -----------
+		for (let x = 1; x <= nrPageItems; x++) {
+			//console.log('page component:', this.pageItems[x].component.name, this.pageItems[x])
+			const thisPageValid = this.pageItems[x].component.computed._isPageValid()
+			//console.log("Page", x ,thisPageValid)
+			if (thisPageValid === false) {
+				//console.log("Page", x ,thisPageValid)
+				this.page = x			// update current Page var.
+				this._savePage()		// update localStorage.
+				const invalidPageTarget = this.pageItems[x].component
+				//console.log("invalidPageTarget", invalidPageTarget)
+				return invalidPageTarget
+			}
+		}
+		//--------------------------------------------------------
 
-	const nrPageItems = this._nrOfPageItems()
-    if ( nrPageItems == 0 ) return
+		//console.log('page component: ', this.pageItems[test].component.name)
 
-	//--
-	for (let x = 1; x <= nrPageItems; x++) {
-		//console.log('page component:', this.pageItems[x].component.name, this.pageItems[x])
-	}
-	//--
-
-	//console.log('page component: ', this.pageItems[test].component.name)
-
-    return this.pageItems[this.page].component
-  },
+		return this.pageItems[this.page].component
+	},
 
 
 
@@ -122,7 +137,7 @@ export const pagesStore = reactive({
   },
 
 
-  _savePage(pageInt) {
+  _savePage() {
     localStorage.page = this.page
   },
 
