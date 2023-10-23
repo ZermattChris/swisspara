@@ -171,7 +171,7 @@
              * @param {Bool} isValid 
              */
             onPageValidEvent(pageName, isValid) {
-                console.log("pageName:", pageName + '.', " isValid:", isValid)
+                //onsole.log("pageName:", pageName + '.', " isValid:", isValid)
                 this.isPageValid = isValid
             },
 
