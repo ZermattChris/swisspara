@@ -73,6 +73,7 @@ export const pagesStore = reactive({
 	 * For example: the current page number is 5 (payment), but the
 	 * flight date has become stale, making page 1 invalid. We need to
 	 * send the user back to page 1 to fix missing data.
+	 * 
 	 * @returns {String} pageName
 	 */
 	currentPageName() {
@@ -86,17 +87,21 @@ export const pagesStore = reactive({
 			//console.log("Page", x ,thisPageValid)
 			if (thisPageValid === false) {
 				//console.log("Page", x ,thisPageValid)
-				this.page = x			// update current Page var.
-				this._savePage()		// update localStorage.
-				const invalidPageTarget = this.pageItems[x].component
-				//console.log("invalidPageTarget", invalidPageTarget)
-				return invalidPageTarget
+
+				// Only jump if this invalid page is less than current this.page.
+				if( x < this.page ) {
+					//console.log("=> Jumping to invalid page", x ,thisPageValid)
+					this.page = x			// update current Page var.
+					this._savePage()		// update localStorage.
+					break
+				}
+
 			}
 		}
 		//--------------------------------------------------------
 
 		//console.log('page component: ', this.pageItems[test].component.name)
-
+		console.log('this.page',this.page)
 		return this.pageItems[this.page].component
 	},
 
@@ -118,13 +123,13 @@ export const pagesStore = reactive({
 
   // Move to the previous page 
   prev() {
-    this._navigate(-1)
+    this._navigate(this.page -1)
     //return this.pageItems[this.page].name
   },
 
   // Move to the next page 
   next() {
-    this._navigate(1)
+    this._navigate(this.page +1)
     //return this.pageItems[this.page].name
   },
 
@@ -137,13 +142,13 @@ export const pagesStore = reactive({
   },
 
 
-  _savePage() {
-    localStorage.page = this.page
-  },
+	_savePage() {
+		localStorage.page = this.page
+	},
 
   // Internal. Call via prev() or next() to move to a different page.
-  _navigate(directionInt) {
-    this.page = this.page + directionInt
+  _navigate(targetPageInt) {
+    this.page = targetPageInt
     this._savePage()
     // console.log("this.page: ", this.page)
   },
