@@ -12,7 +12,7 @@
             @click="onBackgroundClick"
         >
 
-            <component :is="currPage"
+            <component :is="currentPageName"
                 @pagevalid="onPageValidEvent"
             ></component>
 
@@ -112,7 +112,7 @@
 
         data() {
             return {
-                currPage: pagesStore.currentPageName(),
+                // currPage: pagesStore.currentPageName(),
                 isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
             };
         },
@@ -198,11 +198,11 @@
         }, // methods
 
         watch: {
-            // Update when the current Page name changes.
-            currentPageName(newPage) {
-                //console.log("newPage: ", newPage)
-                this.currPage = newPage
-            }
+            // // Update when the current Page name changes.
+            // currentPageName(newPage) {
+            //     //console.log("newPage: ", newPage)
+            //     this.currPage = newPage
+            // }
         }, // watch
 
     }
