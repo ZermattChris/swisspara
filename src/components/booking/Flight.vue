@@ -4,6 +4,10 @@
 		2. Select a Flight
 	</h1>
 
+  <p>Need to display a selection of available flights for the user's chosen date.</p>
+
+  <p>Or merge available flight types and time slots into a singler Step?</p>
+
 </template>
 
 

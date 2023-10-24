@@ -339,8 +339,7 @@
 				// Automatically show the 'Arrival Date' pop up calendar.
 				setTimeout(() => {
 					this.showArriveDatePicker = true
-				}, "150");
-
+				}, "150")
 
 			},
 
@@ -381,6 +380,7 @@
 				// Depart Date
 				this.showDepartDatePicker = true
 				ev.stopPropagation()
+
 			},
 
 

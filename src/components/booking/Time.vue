@@ -4,12 +4,29 @@
 		3. Choose a Time
 	</h1>
 
+  <Splide :options="splideOpts" 
+		aria-label="My Favorite Images"
+	>
+			<SplideSlide 
+				v-for="slideX in nrTestSlides"
+				class=""
+			>
+				<img src="images/Paragliding-with-Linsey.webp" alt="Sample ">
+				{{ slideX }}
+			</SplideSlide>
+  </Splide>
+
 </template>
+
 
 <script>
 
 // Parent component for all "Pages"
+import { transitionEnabledOnThisPage } from 'astro:transitions/client'
 import _Page from './_Page.vue'
+
+import { Splide, SplideSlide } from '@splidejs/vue-splide'
+import '@splidejs/vue-splide/css';
 
 
 export default {
@@ -18,7 +35,25 @@ export default {
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
-  
+	components: {    
+		Splide,
+    SplideSlide,
+	},
+	
+  data() {
+			return {
+
+				splideOpts: {  
+					focus	: 'center',
+					gap		: '4rem',
+					perPage: 3,
+				},
+
+				nrTestSlides: 33,
+				
+		}
+	},
+
   computed: {
 
     /**
@@ -32,8 +67,20 @@ export default {
 
   }, // computed
 
+	methods: {
+
+	} // methods.
+
 
 }
 
 
 </script>
+
+<style scoped>
+
+.is-active:after {
+		background: linear-gradient(0deg,#87de1d,#b4e900);
+	}
+
+</style>
