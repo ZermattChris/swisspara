@@ -8,15 +8,20 @@
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] "
   >
 
-    <p class="py-8">Need to display a selection of available flights for the user's chosen date.</p>
+    <!-- <p class="py-8">Need to display a selection of available flights for the user's chosen date.</p>
 
     <inputSelect 
       label="Choose your flight"
       @change="onChange"
       :list="flightsList"
       class="mr-4"
-    ></inputSelect>
+    ></inputSelect> -->
 
+    <FlightSelector
+      @change="onChange"
+      :list="flightsList"
+      class="mr-4"
+    ></FlightSelector>
   </div>
 
 
@@ -30,6 +35,7 @@
 
   // My Components
 	import inputSelect from "@components/InputSelect.vue"
+	import FlightSelector from "@components/InputSelect2.vue"
 
 	// Store
 	import {pageFlightStore as store} from '@stores/pageFlightStore.js' 
@@ -43,6 +49,7 @@
 
     components: {    
       inputSelect,
+      FlightSelector,
     },
 
 
