@@ -83,32 +83,27 @@
 		methods: {
 
       /**
-       * Returns the 'id' (value) of the selected menu item. Use to lookup in this.flightsList
+       * Handle onChange event fired from the InputSelect component.
+       * Is sent the 'id' (value) of the selected menu item. Use to lookup in this.flightsList
        * @param {int} id 
        */
       onChange(id) {
-        
-        console.log(id)
+        //console.log(id)
 
         for (const obj of this.flightsList) {
           // console.log(obj);
           if (obj.id == id) {
-            console.log("Found it", obj.id, obj.name)
+            //console.log("Found it", obj.id, obj.name)
+            // Only save menu items that aren't seperators...
             store.setFlightChosen(id)
           }
         }
 
 
-        // const selectedIndex = ev.target.options.selectedIndex
-        // const selectedListObj = this.flightsList[val-1].name   // look up in zero based array.
-        // console.log(selectedListObj)
-
-        // store.setFlightChosen(selectedListObj.id)
-
       },
 
 
-    },
+    }, // methods
 
 
     watch: {

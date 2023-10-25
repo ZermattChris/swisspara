@@ -8,7 +8,25 @@
 		>
 			<template 
 				v-for="(item, id) in list">
-				<option v-bind:value="item.id">{{ item }}</option>
+
+				<!-- Format the seperator entries.  -->
+				<option 
+					v-if="item.seperator == true"
+					v-bind:value="item.id"
+					disabled
+				>
+					------- {{ item.name }} -------
+				</option>
+
+				<!-- Format the seperator entries.  -->
+				<option 
+					v-if="item.seperator == false"
+					v-bind:value="item.id"
+				>
+					{{ item.name }}
+				</option>
+
+
 			</template>
 
     </select>
@@ -37,8 +55,7 @@ export default {
 		
 			const target = ev.target
 			const value = target.value
-			// const name = target[value]
-			// console.log('Internal', target)
+			console.log('Internal', value)
 
 			this.$emit( 'change', value )
 		},
