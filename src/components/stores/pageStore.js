@@ -4,6 +4,8 @@ import { reactive, markRaw  } from 'vue'
 
 export const pagesStore = reactive({
 
+
+
 	page: +localStorage.page || 1,
 
 	// pageIndex: ComponentObject: {}
@@ -22,6 +24,7 @@ export const pagesStore = reactive({
 		}
 		//console.log('pageItems', this.pageItems)
 		this._savePage()
+
 	},
 
 

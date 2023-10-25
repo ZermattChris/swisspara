@@ -1,0 +1,32 @@
+[
+    {
+       "id":1,
+       "name":"Choose your flight",
+       "seperator":true,
+       "enabled":true
+    },
+    {
+       "id":77,
+       "name":"Classic High",
+       "seperator":false,
+       "enabled":true
+    },
+    {
+       "id":32,
+       "name":"Scenic",
+       "seperator":false,
+       "enabled":true
+    },
+    {
+       "id":41,
+       "name":"Specialty flights",
+       "seperator":true,
+       "enabled":true
+    },
+    {
+       "id":5,
+       "name":"Elite",
+       "seperator":false,
+       "enabled":true
+    }
+ ]

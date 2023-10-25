@@ -11,8 +11,10 @@
     <p class="py-8">Need to display a selection of available flights for the user's chosen date.</p>
 
     <inputSelect 
+      label="Choose your flight"
       @change="onChange"
       :list="flightsList"
+      class="mr-4"
     ></inputSelect>
 
   </div>
@@ -30,14 +32,14 @@
 	import inputSelect from "@components/InputSelect.vue"
 
 	// Store
-	import {selectFlightStore as store} from '@stores/selectFlightStore.js' 
+	import {pageFlightStore as store} from '@stores/pageFlightStore.js' 
 
 
   export default {
     name: 'PageFlight',
 	
     extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-    emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+    emits: ['pagevalid', 'change'], // Parent class - needs to be here too... _Page.vue
 
     components: {    
       inputSelect,
@@ -47,16 +49,14 @@
 		data() {
 			return {
 
-        // TODO: This should come from an API call.
-        flightsList: [
-          { id: 1, name: 'Choose your flight', seperator: true, enabled: true },
-          { id: 2, name: 'Classic High', seperator: false, enabled: true },
-          { id: 3, name: 'Scenic', seperator: false , enabled: true },
-          { id: 4, name: 'Specialty flights', seperator: true, enabled: true  },
-          { id: 5, name: 'Elite', seperator: false, enabled: true  },
-        ]
+        
 
       };
+		},
+
+		created() {
+			//console.log("Date component mounted")
+			store.initialize()
 		},
 
     computed: {
@@ -70,22 +70,51 @@
         return true
       },
 
+
+      flightsList() {
+        return store._flightsList
+      },
+
+
     }, // computed
+
 
 
 		methods: {
 
-      onChange(ev) {
+      /**
+       * Returns the 'id' (value) of the selected menu item. Use to lookup in this.flightsList
+       * @param {int} id 
+       */
+      onChange(id) {
         
-        const selectedIndex = ev.target.options.selectedIndex + 1
-        const selectedListObj = this.flightsList[selectedIndex]
-        console.log(selectedListObj.name)
+        console.log(id)
 
-        store.setFlightChosen(selectedListObj)
+        for (const obj of this.flightsList) {
+          // console.log(obj);
+          if (obj.id == id) {
+            console.log("Found it", obj.id, obj.name)
+            store.setFlightChosen(id)
+          }
+        }
+
+
+        // const selectedIndex = ev.target.options.selectedIndex
+        // const selectedListObj = this.flightsList[val-1].name   // look up in zero based array.
+        // console.log(selectedListObj)
+
+        // store.setFlightChosen(selectedListObj.id)
 
       },
 
+
     },
+
+
+    watch: {
+      
+    }, // watch
+
 
 
   }

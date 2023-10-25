@@ -84,6 +84,9 @@
 <script>
 
 
+    // App wide constants.
+    // Vue.prototype.$variableName = "value";
+
     // Pages.
     import PageDate from '@components/booking/Date.vue'
     import PageFlight from '@components/booking/Flight.vue'
@@ -129,6 +132,8 @@
                 PagePassengers, 
                 PagePay,
             ])
+
+
         },
 
 
