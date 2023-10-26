@@ -18,13 +18,13 @@
 					: '',
 				  checked ? ' bg-slate-100 ' : ' bg-white  text-black',
 				]"
-				class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md border-2 border-slate-300"
+				class="ring-offset-0 ring-orange-50 relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md border-2 border-slate-300"
 			  >
 				<div class="flex w-full items-center justify-between">
 				  <div class="flex items-center">
 					<div class="text-xl">
 					  <RadioGroupLabel
-						as="p"
+						as="span"
 						:class="checked ? 'text-black' : 'text-gray-800'"
 						class="font-medium"
 					  >
@@ -47,8 +47,8 @@
 						cx="12"
 						cy="12"
 						r="12"
-						fill="black"
-						fill-opacity="0.4"
+						fill="rgb(101 163 13)"
+						fill-opacity="01"
 					  />
 					  <path
 						d="M7 13l3 3 7-7"
@@ -84,6 +84,14 @@
 			list: [Object],
 		},
 
+		data() {
+			return {
+				selected: 0
+        
+
+      		}
+		},
+
 	}
 
 	// const plans = [
@@ -109,5 +117,9 @@
 	
 	// const selected = ref(plans[0])
 
-  </script>
-  
+</script>
+
+<style>
+
+
+</style>
