@@ -76,7 +76,7 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
-        return true
+        return store.isPageValid()
       },
 
       selectedFlightId() {
