@@ -3,7 +3,7 @@
 	  <div class="mx-auto w-full max-w-md">
 		<RadioGroup v-model="selected">
 		  <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
-		  <div class="space-y-2">
+		  <div class="space-y-4">
 			<RadioGroupOption
 			  as="template"
 			  v-for="(plan, id) in list"
@@ -14,11 +14,11 @@
 			  <div
 				:class="[
 				  active
-					? 'ring-2 ring-opacity-60 ring-offset-2 ring-offset-sky-300'
+					? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white'
 					: '',
 				  checked ? ' bg-slate-100 ' : ' bg-white  text-black',
 				]"
-				class="ring-offset-0 ring-orange-50 relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md border-2 border-slate-300"
+				class="ring-offset-2 r relative flex cursor-pointer rounded-lg px-4 py-4 shadow-md border-2 border-slate-300"
 			  >
 				<div class="flex w-full items-center justify-between">
 				  <div class="flex items-center">

@@ -42,10 +42,10 @@ export const pageFlightStore = reactive({
 
         //let data = {}
 
-        if (DEV) {
-            const response = await fetch('src/components/stores/_testData/PageFlightData.json')
-            this._flightsList = await response.json()
-        } else {
+        // if (DEV) {
+        //     const response = await fetch('src/components/stores/_testData/PageFlightData.json')
+        //     this._flightsList = await response.json()
+        // } else {
             // Production. Call our API here.
             // const response = await fetch('src/components/stores/_testData/PageFlightData.json')
             this._flightsList = [
@@ -68,12 +68,12 @@ export const pageFlightStore = reactive({
                    "descriptionId": 300
                 }
              ]
-        }
+    },
 
         //this._flightsList = data
         //console.log('Read data',data)
         
-    },
+    
 
 
 
