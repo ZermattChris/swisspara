@@ -14,11 +14,11 @@
 			  <div
 				:class="[
 				  active
-					? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white'
+					? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white '
 					: '',
-				  checked? ' bg-slate-100 ' : ' bg-white  text-black',
+				  checked? ' bg-slate-100  ' : ' bg-white  text-black  shadow-md',
 				]"
-				class="ring-offset-2 r relative flex cursor-pointer rounded-lg px-4 py-4 shadow-md border-2 border-slate-300"
+				class="ring-offset-2 r relative flex cursor-pointer rounded-lg px-4 py-4 border-2 border-slate-300"
 			  >
 				<div class="flex w-full items-center justify-between">
 				  <div class="flex items-center">
