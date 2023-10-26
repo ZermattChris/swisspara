@@ -1,14 +1,14 @@
 <template>
 	<div class="w-full px-4 py-4">
 	  <div class="mx-auto w-full max-w-md">
-		<RadioGroup v-model="selected">
+		<RadioGroup v-model="currentId">
 		  <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
-		  <div class="space-y-4">
+		  <div class="space-y-3">
 			<RadioGroupOption
 			  as="template"
 			  v-for="(plan, id) in list"
 			  :key="plan.name"
-			  :value="id"
+			  :value="plan.id"
 			  v-slot="{ active, checked }"
 			>
 			  <div
@@ -16,7 +16,7 @@
 				  active
 					? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white'
 					: '',
-				  checked ? ' bg-slate-100 ' : ' bg-white  text-black',
+				  checked? ' bg-slate-100 ' : ' bg-white  text-black',
 				]"
 				class="ring-offset-2 r relative flex cursor-pointer rounded-lg px-4 py-4 shadow-md border-2 border-slate-300"
 			  >
@@ -28,7 +28,7 @@
 						:class="checked ? 'text-black' : 'text-gray-800'"
 						class="font-medium"
 					  >
-						{{ plan.name }}
+					  {{ plan.id }}	{{ plan.name }}
 					  </RadioGroupLabel>
 					  <RadioGroupDescription
 						as="span"
@@ -82,40 +82,47 @@
 		},
 		props: {
 			list: [Object],
+			flightId: Number
 		},
 
 		data() {
 			return {
-				selected: 0
+				currentId: this.flightId,
         
 
       		}
 		},
 
-	}
+		methods: {
 
-	// const plans = [
-	// 	{
-	// 	name: 'Startup',
-	// 	ram: '12GB',
-	// 	cpus: '6 CPUs',
-	// 	disk: '160 GB SSD disk',
-	// 	},
-	// 	{
-	// 	name: 'Business',
-	// 	ram: '16GB',
-	// 	cpus: '8 CPUs',
-	// 	disk: '512 GB SSD disk',
-	// 	},
-	// 	{
-	// 	name: 'Enterprise',
-	// 	ram: '32GB',
-	// 	cpus: '12 CPUs',
-	// 	disk: '1024 GB SSD disk',
-	// 	},
-	// ]
-	
-	// const selected = ref(plans[0])
+			onChange(ev) {
+			
+				// const target = ev.target
+				// const value = target.value
+				// console.log('Internal', value)
+
+				// // Save the selected id internally, so we can show a "checked" icon.
+				// this.currentId = value
+
+				// this.$emit( 'change', value )
+			},
+
+		}, // methods
+
+		watch: {
+
+			currentId(selectdIndex) {
+				for (const obj of this.list) {
+					if (obj.id == selectdIndex) {
+						//console.log("Found it", obj.id, obj.name)
+						this.$emit( 'change', selectdIndex )
+					}
+				}
+			},
+
+		}, // watch
+
+	}
 
 </script>
 

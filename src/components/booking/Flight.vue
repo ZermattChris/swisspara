@@ -20,6 +20,7 @@
     <FlightSelector
       @change="onChange"
       :list="flightsList"
+      :flightId="selectedFlightId"
       class="mr-4"
     ></FlightSelector>
   </div>
@@ -56,6 +57,7 @@
 		data() {
 			return {
 
+
         
 
       };
@@ -77,10 +79,15 @@
         return true
       },
 
+      selectedFlightId() {
+        return store.selectedFlight
+      },
 
       flightsList() {
         return store._flightsList
       },
+
+
 
 
     }, // computed
@@ -95,18 +102,8 @@
        * @param {int} id 
        */
       onChange(id) {
-        //console.log(id)
-
-        for (const obj of this.flightsList) {
-          // console.log(obj);
-          if (obj.id == id) {
-            //console.log("Found it", obj.id, obj.name)
-            // Only save menu items that aren't seperators...
-            store.setFlightChosen(id)
-          }
-        }
-
-
+        console.log("Clicked on Flight id: ", id)
+        store.setFlightChosen(id)
       },
 
 

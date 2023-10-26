@@ -16,7 +16,6 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@splidejs/vue-splide": "^0.6.12",
-    "@tailwindcss/forms": "^0.5.6",
     "@vuepic/vue-datepicker": "^7.2.0",
     "alova": "^2.13.1",
     "astro": "^3.3.2",
