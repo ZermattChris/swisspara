@@ -47,8 +47,27 @@ export const pageFlightStore = reactive({
             this._flightsList = await response.json()
         } else {
             // Production. Call our API here.
-            const response = await fetch('src/components/stores/_testData/PageFlightData.json')
-            this._flightsList = await response.json()
+            // const response = await fetch('src/components/stores/_testData/PageFlightData.json')
+            this._flightsList = [
+                {
+                   "id":77,
+                   "name":"Classic High",
+                   "seperator":false,
+                   "descriptionId": 100
+                },
+                {
+                   "id":32,
+                   "name":"Scenic",
+                   "seperator":false,
+                   "descriptionId": 200
+                },
+                {
+                   "id":5,
+                   "name":"Elite*",
+                   "seperator":false,
+                   "descriptionId": 300
+                }
+             ]
         }
 
         //this._flightsList = data
