@@ -8,21 +8,22 @@
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] "
   >
 
-    <!-- <p class="py-8">Need to display a selection of available flights for the user's chosen date.</p>
-
-    <inputSelect 
-      label="Choose your flight"
-      @change="onChange"
-      :list="flightsList"
-      class="mr-4"
-    ></inputSelect> -->
-
     <FlightSelector
       @change="onChange"
       :list="flightsList"
       :flightId="selectedFlightId"
       class="mr-4"
     ></FlightSelector>
+
+    <!-- Photos & Videos toggle switch  -->
+    <PhotosToggle
+      label='Photos & Videos (optional)'
+      :enabled="photosBool"
+      @change="onPhotoToggle" 
+    >
+    </PhotosToggle>
+
+
   </div>
 
 
@@ -35,8 +36,9 @@
   import _Page from './_Page.vue'
 
   // My Components
-	import inputSelect from "@components/InputSelect.vue"
+	// import inputSelect from "@components/InputSelect.vue"
 	import FlightSelector from "@components/InputSelect2.vue"
+	import PhotosToggle from "@components/Toggle.vue"
 
 	// Store
 	import {pageFlightStore as store} from '@stores/pageFlightStore.js' 
@@ -46,11 +48,12 @@
     name: 'PageFlight',
 	
     extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-    emits: ['pagevalid', 'change'], // Parent class - needs to be here too... _Page.vue
+    emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
     components: {    
-      inputSelect,
+      // inputSelect,
       FlightSelector,
+      PhotosToggle,
     },
 
 
@@ -87,6 +90,9 @@
         return store._flightsList
       },
 
+      photosBool() {
+        return store.getPhotosToggle()
+      },
 
 
 
@@ -102,8 +108,13 @@
        * @param {int} id 
        */
       onChange(id) {
-        console.log("Clicked on Flight id: ", id)
+        //console.log("Clicked on Flight id: ", id)
         store.setFlightChosen(id)
+      },
+
+      onPhotoToggle(bool) {
+        //console.log("Clicked on Photos Toggle: ", bool)
+        store.setPhotosToggle(bool)
       },
 
 

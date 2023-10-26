@@ -15,6 +15,9 @@ export const pageFlightStore = reactive({
 
     _flightsList: [{}],
 
+    photosVideos: new Boolean(localStorage.photosVideos) || false,
+
+
     //---------------------
 
     // Get if this 'Page' is valid or not. Used to manage the Prev/Next
@@ -102,6 +105,16 @@ export const pageFlightStore = reactive({
     },
 
 
+    // ---- Photos & Videos toggle switch ----.
+    getPhotosToggle() {
+        return this.photosVideos
+    },
+    setPhotosToggle(photosBool) {
+        this.photosVideos = photosBool 
+        localStorage.photosVideos = this.photosVideos 
+    },
+
+    
 
 });
 
