@@ -15,7 +15,8 @@ export const pageFlightStore = reactive({
 
     _flightsList: [{}],
 
-    photosVideos: new Boolean(localStorage.photosVideos) || false,
+    // Tricky convert string 'true|false' to boolean in js.
+    photosVideos: (localStorage.photosVideos === "true") || false,
 
 
     //---------------------

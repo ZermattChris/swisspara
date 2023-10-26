@@ -48,6 +48,13 @@
         
             };
 		},
+
+
+		mounted() {
+			
+            console.log("toggled: ", this.toggled)
+		},
+
         
         watch: {
 
