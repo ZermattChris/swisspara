@@ -23,7 +23,7 @@
     >
     </PhotosToggle>
 
-    <p>{{ flightObject }}</p>
+    <!-- <p>{{ flightObject }}</p> -->
 
     <!-- Flight Infos dialog.  -->
     <Modal ref="modal">
