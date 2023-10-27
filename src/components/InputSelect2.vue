@@ -114,7 +114,7 @@
 			currentId(selectdIndex) {
 				for (const obj of this.list) {
 					if (obj.id == selectdIndex) {
-						console.log("Found it", obj.id, obj.name)
+						//console.log("Found it", obj.id, obj.name)
 						this.$emit( 'change', selectdIndex )
 					}
 				}

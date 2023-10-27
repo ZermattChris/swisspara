@@ -23,7 +23,7 @@
 
 
     <!-- Previous/Next Buttons -->
-    <div class="fixed bottom-0 right-0 left-0  z-40  
+    <div class="fixed bottom-0 right-0 left-0
             flex justify-around 
             pt-3 pb-10 md:pb-20
             max-w-xl 

@@ -52,7 +52,7 @@
 
 		mounted() {
 			
-            console.log("toggled: ", this.toggled)
+            //console.log("toggled: ", this.toggled)
 		},
 
         

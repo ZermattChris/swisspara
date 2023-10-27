@@ -97,12 +97,24 @@ export const pageFlightStore = reactive({
 
     // ---- Flight Date ----.
     getFlightChosen() {
-        // Should return an object with all the selected infos.
+        // Returns the id of the selected flight.
         return this.selectedFlight
     },
     setFlightChosen(flistObj) {
         this.selectedFlight = flistObj 
         localStorage.selectedFlight = this.selectedFlight 
+    },
+
+    getFlightObj() {
+        let foundFlObj = {}
+        // Return the flight object for the given flight id.
+        for (const aFlyObj of this._flightsList) {
+            if (aFlyObj.id === this.getFlightChosen() ) {
+                //console.log("FOUND aFlyObj:", aFlyObj)
+                foundFlObj = aFlyObj
+            }
+        }
+        return foundFlObj
     },
 
 

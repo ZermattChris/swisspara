@@ -23,6 +23,11 @@
     >
     </PhotosToggle>
 
+    <p>{{ flightObject }}</p>
+
+    <Modal 
+      ref="modal"
+    ></Modal>
 
   </div>
 
@@ -39,6 +44,7 @@
 	// import inputSelect from "@components/InputSelect.vue"
 	import FlightSelector from "@components/InputSelect2.vue"
 	import PhotosToggle from "@components/Toggle.vue"
+	import Modal from "@components/Modal.vue"
 
 	// Store
 	import {pageFlightStore as store} from '@stores/pageFlightStore.js' 
@@ -51,16 +57,16 @@
     emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
     components: {    
-      // inputSelect,
       FlightSelector,
       PhotosToggle,
+      Modal,
     },
 
 
 		data() {
 			return {
 
-
+        // showFlightDialog: false,
         
 
       };
@@ -84,6 +90,10 @@
 
       selectedFlightId() {
         return store.selectedFlight
+      },
+
+      flightObject() {
+        return store.getFlightObj()
       },
 
       flightsList() {
@@ -110,12 +120,19 @@
       onChange(id) {
         //console.log("Clicked on Flight id: ", id)
         store.setFlightChosen(id)
+        // const chosenFlightObj = store.getFlightObj(id)
+        // console.log("chosenFlightObj:", chosenFlightObj)
+        this.openModal()
       },
 
       onPhotoToggle(bool) {
         //console.log("Clicked on Photos Toggle: ", bool)
         store.setPhotosToggle(bool)
       },
+
+      openModal() {
+        this.$refs.modal.openModal();
+      }
 
 
     }, // methods
