@@ -87,9 +87,6 @@
 		data() {
 			return {
 
-        // showFlightDialog: false,
-        
-
       };
 		},
 
@@ -124,18 +121,6 @@
       photosBool() {
         return store.getPhotosToggle()
       },
-
-
-      // dialogTitle() {
-      //   let titleStr = "Flight :: " + this.flightObject.name
-      //   return titleStr
-      // },
-      // dialogConents() {
-      //   return "<p>Some html contents passed in... TBD.</p>"
-      // },
-      // dialogOKBtn() {
-      //   return "Got it!"
-      // },
 
 
     }, // computed

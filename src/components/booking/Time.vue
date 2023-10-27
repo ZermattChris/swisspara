@@ -4,7 +4,9 @@
 		3. Choose a Time
 	</h1>
 
-  <Splide :options="splideOpts" 
+	<TimeSlider></TimeSlider>
+
+  <!-- <Splide :options="splideOpts" 
 		aria-label="My Favorite Images"
 	>
 			<SplideSlide 
@@ -14,7 +16,7 @@
 				<img src="images/Paragliding-with-Linsey.webp" alt="Sample ">
 				{{ slideX }}
 			</SplideSlide>
-  </Splide>
+  </Splide> -->
 
 </template>
 
@@ -25,9 +27,10 @@
 import { transitionEnabledOnThisPage } from 'astro:transitions/client'
 import _Page from './_Page.vue'
 
-import { Splide, SplideSlide } from '@splidejs/vue-splide'
-import '@splidejs/vue-splide/css';
+// import { Splide, SplideSlide } from '@splidejs/vue-splide'
+// import '@splidejs/vue-splide/css';
 
+import TimeSlider from "@components/TimeSlider.vue"
 
 export default {
   name: 'PageTime',
@@ -36,20 +39,20 @@ export default {
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
 	components: {    
-		Splide,
-    SplideSlide,
+		TimeSlider
 	},
 	
   data() {
 			return {
 
-				splideOpts: {  
-					focus	: 'center',
-					gap		: '4rem',
-					perPage: 3,
-				},
+				// splideOpts: {  
+				// 	focus	: 'center',
+				// 	gap		: '4rem',
+				// 	perPage: 3,
+				// 	hasTrack: false,
+				// },
 
-				nrTestSlides: 33,
+				// nrTestSlides: 7,
 				
 		}
 	},
@@ -79,8 +82,8 @@ export default {
 
 <style scoped>
 
-.is-active:after {
+/* .is-active:after {
 		background: linear-gradient(0deg,#87de1d,#b4e900);
-	}
+	} */
 
 </style>
