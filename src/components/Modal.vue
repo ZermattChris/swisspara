@@ -37,7 +37,7 @@
             >
               <DialogPanel
                 class="w-full max-w-md transform overflow-hidden 
-                  mb-32 
+                  mb-0
                   rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all"
               >
                 <DialogTitle
@@ -46,6 +46,7 @@
                 >
                   <slot name="title"></slot>
                 </DialogTitle>
+
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
                     <slot></slot>
