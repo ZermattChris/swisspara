@@ -4,7 +4,9 @@
 		3. Choose a Time
 	</h1>
 
-	<TimeSlider></TimeSlider>
+	<TimeSlider
+		class="bg-amber-300"
+	></TimeSlider>
 
   <!-- <Splide :options="splideOpts" 
 		aria-label="My Favorite Images"
