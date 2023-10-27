@@ -255,7 +255,7 @@
 	import _Page from './_Page.vue'
 
 	// Store
-	import {flightDateStore} from '@stores/flightDateStore.js' 
+	import {flightDateStore} from '@stores/pageDateStore.js' 
 
 	// Calendar Utils.
 	import {calendarUtils as calUtils} from './calendarUtils.js'

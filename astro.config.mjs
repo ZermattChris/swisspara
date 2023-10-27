@@ -10,7 +10,7 @@ export default defineConfig(
   {
     site: 'https://swisspara.netlify.app',
     integrations: [
-      vue(), 
+      vue(),
       tailwind(), 
       sitemap()
     ]
