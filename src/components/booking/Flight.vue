@@ -25,9 +25,18 @@
 
     <p>{{ flightObject }}</p>
 
-    <Modal 
-      ref="modal"
-    ></Modal>
+    <!-- Flight Infos dialog.  -->
+    <Modal ref="modal">
+      <template v-slot:title>
+        Flight -> {{flightObject.name}}
+      </template>
+
+      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
+
+      <template v-slot:button>
+        Got it!
+      </template>
+    </Modal>
 
   </div>
 
@@ -104,6 +113,17 @@
         return store.getPhotosToggle()
       },
 
+
+      // dialogTitle() {
+      //   let titleStr = "Flight :: " + this.flightObject.name
+      //   return titleStr
+      // },
+      // dialogConents() {
+      //   return "<p>Some html contents passed in... TBD.</p>"
+      // },
+      // dialogOKBtn() {
+      //   return "Got it!"
+      // },
 
 
     }, // computed
