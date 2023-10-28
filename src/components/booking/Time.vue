@@ -5,7 +5,7 @@
 	</h1>
 
 	<TimeSlider
-		class="bg-amber-300"
+	
 	></TimeSlider>
 
   <!-- <Splide :options="splideOpts" 
