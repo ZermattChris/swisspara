@@ -25,7 +25,7 @@
     <!-- Previous/Next Buttons -->
     <div class="fixed bottom-0 right-0 left-0
             flex justify-around 
-            pt-3 pb-10 md:pb-20
+            pt-3 pb-4 md:pb-20
             max-w-xl 
             mx-auto 
             bg-white" >
@@ -60,11 +60,11 @@
         </button>    
 
 
-        <footer id="footbar" 
+        <!-- <footer id="footbar" 
             class="absolute -bottom-2 w-screen h-8 "
         >
             <p class="pt-1 text-center text-[0.75em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
-        </footer>
+        </footer> -->
 
         
     </div>

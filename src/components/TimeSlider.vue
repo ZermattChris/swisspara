@@ -5,28 +5,27 @@
 			aria-label="My Favorite Images"
 		>
 
+
 			<SplideSlide
 					v-for="x in 12"
-					class="splide__slide is-active is-visible " 
+					class="splide__slide is-active is-visible" 
 					id="focus-center-slide07" role="tabpanel" 
 					aria-roledescription="slide" :aria-label="`${x} of 12`"
-					
 					@click="onSelectSlide"
 			>
 
-				<div :data-slide-id="`${x}`" class="timeSlot h-[20em] bg-slate-100">
+				<div class="h-[25em] w-[18em] max-h-max bg-slate-100/30">
 
-					<div class="w-auto" :value="x">
+					<div :data-slide-id="`${x}`" class="timeSlot w-auto border-2 border-amber-600 rounded-lg h-full" :value="x">
 						TimeSlot Component here...
-					</div>
 						{{ x }}
+					</div>
 				</div>
 
       </SplideSlide>
       
     </Splide>
 
-		<div id="bottomSpacer" class="h-20 w-auto">spacer</div>
   </template>
   
   
@@ -48,23 +47,25 @@
 			const mySplide = ref();
 
 			const options = {
-				perPage: 3,
+				perPage    : 3,
+  			perMove    : 1,
 				snap   : true,
 				gap   : '1rem',
 				focus  : 'center',
-				padding: '5rem',
 				autoWidth: true,
 				updateOnMove: true,
 			};
 	
 			function onSelectSlide(ev) {
-				// console.log('ev', ev.target.getAttribute("data-slide-id"))
+				// console.log('ev', ev.target)
 				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
-				//console.log(clickedSlideIndex)
+				console.log(clickedSlideIndex)
 
 				// Finally found the Splide functions. Wow.
 				const goTo = mySplide.value.$.proxy.go
 				goTo(clickedSlideIndex)
+
+				ev.preventDefault()
 
 				// const { Controller } = splide.Components;
 				//console.log('splide', mySplide.value.$.components.SplideTrack)
@@ -101,21 +102,22 @@
 </script>
 
 <style>
-	:root {
+	/* :root {
 		--timeslot-box-height: 90%;
-	}
-
-	/* .splide__slide {
-		min-width: 200px;
 	} */
+
+	.splide__slide {
+    transition: transform 50ms;
+    transform: scale(.95);
+    transform-origin: center center;
+	}
     .splide__slide.is-active {
-			border: 2px maroon solid;
-			background: linear-gradient(0deg,#87de1d,#b4e900);
+    	transform: scale(1);
 		}
 
-		/* .splide__slide.is-active .timeSlot {
-			height: 90%;
-		} */
+		.splide__slide.is-active .timeSlot {
+			background-color: aquamarine;
+		}
 
 		/* .splide__slide.is-prev, .splide__slide.is-next {
 			height: 70%;
