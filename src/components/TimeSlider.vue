@@ -1,6 +1,6 @@
 <template>
     <Splide 
-			ref="splide" 
+			ref="mySplide" 
 			:options="options" 
 			aria-label="My Favorite Images"
 		>
@@ -10,12 +10,13 @@
 					class="splide__slide is-active is-visible " 
 					id="focus-center-slide07" role="tabpanel" 
 					aria-roledescription="slide" :aria-label="`${x} of 12`"
-					@click="selectedSlide"
+					
+					@click="onSelectSlide"
 			>
 
-				<div :id="`timeSlot_${x}`" class="timeSlot h-[20em] bg-slate-100">
+				<div :data-slide-id="`${x}`" class="timeSlot h-[20em] bg-slate-100">
 
-					<div class="w-auto">
+					<div class="w-auto" :value="x">
 						TimeSlot Component here...
 					</div>
 						{{ x }}
@@ -39,12 +40,12 @@
 	export default defineComponent( {
 		components: {
 			Splide,
-			SplideSlide,
+			SplideSlide
 		},
 	
 	
 		setup() {
-			const splide = ref();
+			const mySplide = ref();
 
 			const options = {
 				perPage: 3,
@@ -56,10 +57,18 @@
 				updateOnMove: true,
 			};
 	
-			function selectedSlide(event) {
-				console.log('selectedSlide', event)
-				const { Controller } = splide.Components;
-				Controller.go(2)
+			function onSelectSlide(ev) {
+				// console.log('ev', ev.target.getAttribute("data-slide-id"))
+				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
+				//console.log(clickedSlideIndex)
+
+				// Finally found the Splide functions. Wow.
+				const goTo = mySplide.value.$.proxy.go
+				goTo(clickedSlideIndex)
+
+				// const { Controller } = splide.Components;
+				//console.log('splide', mySplide.value.$.components.SplideTrack)
+				// Go(2)
 			}
 
 
@@ -69,7 +78,7 @@
 				// }
     	});
 	
-			return { splide, options, selectedSlide };
+			return { mySplide, options, onSelectSlide };
 
 		} // setup()
 
@@ -96,20 +105,19 @@
 		--timeslot-box-height: 90%;
 	}
 
-	.splide__slide {
-		/* min-width: 200px; */
-	}
-    /* .splide__slide.is-active {
+	/* .splide__slide {
+		min-width: 200px;
+	} */
+    .splide__slide.is-active {
 			border: 2px maroon solid;
 			background: linear-gradient(0deg,#87de1d,#b4e900);
-			height: var(--timeslot-box-width);
 		}
 
-		.splide__slide.is-active .timeSlot {
+		/* .splide__slide.is-active .timeSlot {
 			height: 90%;
-		}
+		} */
 
-		.splide__slide.is-prev, .splide__slide.is-next {
+		/* .splide__slide.is-prev, .splide__slide.is-next {
 			height: 70%;
 			width: var(calc(--timeslot-box-width) - 1em);
 			background: linear-gradient(0deg,#dea11d,#a36a00);
