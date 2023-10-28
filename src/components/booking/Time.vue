@@ -1,26 +1,32 @@
 <template>
 
-	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
 		3. Choose a Time
 	</h1>
 
 	<div class="mx-0 px-0 max-w-screen-2xl">
 		<TimeSlider
+			v-slot="slotProps"
+		>
+			{{ slotProps.x }}
 
-		></TimeSlider>
+			<!-- // I think I'll put the TimeSlot into the TimeSlider and just use events to wire up.
+			// Will keep this component a lot cleaner. -->
+
+			<TimeSlot
+				v-for="(timeSlot, key, index) in timeSlotList"
+				:key="key"
+			>
+
+				{{ index }}. {{ key }}: {{ timeSlot }}
+
+			</TimeSlot>
+
+
+
+		</TimeSlider>
 	</div>
 
-  <!-- <Splide :options="splideOpts" 
-		aria-label="My Favorite Images"
-	>
-			<SplideSlide 
-				v-for="slideX in nrTestSlides"
-				class=""
-			>
-				<img src="images/Paragliding-with-Linsey.webp" alt="Sample ">
-				{{ slideX }}
-			</SplideSlide>
-  </Splide> -->
 
 </template>
 
@@ -35,6 +41,7 @@ import _Page from './_Page.vue'
 // import '@splidejs/vue-splide/css';
 
 import TimeSlider from "@components/TimeSlider.vue"
+import TimeSlot from "@components/TimeSlot.vue"
 
 export default {
   name: 'PageTime',
@@ -43,25 +50,54 @@ export default {
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
 	components: {    
-		TimeSlider
+		TimeSlider,
+		TimeSlot
 	},
 	
   data() {
 			return {
 
-				// splideOpts: {  
-				// 	focus	: 'center',
-				// 	gap		: '4rem',
-				// 	perPage: 3,
-				// 	hasTrack: false,
-				// },
-
-				// nrTestSlides: 7,
-				
 		}
 	},
 
   computed: {
+
+
+    timeSlotList() {
+		return {
+			// date as key
+			"2023-11-01":{
+				"08:50":3,		// TimeSlot #1. Time label. Pilots available.
+				"11:00":2,
+				"13:30":0,
+				"15:15":-1
+			},
+			"2023-11-02":{
+				"08:00":3,
+				"09:45":1,
+				"12:00":0,
+				"14:00":-1
+			},
+			"2023-11-03":{
+				"08:00":2,
+				"09:45":2,
+				"12:00":2,
+				"14:00":-1
+			},
+			"2023-11-04":{
+				"08:00":-1,
+				"09:45":-1,
+				"12:00":-1,
+				"14:00":-1
+			},
+			"2023-11-05":{
+				"08:00":-1,
+				"09:45":-1,
+				"12:00":-1,
+				"14:00":-1
+			}
+		}
+    },
 
     /**
      * This computed value is requried by the base '_Page' class.

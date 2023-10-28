@@ -1,6 +1,6 @@
 <template>
 
-    <h1 class="pb-8 md:pb-12 text-4xl text-center font-black text-indigo-600 drop-shadow-md ">
+    <h1 class="pb-8 md:pb-12 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
         1. Get Started
     </h1>
 

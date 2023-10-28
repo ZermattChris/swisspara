@@ -19,6 +19,9 @@
 					<div :data-slide-id="`${x}`" class="timeSlot w-auto border-2 border-amber-600 rounded-lg h-full" :value="x">
 						TimeSlot Component here...
 						{{ x }}
+
+						<slot></slot> 
+
 					</div>
 				</div>
 
@@ -59,7 +62,7 @@
 			function onSelectSlide(ev) {
 				// console.log('ev', ev.target)
 				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
-				console.log(clickedSlideIndex)
+				//console.log(clickedSlideIndex)
 
 				// Finally found the Splide functions. Wow.
 				const goTo = mySplide.value.$.proxy.go
