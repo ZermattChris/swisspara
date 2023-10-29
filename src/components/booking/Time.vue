@@ -1,11 +1,19 @@
 <template>
 
-	<h1 class="select-none pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
-		3. How Many are Flying?
-	</h1>
+	<div id="flightDateBox"
+		class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
+
+		<h1 class="select-none pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
+			3. How Many Flying?
+		</h1>
+
+		<p>Ms. Ellis admitted that the allegations of election fraud she peddled as an advocate for the effort to overturn the 2020 election were false. Two other plea deals, from Kenneth Chesebro and </p>
+
+	</div>
+
 
 	<!-- This is our wrapper around Splide  -->
-	<div id="sliderWrapper" class="px-0 max-w-screen-2xl m-auto">
+	<div id="sliderWrapper" class="px-0 pt-4 max-w-screen-2xl m-auto">
 		<TimeSlider
 			:data="timeSlotList"
 		>

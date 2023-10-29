@@ -3,10 +3,11 @@
 	<Splide 
 		ref="mySplide" 
 		:options="options" 
+		:has-track="false" 
 		@splide:move="onSplideMove"
 		@splide:click="onSplideClick"
 	>
-
+	<SplideTrack>
 
 		<SplideSlide
 				v-for="(dayObj, date, index) in data"
@@ -28,7 +29,7 @@
 						v-for="(nrPilots, timeLabel, index) in dayObj"
 					>
 						TimeSlot: {{ index+1 }}.<br/>
-						{{ timeLabel }}: {{ nrPilots }} <br/>
+						{{ timeLabel }}: {{ nrPilots }}
 
 					</TimeSlot>
 
@@ -38,6 +39,23 @@
 
 		</SplideSlide>
 		
+	</SplideTrack>
+
+	<div class="splide__arrows ">
+
+    <button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   bg-white  border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
+
+    <button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   bg-white  border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
+  </div>
+
 
 	</Splide>
 
@@ -49,7 +67,7 @@
 
 	import TimeSlot from "@components/TimeSlot.vue"
 
-	import { Splide, SplideSlide } from '@splidejs/vue-splide'
+	import { Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide'
 	import '@splidejs/vue-splide/css/core'
 
 	import { defineComponent, defineProps, ref, onMounted } from 'vue';
@@ -60,6 +78,7 @@
 		components: {
 			Splide,
 			SplideSlide,
+			SplideTrack,
 			TimeSlot
 		},
 
@@ -75,12 +94,14 @@
 			const mySplide = ref();
 
 			const options = {
+				start: 3,					// TODO: this should be read in from the store.
 				perPage    : 3,
   			perMove    : 1,
 				snap   : true,
 				gap   : '1em',
 				focus  : 'center',
 				autoWidth: true,
+				autoHeight: true,
 				updateOnMove: true,
 			};
 	
@@ -166,6 +187,11 @@
 	margin-left: 2em;
 } */
 
+#splide01-track {
+	padding-left: 30px !important;
+	padding-right: 30px !important;
+}
+
 	.splide__slide .timeSlot {
     transition: transform 150ms;
     transform: scale(0.9);
@@ -185,24 +211,30 @@
 		.splide__arrow {
 			cursor: pointer;
 			position: fixed;
-			top: 15em;
+			top: 17em;
 			z-index: 10;
 		}
+
 
 			.splide__arrow--prev {
 				left: 1rem;
 				transform: scaleX(-1) translateY(-50%);
 			}
 				.splide__arrow--prev:disabled {
-					opacity: .3;
+					opacity: .7;
 					cursor: default;
 				}
+				.splide__arrow--prev:disabled > svg {
+					opacity: .5;
+					cursor: default;
+				}
+
 			.splide__arrow--next {
 				right: 1rem;
 				transform: translateY(-50%);
 			}
 				.splide__arrow--next:disabled {
-					opacity: .3;
+					opacity: .5;
 					cursor: default;
 				}
 
