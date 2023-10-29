@@ -43,14 +43,14 @@
 
 	<div class="splide__arrows ">
 
-    <button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   bg-white  border-2 rounded-full shadow-md">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="">
+    <button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
 			</svg>
 		</button>
 
-    <button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   bg-white  border-2 rounded-full shadow-md">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="">
+    <button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
 			</svg>
 		</button>
@@ -126,7 +126,7 @@
 
 			// Splide move event.
 			function onSplideClick(slide, ev) {
-				// console.log("onSplideClick", mySplide.value, ev.index)
+				console.log("onSplideClick", ev.index)
 				mySplide.value.go(ev.index)
 			}
 
@@ -135,7 +135,7 @@
 			function onSelectSlide(ev) {
 				//console.log('ev', ev.target)
 				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
-				//console.log(clickedSlideIndex)
+				console.log("onSelectSlide", clickedSlideIndex)
 
 				// Finally found the Splide functions. Wow.
 				const goTo = mySplide.value.$.proxy.go
@@ -214,6 +214,9 @@
 			top: 17em;
 			z-index: 10;
 		}
+			.splide__arrow:disabled {
+				border-color: rgba(0,0,0, 0.2);
+			}
 
 
 			.splide__arrow--prev {
@@ -221,15 +224,16 @@
 				transform: scaleX(-1) translateY(-50%);
 			}
 				.splide__arrow--prev:disabled {
-					opacity: .7;
+					opacity: .8;
 					cursor: default;
 				}
-				.splide__arrow--prev:disabled > svg {
-					opacity: .5;
-					cursor: default;
-				}
+					.splide__arrow--prev:disabled > svg {
+						opacity: .5;
+						cursor: default;
+					}
 
 			.splide__arrow--next {
+				opacity: .8;
 				right: 1rem;
 				transform: translateY(-50%);
 			}
@@ -237,5 +241,9 @@
 					opacity: .5;
 					cursor: default;
 				}
+					.splide__arrow--next:disabled > svg {
+						opacity: .5;
+						cursor: default;
+					}
 
 </style>
