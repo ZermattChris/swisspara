@@ -3,6 +3,7 @@
 			ref="mySplide" 
 			:options="options" 
 			aria-label="My Favorite Images"
+			class=""
 		>
 
 
@@ -17,9 +18,8 @@
 				<div class="h-[25em] w-[18em] max-h-max bg-slate-100/30">
 
 					<div :data-slide-id="`${x}`" class="timeSlot w-auto border-2 border-amber-600 rounded-lg h-full" :value="x">
-						TimeSlot Component here...
-						{{ x }}
-
+						
+						{{ x }} Slide. <br/>
 						<slot></slot> 
 
 					</div>
@@ -27,7 +27,9 @@
 
       </SplideSlide>
       
+
     </Splide>
+
 
   </template>
   
@@ -51,7 +53,7 @@
 
 			const options = {
 				perPage    : 3,
-  			perMove    : 1,
+  				perMove    : 1,
 				snap   : true,
 				gap   : '1rem',
 				focus  : 'center',
@@ -80,7 +82,7 @@
 				// if ( splide.value && splide.value.splide ) {
 				// 	console.log( splide.value.splide.length );
 				// }
-    	});
+    		})
 	
 			return { mySplide, options, onSelectSlide };
 
@@ -105,9 +107,6 @@
 </script>
 
 <style>
-	/* :root {
-		--timeslot-box-height: 90%;
-	} */
 
 	.splide__slide {
     transition: transform 50ms;
@@ -128,5 +127,21 @@
 			background: linear-gradient(0deg,#dea11d,#a36a00);
 		} */
 
+		.splide__arrow {
+			border: 0;
+			cursor: pointer;
+			position: absolute;
+			top: 50%;
+			font-weight: 400;
+		}
+
+			.splide__arrow--prev {
+				left: -2.5rem;
+				transform: scaleX(-1) translateY(-50%);
+			}
+			.splide__arrow--next {
+				right: -2.5rem;
+				transform: translateY(-50%);
+			}
 
 </style>

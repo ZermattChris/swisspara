@@ -4,20 +4,18 @@
 		3. Choose a Time
 	</h1>
 
-	<div class="mx-0 px-0 max-w-screen-2xl">
+	<!-- This is our wrapper around Splide  -->
+	<div id="sliderWrapper" class="px-0 max-w-screen-2xl m-auto">
 		<TimeSlider
 			v-slot="slotProps"
 		>
-			{{ slotProps.x }}
 
-			<!-- // I think I'll put the TimeSlot into the TimeSlider and just use events to wire up.
-			// Will keep this component a lot cleaner. -->
-
+			<!-- Inject our custom TimeSlot component  -->
 			<TimeSlot
 				v-for="(timeSlot, key, index) in timeSlotList"
 				:key="key"
 			>
-
+				Data TimeSlot -> Slot: <br/>
 				{{ index }}. {{ key }}: {{ timeSlot }}
 
 			</TimeSlot>
@@ -25,7 +23,7 @@
 
 
 		</TimeSlider>
-	</div>
+	</div>	<!-- End: Wrapper -->
 
 
 </template>
@@ -34,11 +32,7 @@
 <script>
 
 // Parent component for all "Pages"
-import { transitionEnabledOnThisPage } from 'astro:transitions/client'
 import _Page from './_Page.vue'
-
-// import { Splide, SplideSlide } from '@splidejs/vue-splide'
-// import '@splidejs/vue-splide/css';
 
 import TimeSlider from "@components/TimeSlider.vue"
 import TimeSlot from "@components/TimeSlot.vue"
