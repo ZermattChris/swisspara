@@ -1,9 +1,15 @@
 <template>
-    
 
-  
-    TimeSlot
-    <slot></slot> 
+  <div class="p-4">
+
+    <slot>
+
+
+
+
+    </slot> 
+
+  </div>
 
 
 </template>

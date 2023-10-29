@@ -3,26 +3,35 @@
 	<Splide 
 		ref="mySplide" 
 		:options="options" 
-		aria-label="My Favorite Images"
-		class=""
 		@splide:move="onSplideMove"
+		@splide:click="onSplideClick"
 	>
 
 
 		<SplideSlide
-				v-for="x in days"
+				v-for="(dayObj, date, index) in data"
 				class="splide__slide is-active is-visible" 
-				id="focus-center-slide07" role="tabpanel" 
-				aria-roledescription="slide" :aria-label="`${x} of 12`"
+				:id="`focus-center-slide_${index+1}`" role="tabpanel" 
+				aria-roledescription="slide" :aria-label="`${index+1} of 12`"
 				@click="onSelectSlide"
 		>
 
-			<div class="h-[25em] w-[18em] max-h-max border border-slate-10">
+			<div class=" w-[18em] border border-slate-10">
 
-				<div :data-slide-id="`${x}`" class="timeSlot w-auto h-full" :value="x">
+				<div :data-slide-id="index+1" class="timeSlot" :value="index+1">
 					
-					{{ x }} Slide. <br/>
-					<slot></slot> 
+					{{ index+1 }} Slide. <br/>
+					{{ date }} Date. <br/>
+					{{ dayObj }} dayObj. <br/>
+					
+					<TimeSlot
+						v-for="(nrPilots, timeLabel, index) in dayObj"
+					>
+						TimeSlot: {{ index+1 }}.<br/>
+						{{ timeLabel }}: {{ nrPilots }} <br/>
+
+					</TimeSlot>
+
 
 				</div>
 			</div>
@@ -32,11 +41,13 @@
 
 	</Splide>
 
-
+	<div id="slideBoxBottomSpacer" class="w-fit h-10"></div>
 </template>
   
   
 <script>
+
+	import TimeSlot from "@components/TimeSlot.vue"
 
 	import { Splide, SplideSlide } from '@splidejs/vue-splide'
 	import '@splidejs/vue-splide/css/core'
@@ -48,13 +59,14 @@
 
 		components: {
 			Splide,
-			SplideSlide
+			SplideSlide,
+			TimeSlot
 		},
 
 
 		// ----------- Props ------------
 		props: ({
-			days: Number
+			data: Object
 		}),
 	
 	
@@ -91,10 +103,16 @@
 			// }
 
 
+			// Splide move event.
+			function onSplideClick(slide, ev) {
+				// console.log("onSplideClick", mySplide.value, ev.index)
+				mySplide.value.go(ev.index)
+			}
+
 			// Custom click handler to select the 'slide' the user clicks on
 			// and make it active.
 			function onSelectSlide(ev) {
-				// console.log('ev', ev.target)
+				//console.log('ev', ev.target)
 				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
 				//console.log(clickedSlideIndex)
 
@@ -114,7 +132,7 @@
 			})
 
 	
-			return { mySplide, options, onSelectSlide, onSplideMove };
+			return { mySplide, options, onSelectSlide, onSplideMove, onSplideClick };
 
 		} // setup()
 
@@ -138,10 +156,20 @@
 
 <style>
 
+.splide__pagination {
+	display: none;
+}
+
+/* #splide01-list li:first-child::before {
+	content: "xx";
+  border: 2px solid orange;
+	margin-left: 2em;
+} */
+
 	.splide__slide .timeSlot {
     transition: transform 150ms;
-    transform: scale(0.8);
-    transform-origin: center center;
+    transform: scale(0.9);
+    transform-origin: top center;
 	}
     .splide__slide.is-active .timeSlot {
     	transform: scale(1);
@@ -150,25 +178,32 @@
 
 
 
+	.splide__arrows {
+		width: 1px;
+	}
+
 		.splide__arrow {
-			border: 0;
 			cursor: pointer;
-			position: absolute;
-			top: 50%;
-			font-weight: 400;
+			position: fixed;
+			top: 15em;
+			z-index: 10;
 		}
-			.splide__arrow:disabled {
-				opacity: .3;
-				cursor: default;
-			}
 
 			.splide__arrow--prev {
-				left: -2.5rem;
+				left: 1rem;
 				transform: scaleX(-1) translateY(-50%);
 			}
+				.splide__arrow--prev:disabled {
+					opacity: .3;
+					cursor: default;
+				}
 			.splide__arrow--next {
-				right: -2.5rem;
+				right: 1rem;
 				transform: translateY(-50%);
 			}
+				.splide__arrow--next:disabled {
+					opacity: .3;
+					cursor: default;
+				}
 
 </style>

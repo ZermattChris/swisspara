@@ -9,7 +9,7 @@
             class="
             w-full max-[320px]:w-11/12
             mx-auto 
-            px-0 sm:px-10
+            px-0 sm:px-0
             py-6 sm:py-16"
             @click="onBackgroundClick"
         >
