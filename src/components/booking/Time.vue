@@ -1,13 +1,13 @@
 <template>
 
-	<h1 class="pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
+	<h1 class="select-none pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
 		3. Choose a Time
 	</h1>
 
 	<!-- This is our wrapper around Splide  -->
 	<div id="sliderWrapper" class="px-0 max-w-screen-2xl m-auto">
 		<TimeSlider
-			v-slot="slotProps"
+			:days="5"
 		>
 
 			<!-- Inject our custom TimeSlot component  -->
@@ -15,8 +15,8 @@
 				v-for="(timeSlot, key, index) in timeSlotList"
 				:key="key"
 			>
-				Data TimeSlot -> Slot: <br/>
-				{{ index }}. {{ key }}: {{ timeSlot }}
+				TimeSlot: {{ index }}.<br/>
+				{{ key }}: {{ timeSlot }}
 
 			</TimeSlot>
 

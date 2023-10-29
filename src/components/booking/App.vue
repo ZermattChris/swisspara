@@ -43,7 +43,7 @@
                 Previous
             </button>
 
-            <span id="reset" @dblclick="onResetLocalStorage">{{ isPageValid ? 'valid': 'invalid' }}</span>
+            <span id="reset" class="select-none" @dblclick="onResetLocalStorage">{{ isPageValid ? 'valid': 'invalid' }}</span>
 
 
             <button @click="nextPage" type="button" 
