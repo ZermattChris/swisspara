@@ -1,13 +1,26 @@
 <template>
 
-  <div class="pb-2">
+  <div 
+    class="pb-0"
+    :class="`timeSlot_${slideIndex}`"
+  >
 
-    <slot>
+    <div id="xx" 
+      class=""
+    >
+      Header box: {{slideIndex}} {{date}} 
+
+      <span v-if="slideIndex === selectedSlide">This TimeSlot is selected</span>
+    </div>
 
 
+    <ul role="list" class="space-y-1">
+      <li v-for="(pilots, timeHint) in dayObject" :key="pilots.id" class="overflow-hidden bg-white px-4 py-4 shadow sm:rounded-md sm:px-6">
+        {{ timeHint }} :: Pilots: {{ pilots }} 
+      </li>
+    </ul>
 
-
-    </slot> 
+   
 
   </div>
 
@@ -19,7 +32,10 @@
 
   // ----------- Props ------------
   defineProps({
-
+    date: [String],
+    dayObject: [Object],
+    slideIndex: [Number],
+    selectedSlide: [Number]
   })
 
 

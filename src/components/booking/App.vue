@@ -100,7 +100,7 @@
     // import PagePayFailed from '@components/booking/Failed.vue'
 
     // Store
-    import {pagesStore} from '@stores/pageStore.js' 
+    import {appStore} from '@stores/appStore.js' 
     
 
     export default {
@@ -119,7 +119,7 @@
 
         data() {
             return {
-                // currPage: pagesStore.currentPageName(),
+                // currPage: appStore.currentPageName(),
                 isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
             };
         },
@@ -127,7 +127,7 @@
         mounted() {
             // Send our page list as strings to the store.
             // Need to add 'label' and 'icon' to use in Breadcrumbs.
-            pagesStore.initNav([
+            appStore.initNav([
                 PageDate, 
                 PageFlight, 
                 PageTime, 
@@ -142,7 +142,7 @@
         computed: {
 
             currentPageName() {
-                return pagesStore.currentPageName()
+                return appStore.currentPageName()
             },
 
             /**
@@ -159,10 +159,10 @@
             },
 
             isFirstPage() {
-                return pagesStore.isNavStart()
+                return appStore.isNavStart()
             },
             isLastPage() {
-                return pagesStore.isNavEnd()
+                return appStore.isNavEnd()
             },
 
         }, // computed
@@ -196,7 +196,7 @@
 
             prevPage() {
                 if (this.isFirstPage) return
-                pagesStore.prev()
+                appStore.prev()
                 // set focus to Next Button
                 document.getElementById("prevBtn").focus()
 				
@@ -204,14 +204,14 @@
 
             nextPage() {
                 if (this.isLastPage || this.nextBtnDisabled) return
-                pagesStore.next()
+                appStore.next()
             },
 
 
             // Test method.
             onResetLocalStorage() {
                 console.log("-> RESET LocalStorage")
-                pagesStore.resetLocalStorage()
+                appStore.resetLocalStorage()
                 location.reload() 
                 let span = document.getElementById('reset');
                 span.appendChild( document.createTextNode(" - Reset") );

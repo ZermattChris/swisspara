@@ -2,7 +2,7 @@ import { reactive, markRaw  } from 'vue'
 
 
 
-export const pagesStore = reactive({
+export const appStore = reactive({
 
 
 
@@ -115,7 +115,7 @@ export const pagesStore = reactive({
   },
 
   _nrOfPageItems() {
-    return Object.keys(pagesStore.pageItems).length
+    return Object.keys(appStore.pageItems).length
   }
 
 

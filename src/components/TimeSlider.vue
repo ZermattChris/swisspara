@@ -8,8 +8,12 @@
 		@splide:click="onSplideClick"
 	>
 
-
+	<!-- Next | Prev buttons -->
 	<div class="splide__arrows max-w-2xl mx-auto  relative  h-6 z-[1]">
+
+		<div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex +1}} </div>
+
+
 		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   absolute   top-4 -left-2 md:-top-4  bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -35,20 +39,20 @@
 				aria-roledescription="slide" :aria-label="`${index+1} of 12`"
 		>
 
-			<div class=" w-[18em] border border-slate-10">
+			<div class=" w-[18em] ">
 
 				<div :data-slide-id="index+1" class="timeSlot" :value="index+1">
 					
 					<!-- {{ index+1 }} Slide. <br/>
 					{{ date }} Date. <br/>
 					{{ dayObj }} dayObj. <br/> -->
-					
-					<TimeSlot
-						v-for="(nrPilots, timeLabel, index) in dayObj"
-					>
-						TimeSlot: {{ index+1 }} - 
-						{{ timeLabel }}: {{ nrPilots }}
 
+					<TimeSlot
+						:date="date"
+						:dayObject="dayObj"
+						:slideIndex="index+1"	
+						:selectedSlide="selectedSlideIndex+1"
+					>
 					</TimeSlot>
 
 
@@ -69,6 +73,8 @@
   
 <script>
 
+	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
+
 	import TimeSlot from "@components/TimeSlot.vue"
 
 	import { Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide'
@@ -83,7 +89,7 @@
 			Splide,
 			SplideSlide,
 			SplideTrack,
-			TimeSlot
+			TimeSlot,
 		},
 
 
@@ -97,8 +103,12 @@
 
 			const mySplide = ref();
 
+			const selectedSlideIndex = ref(3)
+
+			const flightDate = ref(datesStore.flightDate)
+
 			const options = {
-				start: 3,					// TODO: this should be read in from the store.
+				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.
 				perPage    : 3,
   			perMove    : 1,
 				snap   : true,
@@ -113,6 +123,7 @@
 			// Splide move event.
 			function onSplideMove(evSplide, newIndex, prevIndex) {
 				//console.log("onSplideMoved", newIndex, prevIndex, evSplide.length)
+				selectedSlideIndex.value = newIndex
 			}
 
 			// // Splide moved event.
@@ -131,6 +142,7 @@
 			// Splide move event.
 			function onSplideClick(slide, ev) {
 				//console.log("onSplideClick", ev.index)
+				//selectedSlideIndex.value = ev.index
 				mySplide.value.go(ev.index)
 			}
 
@@ -157,7 +169,14 @@
 			})
 
 	
-			return { mySplide, options, onSplideMove, onSplideClick };
+			return { 
+				mySplide, 
+				options, 
+				selectedSlideIndex, 
+				onSplideMove, 
+				onSplideClick,
+				flightDate 
+			};
 
 		} // setup()
 
@@ -233,7 +252,6 @@
 					}
 
 			.splide__arrow--next {
-				opacity: .8;
 				transform: translateY(-50%);
 			}
 				.splide__arrow--next:disabled {
