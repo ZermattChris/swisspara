@@ -52,6 +52,7 @@
 						:dayObject="dayObj"
 						:slideIndex="index+1"	
 						:selectedSlide="selectedSlideIndex+1"
+						:flightDate="flightDate"
 					>
 					</TimeSlot>
 
@@ -109,20 +110,30 @@
 
 			const options = {
 				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.
-				perPage    : 3,
+
   			perMove    : 1,
 				snap   : true,
-				gap   : '1em',
+				gap   : '0em',
 				focus  : 'center',
 				autoWidth: true,
 				autoHeight: true,
 				updateOnMove: true,
 			};
 	
+			/**
+			 * NOTE: TODO: Click is okay. Dragging causing wierdness.
+			 */
 
 			// Splide move event.
 			function onSplideMove(evSplide, newIndex, prevIndex) {
+				// console.log("onSplideMoved: target slide: ", newIndex)
+				selectedSlideIndex.value = newIndex
+			}
+
+			// Splide moved event.
+			function onSplideMoved(evSplide, newIndex, prevIndex) {
 				//console.log("onSplideMoved", newIndex, prevIndex, evSplide.length)
+				//console.log("onSplideMoved: target slide: ", newIndex)
 				selectedSlideIndex.value = newIndex
 			}
 
@@ -141,8 +152,8 @@
 
 			// Splide move event.
 			function onSplideClick(slide, ev) {
-				//console.log("onSplideClick", ev.index)
-				//selectedSlideIndex.value = ev.index
+				console.log("onSplideClick: ", ev.index)
+				selectedSlideIndex.value = ev.index	
 				mySplide.value.go(ev.index)
 			}
 
@@ -174,6 +185,7 @@
 				options, 
 				selectedSlideIndex, 
 				onSplideMove, 
+				onSplideMoved,
 				onSplideClick,
 				flightDate 
 			};
@@ -219,10 +231,11 @@
     transition: transform 150ms;
     transform: scale(0.9);
     transform-origin: top center;
+		padding-top: 1em;
 	}
     .splide__slide.is-active .timeSlot {
     	transform: scale(1);
-			background-color: aquamarine;
+			padding-top: 0;
 		}
 
 

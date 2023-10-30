@@ -1,7 +1,7 @@
 <template>
 
 	<div id="flightDateBox"
-		class="mx-auto pb-0 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
+		class="mx-auto pb-4 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
 		<h1 class="select-none pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
 			3. How Many Flying?
@@ -64,7 +64,7 @@ export default {
     timeSlotList() {
 			return {
 				// date as key
-				"2023-11-01":{
+				"2023-10-30":{
 					"08:50":3,		// TimeSlot #1. Time label. Pilots available.
 					"11:00":2,
 					"13:30":0,
