@@ -30,7 +30,7 @@
 
 
 
-	<SplideTrack>
+	<SplideTrack class="pb-20">
 
 		<SplideSlide
 				v-for="(dayObj, date, index) in data"
@@ -67,7 +67,7 @@
 
 	</Splide>
 
-	<div id="slideBoxBottomSpacer" class="w-fit h-10"></div>
+	<!-- <div id="slideBoxBottomSpacer" class="w-fit h-[200px] bg-red-500"></div> -->
 </template>
   
   
