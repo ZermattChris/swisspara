@@ -7,6 +7,25 @@
 		@splide:move="onSplideMove"
 		@splide:click="onSplideClick"
 	>
+
+
+	<div class="splide__arrows max-w-lg mx-auto  relative  z-[1]">
+		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   relative top-8 -left-2 bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
+
+		<button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   absolute top-8 -right-2 bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+			</svg>
+		</button>
+	</div>
+
+
+
+
 	<SplideTrack>
 
 		<SplideSlide
@@ -14,7 +33,6 @@
 				class="splide__slide is-active is-visible" 
 				:id="`focus-center-slide_${index+1}`" role="tabpanel" 
 				aria-roledescription="slide" :aria-label="`${index+1} of 12`"
-				@click="onSelectSlide"
 		>
 
 			<div class=" w-[18em] border border-slate-10">
@@ -41,20 +59,6 @@
 		
 	</SplideTrack>
 
-	<div class="splide__arrows ">
-
-    <button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-			</svg>
-		</button>
-
-    <button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-			</svg>
-		</button>
-  </div>
 
 
 	</Splide>
@@ -126,24 +130,24 @@
 
 			// Splide move event.
 			function onSplideClick(slide, ev) {
-				console.log("onSplideClick", ev.index)
+				//console.log("onSplideClick", ev.index)
 				mySplide.value.go(ev.index)
 			}
 
-			// Custom click handler to select the 'slide' the user clicks on
-			// and make it active.
-			function onSelectSlide(ev) {
-				//console.log('ev', ev.target)
-				const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
-				console.log("onSelectSlide", clickedSlideIndex)
+			// // Custom click handler to select the 'slide' the user clicks on
+			// // and make it active.
+			// function onSelectSlide(ev) {
+			// 	//console.log('ev', ev.target)
+			// 	const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
+			// 	console.log("onSelectSlide", clickedSlideIndex)
 
-				// Finally found the Splide functions. Wow.
-				const goTo = mySplide.value.$.proxy.go
-				goTo(clickedSlideIndex)
+			// 	// Finally found the Splide functions. Wow.
+			// 	const goTo = mySplide.value.$.proxy.go
+			// 	goTo(clickedSlideIndex)
 
-				ev.preventDefault()
+			// 	ev.preventDefault()
 
-			}
+			// }
 
 
 			onMounted( () => {
@@ -153,7 +157,7 @@
 			})
 
 	
-			return { mySplide, options, onSelectSlide, onSplideMove, onSplideClick };
+			return { mySplide, options, onSplideMove, onSplideClick };
 
 		} // setup()
 
@@ -204,15 +208,12 @@
 
 
 
-	.splide__arrows {
+	/* .splide__arrows {
 		width: 1px;
-	}
+	} */
 
 		.splide__arrow {
 			cursor: pointer;
-			position: fixed;
-			top: 17em;
-			z-index: 10;
 		}
 			.splide__arrow:disabled {
 				border-color: rgba(0,0,0, 0.2);
@@ -220,7 +221,6 @@
 
 
 			.splide__arrow--prev {
-				left: 1rem;
 				transform: scaleX(-1) translateY(-50%);
 			}
 				.splide__arrow--prev:disabled {
@@ -234,7 +234,6 @@
 
 			.splide__arrow--next {
 				opacity: .8;
-				right: 1rem;
 				transform: translateY(-50%);
 			}
 				.splide__arrow--next:disabled {
