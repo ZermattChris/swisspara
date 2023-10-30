@@ -39,14 +39,14 @@
 
 				<div :data-slide-id="index+1" class="timeSlot" :value="index+1">
 					
-					{{ index+1 }} Slide. <br/>
+					<!-- {{ index+1 }} Slide. <br/>
 					{{ date }} Date. <br/>
-					{{ dayObj }} dayObj. <br/>
+					{{ dayObj }} dayObj. <br/> -->
 					
 					<TimeSlot
 						v-for="(nrPilots, timeLabel, index) in dayObj"
 					>
-						TimeSlot: {{ index+1 }}.<br/>
+						TimeSlot: {{ index+1 }} - 
 						{{ timeLabel }}: {{ nrPilots }}
 
 					</TimeSlot>
