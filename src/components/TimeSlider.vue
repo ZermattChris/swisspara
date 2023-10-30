@@ -9,14 +9,14 @@
 	>
 
 
-	<div class="splide__arrows max-w-lg mx-auto  relative  z-[1]">
-		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   relative top-8 -left-2 bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+	<div class="splide__arrows max-w-2xl mx-auto  relative  h-6 z-[1]">
+		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   absolute   top-4 -left-2 md:-top-4  bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
 			</svg>
 		</button>
 
-		<button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   absolute top-8 -right-2 bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
+		<button class="splide__arrow splide__arrow--next  w-12 h-12   p-1 pl-1.5   absolute top-4 -right-2 md:-top-4 bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3.5" stroke="currentColor" class="stroke-[color:var(--booking-hilite)]">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
 			</svg>
