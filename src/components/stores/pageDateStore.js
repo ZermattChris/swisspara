@@ -11,9 +11,16 @@ import { addDays, subDays, isAfter, isBefore, isEqual, getDate, getMonth, getYea
  */
 const formatDateToSimpleISO = function toSimpleISO(dateObj) {
   //console.log("formatDateToSimpleISO -> dateObj:", dateObj)
-  const day = getDate(dateObj)
-  const month = getMonth(dateObj) + 1   // Zero based months, for some reason
+  // Need to pad out day/month numbers with leading 0 if single digit. Yuck.
+  let day = getDate(dateObj) + ''     // convert to string from number
+  if (day.length === 1) day = '0' + day
+
+
+  let month = (getMonth(dateObj) + 1) + ''   // Zero based months + convert to string from number
+  if (month.length === 1) month = '0' + month
+
   const year = getYear(dateObj)
+  
   const result = `${year}-${month}-${day}`
   //console.log("formatDateToSimpleISO -> result:", result)
   return result
@@ -24,16 +31,14 @@ const formatDateToSimpleISO = function toSimpleISO(dateObj) {
 export const flightDateStore = reactive({
 
   // Read in data from localStorage.   Format saved date string, create a new Date Obj and then format it with our helper to '2023-11-22'  ||  empty string ''
-  flightDate: localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ).toDateString() : '',
-
-
-  arriveDate: localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ).toDateString() : '',
-  departDate: localStorage.departDate ? new Date( Date.parse(localStorage.departDate) ).toDateString() : '',
+  flightDate: localStorage.flightDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ) : '',
+  arriveDate: localStorage.arriveDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.arriveDate) ) ) : '',
+  departDate: localStorage.departDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.departDate) ) ) : '',
   
   //   flightDate: localStorage.flightDate ? this.formatDateToSimpleISO( 'bla' ) : '',
 // new Date( Date.parse(localStorage.flightDate) )
 
-  test: formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ),
+  // test: formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ),
 
   //---------------------
 
