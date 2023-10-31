@@ -7,14 +7,14 @@
 
     <div
       class="time_slot_header py-1 shadow bg-white border-black/30 border-2 rounded-md text-center font-black"
-      :class="   isSlideSelected ? 'headerSelected text-lg ring-2 ring-white ring-inset' : ''   "
+      :class="   isSlideSelected ? 'text-lg ring-2 ring-black ring-inset' : ''   "
     >
-      {{date}}  {{ isFlightSlide }}
+      {{date}}  ({{ isFlightSlide }})
       <!-- {{isSlideSelected ? 'true' : 'false'}}   border-[calc(var(--booking-hilite))]/100  -->
 
       <span 
         v-if="isSlideSelected"
-        class="font-thin italic"
+        class="font-thin italic text-sm"
       >
         <br/>Choose which time below.
       </span>
@@ -22,8 +22,24 @@
 
 
     <ul role="list" class="space-y-1 py-1">
-      <li v-for="(pilots, timeHint) in dayObject" :key="pilots.id" class=" bg-white px-4 py-4 shadow sm:rounded-md sm:px-6">
-        {{ timeHint }} :: Pilots: {{ pilots }} 
+      <li 
+        v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id" 
+        class=" bg-white px-4 py-4 shadow sm:rounded-md sm:px-6"
+        :class=" (pilots != -1) ? 'flight_available' : ''"
+
+        @click="onSlotClick(ev, index, pilots)"
+      >
+        <!-- Pilots: -1 means the flight isn't available at that time.  -->
+        <span v-if="(pilots != -1)">
+          {{ timeHint }} :: Pilots: {{ pilots }} 
+        </span>
+        <span 
+          v-if="(pilots == -1)"
+          class="italic text-black/40"
+        >
+          {{ timeHint }} :: Flight not available
+        </span>
+
       </li>
     </ul>
 
@@ -51,7 +67,7 @@
 
   const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
-    return props.slideIndex === props.selectedSlide
+    return (props.slideIndex) === props.selectedSlide
   })
   
   const isFlightSlide = computed(() => {
@@ -59,19 +75,22 @@
     return props.date === props.flightDate
   })
 
-  // function openModal(myEvent) {
-  //   isOpen.value = true
-  // }
+  function onSlotClick(ev, slotNr, slotPilots) {
+    //console.log("onSlotClick", ev)
+    // 1) Check if slot has pilots
+    if (slotPilots == -1) return
+    console.log("onSlotClick slotNr: pilots: ", slotNr, slotPilots)
+    // 2) Open "Add Passengers" drawer
+
+  }
 
 
   // onMounted(() => {
-  //   // block esc key from closing dialog.
-  //   document.addEventListener('keydown', makeDialogModal)
+  //   console.log('onMounted', props.slideIndex, isSlideSelected.value)
   // })
 
   // onUnmounted(() => {
-  //   // block esc key from closing dialog.
-  //   document.removeEventListener('keydown', makeDialogModal)
+  //   console.log('onUnmounted', props.slideIndex, isSlideSelected.value)
   // })
 
   // function makeDialogModal(e) {
@@ -79,7 +98,10 @@
   // }
 
   defineExpose({
-		isOpen
+		isOpen,
+    onMounted,
+    onUnmounted,
+    onSlotClick,
   })
 
 

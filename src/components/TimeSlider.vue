@@ -108,6 +108,10 @@
 
 			const flightDate = ref(datesStore.getFlightDate())
 
+			// const slideActive = ref(false);
+
+
+
 			const options = {
 				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.
 
@@ -123,6 +127,13 @@
 			/**
 			 * NOTE: TODO: Click is okay. Dragging causing wierdness.
 			 */
+
+			// // Splide Active event.
+			// function onActive(evSlide) {
+			// 	console.log("onActive:", evSlide, selectedSlideIndex.value )
+			// 	slideActive.value = selectedSlideIndex.value
+			// }
+
 
 			// Splide move event.
 			function onSplideMove(evSplide, newIndex, prevIndex) {
@@ -152,7 +163,7 @@
 
 			// Splide move event.
 			function onSplideClick(slide, ev) {
-				console.log("onSplideClick: ", ev.index)
+				//console.log("onSplideClick: ", ev.index)
 				selectedSlideIndex.value = ev.index	
 				mySplide.value.go(ev.index)
 			}
@@ -183,11 +194,13 @@
 			return { 
 				mySplide, 
 				options, 
+				// slideActive,
 				selectedSlideIndex, 
 				onSplideMove, 
 				onSplideMoved,
 				onSplideClick,
-				flightDate 
+				// onActive,
+				flightDate,
 			};
 
 		} // setup()
