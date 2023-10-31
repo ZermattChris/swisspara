@@ -325,6 +325,7 @@
 		methods: {
 
 			onDateSelect(modelData) {
+				//console.log("modelData", modelData)
 				this.flightDate = modelData
 				flightDateStore.setFlightDate(modelData)    // set in Store.
 				// Reset Arrive & Depart.

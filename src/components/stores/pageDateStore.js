@@ -20,7 +20,7 @@ const formatDateToSimpleISO = function toSimpleISO(dateObj) {
   if (month.length === 1) month = '0' + month
 
   const year = getYear(dateObj)
-  
+
   const result = `${year}-${month}-${day}`
   //console.log("formatDateToSimpleISO -> result:", result)
   return result
@@ -72,13 +72,15 @@ export const flightDateStore = reactive({
       //console.log("Stale Flight Date in getFlightDate:", this.flightDate)
       this.setFlightDate('') 
     }
-    console.log("this.flightDate",this.flightDate)
+    //console.log("this.flightDate", this.flightDate)
     return this.flightDate
   },
+  // Recieving a js Date() object here.
   setFlightDate(flDate) {
-    this.flightDate = flDate
+    this.flightDate = formatDateToSimpleISO(flDate)
     // Strip out timezone and hours:mins:secs
-    localStorage.flightDate = new Date(this.flightDate).toDateString()
+    console.log("this.flightDate", this.flightDate)
+    localStorage.flightDate = this.flightDate
   },
 
   // ---- Arrival Date ----.
@@ -89,21 +91,20 @@ export const flightDateStore = reactive({
     }
     return this.arriveDate
   },
+  // Recieving a js Date() object here.
   setArriveDate(arrDate) {
     if ( arrDate === '') return   // stops saving "Invalid Date" to local storage.
-    this.arriveDate = arrDate
+    this.arriveDate = formatDateToSimpleISO(arrDate)
 
     // Strip out timezone and hours:mins:secs
-    localStorage.arriveDate = new Date(this.arriveDate).toDateString()
-  },
+    localStorage.arriveDate = this.arriveDate
+  },//
 
 
 
 
   // Departure Date.
   getDepartDate() {
-    // const today = new Date().toDateString()
-
     // date-fns update
     if ( isBefore( new Date(this.departDate), new Date(new Date().toDateString()) ) ) {  // toDateString() kills time and Timezone.
       //console.log("Stale Depart Date in getDepartDate:", this.departDate)
@@ -111,11 +112,12 @@ export const flightDateStore = reactive({
     }
     return this.departDate
   },
+  // Recieving a js Date() object here.
   setDepartDate(dpDate) {
     if ( dpDate === '') return   // stops saving "Invalid Date" to local storage.
-    this.departDate = dpDate
+    this.departDate = formatDateToSimpleISO(dpDate)
     // Strip out timezone and hours:mins:secs
-    localStorage.departDate = new Date(this.departDate).toDateString()
+    localStorage.departDate = this.departDate
   },
 
 

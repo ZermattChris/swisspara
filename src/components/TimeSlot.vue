@@ -55,7 +55,7 @@
   })
   
   const isFlightSlide = computed(() => {
-    console.log(props.date, props.flightDate)
+    //console.log("isFlightSlide", props.date === props.flightDate)
     return props.date === props.flightDate
   })
 
