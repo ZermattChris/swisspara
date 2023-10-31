@@ -11,7 +11,7 @@
 	<!-- Next | Prev buttons -->
 	<div class="splide__arrows max-w-2xl mx-auto  relative  h-6 z-[1]">
 
-		<div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex +1}} </div>
+		<div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex }} </div>
 
 
 		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   absolute   top-4 -left-2 md:-top-4  bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
@@ -35,23 +35,23 @@
 		<SplideSlide
 				v-for="(dayObj, date, index) in data"
 				class="splide__slide is-active is-visible" 
-				:id="`focus-center-slide_${index+1}`" role="tabpanel" 
-				aria-roledescription="slide" :aria-label="`${index+1} of 12`"
+				:id="`focus-center-slide_${index}`" role="tabpanel" 
+				aria-roledescription="slide" :aria-label="`${index} of 12`"
 		>
 
 			<div class=" w-[18em] ">
 
-				<div :data-slide-id="index+1" class="timeSlot" :value="index+1">
+				<div :data-slide-id="index" class="timeSlot" :value="index">
 					
-					<!-- {{ index+1 }} Slide. <br/>
+					<!-- {{ index }} Slide. <br/>
 					{{ date }} Date. <br/>
 					{{ dayObj }} dayObj. <br/> -->
 
 					<TimeSlot
 						:date="date"
 						:dayObject="dayObj"
-						:slideIndex="index+1"	
-						:selectedSlide="selectedSlideIndex+1"
+						:slideIndex="index"	
+						:selectedSlide="selectedSlideIndex"
 						:flightDate="flightDate"
 					>
 					</TimeSlot>
@@ -106,7 +106,7 @@
 
 			const selectedSlideIndex = ref(3)
 
-			const flightDate = ref(datesStore.flightDate)
+			const flightDate = ref(datesStore.getFlightDate())
 
 			const options = {
 				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.

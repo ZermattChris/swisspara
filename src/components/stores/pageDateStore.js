@@ -1,16 +1,39 @@
 import { reactive } from 'vue'
 
-import { addDays, subDays, isAfter, isBefore, isEqual } from 'date-fns'
+import { addDays, subDays, isAfter, isBefore, isEqual, getDate, getMonth, getYear } from 'date-fns'
+
+
+
+// ========================= Helper functions   ===========================
+/**
+ * Convert a js Date object to match our internal '2023-11-22' date format.
+ * @param {Date} dateObj 
+ */
+const formatDateToSimpleISO = function toSimpleISO(dateObj) {
+  //console.log("formatDateToSimpleISO -> dateObj:", dateObj)
+  const day = getDate(dateObj)
+  const month = getMonth(dateObj) + 1   // Zero based months, for some reason
+  const year = getYear(dateObj)
+  const result = `${year}-${month}-${day}`
+  //console.log("formatDateToSimpleISO -> result:", result)
+  return result
+}
 
 
 
 export const flightDateStore = reactive({
 
+  // Read in data from localStorage.   Format saved date string, create a new Date Obj and then format it with our helper to '2023-11-22'  ||  empty string ''
   flightDate: localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ).toDateString() : '',
+
+
   arriveDate: localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ).toDateString() : '',
   departDate: localStorage.departDate ? new Date( Date.parse(localStorage.departDate) ).toDateString() : '',
   
-  
+  //   flightDate: localStorage.flightDate ? this.formatDateToSimpleISO( 'bla' ) : '',
+// new Date( Date.parse(localStorage.flightDate) )
+
+  test: formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ),
 
   //---------------------
 
@@ -44,6 +67,7 @@ export const flightDateStore = reactive({
       //console.log("Stale Flight Date in getFlightDate:", this.flightDate)
       this.setFlightDate('') 
     }
+    console.log("this.flightDate",this.flightDate)
     return this.flightDate
   },
   setFlightDate(flDate) {
@@ -89,5 +113,7 @@ export const flightDateStore = reactive({
     localStorage.departDate = new Date(this.departDate).toDateString()
   },
 
+
 })
+
 

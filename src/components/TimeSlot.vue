@@ -7,13 +7,13 @@
 
     <div
       class="time_slot_header py-1 shadow bg-white border-black/30 border-2 rounded-md text-center font-black"
-      :class="   isFlightDate ? 'headerSelected text-lg ring-2 ring-white ring-inset' : ''   "
+      :class="   isSlideSelected ? 'headerSelected text-lg ring-2 ring-white ring-inset' : ''   "
     >
-      {{date}}  
-      <!-- {{isFlightDate ? 'true' : 'false'}}   border-[calc(var(--booking-hilite))]/100  -->
+      {{date}}  {{ isFlightSlide }}
+      <!-- {{isSlideSelected ? 'true' : 'false'}}   border-[calc(var(--booking-hilite))]/100  -->
 
       <span 
-        v-if="isFlightDate"
+        v-if="isSlideSelected"
         class="font-thin italic"
       >
         <br/>Choose which time below.
@@ -49,14 +49,16 @@
 
   const isOpen = ref(false)
 
-  const isFlightDate = computed(() => {
+  const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
-
-    // 
-
     return props.slideIndex === props.selectedSlide
   })
   
+  const isFlightSlide = computed(() => {
+    console.log(props.date, props.flightDate)
+    return props.date === props.flightDate
+  })
+
   // function openModal(myEvent) {
   //   isOpen.value = true
   // }

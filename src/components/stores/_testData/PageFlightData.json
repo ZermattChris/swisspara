@@ -1,20 +1,22 @@
-[
-    {
-       "id":77,
-       "name":"Classic High",
-       "seperator":false,
-       "descriptionId": 100
-    },
-    {
-       "id":32,
-       "name":"Scenic",
-       "seperator":false,
-       "descriptionId": 200
-    },
-    {
-       "id":5,
-       "name":"Elite*",
-       "seperator":false,
-       "descriptionId": 300
-    }
- ]
+{
+   "data": [
+      {
+         "id":77,
+         "name":"Classic High",
+         "seperator":false,
+         "descriptionId": 100
+      },
+      {
+         "id":32,
+         "name":"Scenic",
+         "seperator":false,
+         "descriptionId": 200
+      },
+      {
+         "id":5,
+         "name":"Elite*",
+         "seperator":false,
+         "descriptionId": 300
+      }
+   ]
+}
