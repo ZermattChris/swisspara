@@ -5,11 +5,18 @@
     :class="`timeSlot_${slideIndex}`"
   >
 
+    <!-- Header Box.  -->
     <div
       class="time_slot_header py-1 shadow bg-white border-black/30 border-2 rounded-md text-center font-black"
       :class="   isSlideSelected ? 'text-lg ring-2 ring-black ring-inset' : ''   "
     >
-      {{date}}  ({{ isFlightSlide }})
+      {{date}} 
+        <span 
+          v-if="isFlightSlide"
+          class="italic text-black/40"
+        > 
+          FlightDate
+        </span>
       <!-- {{isSlideSelected ? 'true' : 'false'}}   border-[calc(var(--booking-hilite))]/100  -->
 
       <span 
@@ -18,14 +25,15 @@
       >
         <br/>Choose which time below.
       </span>
-    </div>
+    </div><!-- END: Header Box.  -->
 
 
+    <!-- Slot Box.  -->
     <ul role="list" class="space-y-1 py-1">
       <li 
         v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id" 
-        class=" bg-white px-4 py-4 shadow sm:rounded-md sm:px-6"
-        :class=" (pilots != -1) ? 'flight_available' : ''"
+        class=" bg-none px-4 py-4 shadow rounded-md sm:px-6 relative"
+        :class="[ (pilots != -1) ? 'flight_available' : '',   isSlideSelected ? 'z-[3]' : '' ]"
 
         @click="onSlotClick(ev, index, pilots)"
       >
@@ -40,8 +48,17 @@
           {{ timeHint }} :: Flight not available
         </span>
 
+        <!-- Slot Details Box. -->
+        <span 
+          v-if="isSlideSelected && selectedSlot == index"
+          class="w-full top-[57px] left-0 z-[10] bg-sky-500/100 px-4 py-4 shadow rounded-md absolute "
+        >
+          Details Box {{ selectedSlot }}
+        </span>
+
+
       </li>
-    </ul>
+    </ul> <!-- END: Slot Box.  -->
 
    
 
@@ -63,7 +80,12 @@
   })
 
 
-  const isOpen = ref(false)
+  const selectedSlot = ref(-1)
+
+  // const isSlotSelected = computed(() => {
+  //   //console.log(props.flightDate)
+  //   return (props.slideIndex) === props.selectedSlide
+  // })
 
   const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
@@ -79,6 +101,7 @@
     //console.log("onSlotClick", ev)
     // 1) Check if slot has pilots
     if (slotPilots == -1) return
+    selectedSlot.value = slotNr
     console.log("onSlotClick slotNr: pilots: ", slotNr, slotPilots)
     // 2) Open "Add Passengers" drawer
 
@@ -98,10 +121,10 @@
   // }
 
   defineExpose({
-		isOpen,
     onMounted,
     onUnmounted,
     onSlotClick,
+    selectedSlot,
   })
 
 
