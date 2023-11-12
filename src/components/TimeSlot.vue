@@ -17,7 +17,7 @@
         > 
           FlightDate
         </span>
-      {{isSlideSelected ? 'true' : 'false'}}   
+      <!-- {{isSlideSelected ? 'true' : 'false'}}    -->
 
       <span 
         v-if="isSlideSelected"
@@ -33,13 +33,16 @@
       <li 
         v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id" 
         class=" bg-none px-4 py-4 shadow rounded-md sm:px-6 relative"
-        :class="[ (pilots != -1) ? 'flight_available' : '',   isSlideSelected ? 'z-[3]' : '' ]"
+        :class="[ (pilots > 0) ? 'cursor-pointer' : '',   isSlideSelected ? 'z-[3]' : '' ]"
 
         @click="onSlotClick(ev, index, pilots)"
       >
         <!-- Pilots: -1 means the flight isn't available at that time.  -->
-        <span v-if="(pilots != -1)">
-          {{ timeHint }} :: Pilots: {{ pilots }} 
+        <span v-if="(pilots == 0)" class="text-orange-700">
+          {{ timeHint }} :: Fully Booked
+        </span>
+        <span v-if="(pilots > 0)">
+          {{ timeHint }} :: {{ pilots }} places free
         </span>
         <span 
           v-if="(pilots == -1)"
@@ -50,10 +53,20 @@
 
         <!-- Slot Details Box. -->
         <span 
-          v-if="isSlideSelected && selectedSlot == index"
-          class="w-full top-[57px] left-0 z-[10] bg-sky-500/100 px-4 py-4 shadow rounded-md absolute "
+          v-if="isSlideSelected && selectedSlot == index && (pilots > 0)"
+          class="w-full top-[57px] left-0 z-[10]  p-0 block "
         >
-          Details Box {{ selectedSlot }}
+          <!-- Details Box {{ selectedSlot }} -->
+          <button class="rounded-full bg-amber-500">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
+              <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm3 10.5a.75.75 0 000-1.5H9a.75.75 0 000 1.5h6z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <button class="text-2xl rounded-full bg-amber-500">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
+              <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
+            </svg>
+          </button>
         </span>
 
 

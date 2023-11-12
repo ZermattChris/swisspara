@@ -81,9 +81,6 @@ const _buildDaySlots = () => {
 		if (currTime < 10) formattedTime = '0' + currTime + ':00'
 		if (currTime >= 10) formattedTime = currTime + ':00'
 
-
-		// const slotTime = ( currTime * 100 ) + ''
-
 		slotObj[formattedTime] = nrPilots
 
 		currTime += 2
@@ -106,19 +103,6 @@ const _buildFlightList = () => {
 
 	let daySlotsObj = {}
 	
-	// Need to add the Arrive Date to Depart Date and see how many days to build.
-	// Probably want to limit the number of days +/- in case someone puts in 4 months.
-	// const maxDaysBefore = 7
-	// const maxDaysAfter = 14
-	// let minDate = arrDate
-	// let maxDate = depDate
-	
-	// if ( differenceInDays(arrDate, flDate) > maxDaysBefore ) {
-	// 	console.log("Arrive date too far in past: ", differenceInDays(arrDate, flDate))
-	// 	minDate = subDays(flDate, maxDaysBefore)
-	// 	console.log("New target Min date: ", minDate)
-	// }
-
 	let nrFlightDays = differenceInDays( depDate, arrDate ) + 1
 	// if (nrFlightDays === 0) nrFlightDays = 1		// Always show at least one day!
 	console.log("nrFlightDays: ", nrFlightDays)
@@ -133,48 +117,5 @@ const _buildFlightList = () => {
 
 	console.log("daySlotsObj: ", daySlotsObj)
 	return daySlotsObj
-
-	// return {
-	// 	// date as key
-	// 	"2023-10-30":{
-	// 			"08:50":3,		// TimeSlot #1. Time label. Pilots available.
-	// 			"11:00":2,
-	// 			"13:30":0,
-	// 			"15:15":-1
-	// 	},
-	// 	"2023-11-01":{
-	// 			"08:00":3,
-	// 			"09:45":1,
-	// 			"12:00":0,
-	// 			"14:00":-1
-	// 	},
-	// 	"2023-11-03":{
-	// 			"08:00":2,
-	// 			"09:45":2,
-	// 			"11:00":2,
-	// 			"12:00":-1,
-	// 			"13:00":2,
-	// 			"14:45":2,
-	// 			"15:00":2,
-	// 			"16:00":2,
-	// 			"17:00":-1,
-	// 			"18:00":2,
-	// 			"19:45":2,
-	// 			"20:00":2,
-	// 			"21:00":-1
-	// 	},
-	// 	"2023-11-04":{
-	// 			"08:00":0,
-	// 			"09:45":-1,
-	// 			"12:00":-1,
-	// 			"14:00":1
-	// 	},
-	// 	"2023-11-05":{
-	// 			"08:00":-1,
-	// 			"09:45":4,
-	// 			"12:00":-1,
-	// 			"14:00":-1
-	// 	}
-	// }
 
 }

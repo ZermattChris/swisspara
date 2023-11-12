@@ -8,7 +8,7 @@ export default {
 	get() {
 
 		if ( api.isLocalAPI() ) {
-			const loadingDelay = 1000
+			const loadingDelay = 500
 
 			return new Promise((resolve) => {
 				setTimeout(() => {

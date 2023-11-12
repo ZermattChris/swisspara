@@ -43,6 +43,8 @@
                 Previous
             </button>
 
+            <span></span> 
+            
             <span id="reset" 
                 v-if="showDevInfos"
                 class="select-none absolute" 
