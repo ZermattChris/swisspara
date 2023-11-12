@@ -17,7 +17,7 @@
         > 
           FlightDate
         </span>
-      <!-- {{isSlideSelected ? 'true' : 'false'}}   border-[calc(var(--booking-hilite))]/100  -->
+      {{isSlideSelected ? 'true' : 'false'}}   
 
       <span 
         v-if="isSlideSelected"

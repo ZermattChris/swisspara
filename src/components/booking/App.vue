@@ -43,7 +43,17 @@
                 Previous
             </button>
 
-            <span id="reset" class="select-none" @dblclick="onResetLocalStorage">{{ isPageValid ? 'valid': 'invalid' }}</span>
+            <span id="reset" 
+                v-if="showDevInfos"
+                class="select-none absolute" 
+                @dblclick="onResetLocalStorage"
+            >
+
+                {{ getAPIType }} <br/>
+
+                {{ isPageValid ? 'Page: valid': 'Page: invalid' }}
+                
+            </span>
 
 
             <button @click="nextPage" type="button" 
@@ -85,9 +95,7 @@
 
 <script>
 
-
-    // App wide constants.
-    // Vue.prototype.$variableName = "value";
+    import api from '@components/api/_apiBase.js'
 
     // Pages.
     import PageDate from '@components/booking/Date.vue'
@@ -140,6 +148,19 @@
 
 
         computed: {
+
+            // shows a bit of dev info between the Prev | Next buttons.
+            showDevInfos() {
+                if (document.location) {
+                    let host = new URL(document.location).hostname
+                    if ( host == 'swissparaglide.com' ) return false
+                }
+                return true
+            },
+
+            getAPIType() {
+                return 'API: ' + api.getAPIType()    // LIVE, STAGING or LOCAL
+            },
 
             currentPageName() {
                 return appStore.currentPageName()

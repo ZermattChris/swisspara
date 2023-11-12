@@ -14,14 +14,22 @@
 
 	<!-- This is our wrapper around Splide  -->
 	<div id="sliderWrapper" class="px-0 pt-4 max-w-screen-2xl m-auto">
+
+		<!-- Loading spinner.  -->
+		<div v-if="loading" class="relative rounded-xl overflow-auto p-8">
+			<div class="flex items-center justify-center">
+				<svg class="animate-spin mr-3 h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+					<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+					<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+				</svg>
+				Loading...
+			</div>
+		</div>
+
 		<TimeSlider
+			v-if="loading === false"
 			:data="timeSlotList"
-		>
-
-			
-
-
-		</TimeSlider>
+		></TimeSlider>
 	</div>	<!-- End: Wrapper -->
 
 
@@ -30,99 +38,71 @@
 
 <script>
 
-// Parent component for all "Pages"
-import _Page from './_Page.vue'
+	// Parent component for all "Pages"
+	import _Page from './_Page.vue'
 
-import TimeSlider from "@components/TimeSlider.vue"
-import TimeSlot from "@components/TimeSlot.vue"
+	// Store
+	import {pageTimeSlotsStore as store} from '@stores/pageTimeSlotsStore.js' 
 
-export default {
-  name: 'PageTime',
-	
-  extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-  emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+	import TimeSlider from "@components/TimeSlider.vue"
+	import TimeSlot from "@components/TimeSlot.vue"
 
-	components: {    
-		TimeSlider,
-		TimeSlot
-	},
-	
-  data() {
+	export default {
+		name: 'PageTime',
+			
+		extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+		emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+
+		components: {    
+			TimeSlider,
+			TimeSlot
+		},
+		
+		data() {
 			return {
+				
+			}
+		},
 
-		}
-	},
-
-  computed: {
-
-
-    timeSlotListLength() {
-			return Object.keys(this.timeSlotList).length
+		created() {
+			//console.log("Date component mounted")
+			store.initialize()
 		},
 
 
-    timeSlotList() {
-			return {
-				// date as key
-				"2023-10-30":{
-					"08:50":3,		// TimeSlot #1. Time label. Pilots available.
-					"11:00":2,
-					"13:30":0,
-					"15:15":-1
-				},
-				"2023-11-01":{
-					"08:00":3,
-					"09:45":1,
-					"12:00":0,
-					"14:00":-1
-				},
-				"2023-11-03":{
-					"08:00":2,
-					"09:45":2,
-					"11:00":2,
-					"12:00":-1,
-					"13:00":2,
-					"14:45":2,
-					"15:00":2,
-					"16:00":2,
-					"17:00":-1,
-					"18:00":2,
-					"19:45":2,
-					"20:00":2,
-					"21:00":-1
-				},
-				"2023-11-04":{
-					"08:00":0,
-					"09:45":-1,
-					"12:00":-1,
-					"14:00":1
-				},
-				"2023-11-05":{
-					"08:00":-1,
-					"09:45":4,
-					"12:00":-1,
-					"14:00":-1
-				}
-			}
-    },
 
-    /**
-     * This computed value is requried by the base '_Page' class.
-     * It is tightly coupled, but lets the base handle all event
-     * work for all child Pages in the same manner.
-     */
-    _isPageValid() {
-      return true
-    },
-
-  }, // computed
-
-	methods: {
-
-	} // methods.
+		computed: {
 
 
-}
+			timeSlotListLength() {
+				return Object.keys(this.timeSlotList).length
+			},
+
+
+			timeSlotList() {
+				return store.getTimeSlotsList()
+			},
+			loading() {
+				return store.loading
+			},
+
+			/**
+			 * This computed value is requried by the base '_Page' class.
+			 * It is tightly coupled, but lets the base handle all event
+			 * work for all child Pages in the same manner.
+			 */
+			_isPageValid() {
+				return true
+			},
+
+		}, // computed
+
+		methods: {
+
+		} // methods.
+
+
+	}
 
 
 </script>

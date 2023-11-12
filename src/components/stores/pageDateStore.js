@@ -30,6 +30,7 @@ const formatDateToSimpleISO = function toSimpleISO(dateObj) {
 // Trying to sort the undefined NaN issue when reading in flight date from localstorage.
 const _readFlightDateFromLocalStorage = () => {
   const rawInput = localStorage.flightDate
+  if (rawInput === undefined) return ''
   // console.log("<- this.flightDate.length", rawInput.length )
 
   // The input string needs to be exactly 10 chars long to match out date format.

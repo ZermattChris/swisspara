@@ -1,5 +1,7 @@
 import { reactive, markRaw, isProxy, toRaw, ref  } from 'vue'
 
+import flightAPI from "@components/api/flightsAPI.js"
+
 const { MODE, PROD, DEV, SSR, BASE_URL, VITE_MY_VAR } = import.meta.env;
  //console.log(MODE, PROD, DEV, SSR, BASE_URL, VITE_MY_VAR)
 
@@ -14,6 +16,8 @@ export const pageFlightStore = reactive({
     selectedFlight: +localStorage.selectedFlight || -1,
 
     _flightsList: [{}],
+
+    loading: true,
 
     // Tricky convert string 'true|false' to boolean in js.
     photosVideos: (localStorage.photosVideos === "true") || false,
@@ -44,6 +48,10 @@ export const pageFlightStore = reactive({
      */
     async initialize() {
 
+        // Grabs a list of flights available for the selected Flight Date.
+        this._flightsList = await flightAPI.get()
+        this.loading = false
+
         //let data = {}
 
         // if (DEV) {
@@ -52,26 +60,26 @@ export const pageFlightStore = reactive({
         // } else {
             // Production. Call our API here.
             // const response = await fetch('src/components/stores/_testData/PageFlightData.json')
-            this._flightsList = [
-                {
-                   "id":77,
-                   "name":"Classic High",
-                   "seperator":false,
-                   "descriptionId": 100
-                },
-                {
-                   "id":32,
-                   "name":"Scenic",
-                   "seperator":false,
-                   "descriptionId": 200
-                },
-                {
-                   "id":5,
-                   "name":"Elite*",
-                   "seperator":false,
-                   "descriptionId": 300
-                }
-             ]
+            // this._flightsList = [
+            //     {
+            //        "id":77,
+            //        "name":"Classic High",
+            //        "seperator":false,
+            //        "descriptionId": 100
+            //     },
+            //     {
+            //        "id":32,
+            //        "name":"Scenic",
+            //        "seperator":false,
+            //        "descriptionId": 200
+            //     },
+            //     {
+            //        "id":5,
+            //        "name":"Elite*",
+            //        "seperator":false,
+            //        "descriptionId": 300
+            //     }
+            //  ]
     },
 
         //this._flightsList = data
