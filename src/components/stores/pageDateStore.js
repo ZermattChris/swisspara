@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-import { addDays, subDays, isAfter, isBefore, isEqual, getDate, getMonth, getYear } from 'date-fns'
+import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear } from 'date-fns'
 
 
 
@@ -10,11 +10,12 @@ import { addDays, subDays, isAfter, isBefore, isEqual, getDate, getMonth, getYea
  * @param {Date} dateObj 
  */
 const formatDateToSimpleISO = function toSimpleISO(dateObj) {
-  //console.log("formatDateToSimpleISO -> dateObj:", dateObj)
+  console.log("formatDateToSimpleISO -> dateObj:", dateObj)
+  if (dateObj === '') return ''  // guard against manipulating an empty string (param must be a valid Date object)
+
   // Need to pad out day/month numbers with leading 0 if single digit. Yuck.
   let day = getDate(dateObj) + ''     // convert to string from number
   if (day.length === 1) day = '0' + day
-
 
   let month = (getMonth(dateObj) + 1) + ''   // Zero based months + convert to string from number
   if (month.length === 1) month = '0' + month
@@ -26,19 +27,43 @@ const formatDateToSimpleISO = function toSimpleISO(dateObj) {
   return result
 }
 
+// Trying to sort the undefined NaN issue when reading in flight date from localstorage.
+const _readFlightDateFromLocalStorage = () => {
+  const rawInput = localStorage.flightDate
+  // console.log("<- this.flightDate.length", rawInput.length )
+
+  // The input string needs to be exactly 10 chars long to match out date format.
+  // otherwise just return an empty string (resetting the input to empty).
+  if (rawInput.length != 10) {
+    console.log("<- this.flightDate NOT matching length.", rawInput.length )
+    return ''
+  }
+
+  // // Looking for the Undefined error.
+  // if (rawInput === undefined) {
+  //   console.log("<- Found undefined in getFlightDate()")
+  //   return ''
+  // }
+  // // Looking for the NaN error.
+  // if (Number.isNaN(rawInput)) {
+  //   console.log("<- Found NaN in getFlightDate()")
+  //   return ''
+  // }
+
+  return localStorage.flightDate ? formatDateToSimpleISO( new Date( Date.parse(rawInput) ) ) : ''
+
+}
+
 
 
 export const flightDateStore = reactive({
 
   // Read in data from localStorage.   Format saved date string, create a new Date Obj and then format it with our helper to '2023-11-22'  ||  empty string ''
-  flightDate: localStorage.flightDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ) : '',
+  flightDate: _readFlightDateFromLocalStorage(),
+  //flightDate: localStorage.flightDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ) : '',
   arriveDate: localStorage.arriveDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.arriveDate) ) ) : '',
   departDate: localStorage.departDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.departDate) ) ) : '',
   
-  //   flightDate: localStorage.flightDate ? this.formatDateToSimpleISO( 'bla' ) : '',
-// new Date( Date.parse(localStorage.flightDate) )
-
-  // test: formatDateToSimpleISO( new Date( Date.parse(localStorage.flightDate) ) ),
 
   //---------------------
 
@@ -68,11 +93,11 @@ export const flightDateStore = reactive({
 
   // ---- Flight Date ----.
   getFlightDate() {
+    //console.log("this.flightDate", this.flightDate)
     if ( isBefore( new Date(this.flightDate), new Date(new Date().toDateString()) ) ) {
-      //console.log("Stale Flight Date in getFlightDate:", this.flightDate)
+      console.warn("Stale Flight Date in getFlightDate:", this.flightDate)
       this.setFlightDate('') 
     }
-    //console.log("this.flightDate", this.flightDate)
     return this.flightDate
   },
   // Recieving a js Date() object here.
