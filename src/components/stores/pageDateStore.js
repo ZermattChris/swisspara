@@ -10,7 +10,7 @@ import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMon
  * @param {Date} dateObj 
  */
 const formatDateToSimpleISO = function toSimpleISO(dateObj) {
-  console.log("formatDateToSimpleISO -> dateObj:", dateObj)
+  //console.log("formatDateToSimpleISO -> dateObj:", dateObj)
   if (dateObj === '') return ''  // guard against manipulating an empty string (param must be a valid Date object)
 
   // Need to pad out day/month numbers with leading 0 if single digit. Yuck.
@@ -35,7 +35,7 @@ const _readFlightDateFromLocalStorage = () => {
   // The input string needs to be exactly 10 chars long to match out date format.
   // otherwise just return an empty string (resetting the input to empty).
   if (rawInput.length != 10) {
-    console.log("<- this.flightDate NOT matching length.", rawInput.length )
+    //console.log("<- this.flightDate NOT matching length.", rawInput.length )
     return ''
   }
 
@@ -97,6 +97,8 @@ export const flightDateStore = reactive({
     if ( isBefore( new Date(this.flightDate), new Date(new Date().toDateString()) ) ) {
       console.warn("Stale Flight Date in getFlightDate:", this.flightDate)
       this.setFlightDate('') 
+      this.setArriveDate('') 
+      this.setDepartDate('') 
     }
     return this.flightDate
   },
@@ -104,7 +106,7 @@ export const flightDateStore = reactive({
   setFlightDate(flDate) {
     this.flightDate = formatDateToSimpleISO(flDate)
     // Strip out timezone and hours:mins:secs
-    console.log("this.flightDate", this.flightDate)
+    //console.log("this.flightDate", this.flightDate)
     localStorage.flightDate = this.flightDate
   },
 
@@ -118,7 +120,7 @@ export const flightDateStore = reactive({
   },
   // Recieving a js Date() object here.
   setArriveDate(arrDate) {
-    if ( arrDate === '') return   // stops saving "Invalid Date" to local storage.
+    // if ( arrDate === '') return   // stops saving "Invalid Date" to local storage.
     this.arriveDate = formatDateToSimpleISO(arrDate)
 
     // Strip out timezone and hours:mins:secs
