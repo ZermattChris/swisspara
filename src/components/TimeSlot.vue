@@ -1,8 +1,8 @@
 <template>
 
   <div 
-    class="px-2 py-1 rounded-lg "
-    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? ' border-2 border-blue-700' : '' ]"
+    class="px-2 py-1.5 rounded-lg "
+    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? ' border-2 border-black/50 bg-black/5' : '' ]"
   >
 
     <!-- Header Box.  -->
@@ -15,7 +15,7 @@
           v-if="isFlightSlide"
           class="italic text-orange-700"
         > 
-          FlightDate
+          FD 
         </span>
       <!-- {{isSlideSelected ? 'true' : 'false'}}    -->
 
@@ -23,6 +23,7 @@
         v-if="isSlideSelected"
         class="font-thin italic text-sm"
       >
+        ({{ totalSlotPassengers }})
         <br/>Choose which time below.
       </span>
     </div><!-- END: Header Box.  -->
@@ -37,12 +38,43 @@
 
         @click="onSlotClick(ev, index, pilots)"
       >
+
+        <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
+        <span 
+          v-if="(pilots > 0 && isSlideSelected && slotsCurrPassengerCount(timeHint) > 0 )" 
+          class="absolute -right-6 top-1 z-50 "
+        >
+          <button id="plusBtn" 
+            class="rounded-full font-black text-xl  bg-amber-500  shadow-black/50   h-12 w-12    outline outline-offset-2 outline-amber-500 "
+            @click="onAddPilot(selectedSlot, timeHint)"
+          >
+            {{ slotsCurrPassengerCount(timeHint) }}
+          </button>
+        </span>
+
+
         <!-- Pilots: -1 means the flight isn't available at that time.  -->
-        <span v-if="(pilots == 0)" class="text-orange-700 line-through">
+        <span v-if="(pilots == 0)" class="text-orange-700 italic">
           {{ timeHint }} :: Fully Booked
         </span>
-        <span v-if="(pilots > 0)" >
-          {{ timeHint }} :: {{ pilots - slotsCurrPassengerCount(timeHint) }} places free 
+        <span 
+          v-if="(pilots > 0)" 
+          :class="(slotsCurrPassengerCount(timeHint) > 0) ? 'font-black' : ''"
+        >
+          
+          <svg class="w-6 h-6 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+
+          {{ timeHint }}
+
+          <button id="plusBtn" 
+            class="rounded-full  px-4 h-8 ml-3 font-black text-md  bg-white  outline outline-offset-2 outline-amber-500 "
+          >
+             {{ pilots - slotsCurrPassengerCount(timeHint) }} places free 
+          </button>
+
+
         </span>
         <span 
           v-if="(pilots == -1)"
@@ -50,6 +82,8 @@
         >
           {{ timeHint }} :: Flight not available
         </span>
+
+
 
         <!-- Slot Details Box. -->
         <span 
@@ -102,12 +136,10 @@
     flightDate: [String]
   })
 
-  // TODO: Track how many pilots have been selected for each slot. Maybe add to the dayObject
-  //       that's been passed in??
 
   const selectedSlot = ref(-1)
 
-  const nrPassengersList = reactive({})
+  const nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
 
 
   function onAddPilot(slotNr, timeHint) {
@@ -141,7 +173,6 @@
 
 
   function slotsCurrPassengerCount(timeHint) {
-    //console.log("slotsCurrPassengerCount:", nrPassengersList, timeHint )
     return nrPassengersList[timeHint]
   }
   function slotsMaxPassengerCount(timeHint) {
@@ -149,6 +180,13 @@
   }
 
 
+  const totalSlotPassengers = computed(() => {
+    let total = 0
+    for (const slotTime in nrPassengersList) {
+      total += nrPassengersList[slotTime]
+    }
+    return total
+  })
 
 
 
