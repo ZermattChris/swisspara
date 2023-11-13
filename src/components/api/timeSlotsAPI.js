@@ -8,7 +8,7 @@ export default {
     get() {
 
         if ( api.isLocalAPI() ) {
-            const loadingDelay = 1000
+            const loadingDelay = 500
 
             return new Promise((resolve) => {
                 setTimeout(() => {
@@ -120,7 +120,7 @@ const _buildFlightList = () => {
 	}
 
 
-	console.log("daySlotsObj: ", daySlotsObj)
+	//console.log("daySlotsObj: ", daySlotsObj)
 	return daySlotsObj
 
 }

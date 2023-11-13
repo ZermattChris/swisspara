@@ -1,8 +1,8 @@
 <template>
 
   <div 
-    class="p-2 rounded-lg "
-    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? 'bg-slate-50 border-2 ' : '' ]"
+    class="px-2 py-1 rounded-lg "
+    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? ' border-2 border-blue-700' : '' ]"
   >
 
     <!-- Header Box.  -->
@@ -13,7 +13,7 @@
       {{date}} 
         <span 
           v-if="isFlightSlide"
-          class="italic text-black/40"
+          class="italic text-orange-700"
         > 
           FlightDate
         </span>
@@ -29,24 +29,24 @@
 
 
     <!-- Slot Box.  -->
-    <ul role="list" class="space-y-1 py-1 bg-white">
+    <ul role="list" class="space-y-1 py-1 ">
       <li 
         v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id" 
-        class=" bg-none px-4 py-4 shadow rounded-md sm:px-6 relative"
-        :class="[ (pilots > 0) ? 'cursor-pointer' : '',   isSlideSelected ? 'z-[3]' : '' ]"
+        class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative"
+        :class="[ (pilots > 0) ? 'cursor-pointer shadow-md' : '',   isSlideSelected ? 'z-[3]' : '' ]"
 
         @click="onSlotClick(ev, index, pilots)"
       >
         <!-- Pilots: -1 means the flight isn't available at that time.  -->
-        <span v-if="(pilots == 0)" class="text-orange-700">
+        <span v-if="(pilots == 0)" class="text-orange-700 line-through">
           {{ timeHint }} :: Fully Booked
         </span>
-        <span v-if="(pilots > 0)">
-          {{ timeHint }} :: {{ pilots }} places free
+        <span v-if="(pilots > 0)" >
+          {{ timeHint }} :: {{ pilots - slotsCurrPassengerCount(timeHint) }} places free 
         </span>
         <span 
           v-if="(pilots == -1)"
-          class="italic text-black/40"
+          class="italic text-black/60"
         >
           {{ timeHint }} :: Flight not available
         </span>
@@ -57,16 +57,21 @@
           class="flex items-center justify-between w-full top-[57px] left-0 z-[10]  p-0 pt-2  "
         >
           <!-- Details Box {{ selectedSlot }} -->
-          <button id="minusBtn" class="rounded-full bg-amber-500"
-            @click=""
+          <button id="minusBtn" 
+            class="rounded-full bg-amber-500 shadow-md shadow-black/50"
+            @click="onRemovePilot(selectedSlot, timeHint)"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
+            <svg 
+              class="w-12 h-12"
+              xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" 
+            >
               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm3 10.5a.75.75 0 000-1.5H9a.75.75 0 000 1.5h6z" clip-rule="evenodd" />
             </svg>
           </button>
-          0 Passengers
-          <button id="plusBtn" class="text-2xl rounded-full bg-amber-500"
-            @click=""
+          {{ slotsCurrPassengerCount(timeHint) }} Passengers
+          <button id="plusBtn" 
+            class="rounded-full bg-amber-500 shadow-md shadow-black/50"
+            @click="onAddPilot(selectedSlot, timeHint)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
@@ -86,7 +91,7 @@
 </template>
 
 <script setup>
-  import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+  import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw } from 'vue'
 
   // ----------- Props ------------
   const props = defineProps({
@@ -97,13 +102,55 @@
     flightDate: [String]
   })
 
+  // TODO: Track how many pilots have been selected for each slot. Maybe add to the dayObject
+  //       that's been passed in??
 
   const selectedSlot = ref(-1)
 
-  // const isSlotSelected = computed(() => {
-  //   //console.log(props.flightDate)
-  //   return (props.slideIndex) === props.selectedSlide
-  // })
+  const nrPassengersList = reactive({})
+
+
+  function onAddPilot(slotNr, timeHint) {
+    // console.log("onAddPilot. timeHint:", timeHint )
+
+    const availPassengers = slotsMaxPassengerCount(timeHint)
+    //console.log("nrPassengers:", availPassengers )
+    const slotsPassengers = nrPassengersList[timeHint]
+    //console.log("slotsPassengers:", slotsPassengers )
+
+    // // Guard against adding too many passengers.
+    if ( (slotsPassengers + 1) <= availPassengers ) {
+      nrPassengersList[timeHint] = slotsPassengers + 1
+    }
+    //console.log("Slot's Passengers", timeHint, nrPassengersList[timeHint] )
+
+  }
+
+  function onRemovePilot(slotNr, timeHint) {
+    // console.log("onRemovePilot. timeHint:", timeHint )
+
+    // const availPassengers = slotsMaxPassengerCount(timeHint)
+    const slotsPassengers = nrPassengersList[timeHint]
+    //console.log("slotsPassengers:", slotsPassengers )
+
+    // // Guard against adding too many passengers.
+    if ( (slotsPassengers - 1) >= 0 ) {
+      nrPassengersList[timeHint] = slotsPassengers - 1
+    }
+  }
+
+
+  function slotsCurrPassengerCount(timeHint) {
+    //console.log("slotsCurrPassengerCount:", nrPassengersList, timeHint )
+    return nrPassengersList[timeHint]
+  }
+  function slotsMaxPassengerCount(timeHint) {
+    return props.dayObject[timeHint]
+  }
+
+
+
+
 
   const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
@@ -120,15 +167,32 @@
     // 1) Check if slot has pilots
     if (slotPilots == -1) return
     selectedSlot.value = slotNr
-    console.log("onSlotClick slotNr: pilots: ", slotNr, slotPilots)
-    // 2) Open "Add Passengers" drawer
+    //console.log("onSlotClick slotNr: pilots: ", slotNr, slotPilots)
+
+    // Need to enable | disable the add | remove buttons, depending on how 
+    // many passengers are selected/available.
+
 
   }
 
 
-  // onMounted(() => {
-  //   console.log('onMounted', props.slideIndex, isSlideSelected.value)
-  // })
+
+  function clearAllPassengers() {
+    for (const slotTime in nrPassengersList) {
+      nrPassengersList[slotTime] = 0
+    }
+    // console.log("nrPassengersList", nrPassengersList)
+  }
+
+  onMounted(() => {
+
+    // Create a 'copy' of the dayObject and use it to track how many passengers
+    // have been added to a given time slot. Zero out the original 'pilots' as 
+    // they're now holding nr of Passengers.
+    Object.assign(nrPassengersList, props.dayObject)
+    clearAllPassengers()
+
+  })
 
   // onUnmounted(() => {
   //   console.log('onUnmounted', props.slideIndex, isSlideSelected.value)
