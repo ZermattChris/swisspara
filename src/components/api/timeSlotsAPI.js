@@ -94,7 +94,7 @@ const _buildDaySlots = () => {
 // Use input dates to build a local flight list.
 const _buildFlightList = () => {
 
-	const today = new Date()
+	const today = new Date().setHours(0, 0, 0, 0)
 	let arrDate = localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ) : -1
 	if (arrDate == -1) console.warn( "Missing localStorage.arriveDate" )
   const flDate = localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ) : -1
@@ -110,7 +110,7 @@ const _buildFlightList = () => {
 	
 	let nrFlightDays = differenceInDays( depDate, arrDate ) + 1
 	// if (nrFlightDays === 0) nrFlightDays = 1		// Always show at least one day!
-	console.log("nrFlightDays: ", nrFlightDays)
+	console.log("nrFlightDays: ", differenceInDays( arrDate, depDate ))
     
 	for (let i = 0; i < nrFlightDays; i++) {
 		//console.log("Flight Day: ", i)
