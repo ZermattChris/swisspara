@@ -1,8 +1,8 @@
 <template>
 
   <div 
-    class="pb-0 px-1 pt-1"
-    :class="`timeSlot_${slideIndex}`"
+    class="p-2 rounded-lg "
+    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? 'bg-slate-50 border-2 ' : '' ]"
   >
 
     <!-- Header Box.  -->
@@ -29,7 +29,7 @@
 
 
     <!-- Slot Box.  -->
-    <ul role="list" class="space-y-1 py-1">
+    <ul role="list" class="space-y-1 py-1 bg-white">
       <li 
         v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id" 
         class=" bg-none px-4 py-4 shadow rounded-md sm:px-6 relative"
@@ -54,15 +54,20 @@
         <!-- Slot Details Box. -->
         <span 
           v-if="isSlideSelected && selectedSlot == index && (pilots > 0)"
-          class="w-full top-[57px] left-0 z-[10]  p-0 block "
+          class="flex items-center justify-between w-full top-[57px] left-0 z-[10]  p-0 pt-2  "
         >
           <!-- Details Box {{ selectedSlot }} -->
-          <button class="rounded-full bg-amber-500">
+          <button id="minusBtn" class="rounded-full bg-amber-500"
+            @click=""
+          >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm3 10.5a.75.75 0 000-1.5H9a.75.75 0 000 1.5h6z" clip-rule="evenodd" />
             </svg>
           </button>
-          <button class="text-2xl rounded-full bg-amber-500">
+          0 Passengers
+          <button id="plusBtn" class="text-2xl rounded-full bg-amber-500"
+            @click=""
+          >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
             </svg>
