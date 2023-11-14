@@ -104,8 +104,10 @@
           class="flex items-center justify-between w-full top-[57px] left-0 z-[10]  p-0 pt-2  "
         >
           <!-- Details Box {{ selectedSlot }} -->
-          <button :id="`minusBtn_${slideIndex}_${index}`" 
+          <button 
+            :id="`minusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
+            :class="slotsCurrPassengerCount(timeHint) > 0 ? '' : 'cursor-default shadow-none opacity-50'"
             @click="onRemovePassenger(selectedSlot, timeHint)"
           >
             <svg 
@@ -118,6 +120,7 @@
           {{ slotsCurrPassengerCount(timeHint) }} Passengers
           <button :id="`plusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
+            :class="slotsCurrPassengerCount(timeHint) < slotsMaxPassengerCount(timeHint) ? '' : 'cursor-default shadow-none opacity-50'"
             @click="onAddPassenger(selectedSlot, timeHint)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
@@ -161,6 +164,8 @@
   const selectedSlot = ref(-1)
 
   const nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
+
+
 
 
   function onAddPassenger(slotNr, timeHint) {
