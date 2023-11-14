@@ -7,15 +7,22 @@
 
     <!-- Header Box.  -->
     <div
-      class="time_slot_header py-1 shadow bg-white border-black/30 border-2 rounded-md text-center font-black"
-      :class="   isSlideSelected ? 'text-lg ring-2 ring-black ring-inset' : ''   "
+      class="time_slot_header py-1 shadow border-black/30 border-2 rounded-md text-center font-black"
+      :class=" [isSlideSelected ? 'text-lg ring-2 ring-black ring-inset' : '',  isFlightSlide ? 'bg-amber-500' : 'bg-black/70 text-white'  ] "
     >
       {{date}} 
         <span 
           v-if="isFlightSlide"
-          class="italic text-orange-700"
+          class="absolute top-3 right-2 rotate-45"
         > 
-          FD 
+          <svg 
+            class="fill-white drop-shadow-md"
+            xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0 -960 960 960" 
+          >
+            <path d="M350-80v-42l80-60v-251L80-330v-58l350-206v-236q0-21 14.5-35.5T480-880q21 0 35.5 14.5T530-830v236l350 206v58L530-433v251l80 60v42l-130-37-130 37Z"/>
+          </svg>
+
+
         </span>
       <!-- {{isSlideSelected ? 'true' : 'false'}}    -->
 
