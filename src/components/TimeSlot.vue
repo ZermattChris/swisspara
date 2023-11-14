@@ -7,13 +7,20 @@
 
     <!-- Header Box.  -->
     <div
-      class="time_slot_header py-1 shadow border-black/30 border-2 rounded-md text-center font-black"
-      :class=" [isSlideSelected ? 'text-lg ring-2 ring-black ring-inset' : '',  isFlightSlide ? 'bg-amber-500' : 'bg-black/70 text-white'  ] "
+      class="time_slot_header py-1 text-xl shadow border-black/30 border-2 rounded-md text-center font-black"
+      :class=" [isSlideSelected ? ' ring-2 ring-black ring-inset' : '',  isFlightSlide ? 'bg-amber-500 ' : 'bg-black/70 text-white'  ] "
     >
-      {{date}} 
-        <span 
+
+      <span 
+        :class="isSlideSelected ? 'text-3xl' : ''"
+      > 
+        {{ formatHeaderDay }}
+      </span>
+
+      <span 
           v-if="isFlightSlide"
-          class="absolute top-3 right-2 rotate-45"
+          class="absolute  right-2 rotate-45"
+          :class="isSlideSelected ? 'top-2' : 'top-5'"
         > 
           <svg 
             class="fill-white drop-shadow-md"
@@ -23,15 +30,14 @@
           </svg>
 
 
-        </span>
-      <!-- {{isSlideSelected ? 'true' : 'false'}}    -->
+      </span>
 
       <span 
-        v-if="isSlideSelected"
-        class="font-thin italic text-sm"
+        class="font-normal inline-block w-full text-lg shadow-md"
       >
-        ({{ totalSlotPassengers }})
-        <br/>Choose which time below.
+        {{ formatHeaderDate }}
+        <!-- <br/>({{ totalSlotPassengers }})
+        Choose which time below. -->
       </span>
     </div><!-- END: Header Box.  -->
 
@@ -134,6 +140,10 @@
 <script setup>
   import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw } from 'vue'
 
+	// Calendar Utils.
+	import {calendarUtils as calUtils} from '@components/booking/calendarUtils.js'
+
+
   // ----------- Props ------------
   const props = defineProps({
     date: [String],
@@ -196,6 +206,26 @@
   })
 
 
+  const formatHeaderDay = computed(() => {
+    const headerDate = new Date( Date.parse(props.date) )
+    //console.log("headerDate", headerDate)
+    const dayInt = headerDate.getDay()
+    return calUtils.getDayString(dayInt)
+  })
+
+  const formatHeaderDate = computed(() => {
+    const headerDate = new Date( Date.parse(props.date) )
+    //console.log("headerDate", headerDate)
+    const day = headerDate.getDate()
+    const dayInt = headerDate.getDay()
+    const dayName = calUtils.getDayString(dayInt)
+    // const dayTh = calUtils.getLocalizedDayPostfix(dayInt)
+    const monthInt = headerDate.getMonth()
+    const monthName = calUtils.getMonthString(monthInt)
+    const year = headerDate.getFullYear()
+    // console.log("headerDate", dayInt, dayName, monthName)
+    return `${monthName} ${day}, ${year}`
+  })
 
   const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
