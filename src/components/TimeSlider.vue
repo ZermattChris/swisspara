@@ -18,7 +18,7 @@
 			<div id="totalPassengersPill" 
 				class="rounded-full text-center font-black text-2xl pt-0 mr-2  border-amber-500 border-4  shadow-black/50   h-10 w-10 "
 			>
-				3
+				{{ totalPassengers }}
 			</div>
 			Passenger(s) in Total
 		</div>
@@ -63,6 +63,7 @@
 						:slideIndex="index"	
 						:selectedSlide="selectedSlideIndex"
 						:flightDate="flightDate"
+						@passengers-updated="onPassengerCount"
 					>
 					</TimeSlot>
 
@@ -115,6 +116,7 @@
 			const mySplide = ref();
 
 			const selectedSlideIndex = ref(-1)
+			const totalPassengers = ref(0)
 
 			const flightDate = datesStore.getFlightDate()
 
@@ -143,6 +145,10 @@
 			// 	slideActive.value = selectedSlideIndex.value
 			// }
 
+			function onPassengerCount(passengerCount) {
+				// console.log("passengerCount: ", passengerCount)
+				totalPassengers.value = passengerCount
+			}
 
 			// Splide move event.
 			function onSplideMove(evSplide, newIndex, prevIndex) {
@@ -198,7 +204,8 @@
 				onSplideMove, 
 				onSplideMoved,
 				onSplideClick,
-				// onActive,
+				onPassengerCount,
+				totalPassengers,
 				flightDate,
 			};
 

@@ -59,7 +59,7 @@
         >
           <button :id="`nrPassPill_${slideIndex}_${index}`" 
             class="rounded-full font-black text-xl  bg-white shadow-black/50   h-10 w-10    outline outline-amber-500 "
-            @click="onAddPilot(selectedSlot, timeHint)"
+            @click="onAddPassenger(selectedSlot, timeHint)"
           >
             {{ slotsCurrPassengerCount(timeHint) }}
           </button>
@@ -106,7 +106,7 @@
           <!-- Details Box {{ selectedSlot }} -->
           <button :id="`minusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
-            @click="onRemovePilot(selectedSlot, timeHint)"
+            @click="onRemovePassenger(selectedSlot, timeHint)"
           >
             <svg 
               class="w-12 h-12"
@@ -118,7 +118,7 @@
           {{ slotsCurrPassengerCount(timeHint) }} Passengers
           <button :id="`plusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
-            @click="onAddPilot(selectedSlot, timeHint)"
+            @click="onAddPassenger(selectedSlot, timeHint)"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12">
               <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 9a.75.75 0 00-1.5 0v2.25H9a.75.75 0 000 1.5h2.25V15a.75.75 0 001.5 0v-2.25H15a.75.75 0 000-1.5h-2.25V9z" clip-rule="evenodd" />
@@ -156,36 +156,34 @@
   })
 
   // ----------- Events ------------
-  // const emit = defineEmits(['flightDateChanged'])
+  const emit = defineEmits(['passengersUpdated'])
 
   const selectedSlot = ref(-1)
 
   const nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
 
 
-  function onAddPilot(slotNr, timeHint) {
-    // console.log("onAddPilot. timeHint:", timeHint )
+  function onAddPassenger(slotNr, timeHint) {
+    // console.log("onAddPassenger. timeHint:", timeHint )
     const availPassengers = slotsMaxPassengerCount(timeHint)
     const slotsPassengers = nrPassengersList[timeHint]
     // // Guard against adding too many passengers.
     if ( (slotsPassengers + 1) <= availPassengers ) {
       nrPassengersList[timeHint] = slotsPassengers + 1
+      emit( 'passengersUpdated', totalSlotPassengers )    // let Time know Passenger total has changed.
       // Make this the current Flight Date (FD)
       datesStore.setFlightDate( new Date( Date.parse(props.date) ) )
     }
 
   }
 
-  function onRemovePilot(slotNr, timeHint) {
-    // console.log("onRemovePilot. timeHint:", timeHint )
-
-    // const availPassengers = slotsMaxPassengerCount(timeHint)
+  function onRemovePassenger(slotNr, timeHint) {
+    // console.log("onRemovePassenger. timeHint:", timeHint )
     const slotsPassengers = nrPassengersList[timeHint]
-    //console.log("slotsPassengers:", slotsPassengers )
-
     // // Guard against adding too many passengers.
     if ( (slotsPassengers - 1) >= 0 ) {
       nrPassengersList[timeHint] = slotsPassengers - 1
+      emit( 'passengersUpdated', totalSlotPassengers )    // let Time know Passenger total has changed.
     }
   }
 
@@ -205,6 +203,11 @@
     }
     return total
   })
+  // Let the Time parent know that the total number of passengers has changed.
+  // watch(totalSlotPassengers, function(newPassengersTotal) {
+  //     // console.log('Watching totalSlotPassengers:', newPassengersTotal )
+  //     emit( 'passengersUpdated', newPassengersTotal )
+  // })
 
 
   const formatHeaderDay = computed(() => {
@@ -242,12 +245,10 @@
     if (isFlSlide === false) {
       console.log('Watching isFlightSlide:', datesStore.getFlightDate() )
       clearAllPassengers()
+      selectedSlot.value = -1   // collapses any open add/remove passenger drawers if not FD
     }
   })
 
-  // function onFlightDateChanged(ev) {
-  //   console.log("onFlightDateChanged", ev)
-  // }
 
 
   function onSlotClick(ev, slotNr, slotPilots) {
