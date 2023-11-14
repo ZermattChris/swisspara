@@ -9,7 +9,7 @@ import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMon
  * Convert a js Date object to match our internal '2023-11-22' date format.
  * @param {Date} dateObj 
  */
-const formatDateToSimpleISO = function toSimpleISO(dateObj) {
+const formatDateToSimpleISO = (dateObj) => {
   //console.log("formatDateToSimpleISO -> dateObj:", dateObj)
   if (dateObj === '') return ''  // guard against manipulating an empty string (param must be a valid Date object)
 

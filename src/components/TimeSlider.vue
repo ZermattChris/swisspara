@@ -9,9 +9,19 @@
 	>
 
 	<!-- Next | Prev buttons -->
-	<div class="splide__arrows max-w-2xl mx-auto  relative  h-6 z-[1]">
+	<div class="flex justify-center splide__arrows max-w-2xl mx-auto  relative  h-6 z-[1]">
 
-		<div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex }} </div>
+		<!-- <div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex }} </div> -->
+
+        <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
+		<div class="flex items-center relative -top-4">
+			<div id="totalPassengersPill" 
+				class="rounded-full text-center font-black text-2xl pt-0 mr-2  border-amber-500 border-4  shadow-black/50   h-10 w-10 "
+			>
+				3
+			</div>
+			Passenger(s) in Total
+		</div>
 
 
 		<button class="splide__arrow splide__arrow--prev  w-12 h-12   p-1 pl-1.5   absolute   top-4 -left-2 md:-top-4  bg-white  border-[color:var(--booking-hilite)] border-2 rounded-full shadow-md">
@@ -106,7 +116,7 @@
 
 			const selectedSlideIndex = ref(-1)
 
-			const flightDate = ref(datesStore.getFlightDate())
+			const flightDate = datesStore.getFlightDate()
 
 			// const slideActive = ref(false);
 
@@ -114,7 +124,7 @@
 
 			const options = {
 				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.
-  				perMove    : 1,
+  			perMove    : 1,
 				snap   : true,
 				gap   : '0em',
 				focus  : 'center',

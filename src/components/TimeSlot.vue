@@ -7,8 +7,8 @@
 
     <!-- Header Box.  -->
     <div
-      class="time_slot_header py-1 text-xl shadow border-black/30 border-2 rounded-md text-center font-black"
-      :class=" [isSlideSelected ? ' ring-2 ring-black ring-inset' : '',  isFlightSlide ? 'bg-amber-500 ' : 'bg-black/70 text-white'  ] "
+      class="time_slot_header py-1 text-xl  rounded-md text-center font-black   border-black/30 border-2"
+      :class=" [isSlideSelected ? ' ring-2 ring-black ' : '',  isFlightSlide ? 'bg-amber-500 ' : 'bg-black/70 text-white'  ] "
     >
 
       <span 
@@ -33,7 +33,7 @@
       </span>
 
       <span 
-        class="font-normal inline-block w-full text-lg shadow-md"
+        class="font-normal inline-block w-full text-lg "
       >
         {{ formatHeaderDate }}
         <!-- <br/>({{ totalSlotPassengers }})
@@ -55,10 +55,10 @@
         <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
         <span 
           v-if="(pilots > 0 && isSlideSelected && slotsCurrPassengerCount(timeHint) > 0 )" 
-          class="absolute -right-6 top-1 z-50 "
+          class="absolute -right-6 top-2.5 z-50 "
         >
           <button :id="`nrPassPill_${slideIndex}_${index}`" 
-            class="rounded-full font-black text-xl  bg-amber-500  shadow-black/50   h-12 w-12    outline outline-offset-2 outline-amber-500 "
+            class="rounded-full font-black text-xl  bg-white shadow-black/50   h-10 w-10    outline outline-amber-500 "
             @click="onAddPilot(selectedSlot, timeHint)"
           >
             {{ slotsCurrPassengerCount(timeHint) }}
@@ -139,6 +139,8 @@
 
 <script setup>
   import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw } from 'vue'
+  
+	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
 
 	// Calendar Utils.
 	import {calendarUtils as calUtils} from '@components/booking/calendarUtils.js'
@@ -153,6 +155,8 @@
     flightDate: [String]
   })
 
+  // ----------- Events ------------
+  // const emit = defineEmits(['flightDateChanged'])
 
   const selectedSlot = ref(-1)
 
@@ -161,17 +165,14 @@
 
   function onAddPilot(slotNr, timeHint) {
     // console.log("onAddPilot. timeHint:", timeHint )
-
     const availPassengers = slotsMaxPassengerCount(timeHint)
-    //console.log("nrPassengers:", availPassengers )
     const slotsPassengers = nrPassengersList[timeHint]
-    //console.log("slotsPassengers:", slotsPassengers )
-
     // // Guard against adding too many passengers.
     if ( (slotsPassengers + 1) <= availPassengers ) {
       nrPassengersList[timeHint] = slotsPassengers + 1
+      // Make this the current Flight Date (FD)
+      datesStore.setFlightDate( new Date( Date.parse(props.date) ) )
     }
-    //console.log("Slot's Passengers", timeHint, nrPassengersList[timeHint] )
 
   }
 
@@ -229,13 +230,25 @@
 
   const isSlideSelected = computed(() => {
     //console.log(props.flightDate)
-    return (props.slideIndex) === props.selectedSlide
+    return props.slideIndex === props.selectedSlide
   })
   
   const isFlightSlide = computed(() => {
-    //console.log("isFlightSlide", props.date === props.flightDate)
-    return props.date === props.flightDate
+    //console.log("isFlightSlide", props.flightDate)
+    return props.date === datesStore.getFlightDate()
   })
+  // Let other slides know that we're in charge now (so they can clear their passengers lists)
+  watch(isFlightSlide, function(isFlSlide) {
+    if (isFlSlide === false) {
+      console.log('Watching isFlightSlide:', datesStore.getFlightDate() )
+      clearAllPassengers()
+    }
+  })
+
+  // function onFlightDateChanged(ev) {
+  //   console.log("onFlightDateChanged", ev)
+  // }
+
 
   function onSlotClick(ev, slotNr, slotPilots) {
     //console.log("onSlotClick", ev)
