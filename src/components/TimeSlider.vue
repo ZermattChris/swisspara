@@ -104,7 +104,7 @@
 
 			const mySplide = ref();
 
-			const selectedSlideIndex = ref(3)
+			const selectedSlideIndex = ref(-1)
 
 			const flightDate = ref(datesStore.getFlightDate())
 
@@ -114,8 +114,7 @@
 
 			const options = {
 				start: selectedSlideIndex.value,				// Needs to be set onMount from store, to current flight DAte.
-
-  			perMove    : 1,
+  				perMove    : 1,
 				snap   : true,
 				gap   : '0em',
 				focus  : 'center',
@@ -148,19 +147,6 @@
 				selectedSlideIndex.value = newIndex
 			}
 
-			// // Splide moved event.
-			// function onSplideMoved(evSplide, newIndex, prevIndex) {
-			// 	if ( newIndex + 1 === evSplide.length) {
-			// 		console.log( "On last slide, need to disable the wonky Next arrow...")
-			// 		const elem = document.getElementsByClassName("splide__arrow--next")[0]
-			// 		console.log( elem.disabled )
-  		// 		elem.setAttribute('disabled', '')
-			// 		console.log( elem.disabled )
-			// 		console.log( elem )
-			// 	}
-			// }
-
-
 			// Splide move event.
 			function onSplideClick(slide, ev) {
 				//console.log("onSplideClick: ", ev.index)
@@ -168,26 +154,29 @@
 				mySplide.value.go(ev.index)
 			}
 
-			// // Custom click handler to select the 'slide' the user clicks on
-			// // and make it active.
-			// function onSelectSlide(ev) {
-			// 	//console.log('ev', ev.target)
-			// 	const clickedSlideIndex = parseInt( ev.target.getAttribute("data-slide-id") ) - 1 		// slides are zero indexed.
-			// 	console.log("onSelectSlide", clickedSlideIndex)
-
-			// 	// Finally found the Splide functions. Wow.
-			// 	const goTo = mySplide.value.$.proxy.go
-			// 	goTo(clickedSlideIndex)
-
-			// 	ev.preventDefault()
-
-			// }
-
+			// Find the Slide index that matches the FlightDate (FD)
+			function findSlideIndex() {
+				const fd = datesStore.getFlightDate()
+				const keys = Object.keys(props.data)
+				let x = 0
+				for (const index in keys) {
+					//console.log("index", index, keys[index], fd)
+					if ( keys[index] == fd ) {
+						// Found day index for FlightDate 
+						console.log("Found Slide Nr: ", index, keys[index])
+						return x	// found the matching index!
+					}
+					x++
+				}
+				return -1 // Failed.
+			}
 
 			onMounted( () => {
-				// if ( splide.value && splide.value.splide ) {
-				// 	console.log( splide.value.splide.length );
-				// }
+
+				// Need to set the initial slide to match the FlightDate.
+				selectedSlideIndex.value = findSlideIndex()
+				mySplide.value.go(selectedSlideIndex.value)		// Needs updating manually.
+
 			})
 
 	
@@ -207,18 +196,6 @@
 
 	}
 
-
-	// 	onMounted(() => {
-	//   // block esc key from closing dialog.
-	//   document.addEventListener('keydown', makeDialogModal)
-	// })
-
-	// onUnmounted(() => {
-	//   // block esc key from closing dialog.
-	//   document.removeEventListener('keydown', makeDialogModal)
-	// })
-
-	// function makeDialogModal(e) {
 
 	);
 </script>

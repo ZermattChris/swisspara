@@ -40,17 +40,6 @@ const _readFlightDateFromLocalStorage = () => {
     return ''
   }
 
-  // // Looking for the Undefined error.
-  // if (rawInput === undefined) {
-  //   console.log("<- Found undefined in getFlightDate()")
-  //   return ''
-  // }
-  // // Looking for the NaN error.
-  // if (Number.isNaN(rawInput)) {
-  //   console.log("<- Found NaN in getFlightDate()")
-  //   return ''
-  // }
-
   return localStorage.flightDate ? formatDateToSimpleISO( new Date( Date.parse(rawInput) ) ) : ''
 
 }

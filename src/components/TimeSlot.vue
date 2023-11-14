@@ -44,7 +44,7 @@
           v-if="(pilots > 0 && isSlideSelected && slotsCurrPassengerCount(timeHint) > 0 )" 
           class="absolute -right-6 top-1 z-50 "
         >
-          <button id="plusBtn" 
+          <button :id="`nrPassPill_${slideIndex}_${index}`" 
             class="rounded-full font-black text-xl  bg-amber-500  shadow-black/50   h-12 w-12    outline outline-offset-2 outline-amber-500 "
             @click="onAddPilot(selectedSlot, timeHint)"
           >
@@ -68,7 +68,7 @@
 
           {{ timeHint }}
 
-          <button id="plusBtn" 
+          <button 
             class="rounded-full  px-4 h-8 ml-3 font-black text-md  bg-white  outline outline-offset-2 outline-amber-500 "
           >
              {{ pilots - slotsCurrPassengerCount(timeHint) }} places free 
@@ -91,7 +91,7 @@
           class="flex items-center justify-between w-full top-[57px] left-0 z-[10]  p-0 pt-2  "
         >
           <!-- Details Box {{ selectedSlot }} -->
-          <button id="minusBtn" 
+          <button :id="`minusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
             @click="onRemovePilot(selectedSlot, timeHint)"
           >
@@ -103,7 +103,7 @@
             </svg>
           </button>
           {{ slotsCurrPassengerCount(timeHint) }} Passengers
-          <button id="plusBtn" 
+          <button :id="`plusBtn_${slideIndex}_${index}`" 
             class="rounded-full bg-amber-500 shadow-md shadow-black/50"
             @click="onAddPilot(selectedSlot, timeHint)"
           >
