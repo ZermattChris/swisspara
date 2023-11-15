@@ -185,31 +185,24 @@
     // Create a 'copy' of the dayObject and use it to track how many passengers
     // have been added to a given time slot. Zero out the original 'pilots' as 
     // they're now holding nr of Passengers.
-    // --> Use the cached data if available, otherwise create a dayObject copy to 
+    // --> Use the cached data if available for the FD, otherwise create a dayObject copy to 
     //     start off with (and save it)
-
-
-    // not correct yet. needs to only load the FD cached data. 
-    // console.log("isFlightSlide",isFlightSlide)
+    
     if (isFlightSlide.value) {
       if ( Object.keys(timeSlotStore.getTimeSlotsPassengersList()).length === 0 ) {
-        console.log("No cached passengers in Slot list")
+        //console.log("No cached passengers in Slot list")
         Object.assign(nrPassengersList, props.dayObject)    // copy incoming dayObject.
         clearAllPassengers()
         timeSlotStore.setTimeSlotsPassengersList(nrPassengersList)    // save to cache.
       } else {
         nrPassengersList = timeSlotStore.getTimeSlotsPassengersList()
-        console.log("-> Cached passengers in Slot list", nrPassengersList)
+        //console.log("-> Cached passengers in Slot list", nrPassengersList)
       }
     } else {
-
-      console.log("NOT Flight Slide. Just copying dayObj to passengers list...")
+      //console.log("NOT Flight Slide. Just copying dayObj to passengers list...")
       Object.assign(nrPassengersList, props.dayObject)    // copy incoming dayObject.
       clearAllPassengers()
-
     }
-
-
 
   })
 
@@ -219,7 +212,7 @@
     for (const slotTime in nrPassengersList) {
       nrPassengersList[slotTime] = 0
     }
-    console.log("CLEARED nrPassengersList", nrPassengersList)
+    //console.log("CLEARED nrPassengersList", nrPassengersList)
   }
 
 
