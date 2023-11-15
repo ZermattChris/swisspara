@@ -105,12 +105,12 @@ const _buildFlightList = () => {
 	let daySlotsObj = {}
 
 	// First possible flight date is today (not arrival date)
-	console.log("isBefore(arrDate, today): ", isBefore(arrDate, today))
+	//console.log("isBefore(arrDate, today): ", isBefore(arrDate, today))
 	if ( isBefore(arrDate, today) ) arrDate = today
 	
 	let nrFlightDays = differenceInDays( depDate, arrDate ) + 1
 	// if (nrFlightDays === 0) nrFlightDays = 1		// Always show at least one day!
-	console.log("nrFlightDays: ", differenceInDays( arrDate, depDate ))
+	//console.log("nrFlightDays: ", differenceInDays( arrDate, depDate ))
     
 	for (let i = 0; i < nrFlightDays; i++) {
 		//console.log("Flight Day: ", i)

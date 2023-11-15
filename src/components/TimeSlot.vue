@@ -58,7 +58,7 @@
           class="absolute -right-6 top-2.5 z-50 "
         >
           <button :id="`nrPassPill_${slideIndex}_${index}`" 
-            class="rounded-full font-black text-xl  bg-white shadow-black/50   h-10 w-10    outline outline-amber-500 "
+            class="rounded-full font-black text-xl  bg-white shadow-md shadow-black/50   h-11 w-11    border-amber-500 border-4 "
             @click="onAddPassenger(selectedSlot, timeHint)"
           >
             {{ slotsCurrPassengerCount(timeHint) }}
@@ -70,25 +70,38 @@
         <span v-if="(pilots == 0)" class="text-orange-700 italic">
           {{ timeHint }} :: Fully Booked
         </span>
+
+        <!-- Flight Available. Show Time hint and Places Free.  -->
         <span 
           v-if="(pilots > 0)" 
-          :class="(slotsCurrPassengerCount(timeHint) > 0) ? 'font-black' : ''"
         >
           
           <svg class="w-6 h-6 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" >
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
 
-          {{ timeHint }}
+
+          <span 
+            v-if="(pilots > 0)" 
+            :class="(slotsCurrPassengerCount(timeHint) > 0) ? '' : ''"
+          >
+            {{ timeHint }}
+          </span>
 
           <button 
-            class="rounded-full  px-4 h-8 ml-3 font-black text-md  bg-white  outline outline-offset-2 outline-amber-500 "
+            class="rounded-full  px-4 h-8 ml-3  text-md  font-black bg-white  outline outline-offset-2  "
+            :class="[
+              (slotsCurrPassengerCount(timeHint) > 0) ? 'outline-amber-500' : 'outline-black/30', 
+              (pilots - slotsCurrPassengerCount(timeHint) == 0) ? 'text-black/60' : '', 
+            ]"
           >
              {{ pilots - slotsCurrPassengerCount(timeHint) }} places free 
           </button>
 
 
         </span>
+
+        <!-- Flight Not Available for this slot.  -->
         <span 
           v-if="(pilots == -1)"
           class="italic text-black/60"
@@ -141,9 +154,10 @@
 </template>
 
 <script setup>
-  import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw } from 'vue'
+  import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw, onUpdated } from 'vue'
   
 	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
+	import {pageTimeSlotsStore as timeSlotStore} from '@stores/pageTimeSlotsStore.js' 
 
 	// Calendar Utils.
 	import {calendarUtils as calUtils} from '@components/booking/calendarUtils.js'
@@ -159,13 +173,17 @@
   })
 
   // ----------- Events ------------
-  const emit = defineEmits(['passengersUpdated'])
+  const emit = defineEmits(['passengersUpdated', 'pagevalid'])
 
   const selectedSlot = ref(-1)
 
   const nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
 
 
+  onUpdated( () => {
+    console.log('-> Sending event from TimeSlot to TimeSlider. updated PAGE TimeSLOT')
+    emit( 'pagevalid', 'TimeSlot', timeSlotStore.isPageValid() )        // sends event back to 'App'
+  })
 
 
   function onAddPassenger(slotNr, timeHint) {
@@ -248,7 +266,7 @@
   // Let other slides know that we're in charge now (so they can clear their passengers lists)
   watch(isFlightSlide, function(isFlSlide) {
     if (isFlSlide === false) {
-      console.log('Watching isFlightSlide:', datesStore.getFlightDate() )
+      //console.log('Watching isFlightSlide:', datesStore.getFlightDate() )
       clearAllPassengers()
       selectedSlot.value = -1   // collapses any open add/remove passenger drawers if not FD
     }
@@ -286,15 +304,11 @@
     Object.assign(nrPassengersList, props.dayObject)
     clearAllPassengers()
 
+    //console.log("nrPassengersList",nrPassengersList)
+
   })
 
-  // onUnmounted(() => {
-  //   console.log('onUnmounted', props.slideIndex, isSlideSelected.value)
-  // })
-
-  // function makeDialogModal(e) {
-
-  // }
+	
 
   defineExpose({
     onMounted,

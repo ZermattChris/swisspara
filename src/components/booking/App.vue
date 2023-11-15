@@ -207,7 +207,7 @@
              * @param {Bool} isValid 
              */
             onPageValidEvent(pageName, isValid) {
-                //onsole.log("pageName:", pageName + '.', " isValid:", isValid)
+                console.log("APP PageName:", pageName + '.', " isValid:", isValid)
                 this.isPageValid = isValid
 
                 // set focus to Next Button

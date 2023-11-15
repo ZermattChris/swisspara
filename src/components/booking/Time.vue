@@ -29,6 +29,7 @@
 		<TimeSlider
 			v-if="loading === false"
 			:data="timeSlotList"
+			@pagevalid="onTimeSliderUpdated"		
 		></TimeSlider>
 	</div>	<!-- End: Wrapper -->
 
@@ -47,6 +48,9 @@
 	import TimeSlider from "@components/TimeSlider.vue"
 	import TimeSlot from "@components/TimeSlot.vue"
 
+	// import { getCurrentInstance } from 'vue'
+	
+
 	export default {
 		name: 'PageTime',
 			
@@ -60,7 +64,7 @@
 		
 		data() {
 			return {
-				
+				myValid: store.isPageValid(),
 			}
 		},
 
@@ -69,6 +73,9 @@
 			store.initialize()
 		},
 
+		// updated() {
+		// 	console.log('updated PAGE Time')
+		// },
 
 
 		computed: {
@@ -87,20 +94,46 @@
 			},
 
 			/**
+			 * NOTE: Not catching 'change' on the sub components. Page Validation is failing...
+			 * 
 			 * This computed value is requried by the base '_Page' class.
 			 * It is tightly coupled, but lets the base handle all event
 			 * work for all child Pages in the same manner.
 			 */
 			_isPageValid() {
-				return true
+
+				// const instance = getCurrentInstance()
+				// console.log("this.$parent: ", this.$parent )
+  			// instance.proxy.$forceUpdate()
+				// this.$parent.emitPageValidity()
+				// this.$emit( 'pagevalid', pageName, isPageValid ) 
+
+				console.log("_isPageValid XXX: ", store.isPageValid() )
+				//$emit( 'pagevalid', 'PageTime', store.isPageValid() )
+				// this.test()
+				//console.log("this", this)
+				return store.isPageValid()
 			},
 
 		}, // computed
 
 		methods: {
 
-		} // methods.
+      onTimeSliderUpdated(componentName, isValidFlag) {
+				console.log("---> (Time) onTimeSliderUpdated:", componentName, isValidFlag )
+    		this.$emit( 'pagevalid', 'TimeSlider', isValidFlag)        // sends event back to 'App'
+      }
 
+		}, // methods.
+
+
+		watch: {
+			// // Update when the current Page name changes.
+			// 'myValid.value'(newValid) {
+			//     console.log("-> newValid: ", newValid)
+			//     // this.currPage = newPage
+			// }
+		}, // watch
 
 	}
 

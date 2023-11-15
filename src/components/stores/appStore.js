@@ -5,7 +5,6 @@ import { reactive, markRaw  } from 'vue'
 export const appStore = reactive({
 
 
-
 	page: +localStorage.page || 1,
 
 	// pageIndex: ComponentObject: {}

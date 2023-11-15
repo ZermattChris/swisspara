@@ -64,6 +64,7 @@
 						:selectedSlide="selectedSlideIndex"
 						:flightDate="flightDate"
 						@passengers-updated="onPassengerCount"
+						@pagevalid="onTimeSlotUpdated"
 					>
 					</TimeSlot>
 
@@ -86,13 +87,14 @@
 <script>
 
 	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
+	import {pageTimeSlotsStore as store} from '@stores/pageTimeSlotsStore.js' 
 
 	import TimeSlot from "@components/TimeSlot.vue"
 
 	import { Splide, SplideSlide, SplideTrack } from '@splidejs/vue-splide'
 	import '@splidejs/vue-splide/css/core'
 
-	import { defineComponent, defineProps, ref, onMounted } from 'vue';
+	import { defineComponent, defineProps, ref, onMounted, onUpdated } from 'vue';
 	
 	
 	export default defineComponent( {
@@ -104,6 +106,8 @@
 			TimeSlot,
 		},
 
+		// ----------- Events ------------
+		emits: ['pagevalid'],
 
 		// ----------- Props ------------
 		props: ({
@@ -111,12 +115,12 @@
 		}),
 	
 	
-		setup(props) {
+		setup(props, { emit }) {
 
 			const mySplide = ref();
 
 			const selectedSlideIndex = ref(-1)
-			const totalPassengers = ref(0)
+			const totalPassengers = ref(store.getTotalPassengers())
 
 			const flightDate = datesStore.getFlightDate()
 
@@ -145,9 +149,19 @@
 			// 	slideActive.value = selectedSlideIndex.value
 			// }
 
+
+			function onTimeSlotUpdated(componentName, isValidFlag) {
+				console.log("-> (TimeSlider) onTimeSlotUpdated:", componentName, isValidFlag )
+    		emit( 'pagevalid', 'TimeSlider', isValidFlag)        // sends event back to 'App'
+			}
+
+
+
 			function onPassengerCount(passengerCount) {
-				// console.log("passengerCount: ", passengerCount)
+				// console.log("passengerCount: ", passengerCount.value)
 				totalPassengers.value = passengerCount
+				// Update the Store.
+				store.setTotalPassengers(passengerCount)
 			}
 
 			// Splide move event.
@@ -179,7 +193,7 @@
 					//console.log("index", index, keys[index], fd)
 					if ( keys[index] == fd ) {
 						// Found day index for FlightDate 
-						console.log("Found Slide Nr: ", index, keys[index])
+						//console.log("Found Slide Nr: ", index, keys[index])
 						return x	// found the matching index!
 					}
 					x++
@@ -195,8 +209,14 @@
 
 			})
 
+
+			// onUpdated( () => {
+			// 	console.log('updated PAGE TimeSlider')
+			// })
 	
 			return { 
+				emit,
+				onTimeSlotUpdated,
 				mySplide, 
 				options, 
 				// slideActive,
