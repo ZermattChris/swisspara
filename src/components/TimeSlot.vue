@@ -177,7 +177,51 @@
 
   const selectedSlot = ref(-1)
 
-  const nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
+  let nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
+
+  
+  onMounted(() => {
+
+    // Create a 'copy' of the dayObject and use it to track how many passengers
+    // have been added to a given time slot. Zero out the original 'pilots' as 
+    // they're now holding nr of Passengers.
+    // --> Use the cached data if available, otherwise create a dayObject copy to 
+    //     start off with (and save it)
+
+
+    // not correct yet. needs to only load the FD cached data. 
+    // console.log("isFlightSlide",isFlightSlide)
+    if (isFlightSlide.value) {
+      if ( Object.keys(timeSlotStore.getTimeSlotsPassengersList()).length === 0 ) {
+        console.log("No cached passengers in Slot list")
+        Object.assign(nrPassengersList, props.dayObject)    // copy incoming dayObject.
+        clearAllPassengers()
+        timeSlotStore.setTimeSlotsPassengersList(nrPassengersList)    // save to cache.
+      } else {
+        nrPassengersList = timeSlotStore.getTimeSlotsPassengersList()
+        console.log("-> Cached passengers in Slot list", nrPassengersList)
+      }
+    } else {
+
+      console.log("NOT Flight Slide. Just copying dayObj to passengers list...")
+      Object.assign(nrPassengersList, props.dayObject)    // copy incoming dayObject.
+      clearAllPassengers()
+
+    }
+
+
+
+  })
+
+
+
+  function clearAllPassengers() {
+    for (const slotTime in nrPassengersList) {
+      nrPassengersList[slotTime] = 0
+    }
+    console.log("CLEARED nrPassengersList", nrPassengersList)
+  }
+
 
 
   onUpdated( () => {
@@ -200,6 +244,7 @@
       emit( 'passengersUpdated', totalSlotPassengers )    // let Time know Passenger total has changed.
       // Make this the current Flight Date (FD)
       datesStore.setFlightDate( new Date( Date.parse(props.date) ) )
+      timeSlotStore.setTimeSlotsPassengersList(nrPassengersList)    // save to cache.
     }
 
   }
@@ -211,6 +256,7 @@
     if ( (slotsPassengers - 1) >= 0 ) {
       nrPassengersList[timeHint] = slotsPassengers - 1
       emit( 'passengersUpdated', totalSlotPassengers )    // let Time know Passenger total has changed.
+      timeSlotStore.setTimeSlotsPassengersList(nrPassengersList)    // save to cache.
     }
   }
 
@@ -228,6 +274,7 @@
     for (const slotTime in nrPassengersList) {
       total += nrPassengersList[slotTime]
     }
+		// console.log("nrPassengersList: ", nrPassengersList)
     return total
   })
   // Let the Time parent know that the total number of passengers has changed.
@@ -291,26 +338,6 @@
 
   }
 
-
-
-  function clearAllPassengers() {
-    for (const slotTime in nrPassengersList) {
-      nrPassengersList[slotTime] = 0
-    }
-    // console.log("nrPassengersList", nrPassengersList)
-  }
-
-  onMounted(() => {
-
-    // Create a 'copy' of the dayObject and use it to track how many passengers
-    // have been added to a given time slot. Zero out the original 'pilots' as 
-    // they're now holding nr of Passengers.
-    Object.assign(nrPassengersList, props.dayObject)
-    clearAllPassengers()
-
-    //console.log("nrPassengersList",nrPassengersList)
-
-  })
 
 	
 

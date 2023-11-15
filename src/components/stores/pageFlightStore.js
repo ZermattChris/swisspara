@@ -33,7 +33,7 @@ export const pageFlightStore = reactive({
             console.log("Bad cache data, doing new API call.")
             this.callAPI()
             return
-        }
+        } 
         
         const unwrappedObj = toRaw(this._flightsList[0])
         if ( Object.keys(unwrappedObj).length === 0 ) {

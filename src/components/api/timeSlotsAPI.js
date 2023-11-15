@@ -5,30 +5,29 @@ import api from "./_apiBase.js"
 
 export default {
 
-    get() {
+	get() {
 
-        if ( api.isLocalAPI() ) {
-            const loadingDelay = 500
+		if ( api.isLocalAPI() ) {
+			const loadingDelay = 500
 
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                resolve(
-					_buildFlightList()
-                );
-                }, loadingDelay);
-            });
-        }
+			return new Promise((resolve) => {
+				setTimeout(() => {
+					resolve(
+						_buildFlightList()
+					)
+				}, loadingDelay)
+			})
+		}
 
-        if ( api.isStagingAPI() ) {
-            console.warn("TODO: build Staging API call for timeSlotsAPI")
-            return 'TODO: Staging'
-        }
+		if ( api.isStagingAPI() ) {
+			console.warn("TODO: build Staging API call for timeSlotsAPI")
+			return 'TODO: Staging'
+		}
 
-        console.warn("TODO: build Live API call for timeSlotsAPI")
-        return 'TODO: Live'
+		console.warn("TODO: build Live API call for timeSlotsAPI")
+		return 'TODO: Live'
 
-
-    },
+	},
 
 }
 
@@ -121,6 +120,7 @@ const _buildFlightList = () => {
 
 
 	//console.log("daySlotsObj: ", daySlotsObj)
-	return daySlotsObj
+	return [daySlotsObj]	// wrapped in array to match the flights list format.
+
 
 }
