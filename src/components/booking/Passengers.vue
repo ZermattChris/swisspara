@@ -13,10 +13,17 @@
       <span class="italic">We never share any information with 3rd parties.</span>
     </p>
 
-    <vue-tel-input id="phone" type="tel"
-      v-model="phone" 
-      v-bind="bindPropsUserInfo"
-    ></vue-tel-input>
+    <MazPhoneNumberInput
+      class="pt-6"
+      v-model="phoneNumber"
+      show-code-on-list
+      :preferred-countries="['FR', 'BE', 'DE', 'US', 'GB']"
+      :ignored-countries="['AC']"
+      @update="results = $event"
+    />
+    <code>
+      {{ results }}
+    </code>
 
 
 	</div>
@@ -30,8 +37,11 @@
   // Parent component for all "Pages"
   import _Page from './_Page.vue'
 
-  import { VueTelInput } from 'vue3-tel-input'
-  import 'vue3-tel-input/dist/vue3-tel-input.css'
+  import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+  import 'maz-ui/css/main.css'
+
+  // import { VueTelInput } from 'vue3-tel-input'
+  // import 'vue3-tel-input/dist/vue3-tel-input.css'
 
   export default {
     name: 'PagePassengers',
@@ -40,29 +50,22 @@
     emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
     components: {
-			VueTelInput,
+			MazPhoneNumberInput,
 		},
 
 		data() {
 			return {
-				phone: ref(null),
-        bindPropsUserInfo: {
-          separateDialCode: true,
-        },
+        phoneNumber: ref(),
+        results: ref(),
 			};
 		},
 
     mounted() {
-      // const input = document.querySelector("#phone");
-      // VueTelInput(input, {
-      //   // any initialisation options go here
-      //     preferredCountries: ["in", "us", "ca"],
-      //     separateDialCode: true,
-      // })
+      
     },
 
 		created() {
-			console.log(VueTelInput)
+			
 		},
 
     computed: {
