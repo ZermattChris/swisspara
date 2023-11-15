@@ -75,8 +75,7 @@
   import _Page from './_Page.vue'
 
   // My Components
-	// import inputSelect from "@components/InputSelect.vue"
-	import FlightSelector from "@components/InputSelect2.vue"
+	import FlightSelector from "@components/FlightSelector.vue"
 	import PhotosToggle from "@components/Toggle.vue"
 	import Modal from "@components/Modal.vue"
 

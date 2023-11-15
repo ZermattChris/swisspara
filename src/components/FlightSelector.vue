@@ -2,7 +2,6 @@
 	<div class="w-full px-4 py-4">
 	  <div class="mx-auto w-full max-w-md">
 		<RadioGroup v-model="currentId">
-		  <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
 		  <div class="space-y-3">
 			<RadioGroupOption
 			  as="template"
