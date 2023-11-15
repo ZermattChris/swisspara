@@ -151,7 +151,12 @@
 
 
 			function onTimeSlotUpdated(componentName, isValidFlag) {
-				console.log("-> (TimeSlider) onTimeSlotUpdated:", componentName, isValidFlag )
+				// Had lots of issues figuring out that events do NOT bubble upwards
+				// past the immediate Parent of the object calling the event.
+				// Used manual event upwards passing to sort this, as it kept the 
+				// Page validation mechanism cleaner than injecting some sort of
+				// 'flag' into the appStore. Ugly, but works (wish there was a bubble=true option)
+				// console.log("-> (TimeSlider) onTimeSlotUpdated:", componentName, isValidFlag )
     		emit( 'pagevalid', 'TimeSlider', isValidFlag)        // sends event back to 'App'
 			}
 

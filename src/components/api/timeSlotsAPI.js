@@ -13,7 +13,7 @@ export default {
             return new Promise((resolve) => {
                 setTimeout(() => {
                 resolve(
-									_buildFlightList()
+					_buildFlightList()
                 );
                 }, loadingDelay);
             });

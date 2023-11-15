@@ -94,9 +94,11 @@ export const flightDateStore = reactive({
   },
   // Recieving a js Date() object here.
   setFlightDate(flDate) {
-    this.flightDate = formatDateToSimpleISO(flDate)
-    // Strip out timezone and hours:mins:secs
-    //console.log("this.flightDate", this.flightDate)
+    const newFD = formatDateToSimpleISO(flDate)
+    if ( newFD == this.flightDate ) return  // nothing's changed.
+      
+    this.bustFlightsCache() // Bust flightsList cache if date has changed.
+    this.flightDate = newFD
     localStorage.flightDate = this.flightDate
   },
 
@@ -110,10 +112,11 @@ export const flightDateStore = reactive({
   },
   // Recieving a js Date() object here.
   setArriveDate(arrDate) {
-    // if ( arrDate === '') return   // stops saving "Invalid Date" to local storage.
-    this.arriveDate = formatDateToSimpleISO(arrDate)
+    const newAD = formatDateToSimpleISO(arrDate)
+    if ( newAD == this.arriveDate ) return  // nothing's changed.
 
-    // Strip out timezone and hours:mins:secs
+    this.bustFlightsCache() // Bust flightsList cache if date has changed.
+    this.arriveDate = newAD
     localStorage.arriveDate = this.arriveDate
   },//
 
@@ -131,12 +134,22 @@ export const flightDateStore = reactive({
   },
   // Recieving a js Date() object here.
   setDepartDate(dpDate) {
-    if ( dpDate === '') return   // stops saving "Invalid Date" to local storage.
-    this.departDate = formatDateToSimpleISO(dpDate)
-    // Strip out timezone and hours:mins:secs
+
+    const newDP = formatDateToSimpleISO(dpDate)
+    if ( newDP == this.departDate ) return  // nothing's changed.
+
+    this.bustFlightsCache() // Bust flightsList cache if date has changed.
+    this.departDate = newDP
     localStorage.departDate = this.departDate
   },
 
+
+  // Flights Cache buster.
+  // Delete the cache in localStorage, causing the API call to run again
+  // when needing the Flights List.
+  bustFlightsCache() {
+    localStorage._cacheFlightsList = ''
+  },
 
 })
 

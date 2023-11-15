@@ -181,7 +181,11 @@
 
 
   onUpdated( () => {
-    console.log('-> Sending event from TimeSlot to TimeSlider. updated PAGE TimeSLOT')
+    // Had lots of issues figuring out that events do NOT bubble upwards
+    // past the immediate Parent of the object calling the event.
+    // Used manual event upwards passing to sort this, as it kept the 
+    // Page validation mechanism cleaner than injecting some sort of
+    // 'flag' into the appStore. Ugly, but works (wish there was a bubble=true option)
     emit( 'pagevalid', 'TimeSlot', timeSlotStore.isPageValid() )        // sends event back to 'App'
   })
 

@@ -69,7 +69,7 @@
 		},
 
 		created() {
-			//console.log("Date component mounted")
+			// console.log("Time.vue component created()")
 			store.initialize()
 		},
 
@@ -101,17 +101,6 @@
 			 * work for all child Pages in the same manner.
 			 */
 			_isPageValid() {
-
-				// const instance = getCurrentInstance()
-				// console.log("this.$parent: ", this.$parent )
-  			// instance.proxy.$forceUpdate()
-				// this.$parent.emitPageValidity()
-				// this.$emit( 'pagevalid', pageName, isPageValid ) 
-
-				console.log("_isPageValid XXX: ", store.isPageValid() )
-				//$emit( 'pagevalid', 'PageTime', store.isPageValid() )
-				// this.test()
-				//console.log("this", this)
 				return store.isPageValid()
 			},
 
@@ -120,7 +109,12 @@
 		methods: {
 
       onTimeSliderUpdated(componentName, isValidFlag) {
-				console.log("---> (Time) onTimeSliderUpdated:", componentName, isValidFlag )
+				// Had lots of issues figuring out that events do NOT bubble upwards
+				// past the immediate Parent of the object calling the event.
+				// Used manual event upwards passing to sort this, as it kept the 
+				// Page validation mechanism cleaner than injecting some sort of
+				// 'flag' into the appStore. Ugly, but works (wish there was a bubble=true option)
+				// console.log("---> (Time) onTimeSliderUpdated:", componentName, isValidFlag )
     		this.$emit( 'pagevalid', 'TimeSlider', isValidFlag)        // sends event back to 'App'
       }
 

@@ -15,7 +15,7 @@
         methods: {
 
             emitPageValidity() {
-                console.log("emitPageValidity: ", this.$.type.name)
+                // console.log("emitPageValidity: ", this.$.type.name)
                 const pageName = this.$.type.name //'PageDate'
                 const isPageValid = this._isPageValid
                 this.$emit( 'pagevalid', pageName, isPageValid )        // sends event back to 'App'
