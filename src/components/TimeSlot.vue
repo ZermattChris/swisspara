@@ -54,7 +54,7 @@
 
         <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
         <span 
-          v-if="(pilots > 0 && isSlideSelected && slotsCurrPassengerCount(timeHint) > 0 )" 
+          v-if="(pilots > 0 && isFlightSlide && slotsCurrPassengerCount(timeHint) > 0 )" 
           class="absolute -right-6 top-2.5 z-50 "
         >
           <button :id="`nrPassPill_${slideIndex}_${index}`" 

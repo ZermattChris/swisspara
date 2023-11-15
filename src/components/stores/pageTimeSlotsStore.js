@@ -27,40 +27,18 @@ export const pageTimeSlotsStore = reactive({
 
 	},
 
-
+	// Count all of the passengers in the current Flight Date.
 	getTotalPassengers() {
-
-		// Count all of the passengers in the current Flight Date.
-		//console.log("this._timeSlotsList: ", this._timeSlotsPassengersList)
 		let passengerCount = 0
-
-		// const tslUnwrapped = this._timeSlotsList[0]
-
     for (const timeHint in this._timeSlotsPassengersList) {
-			// console.log("timeHint: ", timeHint)
       passengerCount +=  this._timeSlotsPassengersList[timeHint]
-			//console.log("passengerCount: ", passengerCount)
-
-			// console.log("timeSlots: ", timeSlots)
-
-			// // Loop through each of the time slots in the timeSlots object.
-			// for (const aSlot in timeSlots) {
-			// 	console.log("aSlot: ", aSlot, ':', timeSlots[aSlot])
-			// 	if ( timeSlots[aSlot] < 1) continue
-			// 	passengerCount += timeSlots[aSlot]
-			// 	console.log("passengerCount: ", passengerCount)
-			// }
-
     }
-		console.log("Total Passengers: ", passengerCount)
 		this._totalPassengers = passengerCount
-
 		return this._totalPassengers
 	},
+
 	setTotalPassengers(nrPassInt) {
-		//console.log("nrPassInt: ", toValue(nrPassInt))
 		this._totalPassengers = toValue(nrPassInt)       // for some reason the event is giving a '_value' that needs converting here.
-		// localStorage.totalPassengers = this._totalPassengers 
 	},
 
 
