@@ -40,17 +40,20 @@ export const appStore = reactive({
 		const nrPageItems = this._nrOfPageItems()
 		if ( nrPageItems == 0 ) return
 
+		console.log("this.pageItems", this.pageItems)
+
 		//----------- Check for previous invalid pages -----------
 		for (let x = 1; x <= nrPageItems; x++) {
 			//console.log('page component:', this.pageItems[x].component.name, this.pageItems[x])
+			//console.log("this.pageItems[x].", this.pageItems[x])
 			const thisPageValid = this.pageItems[x].component.computed._isPageValid()
 			//console.log("Page", x ,thisPageValid)
 			if (thisPageValid === false) {
-				//console.log("Page", x ,thisPageValid)
+				console.log("Page", x ,thisPageValid)
 
 				// Only jump if this invalid page is less than current this.page.
 				if( x < this.page ) {
-					//console.log("=> Jumping to invalid page", x ,thisPageValid)
+					console.log("=> Jumping to invalid page", x, this.pageItems[x].component)
 					this.page = x			// update current Page var.
 					this._savePage()		// update localStorage.
 					break

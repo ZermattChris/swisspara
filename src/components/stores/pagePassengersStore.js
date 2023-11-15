@@ -1,10 +1,6 @@
 import { reactive } from 'vue'
 
-// import timeSlotsAPI from "@components/api/timeSlotsAPI.js"
-
-export const passengersStore = reactive({
-
-    _timeSlotList: {},
+export const pagePassengersStore = reactive({
 
 
     //---------------------

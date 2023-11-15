@@ -64,7 +64,7 @@
 		
 		data() {
 			return {
-				myValid: store.isPageValid(),
+				
 			}
 		},
 

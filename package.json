@@ -1,7 +1,7 @@
 {
   "name": "book1",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.3.0",
   "scripts": {
     "dev": "astro dev --host",
     "start": "astro dev",
@@ -10,15 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.0.2",
+    "@astrojs/sitemap": "^3.0.3",
     "@astrojs/tailwind": "^5.0.2",
-    "@astrojs/vue": "^3.0.2",
+    "@astrojs/vue": "^3.0.4",
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@splidejs/vue-splide": "^0.6.12",
-    "@vuepic/vue-datepicker": "^7.2.0",
+    "@vuepic/vue-datepicker": "^7.2.2",
     "alova": "^2.13.1",
-    "astro": "^3.4.0",
+    "astro": "^3.5.4",
     "date-fns": "^2.30.0",
     "tailwindcss": "^3.3.5",
     "vue": "^3.2.30"

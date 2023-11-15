@@ -2,38 +2,58 @@ import { reactive, toValue, toRaw } from 'vue'
 
 import timeSlotsAPI from "@components/api/timeSlotsAPI.js"
 
+
+
+// ========================= Helper functions   ===========================
+/**
+ * Moved this outside of reactive, so it can be loaded when the store loads,
+ * instead of relying on the initialize() to be called (needed for page valid)
+ */
+const countTotalPassengers = (tSLPL) => {
+	let passengerCount = 0
+	for (const timeHint in tSLPL) {
+		passengerCount += tSLPL[timeHint]
+	}
+	// this._totalPassengers = passengerCount
+
+	return passengerCount
+}
+
+const loadTimeSlotPassengersList = () => {
+	let tSLPL = {}
+	try {
+		tSLPL = localStorage._cacheTimeSlotsPassengerList ? JSON.parse(localStorage._cacheTimeSlotsPassengerList) : {}
+	} catch (error) {
+		// cache had bad data stored.
+		tSLPL = {}	// reset.
+	} 
+	return tSLPL
+}
+
+
+
+
+
+
 export const pageTimeSlotsStore = reactive({
 
-	// _timeSlotList: {},
-
-	_totalPassengers: 0,
-
-
 	_timeSlotsList: [{}],							// List of API returned dates/slots to display to user.
-	_timeSlotsPassengersList: {},		// The passengers added to the current Flight Date by the user.
+	_timeSlotsPassengersList: loadTimeSlotPassengersList(),		// The passengers added to the current Flight Date by the user.
 
+	_totalPassengers: countTotalPassengers( loadTimeSlotPassengersList() ),
 
 	loading: false,
-
-
-
 
 	// ---- Set up this page's data ----.
 	initialize() {
 		
 		this.loadTimeSlotList()
-		this.loadTimeSlotPassengersList()
-		this.getTotalPassengers()	// init total count from _timeSlotsPassengersList
+		loadTimeSlotPassengersList()
 
 	},
 
 	// Count all of the passengers in the current Flight Date.
 	getTotalPassengers() {
-		let passengerCount = 0
-    for (const timeHint in this._timeSlotsPassengersList) {
-      passengerCount +=  this._timeSlotsPassengersList[timeHint]
-    }
-		this._totalPassengers = passengerCount
 		return this._totalPassengers
 	},
 
@@ -41,19 +61,6 @@ export const pageTimeSlotsStore = reactive({
 		this._totalPassengers = toValue(nrPassInt)       // for some reason the event is giving a '_value' that needs converting here.
 	},
 
-
-
-
-	// ---- Init or load ----
-	loadTimeSlotPassengersList() {
-		try {
-			this._timeSlotsPassengersList = localStorage._cacheTimeSlotsPassengerList ? JSON.parse(localStorage._cacheTimeSlotsPassengerList) : {}
-		} catch (error) {
-			// cache had bad data stored.
-			this._timeSlotsPassengersList = {}	// reset.
-			return
-		} 
-	},
 
 	setTimeSlotsPassengersList(passengersList) {
 		//console.log("nrPassInt: ", toValue(passengersList))
@@ -120,7 +127,7 @@ export const pageTimeSlotsStore = reactive({
 		//console.log("this._totalPassengers : ", this._totalPassengers )
 
 		if (this._totalPassengers > 0) {
-			// console.log("this._totalPassengers true: ", this._totalPassengers )
+			console.log("this._totalPassengers true: ", this._totalPassengers )
 			result = true
 		}
 
