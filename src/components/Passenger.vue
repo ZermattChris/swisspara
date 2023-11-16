@@ -8,7 +8,6 @@
 		<!-- START Header box. Holds the Passenger's name and a 'Valid' icon.  -->
 		<header
 			class="flex justify-between px-4 py-4 border-b-[2px] rounded-t border-black/10   bg-gradient-to-r to-violet-50 from-black/5 "
-			:class="index === 1 ? 'font-bold' : '' "
 		>
 			<!-- Contact person envelope icon. -->
 			<svg 
@@ -20,9 +19,18 @@
 			</svg>
 
 			<div 
-				clas="grow"
+				clas="grow font-thin"
+				v-if="index === 1"
 				:class="index === 1 ? 'pl-2' : '' ">
-				Name (Contact Passenger)
+				<span class="font-bold">{{ contactName }}</span>
+				(Contact Passenger)
+			</div>
+
+			<div 
+				clas="grow"
+				v-if="index > 1"
+				:class="index === 1 ? 'pl-2' : '' ">
+				Passenger #{{ index }}
 			</div>
 
 			<svg 
@@ -58,7 +66,7 @@
 				:ignored-countries="['AC']"
 				size="md"
 				countrySelectorWidth="6rem"
-				@update="results = $event"
+				@update="phoneResults = $event"
 			/>
 			<code>
 				{{ phoneResults }}
@@ -87,6 +95,8 @@
 	const passengerValid = ref(true)
 	const phoneNumber = ref()
 	const phoneResults = ref()
+
+	const contactName = ref('Chris B.')
 
 
 	// ----------- Props ------------
