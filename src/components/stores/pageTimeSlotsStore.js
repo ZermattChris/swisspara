@@ -9,7 +9,7 @@ import timeSlotsAPI from "@components/api/timeSlotsAPI.js"
  * Moved this outside of reactive, so it can be loaded when the store loads,
  * instead of relying on the initialize() to be called (needed for page valid)
  */
-const countTotalPassengers = (tSLPL) => {
+export const countTotalPassengers = (tSLPL) => {
 	let passengerCount = 0
 	for (const timeHint in tSLPL) {
 		passengerCount += tSLPL[timeHint]
@@ -19,7 +19,7 @@ const countTotalPassengers = (tSLPL) => {
 	return passengerCount
 }
 
-const loadTimeSlotPassengersList = () => {
+export const loadTimeSlotPassengersList = () => {
 	let tSLPL = {}
 	try {
 		tSLPL = localStorage._cacheTimeSlotsPassengerList ? JSON.parse(localStorage._cacheTimeSlotsPassengerList) : {}
@@ -127,7 +127,7 @@ export const pageTimeSlotsStore = reactive({
 		//console.log("this._totalPassengers : ", this._totalPassengers )
 
 		if (this._totalPassengers > 0) {
-			console.log("this._totalPassengers true: ", this._totalPassengers )
+			//console.log("this._totalPassengers true: ", this._totalPassengers )
 			result = true
 		}
 

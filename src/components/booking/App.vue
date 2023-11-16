@@ -233,7 +233,7 @@
 
             // Test method.
             onResetLocalStorage() {
-                console.log("-> RESET LocalStorage")
+                console.warn("-> RESET LocalStorage")
                 appStore.resetLocalStorage()
                 location.reload() 
                 let span = document.getElementById('reset');
