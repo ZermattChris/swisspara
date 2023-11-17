@@ -65,19 +65,25 @@
 				</p> -->
 
 
-				<label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label>
-				<MazPhoneNumberInput
-					id="contactPhone"
-					class=" px-2"
-					v-model="phoneNumber"
-					show-code-on-list
-					noValidationSuccess
-					:preferred-countries="['CH', 'US', 'GB', 'KR', 'FR', 'NL', 'DE', 'SG']"
-					:ignored-countries="['AC']"
-					size="md"
-					countrySelectorWidth="6rem"
-					@update="onPhoneUpdated"
-				/>
+				<div class="relative">
+					<label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label>
+					<MazPhoneNumberInput
+						id="contactPhone"
+						class=" px-2"
+						v-model="phoneNumber"
+						show-code-on-list
+						noValidationSuccess
+						:preferred-countries="['CH', 'US', 'GB', 'KR', 'FR', 'NL', 'DE', 'SG']"
+						:ignored-countries="['AC']"
+						size="md"
+						countrySelectorWidth="6rem"
+						@update="onPhoneUpdated"
+					/>
+					<div v-if="phoneNumberValid === false && phoneNumber !== undefined"
+						class="pointer-events-none absolute inset-y-0 right-2 top-6 flex items-center pr-3 z-10">
+						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
+					</div>
+				</div>
 
 				<!-- Contact Email.  -->
 				<div class="px-2">
@@ -89,12 +95,26 @@
 						<input 
 							v-model="state.email" 
 							type="email" name="email" id="email" 
-							class="block w-full rounded-md border-0 py-2.5 pl-11 text-gray-900 ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
-							:class="(v$.email.$invalid && v$.email.$dirty) ? 'ring-red-700' : 'ring-gray-300' "
+							class="block w-full rounded-md border-0 py-2.5 pl-11 
+								ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
+								sm:text-sm sm:leading-6" 
+							:class="(v$.email.$invalid && v$.email.$dirty) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300' "
 							placeholder="you@example.com" 
 							@focusout="v$.email.$touch"
 						/>
+						<div v-if="v$.email.$invalid && v$.email.$dirty"
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+							<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
+						</div>
 					</div>
+
+
+					<!-- <input type="email" name="email" id="email" class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error" />
+      
+					<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
+					</div> -->
+
 					<!-- {{ v$.email.$dirty  }} -->
 					<!-- {{ console.log( v$.email.$invalid ) }} -->
 					<!-- <div class="input-errors" v-for="error of v$.email.$errors" :key="error.$uid">
@@ -137,7 +157,7 @@
   import 'maz-ui/css/main.css'
 
 	// Tailwind UI
-	import { EnvelopeIcon } from '@heroicons/vue/20/solid'
+	import { EnvelopeIcon, ExclamationCircleIcon } from '@heroicons/vue/20/solid'
 
 
 	// const passengerValid = ref(true)
@@ -167,9 +187,9 @@
 		index: [Number],
 	})
 
-	defineExpose({
-		v$,
-	})
+	// defineExpose({
+		
+	// })
 			
 	onMounted(() => {
 
@@ -224,7 +244,7 @@
 
 
 	button.m-phone-number-input__country-flag {
-		left: 20px !important;
+		left: 20px !important
 	}
 
 
