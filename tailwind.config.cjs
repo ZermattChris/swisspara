@@ -11,6 +11,7 @@ module.exports = {
 	},
 	plugins: [
 		// require('@vueform/vueform/tailwind'),
-		require('@vueform/slider/tailwind'),
+		// require('@vueform/slider/tailwind'),
+		require('@tailwindcss/forms'),
 	],
 }

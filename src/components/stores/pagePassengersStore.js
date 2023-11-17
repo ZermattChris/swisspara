@@ -29,6 +29,8 @@ export const pagePassengersStore = reactive({
 
     // Get if this 'Page' is valid or not. Used to manage the Prev/Next
     // buttons and breadcrumbs.
+    // -> Loop through the Passengers and check if the matching form Component
+    //    is valid or not.
     isPageValid() {
         let result = true
         return result
