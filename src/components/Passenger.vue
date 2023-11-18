@@ -63,11 +63,12 @@
 
 			<!-- ******************* Contact Person form inputs. ******************* -->
 			<div id="contactInputs"
+				class="pt-4"
 				v-if="index === 1"
 			>
 				<!-- Phone Number. -->
 				<div class="relative">
-					<label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label>
+					<!-- <label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label> -->
 					<MazPhoneNumberInput
 						id="contactPhone"
 						class=" px-2"
@@ -82,14 +83,14 @@
 						@focusout="onPhoneUpdated"
 					/>
 					<div v-if="phoneNumberValid === false && phoneNumber !== undefined"
-						class="pointer-events-none absolute inset-y-0 right-2 top-6 flex items-center pr-3 z-10">
+						class="pointer-events-none absolute inset-y-0 right-2 top-0.5 flex items-center pr-3 z-10">
 						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
 					</div>
 				</div>
 
 				<!-- Contact Email.  -->
-				<div class="px-2">
-					<label for="email" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Email</label>
+				<div class="px-2 pt-2">
+					<!-- <label for="email" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Email</label> -->
 					<div class="relative mt-1 rounded-md shadow-sm">
 						<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
 							<EnvelopeIcon class="w-6 text-gray-400" aria-hidden="true" />
@@ -110,19 +111,6 @@
 						</div>
 					</div>
 
-
-					<!-- <input type="email" name="email" id="email" class="block w-full rounded-md border-0 py-1.5 pr-10 text-red-900 ring-1 ring-inset ring-red-300 placeholder:text-red-300 focus:ring-2 focus:ring-inset focus:ring-red-500 sm:text-sm sm:leading-6" placeholder="you@example.com" value="adamwathan" aria-invalid="true" aria-describedby="email-error" />
-      
-					<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
-					</div> -->
-
-					<!-- {{ v$.email.$dirty  }} -->
-					<!-- {{ console.log( v$.email.$invalid ) }} -->
-					<!-- <div class="input-errors" v-for="error of v$.email.$errors" :key="error.$uid">
-						<div class="error-msg">{{ error.$message }}</div>
-					</div> -->
-
 				</div>
 
 				<!-- Get your phone and email right!  -->
@@ -137,7 +125,13 @@
 			</div>  <!-- ******************* END: Contact inputs. ******************* -->
 
 
+			<!-- ******************* Passenger form inputs. ******************* -->
+			<div id="contactInputs"
+				v-if="index >= 1"
+			>
+			name 
 
+			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
 
 			<div id="footer-spacer" class="h-6"></div>
@@ -209,38 +203,50 @@
 
 			
 	const isPassengerPanelValid = computed(() => {
-		console.log('phoneNumber:', phoneNumber.value )
-		console.log('phoneNumberValid:', phoneNumberValid.value )
 
-		// can be undefined, true or false.
-
-		// Contact Passenger only.
-		// if (props.index === 1 && (phoneNumberValid.value === false || phoneNumber.value === undefined) ) {
+		// Contact Passenger Phone + Email valid.
 		if (props.index === 1 ) {
-			// && ( phoneNumberValid.value === undefined || phoneNumberValid.value === false ) 
-			// problems with country code and/or phone nr being undefined.
-
-			// phoneNumberValid.value === undefined, means the phone is invalid.
-			if (phoneNumberValid.value === undefined && phoneNumber.value === undefined) {
-				console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )
-				return false
-			}
-			if (phoneNumberValid.value !== undefined && phoneNumberValid.value === false ) {
-				console.log('- phoneValid is FALSE. -> Form valid: false')
-				return false
-			}
-			// #HACK WARNING.
-			// The phone input keep setting its valid flag to undefined.
-
+			if (isContactInfoValid() === false) return false
 		}
 
-		if (props.index === 1 && v$.value.email.$invalid === true) return false
 		return true
+
 	})
+
 	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
     console.log('Form Valid changed', newValue, oldValue)
   })
 
+
+	function isContactInfoValid() {
+
+		// problems with country code and/or phone nr being undefined.
+		// FIXED -> Stopped the onPhoneUpdated() event from resetting to undefined,
+		//          which was causing all of the hair-pulling here.
+		
+		// console.log('phoneNumber:', phoneNumber.value )
+		// console.log('phoneNumberValid:', phoneNumberValid.value )
+		// can be undefined, true or false.
+
+
+		// phoneNumberValid.value === undefined, means the phone is invalid.
+		if (phoneNumberValid.value === undefined && phoneNumber.value === undefined) {
+			console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )
+			return false
+		}
+		if (phoneNumberValid.value !== undefined && phoneNumberValid.value === false ) {
+			console.log('- phoneValid is FALSE. -> Form valid: false')
+			return false
+		}
+
+		if (props.index === 1 && v$.value.email.$invalid === true) {
+			console.log('- Email is invalid')
+			return false
+		}
+		
+		return true
+
+	}
 
 </script>
 
