@@ -227,10 +227,10 @@
 		
 		// Load into our form fields, careful for undefined, etc.
 		if ( cache !== undefined ) {
+			if (cache.phone !== undefined) phoneNumber.value = cache.phone		// handle differently as funky phone input.
 			if (cache.name !== undefined) state.name = cache.name
+			if (cache.email !== undefined) state.email = cache.email
 
-
-			
 		}
 
 

@@ -113,8 +113,7 @@
         // console.log("Value:", ev.target.value)
         // console.log("fullphone:", ev.fullphone)   // passing this as not a basic form input (needs country code too)
         // let idx = ev.index
-        let updatedPassOjb = {}
-        updatedPassOjb[ev.index] = {
+        const updatedPassOjb = {
           'valid': ev.formValid,
           'phone': ev.phone,     // will be undefined unless contact passenger
           'email': ev.state.email,   // will be undefined unless contact passenger
@@ -122,10 +121,10 @@
 
         }
 
-        console.log('Update obj', updatedPassOjb)
+        console.log('Update obj', ev.index,  updatedPassOjb)
 
 
-        store.updateAPassenger(updatedPassOjb)
+        store.updateAPassenger(ev.index, updatedPassOjb)
       }
     },
 

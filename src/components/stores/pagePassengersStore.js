@@ -46,8 +46,8 @@ export const pagePassengersStore = reactive({
 
 	// Call this as the user blurs each form field, to make sure
 	// that all data gets pushed to the _cache.
-	updateAPassenger(passengerObj) {
-		this._passengersList = passengerObj					// add/update Passenger to list
+	updateAPassenger(index, passengerObj) {
+		this._passengersList[index] = passengerObj					// add/update Passenger to list
 		localStorage._cachePassengersList = JSON.stringify(this._passengersList)
 	},
 
