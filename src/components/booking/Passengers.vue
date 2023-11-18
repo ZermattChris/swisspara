@@ -16,6 +16,7 @@
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
       :index="index"
+      @changed="onFormChanged($event)"
     >
     </Passenger>
 
@@ -32,17 +33,7 @@
       class="mt-8"
     />
 
-    <MazPhoneNumberInput
-      class="pt-6"
-      v-model="phoneNumber"
-      show-code-on-list
-      :preferred-countries="['CH', 'US', 'GB', 'KR', 'FR', 'NL', 'DE', 'SG']"
-      :ignored-countries="['AC']"
-      @update="results = $event"
-    />
-    <code>
-      {{ results }}
-    </code> -->
+    -->
 
 	</div>
 
@@ -65,11 +56,6 @@
 
   // import Slider from '@vueform/slider'
 
-  // import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
-  // import 'maz-ui/css/main.css'
-
-  // import { useVuelidate } from '@vuelidate/core'
-  // import { required, email } from '@vuelidate/validators'
 
   export default {
     name: 'PagePassengers',
@@ -107,11 +93,28 @@
     // },
 
     methods: {
-      // setName ($event) {
-      //   // do some silly transformation
-      //   this.name = $event.target.value.toUpperCase()
-      //   this.v$.name.$touch()
-      // }
+
+      /**
+       * 
+       * @param {Custom Event} ev   // 'index':1, 'target':input#email..., 'value':'you@acme.com': 
+       */
+      onFormChanged (ev,) {
+        // console.log("Form Index: ", ev.index)
+        console.log("Form IsValid: ", ev.formValid)
+        
+        // console.log("$event: ", ev.$event)
+        // console.log("id: ", ev.target.id)
+        // console.log("Valid: ", ev.target.validity.valid)
+        // console.log("Value:", ev.target.value)
+        // console.log("fullphone:", ev.fullphone)   // passing this as not a basic form input (needs country code too)
+        const updatedPassOjb = {
+
+
+        }
+
+
+        store.updateAPassenger(ev.index, updatedPassOjb)
+      }
     },
 
     mounted() {

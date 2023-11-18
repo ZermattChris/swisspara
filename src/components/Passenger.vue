@@ -5,7 +5,12 @@
 		class="mr-2 my-2 border-2 border-orange-200 rounded-md"
 	>
 
-		<!-- <form class="card auth-card" @submit.prevent="onSubmit"> -->
+		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
+		<form
+			:id="`passengerForm_${index}`" 
+			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'fullphone':phoneNumber})"
+		>
+
 
 			<!-- START Header box. Holds the Passenger's name and a 'Valid' icon.  -->
 			<header
@@ -56,15 +61,11 @@
 			<!-- END Header box. -->
 
 
-			<!-- Contact Person form inputs.  -->
-			<div id="`contactInputs_${index}`"
+			<!-- ******************* Contact Person form inputs. ******************* -->
+			<div id="contactInputs"
 				v-if="index === 1"
 			>
-				<!-- <p class="pt-2 px-4 text-sm text-gray-500">
-					The Contact Passenger will be called if there are any changes to the Meeting Time and/or Location.
-				</p> -->
-
-
+				<!-- Phone Number. -->
 				<div class="relative">
 					<label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label>
 					<MazPhoneNumberInput
@@ -78,12 +79,14 @@
 						size="md"
 						countrySelectorWidth="6rem"
 						@update="onPhoneUpdated"
+						@focusout="onPhoneUpdated"
 					/>
 					<div v-if="phoneNumberValid === false && phoneNumber !== undefined"
 						class="pointer-events-none absolute inset-y-0 right-2 top-6 flex items-center pr-3 z-10">
 						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
 					</div>
 				</div>
+				{{ phoneNumberValid }}
 
 				<!-- Contact Email.  -->
 				<div class="px-2">
@@ -128,14 +131,18 @@
 					id="contact-warning"
 					class="mt-2 px-4 italic text-sm text-gray-500"
 				>
-					<span class="font-medium text-red-700 not-italic">Important!</span> Please make sure that your Phone Number &amp; Email are correct.
+					<span class="font-medium text-red-700 not-italic">Important!</span> 
+					Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when traveling.
 				</p>
 
+			</div>  <!-- ******************* END: Contact inputs. ******************* -->
 
-			</div>  <!-- END: Contact inputs. -->
+
+
+
 
 			<div id="footer-spacer" class="h-6"></div>
-
+		</form>
 		<!-- </form> -->
 
 	</div>
@@ -146,7 +153,7 @@
 
 
 <script setup>
-	import { ref, reactive, computed, onMounted } from 'vue'
+	import { ref, reactive, computed, onMounted, watch } from 'vue'
 
 	// Vuelidate.
 	import { useVuelidate } from '@vuelidate/core'
@@ -160,6 +167,19 @@
 	import { EnvelopeIcon, ExclamationCircleIcon } from '@heroicons/vue/20/solid'
 
 
+	// ----------- Props ------------
+	const props = defineProps({
+		index: [Number],
+	})
+
+  // ----------- Events ------------
+  const emit = defineEmits(['changed'])
+
+	onMounted(() => {
+
+	})
+
+
 	// const passengerValid = ref(true)
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
@@ -168,69 +188,60 @@
 	const contactName = ref('Chris B.')
 
 	const state = reactive({
-	// 	firstName: '',
-	// 	lastName: '',
+	// 	name: '',
 		email: ''
 	})
 	const rules = {
-		// firstName: { required }, // Matches state.firstName
-		// lastName: { required }, // Matches state.lastName
-		email: { required, email } // Matches state.contact.email
+		// name: { required },			// Matches state.name
+		email: { required, email }	// Matches state.contact.email
 		
 	}
 
 	const v$ = useVuelidate(rules, state)
 	
 
-	// ----------- Props ------------
-	const props = defineProps({
-		index: [Number],
-	})
-
-	// defineExpose({
-		
-	// })
-			
-	onMounted(() => {
-
-	})
 
 	function onPhoneUpdated(ev) {
     //console.log('Phone Valid: ', ev.isValid, phoneNumber.value)
+		if ( ev.isValid === undefined ) return 		// stop from setting to undefined
 		phoneNumberValid.value = ev.isValid
   }
 
-	function onSubmit () {
-		// v$.$touch()
-		// if (v$.$error) console.error(v$.$error)
-		// console.log("Form is valid")
-	}
 
-	// function isPassengerPanelValid () {
-	// 	// Contact Passenger only.
-	// 	console.log('$invalid', v$.email)
-
-	// 	if (props.index === 1 && phoneNumberValid.value === false) return false
-	// 	if (props.index === 1 && phoneNumberValid.value === false) return false
-
-	// 	return true
-	// }
 			
 	const isPassengerPanelValid = computed(() => {
+		console.log('phoneNumber:', phoneNumber.value )
+		console.log('phoneNumberValid:', phoneNumberValid.value )
 
-		// console.log('email.$invalid:', v$.value.email.$invalid )
+		// can be undefined, true or false.
 
 		// Contact Passenger only.
-		if (props.index === 1 && phoneNumberValid.value === false) return false
+		// if (props.index === 1 && (phoneNumberValid.value === false || phoneNumber.value === undefined) ) {
+		if (props.index === 1 ) {
+			// && ( phoneNumberValid.value === undefined || phoneNumberValid.value === false ) 
+			// problems with country code and/or phone nr being undefined.
+
+			// phoneNumberValid.value === undefined, means the phone is invalid.
+			if (phoneNumberValid.value === undefined && phoneNumber.value === undefined) {
+				console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )
+				return false
+			}
+			if (phoneNumberValid.value !== undefined && phoneNumberValid.value === false ) {
+				console.log('- phoneValid is FALSE. -> Form valid: false')
+				return false
+			}
+			// #HACK WARNING.
+			// The phone input keep setting its valid flag to undefined.
+
+		}
+
 		if (props.index === 1 && v$.value.email.$invalid === true) return false
-
 		return true
-		
 	})
+	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
+    console.log('Form Valid changed', newValue, oldValue)
+  })
 
-	// const xxxx = isPassengerValid(() => {
-		
-	// })
 
 </script>
 

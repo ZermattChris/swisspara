@@ -9,7 +9,7 @@ import { reactive } from 'vue'
 const loadPassengersList = () => {
 	let pl = {}
 	try {
-		pl = localStorage._cachePassengersDataList ? JSON.parse(localStorage._cachePassengersDataList) : {}
+		pl = localStorage._cachePassengersList ? JSON.parse(localStorage._cachePassengersList) : {}
 	} catch (error) {
 		// cache had invalid data stored.
 		pl = {}	// reset.
@@ -23,7 +23,7 @@ export const pagePassengersStore = reactive({
     // Never overwrite this list/cache, as user might reduce the number of
     // passengers after adding all the Passenger Details, then change their
     // mind -- we want that initial data to still be available.
-    _passengersDataList: loadPassengersList(),
+    _passengersList: loadPassengersList(),
 
     //---------------------
 
@@ -36,13 +36,19 @@ export const pagePassengersStore = reactive({
         return result
     },
 
+	getPassengersList() {
+		return this._passengersList		
+	},
+    // Call this as the user blurs each form field, to make sure
+    // that all data gets pushed to the _cache.
+	updateAPassenger(index, passengerObj) {
+		//return this._passengersList		
+	},
 
     // ---- Set up this page's data ----.
-    async initialize() {
+    // async initialize() {
 
-
-        
-    },
+    // },
 
 
 });
