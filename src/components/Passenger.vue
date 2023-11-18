@@ -29,7 +29,7 @@
 					clas="grow font-thin"
 					v-if="index === 1"
 					:class="index === 1 ? 'pl-2' : '' ">
-					<span class="font-bold">{{ contactName }}</span>
+					<span class="font-bold">{{ passengerName }}</span>
 					(Contact Passenger)
 				</div>
 
@@ -61,7 +61,9 @@
 			<!-- END Header box. -->
 
 
-			<!-- ******************* Contact Person form inputs. ******************* -->
+
+
+			<!-- ******************* START: Contact Person form inputs. ******************* -->
 			<div id="contactInputs"
 				class="pt-4"
 				v-if="index === 1"
@@ -125,11 +127,49 @@
 			</div>  <!-- ******************* END: Contact inputs. ******************* -->
 
 
-			<!-- ******************* Passenger form inputs. ******************* -->
-			<div id="contactInputs"
-				v-if="index >= 1"
-			>
-			name 
+
+
+			<!-- ******************* START: Passenger form inputs. ******************* -->
+			<div id="`contactInputs_${index}`">
+				
+				<!-- Passenger's Name  -->
+				<div class="px-2 pt-2">
+					<label v-if="index === 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">First &amp; Last Name</label>
+					<label v-if="index > 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Name</label>
+					<div class="relative mt-1 rounded-md shadow-sm">
+						<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
+							<UserIcon class="w-6 text-gray-400" aria-hidden="true" />
+						</div>
+						<input 
+							v-model="state.passengerName" 
+							type="text" :name="`contactName_${index}`" :id="`contactName_${index}`" 
+							class="block w-full rounded-md border-0 py-2.5 pl-11 
+								ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
+								sm:text-sm sm:leading-6" 
+							:class="(v$.passengerName.$invalid && v$.passengerName.$dirty) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300' "
+							:placeholder=" index === 1 ? 'Contact First, Last Name' : 'Name'    " 
+							@focusout="v$.passengerName.$touch"
+						/>
+						<div v-if="v$.passengerName.$invalid && v$.passengerName.$dirty"
+							class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+							<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
+						</div>
+					</div>
+					<!-- We need the Passenger Name!  -->
+					<p v-if="index === 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
+						id="contact-warning"
+						class="mt-2 px-4 italic text-sm text-red-700"
+					>
+						Contact Passenger's First &amp; Last Names are required.
+					</p>
+					<p v-if="index > 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
+						id="contact-warning"
+						class="mt-2 px-4 italic text-sm text-red-700"
+					>
+						Passenger Name is required.
+					</p>
+
+				</div>
 
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
@@ -150,14 +190,14 @@
 
 	// Vuelidate.
 	import { useVuelidate } from '@vuelidate/core'
-	import { required, email } from '@vuelidate/validators'
+	import { required, email, minLength } from '@vuelidate/validators'
 
 	// Components.
   import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
   import 'maz-ui/css/main.css'
 
 	// Tailwind UI
-	import { EnvelopeIcon, ExclamationCircleIcon } from '@heroicons/vue/20/solid'
+	import { EnvelopeIcon, ExclamationCircleIcon, UserIcon } from '@heroicons/vue/20/solid'
 
 
 	// ----------- Props ------------
@@ -176,21 +216,20 @@
 	// const passengerValid = ref(true)
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
-	// const phoneResults = ref()
 
-	const contactName = ref('Chris B.')
+	const passengerName = ref('Chris B.')
 
 	const state = reactive({
-	// 	name: '',
+		passengerName: '',
 		email: ''
 	})
-	const rules = {
-		// name: { required },			// Matches state.name
-		email: { required, email }	// Matches state.contact.email
+	const validations = {
+		passengerName: { required, minLength:minLength(3)  },	// Matches state.passengerName
+		email: { required, email }	// Matches state.email
 		
 	}
 
-	const v$ = useVuelidate(rules, state)
+	const v$ = useVuelidate(validations, state)
 	
 
 
@@ -213,9 +252,9 @@
 
 	})
 
-	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
-    console.log('Form Valid changed', newValue, oldValue)
-  })
+	// watch(isPassengerPanelValid, ( newValue, oldValue ) => {
+  //   console.log('Form Valid changed', newValue, oldValue)
+  // })
 
 
 	function isContactInfoValid() {
@@ -260,8 +299,10 @@
 
 
 	button.m-phone-number-input__country-flag {
-		left: 20px !important
+		left: 22px !important
 	}
-
+	div.m-input-wrapper-input #MazSelect-5 { 
+		padding-left: 2.6rem !important;
+	}
 
 </style>
