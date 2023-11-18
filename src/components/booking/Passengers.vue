@@ -8,9 +8,9 @@
       4. Passenger Details
     </h1>
     <p class="pb-4 ">
-      We only ask for the passenger information that we need to help make your flight fun
+      We only ask for the passenger information that is required to help make your flight fun
       and enjoyable. 
-      <span class="italic">We never share any information with 3rd parties.</span>
+      <span class="italic text-gray-500">We never share any information with 3rd parties.</span>
     </p>
 
     <Passenger

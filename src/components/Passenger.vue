@@ -86,7 +86,6 @@
 						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
 					</div>
 				</div>
-				{{ phoneNumberValid }}
 
 				<!-- Contact Email.  -->
 				<div class="px-2">
