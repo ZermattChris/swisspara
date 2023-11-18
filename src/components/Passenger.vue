@@ -4,11 +4,11 @@
 	<div	
 		class="mr-2 my-2 border-2 border-orange-200 rounded-md"
 	>
-
+{{ phoneNumber }} {{ isPassengerPanelValid }}
 		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
 		<form
 			:id="`passengerForm_${index}`" 
-			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'fullphone':phoneNumber})"
+			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'fullphone':phoneNumber, 'state':state})"
 		>
 
 
@@ -29,7 +29,7 @@
 					clas="grow font-thin"
 					v-if="index === 1"
 					:class="index === 1 ? 'pl-2' : '' ">
-					<span class="font-bold">{{ passengerName }}</span>
+					<span class="font-bold">{{ state.passengerName }}</span>
 					(Contact Passenger)
 				</div>
 
@@ -64,7 +64,7 @@
 
 
 			<!-- ******************* START: Contact Person form inputs. ******************* -->
-			<div id="contactInputs"
+			<div :id="`contactInputs_${index}`"
 				class="pt-4"
 				v-if="index === 1"
 			>
@@ -72,7 +72,7 @@
 				<div class="relative">
 					<!-- <label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label> -->
 					<MazPhoneNumberInput
-						id="contactPhone"
+						:id="`contactPhone_${index}`"
 						class=" px-2"
 						v-model="phoneNumber"
 						show-code-on-list
@@ -99,7 +99,7 @@
 						</div>
 						<input 
 							v-model="state.email" 
-							type="email" name="email" id="email" 
+							type="email" name="email" :id="`email_${index}`" 
 							class="block w-full rounded-md border-0 py-2.5 pl-11 
 								ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
 								sm:text-sm sm:leading-6" 
@@ -117,7 +117,7 @@
 
 				<!-- Get your phone and email right!  -->
 				<p 
-					id="contact-warning"
+					:id="`contact-warning_${index}`"
 					class="mt-2 px-4 italic text-sm text-gray-500"
 				>
 					<span class="font-medium text-red-700 not-italic">Important!</span> 
@@ -130,14 +130,17 @@
 
 
 			<!-- ******************* START: Passenger form inputs. ******************* -->
-			<div id="`contactInputs_${index}`">
+			<div :id="`contactInputs_${index}`">
 				
 				<!-- Passenger's Name  -->
 				<div class="px-2 pt-2">
 					<label v-if="index === 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">First &amp; Last Name</label>
 					<label v-if="index > 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Name</label>
 					<div class="relative mt-1 rounded-md shadow-sm">
-						<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
+						<div v-if="index === 1"  class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
+							<UserPlusIcon class="w-6 text-gray-400" aria-hidden="true" />
+						</div>
+						<div v-if="index > 1"  class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
 							<UserIcon class="w-6 text-gray-400" aria-hidden="true" />
 						</div>
 						<input 
@@ -157,13 +160,13 @@
 					</div>
 					<!-- We need the Passenger Name!  -->
 					<p v-if="index === 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
-						id="contact-warning"
+						:id="`contact-warning_${index}`"
 						class="mt-2 px-4 italic text-sm text-red-700"
-					>
+					>-
 						Contact Passenger's First &amp; Last Names are required.
 					</p>
 					<p v-if="index > 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
-						id="contact-warning"
+						:id="`contact-warning_${index}`"
 						class="mt-2 px-4 italic text-sm text-red-700"
 					>
 						Passenger Name is required.
@@ -175,11 +178,10 @@
 
 
 			<div id="footer-spacer" class="h-6"></div>
+
 		</form>
-		<!-- </form> -->
 
 	</div>
-
 </template>
 
 
@@ -197,7 +199,7 @@
   import 'maz-ui/css/main.css'
 
 	// Tailwind UI
-	import { EnvelopeIcon, ExclamationCircleIcon, UserIcon } from '@heroicons/vue/20/solid'
+	import { EnvelopeIcon, ExclamationCircleIcon, UserIcon, UserPlusIcon } from '@heroicons/vue/20/solid'
 
 
 	// ----------- Props ------------
@@ -213,11 +215,8 @@
 	})
 
 
-	// const passengerValid = ref(true)
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
-
-	const passengerName = ref('Chris B.')
 
 	const state = reactive({
 		passengerName: '',
@@ -242,19 +241,29 @@
 
 			
 	const isPassengerPanelValid = computed(() => {
-
 		// Contact Passenger Phone + Email valid.
 		if (props.index === 1 ) {
 			if (isContactInfoValid() === false) return false
 		}
+		// Passenger Name
+		if ( v$.value.passengerName.$invalid === true ) return false
 
 		return true
 
 	})
 
-	// watch(isPassengerPanelValid, ( newValue, oldValue ) => {
-  //   console.log('Form Valid changed', newValue, oldValue)
-  // })
+	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
+
+		// Make sure we force the form to register a 'change' event
+    console.log('Form Valid changed', newValue, oldValue)
+		const t = "passengerForm_" + props.index
+		const myForm = document.getElementById(t)
+		if (myForm !== null && myForm !== undefined) {
+			// console.log(myForm)
+			myForm.dispatchEvent(new Event("change"))
+		}
+
+  })
 
 
 	function isContactInfoValid() {
@@ -270,16 +279,16 @@
 
 		// phoneNumberValid.value === undefined, means the phone is invalid.
 		if (phoneNumberValid.value === undefined && phoneNumber.value === undefined) {
-			console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )
+			//console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )
 			return false
 		}
 		if (phoneNumberValid.value !== undefined && phoneNumberValid.value === false ) {
-			console.log('- phoneValid is FALSE. -> Form valid: false')
+			//console.log('- phoneValid is FALSE. -> Form valid: false')
 			return false
 		}
 
 		if (props.index === 1 && v$.value.email.$invalid === true) {
-			console.log('- Email is invalid')
+			//console.log('- Email is invalid')
 			return false
 		}
 		

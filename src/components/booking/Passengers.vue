@@ -74,7 +74,7 @@
 		data() {
 			return {
         passengerCount: countTotalPassengers( loadTimeSlotPassengersList() ),
-
+        passengerFormsValidList: {}     // internal tracking of each Passenger Form validity, so we can mark this page valid/invalid.
         // phoneNumber: ref(),
         // results: ref(),
 
@@ -100,17 +100,29 @@
        */
       onFormChanged (ev,) {
         // console.log("Form Index: ", ev.index)
-        console.log("Form IsValid: ", ev.formValid)
+        // console.log("Form state: ", ev)
+        console.log("Form IsValid: ", ev.index, ev.formValid)
+        // update our simple passenger form valid tracking object.
+        this.passengerFormsValidList[ev.index] = ev.formValid
+        //console.log("Simple internal passengerFormsValidList: ", this.passengerFormsValidList)
+
         
         // console.log("$event: ", ev.$event)
         // console.log("id: ", ev.target.id)
         // console.log("Valid: ", ev.target.validity.valid)
         // console.log("Value:", ev.target.value)
         // console.log("fullphone:", ev.fullphone)   // passing this as not a basic form input (needs country code too)
-        const updatedPassOjb = {
-
+        // let idx = ev.index
+        let updatedPassOjb = {}
+        updatedPassOjb[ev.index] = {
+          'valid': ev.formValid,
+          'contactPhone': ev.fullphone,     // will be undefined unless contact passenger
+          'contactEmail': ev.state.email,   // will be undefined unless contact passenger
+          'passengerName': ev.state.passengerName, 
 
         }
+
+
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)
@@ -118,7 +130,7 @@
     },
 
     mounted() {
-      
+      //console.log("passengerCount", this.passengerCount)
     },
 
 		created() {
@@ -133,7 +145,21 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
+        // As we're doing all of the validation checks on Passenger data here,
+        // we don't need to check with the Store. Just update Passenger on their
+        // form input changes in 'onFormChanged(ev)' above.
         if (this.passengerCount < 1) return false
+
+        // console.log("Simple internal passengerFormsValidList: ", this.passengerFormsValidList)
+        // let maxPCount = 0
+        // if ( Object.keys(this.passengerFormsValidList).length === 0 ) maxPCount = Object.keys(this.passengerFormsValidList).length
+
+        // console.log("maxPCount: ", maxPCount)
+
+        // for (const aFlyObj of this.passengerFormsValidList) {
+
+        // }
+
         return true
       },
 

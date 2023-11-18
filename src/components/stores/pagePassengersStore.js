@@ -27,14 +27,14 @@ export const pagePassengersStore = reactive({
 
     //---------------------
 
-    // Get if this 'Page' is valid or not. Used to manage the Prev/Next
-    // buttons and breadcrumbs.
-    // -> Loop through the Passengers and check if the matching form Component
-    //    is valid or not.
-    isPageValid() {
-        let result = true
-        return result
-    },
+    // // Get if this 'Page' is valid or not. Used to manage the Prev/Next
+    // // buttons and breadcrumbs.
+    // // -> Loop through the Passengers and check if the matching form Component
+    // //    is valid or not.
+    // isPageValid() {
+    //     let result = true
+    //     return result
+    // },
 
 	getPassengersList() {
 		return this._passengersList		
@@ -42,13 +42,11 @@ export const pagePassengersStore = reactive({
     // Call this as the user blurs each form field, to make sure
     // that all data gets pushed to the _cache.
 	updateAPassenger(index, passengerObj) {
-		//return this._passengersList		
+        //console.log("updateAPassenger: ", index, passengerObj)
+		this._passengersList[index] = passengerObj
+        console.log("_passengersList: ", this._passengersList)
 	},
 
-    // ---- Set up this page's data ----.
-    // async initialize() {
-
-    // },
 
 
 });
