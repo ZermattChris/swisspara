@@ -116,16 +116,16 @@
         let updatedPassOjb = {}
         updatedPassOjb[ev.index] = {
           'valid': ev.formValid,
-          'contactPhone': ev.fullphone,     // will be undefined unless contact passenger
-          'contactEmail': ev.state.email,   // will be undefined unless contact passenger
-          'passengerName': ev.state.passengerName, 
+          'phone': ev.phone,     // will be undefined unless contact passenger
+          'email': ev.state.email,   // will be undefined unless contact passenger
+          'name': ev.state.name, 
 
         }
 
+        console.log('Update obj', updatedPassOjb)
 
 
-
-        store.updateAPassenger(ev.index, updatedPassOjb)
+        store.updateAPassenger(updatedPassOjb)
       }
     },
 

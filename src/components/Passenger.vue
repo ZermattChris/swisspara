@@ -4,11 +4,11 @@
 	<div	
 		class="mr-2 my-2 border-2 border-orange-200 rounded-md"
 	>
-{{ phoneNumber }} {{ isPassengerPanelValid }}
+	
 		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
 		<form
 			:id="`passengerForm_${index}`" 
-			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'fullphone':phoneNumber, 'state':state})"
+			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'phone':phoneNumber, 'state':state})"
 		>
 
 
@@ -29,7 +29,7 @@
 					clas="grow font-thin"
 					v-if="index === 1"
 					:class="index === 1 ? 'pl-2' : '' ">
-					<span class="font-bold">{{ state.passengerName }}</span>
+					<span class="font-bold">{{ state.name }}</span>
 					(Contact Passenger)
 				</div>
 
@@ -68,6 +68,13 @@
 				class="pt-4"
 				v-if="index === 1"
 			>
+			<p 
+					:id="`contact-warning_${index}`"
+					class="mt-0 mb-4 px-4 text-sm text-gray-700"
+				>
+					Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when traveling.
+				</p>
+
 				<!-- Phone Number. -->
 				<div class="relative">
 					<!-- <label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label> -->
@@ -144,28 +151,28 @@
 							<UserIcon class="w-6 text-gray-400" aria-hidden="true" />
 						</div>
 						<input 
-							v-model="state.passengerName" 
+							v-model="state.name" 
 							type="text" :name="`contactName_${index}`" :id="`contactName_${index}`" 
 							class="block w-full rounded-md border-0 py-2.5 pl-11 
 								ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
 								sm:text-sm sm:leading-6" 
-							:class="(v$.passengerName.$invalid && v$.passengerName.$dirty) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300' "
+							:class="(v$.name.$invalid && v$.name.$dirty) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300' "
 							:placeholder=" index === 1 ? 'Contact First, Last Name' : 'Name'    " 
-							@focusout="v$.passengerName.$touch"
+							@focusout="v$.name.$touch"
 						/>
-						<div v-if="v$.passengerName.$invalid && v$.passengerName.$dirty"
+						<div v-if="v$.name.$invalid && v$.name.$dirty"
 							class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
 							<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
 						</div>
 					</div>
 					<!-- We need the Passenger Name!  -->
-					<p v-if="index === 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
+					<p v-if="index === 1 && (v$.name.$invalid && v$.name.$dirty)"
 						:id="`contact-warning_${index}`"
 						class="mt-2 px-4 italic text-sm text-red-700"
 					>-
 						Contact Passenger's First &amp; Last Names are required.
 					</p>
-					<p v-if="index > 1 && (v$.passengerName.$invalid && v$.passengerName.$dirty)"
+					<p v-if="index > 1 && (v$.name.$invalid && v$.name.$dirty)"
 						:id="`contact-warning_${index}`"
 						class="mt-2 px-4 italic text-sm text-red-700"
 					>
@@ -190,6 +197,8 @@
 <script setup>
 	import { ref, reactive, computed, onMounted, watch } from 'vue'
 
+	import {pagePassengersStore as store} from '@stores/pagePassengersStore.js' 
+
 	// Vuelidate.
 	import { useVuelidate } from '@vuelidate/core'
 	import { required, email, minLength } from '@vuelidate/validators'
@@ -212,18 +221,33 @@
 
 	onMounted(() => {
 
+		// load data from cache/store.
+		const cache = store.getAllPassengersList()[props.index]
+		console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
+		
+		// Load into our form fields, careful for undefined, etc.
+		if ( cache !== undefined ) {
+			if (cache.name !== undefined) state.name = cache.name
+
+
+			
+		}
+
+
 	})
 
+	// const thisPassengersList = store.getPassengerList(props.index)
+	// console.log("thisPassengersList", thisPassengersList[props.index].name)
 
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
 
 	const state = reactive({
-		passengerName: '',
-		email: ''
+		name: '',
+		email: '',
 	})
 	const validations = {
-		passengerName: { required, minLength:minLength(3)  },	// Matches state.passengerName
+		name: { required, minLength:minLength(3)  },	// Matches state.name
 		email: { required, email }	// Matches state.email
 		
 	}
@@ -246,7 +270,7 @@
 			if (isContactInfoValid() === false) return false
 		}
 		// Passenger Name
-		if ( v$.value.passengerName.$invalid === true ) return false
+		if ( v$.value.name.$invalid === true ) return false
 
 		return true
 

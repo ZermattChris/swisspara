@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, toRaw } from 'vue'
 
 
 // ========================= Helper functions   ===========================
@@ -8,6 +8,7 @@ import { reactive } from 'vue'
  */
 const loadPassengersList = () => {
 	let pl = {}
+
 	try {
 		pl = localStorage._cachePassengersList ? JSON.parse(localStorage._cachePassengersList) : {}
 	} catch (error) {
@@ -36,15 +37,18 @@ export const pagePassengersStore = reactive({
     //     return result
     // },
 
-	getPassengersList() {
+	getAllPassengersList() {
 		return this._passengersList		
 	},
-    // Call this as the user blurs each form field, to make sure
-    // that all data gets pushed to the _cache.
-	updateAPassenger(index, passengerObj) {
-        //console.log("updateAPassenger: ", index, passengerObj)
-		this._passengersList[index] = passengerObj
-        console.log("_passengersList: ", this._passengersList)
+		// getPassengerList(index) {
+		// 	return this._passengersList[index]	
+		// },
+
+	// Call this as the user blurs each form field, to make sure
+	// that all data gets pushed to the _cache.
+	updateAPassenger(passengerObj) {
+		this._passengersList = passengerObj					// add/update Passenger to list
+		localStorage._cachePassengersList = JSON.stringify(this._passengersList)
 	},
 
 
