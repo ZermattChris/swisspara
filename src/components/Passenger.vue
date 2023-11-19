@@ -131,6 +131,10 @@
 					Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when traveling.
 				</p>
 
+        <div class="px-4 mt-4 inset-0 flex items-center" aria-hidden="true">
+          <div class="w-full border-t border-gray-300" ></div>
+        </div>
+
 			</div>  <!-- ******************* END: Contact inputs. ******************* -->
 
 
@@ -181,6 +185,51 @@
 
 				</div>
 
+
+				<!-- Horizontal grouping for Sex & Age inputs. -->
+				<div class="flex justify-around pt-4">
+
+					<!-- Sex Radio Group. -->
+					<fieldset class="mt-2">
+						
+						<div class="flex flex-center mb-1">
+              <input 
+                :id="`M_Check_${index}`" 
+                :name="`Sex_Check_${index}`" 
+                type="radio" 
+                :checked="sex === 'male'"
+                class="h-5 w-5  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+              />
+              <label :for="`M_Check_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
+                Male
+              </label>
+            </div>
+							
+            <div class="flex flex-center">
+              <input 
+                :id="`WFCheck_${index}`" 
+                :name="`Sex_Check_${index}`" 
+                type="radio" 
+                :checked="sex === 'female'"
+                class="h-5 w-5 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+              />
+              <label :for="`WFCheck_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
+                Female
+              </label>
+            </div>
+
+					</fieldset>
+
+					<NumberSpinner
+            class="mt-2"
+            :value="age"
+            min="5"
+            max="69"
+          />
+
+
+				</div>
+
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
 
@@ -206,6 +255,7 @@
 	// Components.
   import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
   import 'maz-ui/css/main.css'
+	import NumberSpinner from '@components/NumberSpinner.vue'
 
 	// Tailwind UI
 	import { EnvelopeIcon, ExclamationCircleIcon, UserIcon, UserPlusIcon } from '@heroicons/vue/20/solid'
@@ -223,7 +273,7 @@
 
 		// load data from cache/store.
 		const cache = store.getAllPassengersList()[props.index]
-		console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
+		//console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
 		
 		// Load into our form fields, careful for undefined, etc.
 		if ( cache !== undefined ) {
@@ -236,6 +286,9 @@
 
 	})
 
+	const sex = ref('')
+  const age = ref()
+
 	// const thisPassengersList = store.getPassengerList(props.index)
 	// console.log("thisPassengersList", thisPassengersList[props.index].name)
 
@@ -245,10 +298,12 @@
 	const state = reactive({
 		name: '',
 		email: '',
+		age: '',
 	})
 	const validations = {
 		name: { required, minLength:minLength(3)  },	// Matches state.name
-		email: { required, email }	// Matches state.email
+		email: { required, email },
+		age: { required, email },
 		
 	}
 
@@ -296,11 +351,6 @@
 		// FIXED -> Stopped the onPhoneUpdated() event from resetting to undefined,
 		//          which was causing all of the hair-pulling here.
 		
-		// console.log('phoneNumber:', phoneNumber.value )
-		// console.log('phoneNumberValid:', phoneNumberValid.value )
-		// can be undefined, true or false.
-
-
 		// phoneNumberValid.value === undefined, means the phone is invalid.
 		if (phoneNumberValid.value === undefined && phoneNumber.value === undefined) {
 			//console.log('- phone and phoneValid are both undefined. -> Form valid: false. ' )

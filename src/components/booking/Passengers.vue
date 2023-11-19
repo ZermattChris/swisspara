@@ -101,18 +101,10 @@
       onFormChanged (ev,) {
         // console.log("Form Index: ", ev.index)
         // console.log("Form state: ", ev)
-        console.log("Form IsValid: ", ev.index, ev.formValid)
+        //console.log("Form IsValid: ", ev.index, ev.formValid)
         // update our simple passenger form valid tracking object.
         this.passengerFormsValidList[ev.index] = ev.formValid
-        //console.log("Simple internal passengerFormsValidList: ", this.passengerFormsValidList)
 
-        
-        // console.log("$event: ", ev.$event)
-        // console.log("id: ", ev.target.id)
-        // console.log("Valid: ", ev.target.validity.valid)
-        // console.log("Value:", ev.target.value)
-        // console.log("fullphone:", ev.fullphone)   // passing this as not a basic form input (needs country code too)
-        // let idx = ev.index
         const updatedPassOjb = {
           'valid': ev.formValid,
           'phone': ev.phone,     // will be undefined unless contact passenger
@@ -120,8 +112,7 @@
           'name': ev.state.name, 
 
         }
-
-        console.log('Update obj', ev.index,  updatedPassOjb)
+        //console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)
@@ -144,20 +135,8 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
-        // As we're doing all of the validation checks on Passenger data here,
-        // we don't need to check with the Store. Just update Passenger on their
-        // form input changes in 'onFormChanged(ev)' above.
+        // TODO func in store to check if all passenger forms are valid or not.
         if (this.passengerCount < 1) return false
-
-        // console.log("Simple internal passengerFormsValidList: ", this.passengerFormsValidList)
-        // let maxPCount = 0
-        // if ( Object.keys(this.passengerFormsValidList).length === 0 ) maxPCount = Object.keys(this.passengerFormsValidList).length
-
-        // console.log("maxPCount: ", maxPCount)
-
-        // for (const aFlyObj of this.passengerFormsValidList) {
-
-        // }
 
         return true
       },
