@@ -99,7 +99,7 @@
        * @param {Custom Event} ev   // 'index':1, 'target':input#email..., 'value':'you@acme.com': 
        */
       onFormChanged (ev,) {
-        // console.log("Form Index: ", ev.index)
+        //console.log("Form Index: ", ev.index)
         // console.log("Form state: ", ev)
         //console.log("Form IsValid: ", ev.index, ev.formValid)
         // update our simple passenger form valid tracking object.
@@ -110,9 +110,11 @@
           'phone': ev.phone,     // will be undefined unless contact passenger
           'email': ev.state.email,   // will be undefined unless contact passenger
           'name': ev.state.name, 
+          'sex': ev.state.sex,
+          'age': ev.state.age + '',   // convert to string before saving to cache.
 
         }
-        //console.log('Update obj', ev.index,  updatedPassOjb)
+       // console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)

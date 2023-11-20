@@ -33,6 +33,7 @@
 				:value="inputVal"
         placeholder="Age"
         @input="onInput"
+        @change="onChanged"
 			/>
 
 			<button 
@@ -50,7 +51,7 @@
 
 		</div>
 
-    inputVal: {{inputVal}}
+    <!-- defaultValue prop: {{typeof defaultValue}}. inputVal: {{ typeof inputVal }} {{ inputVal }} -->
 
 	</div>
 
@@ -59,20 +60,37 @@
 	
 
 <script setup>
-	import { ref, reactive, computed, onMounted, watch } from 'vue'
+	import { ref, reactive, toRaw, computed, onMounted, watch, onUpdated } from 'vue'
 
 	// ----------- Props ------------
-	const props = defineProps({
-		age: [Number],
-	})
+	const props = defineProps(['defVal'])
+	// 	defaultValue: [String],
+	// })
 
-	const inputVal = ref(props.age)
+	const inputVal = ref()
   const minVal = 5
   const maxVal = 69
 
+  console.log("-> setup: ", props.defVal)
 
+  
+
+	onMounted(() => {
+    if (typeof props.defVal !== '') {
+      inputVal.value = parseInt(props.defVal)
+    }
+  })
 
 	function onInput(ev) {
+    // Need to listen for this event and update the inputVal manually.
+    // This event gets called on every keypress, so don't do any range
+    // checks here -- onChanged() handles bad value resets.
+    const enteredVal = parseInt(ev.target.value)
+    inputVal.value = enteredVal
+  }
+
+	function onChanged(ev) {
+
     // Need to listen for this event and update the inputVal manually.
     // inputVal.value = val+
     //console.log('onInput ev.target:', ev)
@@ -92,6 +110,7 @@
     }
     inputVal.value = enteredVal
   }
+
 
 
 
@@ -129,14 +148,14 @@
     // }
 
 
-    console.log('targetVal: ', targetVal)
+    // console.log('targetVal: ', targetVal)
   }
 	
 </script>
 
 
   
-<style>
+<!-- <style>
 	input[type='number']::-webkit-inner-spin-button,
 	input[type='number']::-webkit-outer-spin-button {
 		-webkit-appearance: none;
@@ -150,4 +169,4 @@
 	.custom-number-input button:focus {
 		outline: none !important;
 	}
-</style>
+</style> -->

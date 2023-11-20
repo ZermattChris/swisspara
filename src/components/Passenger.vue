@@ -197,7 +197,9 @@
                 :id="`M_Check_${index}`" 
                 :name="`Sex_Check_${index}`" 
                 type="radio" 
-                :checked="sex === 'male'"
+                v-model="state.sex"
+                value="male"
+                :checked="state.sex === 'male'"
                 class="h-5 w-5  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`M_Check_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
@@ -210,7 +212,9 @@
                 :id="`WFCheck_${index}`" 
                 :name="`Sex_Check_${index}`" 
                 type="radio" 
-                :checked="sex === 'female'"
+                v-model="state.sex"
+                value="female"
+                :checked="state.sex === 'female'"
                 class="h-5 w-5 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`WFCheck_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
@@ -222,11 +226,12 @@
 
 					<NumberSpinner
             class="mt-2"
-            :value="age"
+            :defVal="state.age"
+            v-if="state.age" 
             min="5"
             max="69"
+            @change="onAgeChanged"
           />
-
 
 				</div>
 
@@ -264,30 +269,35 @@
 	// ----------- Props ------------
 	const props = defineProps({
 		index: [Number],
-	})
+	}) 
 
   // ----------- Events ------------
   const emit = defineEmits(['changed'])
+
 
 	onMounted(() => {
 
 		// load data from cache/store.
 		const cache = store.getAllPassengersList()[props.index]
-		//console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
+		console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
 		
 		// Load into our form fields, careful for undefined, etc.
 		if ( cache !== undefined ) {
 			if (cache.phone !== undefined) phoneNumber.value = cache.phone		// handle differently as funky phone input.
 			if (cache.name !== undefined) state.name = cache.name
 			if (cache.email !== undefined) state.email = cache.email
-
+			if (cache.sex !== undefined) state.sex = cache.sex
+			if (cache.age !== undefined) state.age = cache.age
+      console.log("Passenger cache -> state.age ", state.age )		// works! Gives an empty cache if bad data.
+      // hack = reactive(state.age)
+      // console.log("Passenger cache -> hack", hack.value)		// works! Gives an empty cache if bad data.
 		}
 
 
 	})
 
-	const sex = ref('')
-  const age = ref()
+	// const sex = ref('')
+  // const age = ref()
 
 	// const thisPassengersList = store.getPassengerList(props.index)
 	// console.log("thisPassengersList", thisPassengersList[props.index].name)
@@ -299,11 +309,15 @@
 		name: '',
 		email: '',
 		age: '',
+    sex: '',
+    age: '',
 	})
 	const validations = {
 		name: { required, minLength:minLength(3)  },	// Matches state.name
 		email: { required, email },
 		age: { required, email },
+		sex: { required },
+		age: { required },
 		
 	}
 
@@ -317,6 +331,11 @@
 		phoneNumberValid.value = ev.isValid
   }
 
+  function onAgeChanged(ev) {
+    //console.log('onAgeChanged: ', ev.target.value)
+    state.age = ev.target.value
+  
+  }
 
 			
 	const isPassengerPanelValid = computed(() => {
@@ -334,7 +353,7 @@
 	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
 
 		// Make sure we force the form to register a 'change' event
-    console.log('Form Valid changed', newValue, oldValue)
+    //console.log('Form Valid changed', newValue, oldValue)
 		const t = "passengerForm_" + props.index
 		const myForm = document.getElementById(t)
 		if (myForm !== null && myForm !== undefined) {
