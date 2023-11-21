@@ -74,10 +74,8 @@
 		data() {
 			return {
         passengerCount: countTotalPassengers( loadTimeSlotPassengersList() ),
-        passengerFormsValidList: {}     // internal tracking of each Passenger Form validity, so we can mark this page valid/invalid.
-        // phoneNumber: ref(),
-        // results: ref(),
-
+        passengerFormsValidList: {},     // internal tracking of each Passenger Form validity, so we can mark this page valid/invalid.
+        
         // name: '',
         // sliderValue: 20,
         // format: function (value) {
@@ -118,6 +116,9 @@
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)
+
+        // manually force page valid check
+    		this.$emit( 'pagevalid', 'PagePassengers', this._isPageValid)        // sends event back to 'App'
       }
     },
 
@@ -137,10 +138,23 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
+
         // TODO func in store to check if all passenger forms are valid or not.
         if (this.passengerCount < 1) return false
 
-        return true
+        let allPassFormsValid = true
+        const passList = store.getAllPassengersList() 
+        for (let x = 1; x <= this.passengerCount; x++) {
+          console.log("x", x )
+          console.log("aPassForm", passList[x].valid )
+          if (passList[x].valid === false) {
+            allPassFormsValid = false
+            break
+          }
+
+        }
+
+        return allPassFormsValid
       },
 
     }, // computed

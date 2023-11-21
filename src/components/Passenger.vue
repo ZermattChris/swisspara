@@ -72,7 +72,8 @@
 					:id="`contact-warning_${index}`"
 					class="mt-0 mb-4 px-4 text-sm text-gray-700"
 				>
-					Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when traveling.
+					Please make sure that your Phone Number &amp; Email are correct &ndash; and that you have 
+          <span class="underline">access</span> to them when traveling.
 				</p>
 
 				<!-- Phone Number. -->
@@ -288,10 +289,9 @@
                 <span class="m-auto text-2xl font-thin">+</span>
               </button>
             </div>
-            {{ ageInt }} {{ state.age }}
+            <!-- {{ ageInt }} {{ state.age }} -->
           </div>
-Valid Age: {{ !v$.age.$invalid }}
-
+          <!-- Valid Age: {{ !v$.age.$invalid }} -->
 
 				</div>
 
