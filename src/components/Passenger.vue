@@ -301,13 +301,13 @@
               :id="`age-min-warning_${index}`"
               class="mt-2 px-0 absolute italic text-sm text-gray-700"
             >
-              5 years is the minimum age.
+              5 years is the minimum.
             </p>
             <p v-if="ageInt >= maxVal"
               :id="`age-max-warning_${index}`"
               class="mt-2 px-0 absolute italic text-sm text-gray-700"
             >
-              69 years is the maximum age.
+              69 years is the maximum.
             </p>
 
             <!-- {{ ageInt }} {{ state.age }} -->
@@ -318,7 +318,8 @@
 
         <!-- Confidence Slider.  -->
         <Slider 
-          :startValue="state.confidence"
+          v-if="vueTimingHack"
+          :startValue="Number(state.confidence)"
           :min="confSliderMin"
           :max="confSliderMax"
           :step="confSliderStep"
@@ -344,18 +345,20 @@
             </svg>
           </template>
         </Slider>
+        {{ state.confidence }}
 
         <!-- Weight Slider.  -->
         <Slider 
-          :startValue="state.weightKg"
+          v-if="vueTimingHack"
+          :startValue="Number(state.weightKg)"
           :min="weightSliderMin"
           :max="weightSliderMax"
           :step="weightSliderStep"
           class="mt-10 mx-4"
-          @change="onConfidenceChanged"
+          @change="onWeightChanged"
         >
+          <!-- Small kg Icon.  -->
           <template v-slot:preIcon>
-            <!-- Small kg Icon.  -->
             <svg xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" role="img" aria-hidden="true" 
               class="h-8 w-8 py-1.5"
@@ -363,8 +366,8 @@
               <path d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z"></path>
             </svg>
           </template>
+          <!-- Big kg Icon.  -->
           <template v-slot:postIcon>
-            <!-- Big kg Icon.  -->
             <svg xmlns="http://www.w3.org/2000/svg" 
               viewBox="0 0 24 24" role="img" aria-hidden="true" 
               class="h-8 w-8"
@@ -373,6 +376,7 @@
             </svg>
           </template>
         </Slider>
+        {{ state.weightKg }}
 
         <!-- Dodgy passenger Message field.  -->
 
@@ -430,6 +434,11 @@
   const confSliderStep = 2
 	function onConfidenceChanged(val) {
     console.log('onConfidenceChanged', val)
+    state.confidence = Number(val)
+      // console.log("state.confidence changed. Update form", newValue, oldValue)
+    const t = "passengerForm_" + props.index
+    const myForm = document.getElementById(t)
+    myForm.dispatchEvent(new Event("change"))
   }
 
   // Weight Slider
@@ -437,8 +446,13 @@
   const weightSliderMax = 90
   const weightSliderStep = 5
 
-	function onConfidenceTouched(val) {
-    console.log('onConfidenceTouched', val)
+	function onWeightChanged(val) {
+    console.log('onWeightChanged', val)
+    state.weightKg = Number(val)
+		//myForm.dispatchEvent(new Event("change"))
+    const t = "passengerForm_" + props.index
+    const myForm = document.getElementById(t)
+    myForm.dispatchEvent(new Event("change"))
   }
 
 
@@ -489,12 +503,9 @@
       state.age = ageInt.value    // update the state here. 
       return
     }
-    // Need to trigger a 'change' event to send to parent.
-    // emit('change', ev)
     ageInt.value  = enteredVal
     state.age = ageInt.value    // update the state here. 
-  }
-
+  }  // END: onChanged()
 
 	function increment(val, ev) {
     ev.preventDefault()
@@ -517,16 +528,50 @@
     ageInt.value  += val
     state.age = ageInt.value    // update the state here. 
   }
+  // My phone input isn't part of the general form handling. If user changes the
+  // Country Code, I need to force an update.
+  watch(ageInt, ( newValue, oldValue ) => {
+    // console.log("ageInt changed. Update form", newValue, oldValue)
+    if ( newValue !== oldValue) {
+      console.log("ageInt changed. Update form", newValue, oldValue)
+      const t = "passengerForm_" + props.index
+      const myForm = document.getElementById(t)
+			myForm.dispatchEvent(new Event("change"))
+    }
+  })
+  // ----------------------- END Age Input
 
 
 
 
+	const state = reactive({
+		name: '',
+		email: '',
+		age: '',
+    sex: '',
+    age: '',
+    confidence: 0,
+    weightKg: 15,
+	})
+	const validations = {
+		name: { required, minLength:minLength(1)  },	// Matches state.name
+		email: { required, email },
+		age: { required, email },
+		sex: { required },
+		age: { required },
+		confidence: { required },
+		weightKg: { required },
+		
+	}
+	const v$ = useVuelidate(validations, state)
+	
 
 
   /**-------------------------------------------------------------------------
    * Set up data from the cache.
    * Set up Validations for pesky forms.
    */
+	const vueTimingHack = ref(false)
 	onMounted(() => {
 
 		// load data from cache/store.
@@ -548,32 +593,12 @@
           //console.log("state.age empty", state.age)
         }
       }
-
+			if (cache.confidence !== undefined) state.confidence = cache.confidence
+			if (cache.weightKg !== undefined) state.weightKg = cache.weightKg
 		}
+    vueTimingHack.value = true
 	})
 
-
-	const state = reactive({
-		name: '',
-		email: '',
-		age: '',
-    sex: '',
-    age: '',
-    confidence: 0,   // Can use this default value to show UI to user if they don't click on the Slider.
-    weightKg: 0,
-	})
-	const validations = {
-		name: { required, minLength:minLength(1)  },	// Matches state.name
-		email: { required, email },
-		age: { required, email },
-		sex: { required },
-		age: { required },
-		confidence: { required },
-		weightKg: { required },
-		
-	}
-	const v$ = useVuelidate(validations, state)
-	
 
 
 	function onPhoneUpdated(ev) {
@@ -598,6 +623,7 @@
 		if ( v$.value.age.$invalid === true ) return false
 
     // Confidence & Weight sliders always have a value.
+    // Check their dirty flags to validate.
 
 		return true
 
@@ -605,8 +631,6 @@
 
   // HEAD'S UP!!! The change event is only called if isPassengerPanelValid changes. Hmmm...
 	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
-
-
 		// Make sure we force the form to register a 'change' event
     //console.log('Form Valid change', newValue, oldValue)
 		const t = "passengerForm_" + props.index
@@ -615,7 +639,6 @@
 			// console.log(myForm)
 			myForm.dispatchEvent(new Event("change"))
 		}
-
   })
 
   // My phone input isn't part of the general form handling. If user changes the

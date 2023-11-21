@@ -110,9 +110,11 @@
           'name': ev.state.name, 
           'sex': ev.state.sex,
           'age': ev.state.age + '',   // convert to string before saving to cache.
+          'confidence': ev.state.confidence,
+          'weightKg': ev.state.weightKg,
 
         }
-        //console.log('Update obj', ev.index,  updatedPassOjb)
+        console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)

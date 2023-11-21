@@ -15,10 +15,10 @@
     </button>
 
     <input type="range" 
-      id="basic-range-slider-usage"
 
-      v-model="_val"
+      :value="_val"
       :min="min" :max="max" :step="step"
+      @click="onClick"
       @change="$emit('change', _val)"
       class="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 
         disabled:pointer-events-none focus:outline-none
@@ -57,6 +57,8 @@
         [&::-moz-range-track]:rounded-full" 
     >
 
+    {{ _val }}
+
     <button 
       type="button" 
       @click="adjust(step)"
@@ -73,14 +75,13 @@
 
 <script setup>
 
-  import { ref } from 'vue'
+  import { ref, computed } from 'vue'
   
   // ----------- Props ------------
   const props = defineProps({
     // Is -1 if Slider hasn't been 'touched'
     startValue: {
-      type: [Number],
-      default: 0
+      type: [Number]
     },
     min: [Number],
     max: [Number],
@@ -91,14 +92,17 @@
   const emit = defineEmits(['change'])
 
   const _val = ref(props.startValue)
+  console.log(typeof _val.value, _val.value)
 
 
   const touched = ref(false)
 
-  
-
-
-
+	function onClick(ev) {
+    const sliderClickVal = ev.target.value
+    console.log('onClick: ', sliderClickVal)
+    _val.value = Number(sliderClickVal)
+    emit('change', _val.value)
+  }
 
 	function adjust(step) {
     // Dagnabbit js - stop with all the Number String twaddle!
