@@ -264,13 +264,15 @@
               <input 
                 :id="`Age_${index}`" 
                 type="text" inputmode="numeric"
-                class="z-[0] ring-[1px] ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
+                class="z-[0]  ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
                   font-semibold text-md 
                   hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none
                   placeholder:font-light placeholder:italic placeholder:text-slate-400" 
+                :class="v$.age.$invalid && ageTouched === true ? 'ring-red-400  ring-[2px]' : 'ring-gray-400 ring-[1px]' "
                 name="custom-input-number" 
                 autocomplete="off"
                 :value="ageInt"
+                @focusout="ageTouched = true"
                 placeholder="Age"
                 @input="onInput"
                 @change="onChanged"
@@ -291,7 +293,6 @@
             </div>
             <!-- {{ ageInt }} {{ state.age }} -->
           </div>
-          <!-- Valid Age: {{ !v$.age.$invalid }} -->
 
 				</div>
 
@@ -337,6 +338,13 @@
   const emit = defineEmits(['change'])
 
 
+	const phoneNumber = ref()
+	const phoneNumberValid = ref(false)
+
+	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
+	const ageTouched = ref(false)
+
+
   /**-------------------------------------------------------------------------
    * Age input controls.
    */
@@ -373,7 +381,7 @@
     const enteredVal = parseInt(ev.target.value)
     //console.log('onInput:', enteredVal)
     if (enteredVal < minVal) {
-      // console.log('onInput under Min:', enteredVal)   // set an info field for user to know what's up.
+      //console.log('onInput under Min:', enteredVal)   // set an info field for user to know what's up.
       ageInt.value  = minVal
       state.age = ageInt.value    // update the state here. 
       return
@@ -447,10 +455,6 @@
 		}
 	})
 
-	const phoneNumber = ref()
-	const phoneNumberValid = ref(false)
-
-	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 
 	const state = reactive({
 		name: '',
