@@ -199,29 +199,37 @@
                 type="radio" 
                 v-model="state.sex"
                 value="male"
+                @focusout="sexTouched = true"
                 :checked="state.sex === 'male'"
                 class="h-5 w-5  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
-              <label :for="`M_Check_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
+              <label :for="`M_Check_${index}`" 
+                class="ml-2 block font-medium leading-6 "
+                :class="( sexTouched === false || v$.sex.$invalid === false ) ? 'text-gray-900' : 'text-red-700' "
+              >
                 Male
               </label>
             </div>
 							
             <div class="flex flex-center">
               <input 
-                :id="`WFCheck_${index}`" 
+                :id="`FCheck_${index}`" 
                 :name="`Sex_Check_${index}`" 
                 type="radio" 
                 v-model="state.sex"
                 value="female"
+                @focusout="sexTouched = true"
                 :checked="state.sex === 'female'"
                 class="h-5 w-5 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
-              <label :for="`WFCheck_${index}`" class="ml-2 block font-medium leading-6 text-gray-900">
+              <label :for="`FCheck_${index}`" 
+                class="ml-2 block font-medium leading-6 text-gray-900"
+                :class="( sexTouched === false || v$.sex.$invalid === false ) ? 'text-gray-900' : 'text-red-700' "
+              >
                 Female
               </label>
             </div>
-            {{ !v$.sex.$invalid }} {{ state.sex }}
+            <!-- {{ v$.sex.$invalid === true }} {{ sexTouched }} {{ state.sex === '' }} -->
 					</fieldset>
 
 					<!-- <NumberSpinner
@@ -232,6 +240,9 @@
             @change="onAgeChanged"
           /> -->
 
+          <!-- Only show all the missing/bad field inputs when the user sends focus to another
+          Passenger form, or tries to click the next button. -->
+
 
           <div class="custom-number-input h-10 w-32">
             <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
@@ -239,11 +250,11 @@
               <button
                 @click="increment(-1, $event)"
                 class="plusButtn 
-                bg-gradient-to-b from-gray-100 to-gray-300
-                border-r-0 border-[1px] border-gray-400
-                bg-gray-200 text-gray-800 
-                hover:text-black hover:from-gray-200 hover:to-gray-400 
-                h-full w-20 rounded-l-md cursor-pointer"
+                  bg-gradient-to-b from-gray-100 to-gray-300
+                  border-r-0 border-[1px] border-gray-400
+                  bg-gray-200 text-gray-800 
+                  hover:text-black hover:from-gray-200 hover:to-gray-400 
+                  h-full w-20 rounded-l-md cursor-pointer"
                 :class="ageInt <= minVal ? 'opacity-40' : 'opacity-100' "
               >
                 <span class="m-auto text-2xl font-thin">−</span>
@@ -252,7 +263,6 @@
               <input 
                 type="text" inputmode="numeric"
                 class="z-[0] ring-[1px] ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
-                  
                   font-semibold text-md 
                   hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none
                   placeholder:font-light placeholder:italic placeholder:text-slate-400" 
@@ -267,11 +277,11 @@
               <button 
                 @click="increment(1, $event)"
                 class="minusButton 
-                bg-gradient-to-b from-gray-100 to-gray-300
-                border-l-0 border-[1px] border-gray-400
-                bg-gray-200 text-gray-800 
-                hover:text-black hover:from-gray-200 hover:to-gray-400 
-                h-full w-20 rounded-r-md cursor-pointer"
+                  bg-gradient-to-b from-gray-100 to-gray-300
+                  border-l-0 border-[1px] border-gray-400
+                  bg-gray-200 text-gray-800 
+                  hover:text-black hover:from-gray-200 hover:to-gray-400 
+                  h-full w-20 rounded-r-md cursor-pointer"
                 :class="ageInt >= maxVal ? 'opacity-40' : 'opacity-100' "
               >
                 <span class="m-auto text-2xl font-thin">+</span>
@@ -343,11 +353,9 @@
   }
 
 	function onChanged(ev) {
-
     // Need to listen for this event and update the ageInt manually.
     console.log('onChanged',ev.target.value)
     // if (ev.originalTarget === undefined) return
-
     const enteredVal = parseInt(ev.target.value)
     //console.log('onInput:', enteredVal)
     if (enteredVal < minVal) {
@@ -362,29 +370,23 @@
       state.age = ageInt.value    // update the state here. 
       return
     }
-
     // Need to trigger a 'change' event to send to parent.
     // emit('change', ev)
     ageInt.value  = enteredVal
     state.age = ageInt.value    // update the state here. 
-
   }
 
 
 	function increment(val, ev) {
     ev.preventDefault()
-
     let targetVal = -1
-
     // Initialize ageInt to minVal if not yet set by user or cache.
     if (ageInt.value === undefined) {
       ageInt.value  = minVal
       state.age = ageInt.value    // update the state here. 
       return
     }
-
     targetVal = (ageInt.value  + val)
-
     if (targetVal < minVal) {
       // console.log('!at minVal. no update.')
       return
@@ -393,10 +395,8 @@
       // console.log('!at maxVal. no update.')
       return
     }
-
     ageInt.value  += val
     state.age = ageInt.value    // update the state here. 
-
   }
 
 
@@ -435,6 +435,8 @@
 
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
+
+	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 
 	const state = reactive({
 		name: '',
