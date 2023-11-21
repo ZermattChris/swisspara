@@ -92,14 +92,13 @@
   const emit = defineEmits(['change'])
 
   const _val = ref(props.startValue)
-  console.log(typeof _val.value, _val.value)
 
 
   const touched = ref(false)
 
 	function onClick(ev) {
     const sliderClickVal = ev.target.value
-    console.log('onClick: ', sliderClickVal)
+    // console.log('onClick: ', sliderClickVal)
     _val.value = Number(sliderClickVal)
     emit('change', _val.value)
   }
