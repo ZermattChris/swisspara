@@ -114,7 +114,7 @@
           'weightKg': ev.state.weightKg,
 
         }
-        console.log('Update obj', ev.index,  updatedPassOjb)
+        //console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)

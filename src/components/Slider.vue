@@ -1,7 +1,7 @@
 <template>
 
   <div
-    class="flex outline outline-2 outline-red-300"
+    class="flex "
   >
 
     <button 
@@ -24,7 +24,7 @@
       <input type="range" 
         :value="_val"
         :min="min" :max="max" :step="step"
-        @click="onClick"
+        @input="onSlide"
         @change="$emit('change', _val)"
         class="h-7 pt-6 z-2 relative
           w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 
@@ -34,7 +34,7 @@
           [&::-webkit-slider-thumb]:-mt-0.5
           [&::-webkit-slider-thumb]:appearance-none
           [&::-webkit-slider-thumb]:bg-white
-          [&::-webkit-slider-thumb]:shadow-[0_0_0_4px_rgba(37,99,235,1)]
+          [&::-webkit-slider-thumb]:shadow-[0_0_0_6px_rgba(0,0,0,1)]
           [&::-webkit-slider-thumb]:rounded-full
           [&::-webkit-slider-thumb]:transition-all
           [&::-webkit-slider-thumb]:duration-150
@@ -107,14 +107,10 @@
 
   const _val = ref(props.startValue)
 
-
-  const touched = ref(false)
-
-	function onClick(ev) {
+	function onSlide(ev) {
     const sliderClickVal = ev.target.value
     // console.log('onClick: ', sliderClickVal)
     _val.value = Number(sliderClickVal)
-    touched.value = true
     emit('change', _val.value)
   }
 
@@ -125,8 +121,7 @@
     // console.log('Slider Btn adjust: ', Number(_val.value), typeof Number(_val.value))
     const targetVal = Number(_val.value) + step
     // console.log('targetVal : ', targetVal)
-    touched.value = true
-    if (targetVal < props.min ) {
+    if (targetVal < (props.min - step) ) {    // this accounts for inital -1 value.
       _val.value = props.min 
       
     } else if (targetVal > props.max  ) {

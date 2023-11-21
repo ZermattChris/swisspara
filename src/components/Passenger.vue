@@ -2,7 +2,8 @@
 
 	<!-- Passenger Outline box.  -->
 	<div	
-		class="mr-2 my-2 border-2 border-orange-200 rounded-md"
+		class="mr-2 my-2 border-2  rounded-md"
+    :class="isPassengerPanelValid ? 'border-lime-500' : 'border-orange-200' "
 	>
 	
 		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
@@ -188,7 +189,7 @@
 
 
 				<!-- Horizontal grouping for Sex & Age inputs. -->
-				<div class="flex justify-around pt-4">
+				<div class="flex justify-around pt-8">
 
 					<!-- Sex Radio Group. -->
 					<fieldset class="mt-2">
@@ -323,7 +324,7 @@
           :min="confSliderMin"
           :max="confSliderMax"
           :step="confSliderStep"
-          class="mt-10 mx-4"
+          class="mt-8 mx-4"
           @change="onConfidenceChanged"
         >
           <!-- Turtle icon.  -->
@@ -345,13 +346,20 @@
             </svg>
           </template>
 
-
           <!-- Confidence Message (below slider)  -->
           <template v-slot:message>
-            asdf
+            <span v-if="Number(state.confidence) === -1" class="text-sm text-gray-600">
+              Please enter your Confidence Level
+            </span>
+            <span v-if="Number(state.confidence) >= confSliderMin" class="text-sm text-gray-800">
+              {{confidenceMessages[state.confidence].message}}
+            </span>
           </template>
+
         </Slider>
-        {{ state.confidence }}
+        <!-- {{ state.confidence }} -->
+
+
 
         <!-- Weight Slider.  -->
         <Slider 
@@ -381,8 +389,24 @@
               <path d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z"></path>
             </svg>
           </template>
+
+          <!-- Weight Message (below slider)  -->
+          <template v-slot:message>
+            <span v-if="Number(state.weightKg) === -1" class="text-sm text-gray-600">
+              Please enter your Weight
+            </span>
+            <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-base text-gray-800">
+              <span class="font-bold">
+                {{ weightConverter.kg }} <span class="font-semibold">Kilos</span>
+              </span>,
+              <span class="font-light">
+                {{ parseInt(weightConverter.pounds) }} Pounds,
+                {{ parseInt(weightConverter.stone) }} Stone
+              </span>
+            </span>
+          </template>
         </Slider>
-        {{ state.weightKg }}
+        <!-- {{ state.weightKg }} -->
 
         <!-- Dodgy passenger Message field.  -->
 
@@ -434,32 +458,47 @@
 	const ageTouched = ref(false)
   // const confidenceTouched = ref(false)
 
-  // Confidence Slider
+  // Confidence Slider --------------------------
   const confSliderMin = 0
   const confSliderMax = 10
   const confSliderStep = 2
 	function onConfidenceChanged(val) {
-    console.log('onConfidenceChanged', val)
+    //console.log('onConfidenceChanged', val)
     state.confidence = Number(val)
       // console.log("state.confidence changed. Update form", newValue, oldValue)
     const t = "passengerForm_" + props.index
     const myForm = document.getElementById(t)
     myForm.dispatchEvent(new Event("change"))
   }
+  const confidenceMessages = {
+    0: {"message": "Zero message"},
+    2: {"message": "Two  message"},
+    4: {"message": "Four message"},
+    6: {"message": "Six message"},
+    8: {"message": "Eight message"},
+    10: {"message": "Ten message"},
+  }
 
-  // Weight Slider
+  // Weight Slider ---------------------------
   const weightSliderMin = 15
   const weightSliderMax = 90
   const weightSliderStep = 5
-
 	function onWeightChanged(val) {
-    console.log('onWeightChanged', val)
+    //console.log('onWeightChanged', val)
     state.weightKg = Number(val)
 		//myForm.dispatchEvent(new Event("change"))
     const t = "passengerForm_" + props.index
     const myForm = document.getElementById(t)
     myForm.dispatchEvent(new Event("change"))
   }
+  const weightConverter = computed(() => {
+    const weightObj = {
+      "kg":     state.weightKg,
+      "pounds": (state.weightKg * 2.20462),
+      "stone":  (state.weightKg * 0.157473),
+    }
+    return weightObj
+  })
 
 
   /**-------------------------------------------------------------------------
@@ -473,7 +512,7 @@
     // Need to listen for this event and update the ageInt manually.
     // This event gets called on every keypress, so don't do any range
     // checks here -- onChanged() handles bad value resets.
-    console.log('onInput',ev.target.value)
+    //console.log('onInput',ev.target.value)
     //onChanged(ev)
     // const enteredVal = parseInt(ev.target.value)
     // ageInt.value = enteredVal
@@ -486,7 +525,7 @@
     const evVal = ev.target.value
     if ( evVal.trim() == '' || isNaN(evVal) ) {
       // Bad data entered, best would be to set back to empty.
-      console.log('Not a number, reset.', ev.target.value)
+      //console.log('Not a number, reset.', ev.target.value)
       ageInt.value = null
       state.age = ''
       // Pesky Age input is not updating, need to do it manually. Uhg.
@@ -539,7 +578,7 @@
   watch(ageInt, ( newValue, oldValue ) => {
     // console.log("ageInt changed. Update form", newValue, oldValue)
     if ( newValue !== oldValue) {
-      console.log("ageInt changed. Update form", newValue, oldValue)
+      //console.log("ageInt changed. Update form", newValue, oldValue)
       const t = "passengerForm_" + props.index
       const myForm = document.getElementById(t)
 			myForm.dispatchEvent(new Event("change"))
@@ -582,7 +621,7 @@
 
 		// load data from cache/store.
 		const cache = store.getAllPassengersList()[props.index]
-		console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
+		//console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
 		
 		// Load into our form fields, careful for undefined, etc.
 		if ( cache !== undefined ) {
@@ -628,8 +667,10 @@
 		// Passenger Age
 		if ( v$.value.age.$invalid === true ) return false
 
-    // Confidence & Weight sliders always have a value.
-    // Check their dirty flags to validate.
+    // Confidence & Weight sliders are -1 if no value has been entered.
+    //console.log(state.confidence, state.weightKg)
+    if (state.confidence == -1) return false
+    if (state.weightKg == -1) return false
 
 		return true
 
