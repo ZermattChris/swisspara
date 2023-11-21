@@ -7,11 +7,11 @@
     <button 
       type="button" 
       @click="adjust(-step)"
-      class="mr-4
-      rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold
-      text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+      class="mr-4 rounded-full rounded-r-none w-14 min-w-[52px]
+       bg-gray-100 pr-2 pl-3 py-2.5 text-sm font-semibold
+      text-gray-900 shadow ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
     >
-      Start
+      <slot name="preIcon"></slot>
     </button>
 
     <input type="range" 
@@ -60,11 +60,11 @@
     <button 
       type="button" 
       @click="adjust(step)"
-      class="ml-4
-      rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold
-      text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+      class="ml-4 rounded-full rounded-l-none w-14
+      bg-gray-100 pl-2 pr-3 py-2.5 text-sm font-semibold
+      text-gray-900 shadow ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
     >
-      End
+      <slot name="postIcon"></slot>
     </button>
   </div>
 
@@ -72,6 +72,7 @@
 
 
 <script setup>
+
   import { ref } from 'vue'
   
   // ----------- Props ------------
@@ -104,6 +105,16 @@
     // The html 5 slider input is casting the _val back to String... Why???
     //console.log('Slider Btn adjust: ', step)
     // console.log('Slider Btn adjust: ', Number(_val.value), typeof Number(_val.value))
+    const targetVal = Number(_val.value) + step
+    if (targetVal < props.min ) {
+      _val.value = props.min 
+      return
+    }
+    if (targetVal > props.max  ) {
+      _val.value = props.max 
+      return
+    }
+
     _val.value = Number(_val.value) + step
     emit('change', _val.value)
   }
