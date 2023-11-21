@@ -57,7 +57,7 @@
         [&::-moz-range-track]:rounded-full" 
     >
 
-    {{ _val }}
+    <!-- {{ _val }} -->
 
     <button 
       type="button" 

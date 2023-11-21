@@ -345,7 +345,7 @@
             </svg>
           </template>
         </Slider>
-        {{ state.confidence }}
+        <!-- {{ state.confidence }} -->
 
         <!-- Weight Slider.  -->
         <Slider 
@@ -376,7 +376,7 @@
             </svg>
           </template>
         </Slider>
-        {{ state.weightKg }}
+        <!-- {{ state.weightKg }} -->
 
         <!-- Dodgy passenger Message field.  -->
 
