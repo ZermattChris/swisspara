@@ -8,7 +8,7 @@
 		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
 		<form
 			:id="`passengerForm_${index}`" 
-			@change="$emit('changed', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'phone':phoneNumber, 'state':state})"
+			@change="$emit('change', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'phone':phoneNumber, 'state':state})"
 		>
 
 
@@ -221,19 +221,70 @@
                 Female
               </label>
             </div>
-
+            {{ !v$.sex.$invalid }} {{ state.sex }}
 					</fieldset>
 
-					<NumberSpinner
+					<!-- <NumberSpinner
             class="mt-2"
             :defVal="state.age"
-            v-if="state.age" 
             min="5"
             max="69"
             @change="onAgeChanged"
-          />
+          /> -->
+
+
+          <div class="custom-number-input h-10 w-32">
+            <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
+
+              <button
+                @click="increment(-1, $event)"
+                class="plusButtn 
+                bg-gradient-to-b from-gray-100 to-gray-300
+                border-r-0 border-[1px] border-gray-400
+                bg-gray-200 text-gray-800 
+                hover:text-black hover:from-gray-200 hover:to-gray-400 
+                h-full w-20 rounded-l-md cursor-pointer"
+                :class="ageInt <= minVal ? 'opacity-40' : 'opacity-100' "
+              >
+                <span class="m-auto text-2xl font-thin">−</span>
+              </button>
+
+              <input 
+                type="text" inputmode="numeric"
+                class="z-[0] ring-[1px] ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
+                  
+                  font-semibold text-md 
+                  hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none
+                  placeholder:font-light placeholder:italic placeholder:text-slate-400" 
+                name="custom-input-number" 
+                autocomplete="off"
+                :value="ageInt"
+                placeholder="Age"
+                @input="onInput"
+                @change="onChanged"
+              />
+
+              <button 
+                @click="increment(1, $event)"
+                class="minusButton 
+                bg-gradient-to-b from-gray-100 to-gray-300
+                border-l-0 border-[1px] border-gray-400
+                bg-gray-200 text-gray-800 
+                hover:text-black hover:from-gray-200 hover:to-gray-400 
+                h-full w-20 rounded-r-md cursor-pointer"
+                :class="ageInt >= maxVal ? 'opacity-40' : 'opacity-100' "
+              >
+                <span class="m-auto text-2xl font-thin">+</span>
+              </button>
+            </div>
+            {{ ageInt }} 
+          </div>
+
+
 
 				</div>
+
+
 
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
@@ -272,9 +323,91 @@
 	}) 
 
   // ----------- Events ------------
-  const emit = defineEmits(['changed'])
+  const emit = defineEmits(['change'])
 
 
+  /**-------------------------------------------------------------------------
+   * Age input controls.
+   */
+  const ageInt = ref()     // Doing this seperately as we want to keep the inital input as an empty string.
+  const minVal = 5
+  const maxVal = 69
+
+  function onInput(ev) {
+    // Need to listen for this event and update the ageInt manually.
+    // This event gets called on every keypress, so don't do any range
+    // checks here -- onChanged() handles bad value resets.
+    console.log('onInput',ev.target.value)
+    // const enteredVal = parseInt(ev.target.value)
+    // ageInt.value = enteredVal
+  }
+
+	function onChanged(ev) {
+
+    // Need to listen for this event and update the ageInt manually.
+    console.log('onChanged',ev.target.value)
+    // if (ev.originalTarget === undefined) return
+
+    const enteredVal = parseInt(ev.target.value)
+    //console.log('onInput:', enteredVal)
+    if (enteredVal < minVal) {
+      // console.log('onInput under Min:', enteredVal)   // set an info field for user to know what's up.
+      ageInt.value  = minVal
+      state.age = ageInt.value    // update the state here. 
+      return
+    }
+    if (enteredVal >= maxVal) {
+      // console.log('onInput over Max:', enteredVal)  // set an info field for user to know what's up.
+      ageInt.value  = maxVal
+      state.age = ageInt.value    // update the state here. 
+      return
+    }
+
+    // Need to trigger a 'change' event to send to parent.
+    // emit('change', ev)
+    ageInt.value  = enteredVal
+    state.age = ageInt.value    // update the state here. 
+
+  }
+
+
+	function increment(val, ev) {
+    ev.preventDefault()
+
+    let targetVal = -1
+
+    // Initialize ageInt to minVal if not yet set by user or cache.
+    if (ageInt.value === undefined) {
+      ageInt.value  = minVal
+      state.age = ageInt.value    // update the state here. 
+      return
+    }
+
+    targetVal = (ageInt.value  + val)
+
+    if (targetVal < minVal) {
+      // console.log('!at minVal. no update.')
+      return
+    }
+    if (targetVal > maxVal) {
+      // console.log('!at maxVal. no update.')
+      return
+    }
+
+    ageInt.value  += val
+    state.age = ageInt.value    // update the state here. 
+
+  }
+
+
+
+
+
+
+  /**-------------------------------------------------------------------------
+   * Set up data from the cache.
+   * Set up Validations for pesky forms.
+   */
 	onMounted(() => {
 
 		// load data from cache/store.
@@ -287,20 +420,18 @@
 			if (cache.name !== undefined) state.name = cache.name
 			if (cache.email !== undefined) state.email = cache.email
 			if (cache.sex !== undefined) state.sex = cache.sex
-			if (cache.age !== undefined) state.age = cache.age
-      console.log("Passenger cache -> state.age ", state.age )		// works! Gives an empty cache if bad data.
-      // hack = reactive(state.age)
-      // console.log("Passenger cache -> hack", hack.value)		// works! Gives an empty cache if bad data.
+			if (cache.age!== undefined) {
+        state.age = cache.age
+        if (state.age !== '') {
+          console.log("state.age not empty", state.age)
+          ageInt.value = Number(state.age)
+        } else {
+          console.log("state.age empty", state.age)
+        }
+      }
+
 		}
-
-
 	})
-
-	// const sex = ref('')
-  // const age = ref()
-
-	// const thisPassengersList = store.getPassengerList(props.index)
-	// console.log("thisPassengersList", thisPassengersList[props.index].name)
 
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
@@ -313,14 +444,13 @@
     age: '',
 	})
 	const validations = {
-		name: { required, minLength:minLength(3)  },	// Matches state.name
+		name: { required, minLength:minLength(1)  },	// Matches state.name
 		email: { required, email },
 		age: { required, email },
 		sex: { required },
 		age: { required },
 		
 	}
-
 	const v$ = useVuelidate(validations, state)
 	
 
@@ -329,12 +459,6 @@
     //console.log('Phone Valid: ', ev.isValid, phoneNumber.value)
 		if ( ev.isValid === undefined ) return 		// stop from setting to undefined
 		phoneNumberValid.value = ev.isValid
-  }
-
-  function onAgeChanged(ev) {
-    //console.log('onAgeChanged: ', ev.target.value)
-    state.age = ev.target.value
-  
   }
 
 			
@@ -346,14 +470,19 @@
 		// Passenger Name
 		if ( v$.value.name.$invalid === true ) return false
 
+		// Passenger Sex
+		if ( v$.value.sex.$invalid === true ) return false
+
 		return true
 
 	})
 
+  // HEAD'S UP!!! The change event is only called if isPassengerPanelValid changes. Hmmm...
 	watch(isPassengerPanelValid, ( newValue, oldValue ) => {
 
+
 		// Make sure we force the form to register a 'change' event
-    //console.log('Form Valid changed', newValue, oldValue)
+    //console.log('Form Valid change', newValue, oldValue)
 		const t = "passengerForm_" + props.index
 		const myForm = document.getElementById(t)
 		if (myForm !== null && myForm !== undefined) {
@@ -363,6 +492,12 @@
 
   })
 
+
+  function onAgeChanged(ev) {
+    console.log('onAgeChanged: ', ev.target.value)
+    // state.age = ev.target.value
+    // console.log('v$.value.age.$invalid', v$.value.age.$invalid )
+  }
 
 	function isContactInfoValid() {
 
@@ -384,6 +519,17 @@
 			//console.log('- Email is invalid')
 			return false
 		}
+
+    // TODO. Sex.
+
+
+
+    // Age
+		// if (v$.value.age.$invalid === true) {
+			
+		// 	return false
+		// }
+
 		
 		return true
 

@@ -16,7 +16,7 @@
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
       :index="index"
-      @changed="onFormChanged($event)"
+      @change="onFormChanged($event)"
     >
     </Passenger>
 
@@ -114,7 +114,7 @@
           'age': ev.state.age + '',   // convert to string before saving to cache.
 
         }
-       // console.log('Update obj', ev.index,  updatedPassOjb)
+       console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)

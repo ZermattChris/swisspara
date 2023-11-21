@@ -1,12 +1,6 @@
 <template>
 
 	<div class="custom-number-input h-10 w-32">
-		<!-- <label for="custom-input-number" class="w-full text-gray-700 text-sm font-semibold">
-			Age:
-		</label> -->
-
-    
-
 		<div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
 
 			<button
@@ -50,9 +44,6 @@
 			</button>
 
 		</div>
-
-    <!-- defaultValue prop: {{typeof defaultValue}}. inputVal: {{ typeof inputVal }} {{ inputVal }} -->
-
 	</div>
 
 </template>
@@ -66,6 +57,10 @@
 	const props = defineProps(['defVal'])
 	// 	defaultValue: [String],
 	// })
+
+  // ----------- Events ------------
+  const emit = defineEmits(['change'])
+
 
 	const inputVal = ref()
   const minVal = 5
@@ -85,6 +80,7 @@
     // Need to listen for this event and update the inputVal manually.
     // This event gets called on every keypress, so don't do any range
     // checks here -- onChanged() handles bad value resets.
+    console.log('onInput')
     const enteredVal = parseInt(ev.target.value)
     inputVal.value = enteredVal
   }
@@ -93,7 +89,7 @@
 
     // Need to listen for this event and update the inputVal manually.
     // inputVal.value = val+
-    //console.log('onInput ev.target:', ev)
+    console.log('onChanged')
     // if (ev.originalTarget === undefined) return
 
     const enteredVal = parseInt(ev.target.value)
@@ -108,6 +104,9 @@
       inputVal.value = maxVal
       return
     }
+
+    // Need to trigger a 'change' event to send to parent.
+    // emit('change', ev)
     inputVal.value = enteredVal
   }
 
@@ -137,6 +136,11 @@
       // console.log('!at maxVal. no update.')
       return
     }
+
+    //console.log('increment')
+
+    // Need to trigger a 'change' event to send to parent.
+    emit('change', {target: {value: val} })
 
     inputVal.value += val
 
