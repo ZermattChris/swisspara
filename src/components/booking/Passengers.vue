@@ -146,6 +146,7 @@
         const passList = store.getAllPassengersList() 
         for (let x = 1; x <= this.passengerCount; x++) {
           // Need to guard against empty passenger forms (no data if not anything input yet by user...)
+          // Example, forms are filled in and user goes back to previous Step and adds another pass.
           if ( passList[x] === undefined ) return false
           console.log("x", x )
           console.log("aPassForm", passList[x].valid )

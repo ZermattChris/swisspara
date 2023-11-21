@@ -142,7 +142,7 @@
 
 
 			<!-- ******************* START: Passenger form inputs. ******************* -->
-			<div :id="`contactInputs_${index}`">
+			<div :id="`passengerInputs_${index}`">
 				
 				<!-- Passenger's Name  -->
 				<div class="px-2 pt-2">
@@ -244,7 +244,7 @@
           <!-- Only show all the missing/bad field inputs when the user sends focus to another
           Passenger form, or tries to click the next button. -->
 
-
+          <!-- Age input.  -->
           <div class="custom-number-input h-10 w-32">
             <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
 
@@ -291,6 +291,25 @@
                 <span class="m-auto text-2xl font-thin">+</span>
               </button>
             </div>
+            <p v-if="v$.age.$invalid && ageTouched === true"
+              :id="`age-error-warning_${index}`"
+              class="mt-2 px-0 absolute italic text-sm text-red-400"
+            >
+              Your Age is required.
+            </p>
+            <p v-if="(ageInt <= minVal) && v$.age.$invalid === false"
+              :id="`age-min-warning_${index}`"
+              class="mt-2 px-0 absolute italic text-sm text-gray-700"
+            >
+              5 years is the minimum age.
+            </p>
+            <p v-if="ageInt >= maxVal"
+              :id="`age-max-warning_${index}`"
+              class="mt-2 px-0 absolute italic text-sm text-gray-700"
+            >
+              69 years is the maximum age.
+            </p>
+
             <!-- {{ ageInt }} {{ state.age }} -->
           </div>
 
@@ -515,12 +534,23 @@
 
   })
 
+  // My phone input isn't part of the general form handling. If user changes the
+  // Country Code, I need to force an update.
+  watch(phoneNumber, ( newValue, oldValue ) => {
+    if ( newValue !== oldValue) {
+      //console.log("phoneNumber changed. Update form", newValue)
+      const t = "passengerForm_" + props.index
+      const myForm = document.getElementById(t)
+			myForm.dispatchEvent(new Event("change"))
+    }
+  })
 
-  function onAgeChanged(ev) {
-    console.log('onAgeChanged: ', ev.target.value)
-    // state.age = ev.target.value
-    // console.log('v$.value.age.$invalid', v$.value.age.$invalid )
-  }
+
+  // function onAgeChanged(ev) {
+  //   console.log('onAgeChanged: ', ev.target.value)
+  //   // state.age = ev.target.value
+  //   // console.log('v$.value.age.$invalid', v$.value.age.$invalid )
+  // }
 
 	function isContactInfoValid() {
 
