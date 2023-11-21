@@ -1,13 +1,25 @@
 <template>
 
-  <div>
+  <div
+    class="flex"
+  >
+
+    <button 
+      type="button" 
+      @click="adjust(-step)"
+      class="mr-4
+      rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold
+      text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+    >
+      Start
+    </button>
+
     <input type="range" 
       id="basic-range-slider-usage"
 
       v-model="_val"
-      :min="min" :max="max" :step="steps"
+      :min="min" :max="max" :step="step"
       @change="$emit('change', _val)"
-      @click="$emit('touched', _val)"
       class="w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 
         disabled:pointer-events-none focus:outline-none
         [&::-webkit-slider-thumb]:w-2.5
@@ -45,8 +57,15 @@
         [&::-moz-range-track]:rounded-full" 
     >
 
-    {{ _val }}
-
+    <button 
+      type="button" 
+      @click="adjust(step)"
+      class="ml-4
+      rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold
+      text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+    >
+      End
+    </button>
   </div>
 
 </template>
@@ -57,16 +76,39 @@
   
   // ----------- Props ------------
   const props = defineProps({
-    startValue: [Number, String],
-    min: [Number, String],
-    max: [Number, String],
-    steps: [Number, String],
+    // Is -1 if Slider hasn't been 'touched'
+    startValue: {
+      type: [Number],
+      default: 0
+    },
+    min: [Number],
+    max: [Number],
+    step: [Number],
   })
 
   // ----------- Events ------------
-  const emit = defineEmits(['change', 'touched'])
+  const emit = defineEmits(['change'])
 
   const _val = ref(props.startValue)
-  // console.log('_val', _val.value)
+
+
+  const touched = ref(false)
+
+  
+
+
+
+
+	function adjust(step) {
+    // Dagnabbit js - stop with all the Number String twaddle!
+    // The html 5 slider input is casting the _val back to String... Why???
+    //console.log('Slider Btn adjust: ', step)
+    // console.log('Slider Btn adjust: ', Number(_val.value), typeof Number(_val.value))
+    _val.value = Number(_val.value) + step
+    emit('change', _val.value)
+  }
+
+			
+
 
 </script>

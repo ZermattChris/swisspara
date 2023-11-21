@@ -318,20 +318,20 @@
 
         <!-- Confidence Slider.  -->
         <Slider 
-          startValue="3"
-          min="0"
-          max="10"
-          steps="2"
+          :startValue="state.confidence"
+          :min="confSliderMin"
+          :max="confSliderMax"
+          :step="confSliderStep"
           class="mt-10 mx-4"
           @change="onConfidenceChanged"
         />
 
         <!-- Weight Slider.  -->
         <Slider 
-          startValue="3"
-          min="0"
-          max="10"
-          steps="2"
+          :startValue="state.weightKg"
+          :min="weightSliderMin"
+          :max="weightSliderMax"
+          :step="weightSliderStep"
           class="mt-10 mx-4"
           @change="onConfidenceChanged"
         />
@@ -340,7 +340,6 @@
 
 
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
-
 
 			<div id="footer-spacer" class="h-8"></div>
 
@@ -388,13 +387,21 @@
   // const confidenceTouched = ref(false)
 
   // Confidence Slider
+  const confSliderMin = 0
+  const confSliderMax = 10
+  const confSliderStep = 2
 	function onConfidenceChanged(val) {
     console.log('onConfidenceChanged', val)
   }
-	// function onConfidenceTouched(val) {
-  //   // console.log('onConfidenceTouched', val)
-  //   confidenceTouched.value = true
-  // }
+
+  // Weight Slider
+  const weightSliderMin = 0
+  const weightSliderMax = 90
+  const weightSliderStep = 5
+
+	function onConfidenceTouched(val) {
+    console.log('onConfidenceTouched', val)
+  }
 
 
   /**-------------------------------------------------------------------------
@@ -514,8 +521,8 @@
 		age: '',
     sex: '',
     age: '',
-    confidence: '',
-    weightKg: '',
+    confidence: 0,   // Can use this default value to show UI to user if they don't click on the Slider.
+    weightKg: 0,
 	})
 	const validations = {
 		name: { required, minLength:minLength(1)  },	// Matches state.name
@@ -551,6 +558,8 @@
 
 		// Passenger Age
 		if ( v$.value.age.$invalid === true ) return false
+
+    // Confidence & Weight sliders always have a value.
 
 		return true
 
