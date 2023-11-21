@@ -21,7 +21,7 @@
     </Passenger>
 
 
-  <div id="bottom-footer-spacer" class="h-8 w-full">
+  <div id="bottom-footer-spacer" class="h-14 w-full">
 	</div>
 
     <!-- <input type="text" :value="name" @input="setName" class="border-2 border-blue-50">
@@ -112,7 +112,7 @@
           'age': ev.state.age + '',   // convert to string before saving to cache.
 
         }
-       console.log('Update obj', ev.index,  updatedPassOjb)
+        //console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)
@@ -148,8 +148,8 @@
           // Need to guard against empty passenger forms (no data if not anything input yet by user...)
           // Example, forms are filled in and user goes back to previous Step and adds another pass.
           if ( passList[x] === undefined ) return false
-          console.log("x", x )
-          console.log("aPassForm", passList[x].valid )
+          //console.log("x", x )
+          //console.log("aPassForm", passList[x].valid )
           if (passList[x].valid === false) {
             allPassFormsValid = false
             break

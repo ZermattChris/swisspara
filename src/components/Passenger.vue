@@ -316,11 +316,33 @@
 				</div>
 
 
+        <!-- Confidence Slider.  -->
+        <Slider 
+          startValue="3"
+          min="0"
+          max="10"
+          steps="2"
+          class="mt-10 mx-4"
+          @change="onConfidenceChanged"
+        />
+
+        <!-- Weight Slider.  -->
+        <Slider 
+          startValue="3"
+          min="0"
+          max="10"
+          steps="2"
+          class="mt-10 mx-4"
+          @change="onConfidenceChanged"
+        />
+
+        <!-- Dodgy passenger Message field.  -->
+
 
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
 
-			<div id="footer-spacer" class="h-6"></div>
+			<div id="footer-spacer" class="h-8"></div>
 
 		</form>
 
@@ -342,7 +364,8 @@
 	// Components.
   import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
   import 'maz-ui/css/main.css'
-	import NumberSpinner from '@components/NumberSpinner.vue'
+	// import NumberSpinner from '@components/NumberSpinner.vue'
+  import Slider from '@components/Slider.vue'
 
 	// Tailwind UI
 	import { EnvelopeIcon, ExclamationCircleIcon, UserIcon, UserPlusIcon } from '@heroicons/vue/20/solid'
@@ -362,6 +385,16 @@
 
 	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 	const ageTouched = ref(false)
+  // const confidenceTouched = ref(false)
+
+  // Confidence Slider
+	function onConfidenceChanged(val) {
+    console.log('onConfidenceChanged', val)
+  }
+	// function onConfidenceTouched(val) {
+  //   // console.log('onConfidenceTouched', val)
+  //   confidenceTouched.value = true
+  // }
 
 
   /**-------------------------------------------------------------------------
@@ -464,10 +497,10 @@
 			if (cache.age!== undefined) {
         state.age = cache.age
         if (state.age !== '') {
-          console.log("state.age not empty", state.age)
+          //console.log("state.age not empty", state.age)
           ageInt.value = Number(state.age)
         } else {
-          console.log("state.age empty", state.age)
+          //console.log("state.age empty", state.age)
         }
       }
 
@@ -481,6 +514,8 @@
 		age: '',
     sex: '',
     age: '',
+    confidence: '',
+    weightKg: '',
 	})
 	const validations = {
 		name: { required, minLength:minLength(1)  },	// Matches state.name
@@ -488,6 +523,8 @@
 		age: { required, email },
 		sex: { required },
 		age: { required },
+		confidence: { required },
+		weightKg: { required },
 		
 	}
 	const v$ = useVuelidate(validations, state)
