@@ -255,12 +255,13 @@
                   bg-gray-200 text-gray-800 
                   hover:text-black hover:from-gray-200 hover:to-gray-400 
                   h-full w-20 rounded-l-md cursor-pointer"
-                :class="ageInt <= minVal ? 'opacity-40' : 'opacity-100' "
+                :class="ageInt !== null && ageInt <= minVal ? 'opacity-40' : 'opacity-100' "
               >
                 <span class="m-auto text-2xl font-thin">−</span>
               </button>
 
               <input 
+                :id="`Age_${index}`" 
                 type="text" inputmode="numeric"
                 class="z-[0] ring-[1px] ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
                   font-semibold text-md 
@@ -287,9 +288,9 @@
                 <span class="m-auto text-2xl font-thin">+</span>
               </button>
             </div>
-            {{ ageInt }} 
+            {{ ageInt }} {{ state.age }}
           </div>
-
+Valid Age: {{ !v$.age.$invalid }}
 
 
 				</div>
@@ -339,7 +340,7 @@
   /**-------------------------------------------------------------------------
    * Age input controls.
    */
-  const ageInt = ref()     // Doing this seperately as we want to keep the inital input as an empty string.
+  const ageInt = ref(null)     // Doing this seperately as we want to keep the inital input as an empty string.
   const minVal = 5
   const maxVal = 69
 
@@ -348,14 +349,27 @@
     // This event gets called on every keypress, so don't do any range
     // checks here -- onChanged() handles bad value resets.
     console.log('onInput',ev.target.value)
+    //onChanged(ev)
     // const enteredVal = parseInt(ev.target.value)
     // ageInt.value = enteredVal
   }
 
 	function onChanged(ev) {
     // Need to listen for this event and update the ageInt manually.
-    console.log('onChanged',ev.target.value)
-    // if (ev.originalTarget === undefined) return
+    // console.log('onChanged',ev.target.value,  isNaN(ev.target.value))
+
+    const evVal = ev.target.value
+    if ( evVal.trim() == '' || isNaN(evVal) ) {
+      // Bad data entered, best would be to set back to empty.
+      console.log('Not a number, reset.', ev.target.value)
+      ageInt.value = null
+      state.age = ''
+      // Pesky Age input is not updating, need to do it manually. Uhg.
+      const ageInputField = document.getElementById("Age_" + props.index)
+      ageInputField.value = ''
+      return
+    }
+
     const enteredVal = parseInt(ev.target.value)
     //console.log('onInput:', enteredVal)
     if (enteredVal < minVal) {
@@ -381,7 +395,7 @@
     ev.preventDefault()
     let targetVal = -1
     // Initialize ageInt to minVal if not yet set by user or cache.
-    if (ageInt.value === undefined) {
+    if (ageInt.value === null) {
       ageInt.value  = minVal
       state.age = ageInt.value    // update the state here. 
       return
@@ -474,6 +488,9 @@
 
 		// Passenger Sex
 		if ( v$.value.sex.$invalid === true ) return false
+
+		// Passenger Age
+		if ( v$.value.age.$invalid === true ) return false
 
 		return true
 
