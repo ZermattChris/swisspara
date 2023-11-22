@@ -231,19 +231,8 @@
                 Female
               </label>
             </div>
-            <!-- {{ v$.sex.$invalid === true }} {{ sexTouched }} {{ state.sex === '' }} -->
 					</fieldset>
 
-					<!-- <NumberSpinner
-            class="mt-2"
-            :defVal="state.age"
-            min="5"
-            max="69"
-            @change="onAgeChanged"
-          /> -->
-
-          <!-- Only show all the missing/bad field inputs when the user sends focus to another
-          Passenger form, or tries to click the next button. -->
 
           <!-- Age input.  -->
           <div class="custom-number-input h-10 w-32">
@@ -311,15 +300,13 @@
             >
               69 years is the maximum.
             </p>
-
-            <!-- {{ ageInt }} {{ state.age }} -->
           </div>
 
 				</div>
 
 
         <!-- Confidence Slider.  -->
-        <div class="mt-8 font-medium text-center text-gray-900 text-sm">Confidence &amp; Running Ability:</div>
+        <div class="mt-8 font-medium text-center text-gray-900 text-sm">Confidence &amp; Running Ability: {{ state.confidence }}</div>
         <Slider 
           v-if="vueTimingHack"
           :id="`confSlider_${index}`" 
@@ -369,7 +356,6 @@
           </template>
 
         </Slider>
-        <!-- {{ state.confidence }} -->
 
 
 
@@ -419,7 +405,6 @@
             </span>
           </template>
         </Slider>
-        <!-- {{ state.weightKg }} -->
 
 
 
@@ -507,14 +492,14 @@
   const passDescriptionMissing = ref(false)
   function onFocusoutDescription(val) {
     const msg = val.target.value
-    console.log('onFocusoutDescription', state.confidence, msg )
+    //console.log('onFocusoutDescription', state.confidence, msg )
     if ( state.confidence === 0) {
       if ( msg === '' ) passDescriptionMissing.value = true
       if ( msg !== '' ) passDescriptionMissing.value = false
     } else {
       passDescriptionMissing.value = false
     }
-    console.log('passDescriptionMissing', passDescriptionMissing.value)
+    //console.log('passDescriptionMissing', passDescriptionMissing.value)
   }
   function onChangedPassDescription(val) {
     //console.log('onChangedPassDescription', val.target.value, isPassengerPanelValid)

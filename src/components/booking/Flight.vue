@@ -50,11 +50,6 @@
 
       <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
 
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
-
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
-
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
 
       <p>TODO. Text goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
 

@@ -1,6 +1,5 @@
 <template>
 
-
   <div id="flightDateBox"
 		class=" mx-auto pb-4 pr-2 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
@@ -20,20 +19,7 @@
     >
     </Passenger>
 
-
-  <div id="bottom-footer-spacer" class="h-14 w-full">
-	</div>
-
-    <!-- <input type="text" :value="name" @input="setName" class="border-2 border-blue-50">
-
-    <Slider 
-      v-model="sliderValue" 
-      :format="format"
-      :step="10"
-      class="mt-8"
-    />
-
-    -->
+    <div id="bottom-footer-spacer" class="h-14 w-full"></div>
 
 	</div>
 

@@ -8,6 +8,49 @@ const { MODE, PROD, DEV, SSR, BASE_URL, VITE_MY_VAR } = import.meta.env;
 
 
 
+// // ========================= Helper functions   ===========================
+// /**
+//  * Trying to move the loading of data into the loading of the script?
+//  */
+// const loadFlights = () => {
+
+//   let loadedData = [{}]
+//   // If the cache already exists, then use that.
+//   // Otherwise do an API call for fresh data (FD changed, etc.)
+//   try {
+//     loadedData = localStorage._cacheFlightsList ? JSON.parse(localStorage._cacheFlightsList) : [{}]
+//   } catch (error) {
+//       // cache had bad data stored, so do API call.
+//       console.log("Bad cache data, doing new API call.")
+//       callAPI()
+//       return
+//   } 
+  
+//   const unwrappedObj = toRaw(this._flightsList[0])
+//   if ( Object.keys(unwrappedObj).length === 0 ) {
+//       console.log("this._flightsList is empty -> grabbing data from API call.")
+//       this.callAPI()
+//       return
+//   }
+
+//   console.log("Using data from cache.")
+//   console.log( this._flightsList )
+    
+//   return result
+// }
+
+// const callAPI = async () => {
+
+//   this.loading = true
+//   // Grabs a list of flights available for the selected Flight Date.
+//   this._flightsList = await flightAPI.get()
+//   localStorage._cacheFlightsList = JSON.stringify(toRaw(this._flightsList))   // Save to cache.
+//   this.loading = false
+
+//   return result
+// }
+
+
 
 export const pageFlightStore = reactive({
 
@@ -19,7 +62,6 @@ export const pageFlightStore = reactive({
 
     // Tricky convert string 'true|false' to boolean in js.
     photosVideos: (localStorage.photosVideos === "true") || false,
-
 
     // ---- Set up this page's data ----.
     initialize() {
@@ -50,11 +92,11 @@ export const pageFlightStore = reactive({
 
     // ---- Grab Flight List data from API call. ----.
     async callAPI() {
-        this.loading = true
-        // Grabs a list of flights available for the selected Flight Date.
-        this._flightsList = await flightAPI.get()
-        localStorage._cacheFlightsList = JSON.stringify(toRaw(this._flightsList))   // Save to cache.
-        this.loading = false
+      this.loading = true
+      // Grabs a list of flights available for the selected Flight Date.
+      this._flightsList = await flightAPI.get()
+      localStorage._cacheFlightsList = JSON.stringify(toRaw(this._flightsList))   // Save to cache.
+      this.loading = false
     },
 
 
@@ -89,7 +131,7 @@ export const pageFlightStore = reactive({
         // Return the flight object for the given flight id.
         for (const aFlyObj of this._flightsList) {
             if (aFlyObj.id === this.getFlightChosen() ) {
-                //console.log("FOUND aFlyObj:", aFlyObj)
+                console.log("FOUND aFlyObj:", aFlyObj)
                 foundFlObj = aFlyObj
             }
         }
