@@ -24,10 +24,10 @@
 
     <!-- Previous/Next Buttons -->
     <div class="fixed bottom-0 right-0 left-0
-            
+            border-[1px] border-gray-300
             pt-3 pb-4 md:pb-20
             mx-auto 
-            bg-white" >
+            bg-gray-100" >
 
         <div class="max-w-xl flex justify-around m-auto">
             <button @click="prevPage" type="button" 

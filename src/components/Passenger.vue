@@ -189,10 +189,10 @@
 
 
 				<!-- Horizontal grouping for Sex & Age inputs. -->
-				<div class="flex justify-around pt-8">
+				<div class="flex justify-around pt-6">
 
 					<!-- Sex Radio Group. -->
-					<fieldset class="mt-2">
+					<fieldset class="mt-2 mb-2">
 						
 						<div class="flex flex-center mb-4">
               <input 
@@ -203,7 +203,7 @@
                 value="male"
                 @focusout="sexTouched = true"
                 :checked="state.sex === 'male'"
-                class="h-7 w-7  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+                class="h-6 w-6  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`M_Check_${index}`" 
                 class="ml-2 block font-medium leading-6 text-lg"
@@ -222,7 +222,7 @@
                 value="female"
                 @focusout="sexTouched = true"
                 :checked="state.sex === 'female'"
-                class="h-7 w-7 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+                class="h-6 w-6 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`FCheck_${index}`" 
                 class="ml-2 block font-medium leading-6 text-gray-900 text-lg"
@@ -266,10 +266,11 @@
                 :id="`Age_${index}`" 
                 type="text" inputmode="numeric"
                 class="z-[0]  ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
-                  font-semibold text-xl 
+                  font-semibold text-xl  
                   hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none
                   placeholder:font-light placeholder:italic placeholder:text-slate-400" 
                 :class="v$.age.$invalid && ageTouched === true ? 'ring-red-400  ring-[2px]' : 'ring-gray-400 ring-[1px]' "
+                style="text-shadow: 1px 1px 2px black/10;"
                 name="custom-input-number" 
                 autocomplete="off"
                 :value="ageInt"
@@ -318,6 +319,7 @@
 
 
         <!-- Confidence Slider.  -->
+        <div class="mt-8 font-medium text-center text-gray-900 text-sm">Confidence &amp; Running Ability:</div>
         <Slider 
           v-if="vueTimingHack"
           :id="`confSlider_${index}`" 
@@ -325,7 +327,7 @@
           :min="confSliderMin"
           :max="confSliderMax"
           :step="confSliderStep"
-          class="mt-8 mx-4"
+          class="mt-0 mx-4"
         >
           <!-- Turtle icon.  -->
           <template v-slot:preIcon>
@@ -352,7 +354,7 @@
               Please enter your Confidence Level
             </span>
             <span v-if="Number(state.confidence) >= confSliderMin" class="text-sm text-gray-800">
-              {{confidenceMessages[state.confidence].message}}
+              {{confidenceMessages[state.confidence]}}
             </span>
           </template>
 
@@ -362,6 +364,7 @@
 
 
         <!-- Weight Slider.  -->
+        <div class="mt-12 font-medium text-center text-gray-900 text-sm">Your Weight:</div>
         <Slider 
           v-if="vueTimingHack"
           :id="`wghtSlider_${index}`" 
@@ -369,7 +372,7 @@
           :min="weightSliderMin"
           :max="weightSliderMax"
           :step="weightSliderStep"
-          class="mt-10 mx-4"
+          class="mt-0 mb-2 mx-4"
         >
           <!-- Small kg Icon.  -->
           <template v-slot:preIcon>
@@ -456,7 +459,7 @@
 
 	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 	const ageTouched = ref(false)
-  // const confidenceTouched = ref(false)
+  
 
   // Confidence Slider --------------------------
   const confSliderMin = 0
@@ -471,12 +474,12 @@
     myForm.dispatchEvent(new Event("change"))
   }
   const confidenceMessages = {
-    0: {"message": "Zero message"},
-    2: {"message": "Two  message"},
-    4: {"message": "Four message"},
-    6: {"message": "Six message"},
-    8: {"message": "Eight message"},
-    10: {"message": "Ten message"},
+    0: "Zero message",
+    2: "Two  message",
+    4: "Four message",
+    6: "Six message",
+    8: "Eight message",
+    10: "Ten message",
   }
 
   // Weight Slider ---------------------------

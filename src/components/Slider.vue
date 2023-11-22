@@ -9,7 +9,8 @@
       @click="adjust(-step)"
       class="mr-4 rounded-full rounded-r-none w-14 min-w-[52px]
        bg-gray-100 pr-2 pl-3 py-2.5 text-sm font-semibold
-      text-gray-900 shadow ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+      text-gray-900 shadow ring-1 ring-inset ring-gray-300"
+      :class=" (modelValue <= min) ? 'opacity-50 cursor-default' : 'hover:bg-gray-50  hover:ring-indigo-600 ' "
     >
       <slot name="preIcon"></slot>
     </button>
@@ -77,7 +78,8 @@
       @click="adjust(step)"
       class="ml-4 rounded-full rounded-l-none w-14
       bg-gray-100 pl-2 pr-3 py-2.5 text-sm font-semibold
-      text-gray-900 shadow ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+      text-gray-900 shadow ring-1 ring-inset ring-gray-300 "
+      :class=" (modelValue >= max) ? 'opacity-50 cursor-default' : 'hover:bg-gray-50  hover:ring-indigo-600 ' "
     >
       <slot name="postIcon"></slot>
     </button>
