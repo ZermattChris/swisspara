@@ -8,9 +8,9 @@
       4. Passenger Details
     </h1>
     <p class="pb-4 ">
-      We only ask for the passenger information that is required to help make your flight fun
-      and enjoyable. 
-      <span class="italic text-gray-500">We never share any information with 3rd parties.</span>
+      We only ask for the passenger information that is required to help make your flight fun,
+      enjoyable &amp; safe.
+      <span class="italic text-gray-500 block pt-1">We never share any information with 3rd parties.</span>
     </p>
 
     <Passenger
@@ -112,7 +112,7 @@
           'age': ev.state.age + '',   // convert to string before saving to cache.
           'confidence': ev.state.confidence,
           'weightKg': ev.state.weightKg,
-
+          'description': ev.state.description,
         }
         //console.log('Update obj', ev.index,  updatedPassOjb)
 

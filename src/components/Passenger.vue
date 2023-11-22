@@ -146,7 +146,7 @@
 			<div :id="`passengerInputs_${index}`">
 				
 				<!-- Passenger's Name  -->
-				<div class="px-2 pt-2">
+				<div class="px-6 pt-2">
 					<label v-if="index === 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">First &amp; Last Name</label>
 					<label v-if="index > 1" :for="`contactName_${index}`" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Name</label>
 					<div class="relative mt-1 rounded-md shadow-sm">
@@ -353,8 +353,18 @@
             <span v-if="Number(state.confidence) === -1" class="text-sm text-gray-600">
               Please enter your Confidence Level
             </span>
-            <span v-if="Number(state.confidence) >= confSliderMin" class="text-sm text-gray-800">
-              {{confidenceMessages[state.confidence]}}
+            <span 
+              v-if="Number(state.confidence) >= confSliderMin" 
+              class="text-sm  block"
+              :class=" state.confidence > confSliderMin ?  'text-gray-80' : 'text-orange-700' "
+            >
+              {{ confidenceMessages[state.confidence].confidence }}
+            </span>
+            <span 
+              v-if="Number(state.confidence) >= confSliderMin" 
+              class="italic text-sm text-gray-600 block relative -top-1"
+            >
+              {{ confidenceMessages[state.confidence].speed }}
             </span>
           </template>
 
@@ -400,19 +410,49 @@
             </span>
             <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-sm text-gray-800">
               <span class="font-bold">
-                {{ weightConverter.kg }} <span class="font-semibold">Kilos</span>
+                {{ weightConverter.kg }}&nbsp;<span class="font-semibold">Kilos</span>
               </span>,
               <span class="font-light">
-                {{ parseInt(weightConverter.pounds) }} Pounds,
-                {{ weightConverter.stone }} Stone
+                {{ parseInt(weightConverter.pounds) }}&nbsp;Pounds,
+                {{ weightConverter.stone }}&nbsp;Stone
               </span>
             </span>
           </template>
         </Slider>
         <!-- {{ state.weightKg }} -->
 
-        <!-- Dodgy passenger Message field.  -->
 
+
+        <!-- Confidence Message field.  -->
+        <div
+          v-if="Number(state.confidence) == 0"
+          class="mt-12 mx-auto"
+        >
+          <!-- Message if Age/Sex/Weight/Ability are iffy -->
+          <p :id="`contact-warning_${index}`"
+            class="mt-2 px-6 text-sm text-gray-700"
+          >
+            TODO: Assistance and/or tricky user values , message goes here.
+          </p>
+
+          <div
+            class="mt-2 px-6"
+          >
+            <label 
+              for="assistanceMsg"
+              class="  text-orange-700 text-sm"
+            >
+              *Please describe your abilities:
+            </label>
+            <textarea 
+              :value="state.description"
+              @change="onChangedPassDescription"
+              id="assistanceMsg" name="assistanceMsg" 
+              rows="4" 
+              class="w-full rounded-md focus:ring-indigo-600 "
+            ></textarea>
+          </div>
+        </div>
 
 			</div>  <!-- ******************* END: Passenger inputs. ******************* -->
 
@@ -459,7 +499,16 @@
 
 	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 	const ageTouched = ref(false)
-  
+
+
+  // Passenger Description ----------------------
+  function onChangedPassDescription(val) {
+    //console.log('onChangedPassDescription', val.target.value)
+    state.description = val.target.value
+    const t = "passengerForm_" + props.index
+    const myForm = document.getElementById(t)
+    myForm.dispatchEvent(new Event("change"))
+  }
 
   // Confidence Slider --------------------------
   const confSliderMin = 0
@@ -468,21 +517,20 @@
 	function onConfidenceChanged(val) {
     console.log('onConfidenceChanged', val)
     state.confidence = Number(val)
-      // console.log("state.confidence changed. Update form", newValue, oldValue)
     const t = "passengerForm_" + props.index
     const myForm = document.getElementById(t)
     myForm.dispatchEvent(new Event("change"))
   }
   const confidenceMessages = {
-    0: "Zero message",
-    2: "Two  message",
-    4: "Four message",
-    6: "Six message",
-    8: "Eight message",
-    10: "Ten message",
+    0: {"confidence":"* Assistance Required *", "speed":"(see message below...)"},
+    2: {"confidence":"Minimal Confidence", "speed":"Speed Slow"},
+    4: {"confidence":"A bit nerverous", "speed":"Speed Slow-ish"},
+    6: {"confidence":"Confidence Normal", "speed":"Speed okay"},
+    8: {"confidence":"Quite Confident", "speed":"Speed Quick"},
+    10:{"confidence":"Totally Confident", "speed":"Speed Fast"},
   }
 
-  // Weight Slider ---------------------------
+  // Weight Slider ------------------------------
   const weightSliderMin = 15
   const weightSliderMax = 90
   const weightSliderStep = 5
@@ -602,6 +650,7 @@
     age: '',
     confidence: -1,
     weightKg: -1,
+    description: '',        // This is where I'm asking for details if they're old, fat, scared...
 	})
 	const validations = {
 		name: { required, minLength:minLength(1)  },	// Matches state.name
@@ -611,7 +660,7 @@
 		age: { required },
 		confidence: { required },
 		weightKg: { required },
-		
+		//description: '',    // Not validated.
 	}
 	const v$ = useVuelidate(validations, state)
 	
@@ -645,6 +694,7 @@
       }
 			if (cache.confidence !== undefined) state.confidence = cache.confidence
 			if (cache.weightKg !== undefined) state.weightKg = cache.weightKg
+			if (cache.description !== undefined) state.description = cache.description
 		}
     vueTimingHack.value = true
 	})

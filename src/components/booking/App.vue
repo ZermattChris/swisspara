@@ -24,10 +24,11 @@
 
     <!-- Previous/Next Buttons -->
     <div class="fixed bottom-0 right-0 left-0
-            border-[1px] border-gray-300
-            pt-3 pb-4 md:pb-20
-            mx-auto 
-            bg-gray-100" >
+      border-[1px] border-gray-300
+      pt-3 pb-1
+      mx-auto 
+      bg-gray-100"
+    >
 
         <div class="max-w-xl flex justify-around m-auto">
             <button @click="prevPage" type="button" 
@@ -47,7 +48,7 @@
             
             <span id="reset" 
                 v-if="showDevInfos"
-                class="select-none absolute" 
+                class="select-none absolute text-sm" 
                 @dblclick="onResetLocalStorage"
             >
 
@@ -71,7 +72,6 @@
                 </svg>
             </button>    
 
-
             <!-- <footer id="footbar" 
                 class="absolute -bottom-2 w-screen h-8 "
             >
@@ -79,6 +79,9 @@
             </footer> -->
 
         </div>
+
+        <p class="mt-2 block text-center text-sm text-gray-500">&copy; {{ currentYear }} by Swiss Paraglide Zermatt. All rights reserved.</p>
+
         
     </div>
 
@@ -97,160 +100,163 @@
 
 <script>
 
-    import api from '@components/api/_apiBase.js'
+  import api from '@components/api/_apiBase.js'
 
-    // Pages.
-    import PageDate from '@components/booking/Date.vue'
-    import PageFlight from '@components/booking/Flight.vue'
-    import PageTime from '@components/booking/Time.vue'
-    import PagePassengers from '@components/booking/Passengers.vue'
-    import PagePay from '@components/booking/Payment.vue'
+  // Pages.
+  import PageDate from '@components/booking/Date.vue'
+  import PageFlight from '@components/booking/Flight.vue'
+  import PageTime from '@components/booking/Time.vue'
+  import PagePassengers from '@components/booking/Passengers.vue'
+  import PagePay from '@components/booking/Payment.vue'
 
-    // import PagePaySuccess from '@components/booking/Success.vue'
-    // import PagePayFailed from '@components/booking/Failed.vue'
+  // import PagePaySuccess from '@components/booking/Success.vue'
+  // import PagePayFailed from '@components/booking/Failed.vue'
 
-    // Store
-    import {appStore} from '@stores/appStore.js' 
-    
+  // Store
+  import {appStore} from '@stores/appStore.js' 
+  
 
-    export default {
+  export default {
 
-        name: "app",
-        components: {
-            PageDate,
-            PageFlight,
-            PageTime,
-            PagePassengers,
-            PagePay,
+    name: "app",
+    components: {
+      PageDate,
+      PageFlight,
+      PageTime,
+      PagePassengers,
+      PagePay,
 
-            // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
-            // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
-        },
+      // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
+      // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
+    },
 
-        data() {
-            return {
-                // currPage: appStore.currentPageName(),
-                isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
-            };
-        },
+    data() {
+      return {
+        // currPage: appStore.currentPageName(),
+        isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
+        currentYear: '',
+      };
+    },
 
-        mounted() {
-            // Send our page list as strings to the store.
-            // Need to add 'label' and 'icon' to use in Breadcrumbs.
-            appStore.initNav([
-                PageDate, 
-                PageFlight, 
-                PageTime, 
-                PagePassengers, 
-                PagePay,
-            ])
+    mounted() {
+      // Send our page list as strings to the store.
+      // Need to add 'label' and 'icon' to use in Breadcrumbs.
+      appStore.initNav([
+          PageDate, 
+          PageFlight, 
+          PageTime, 
+          PagePassengers, 
+          PagePay,
+      ])
 
-        },
+      this.currentYear = new Date().getFullYear() + ''
 
-
-
-        computed: {
-
-            // shows a bit of dev info between the Prev | Next buttons.
-            showDevInfos() {
-                if (document.location) {
-                    let host = new URL(document.location).hostname
-                    if ( host == 'swissparaglide.com' ) return false
-                }
-                return true
-            },
-
-            getAPIType() {
-                return 'API: ' + api.getAPIType()    // LIVE, STAGING or LOCAL
-            },
-
-            currentPageName() {
-                return appStore.currentPageName()
-            },
-
-            /**
-             * Used to control the 'disabled' .class of the Next button.
-             */
-            nextBtnHidden() {
-                if ( this.isLastPage ) return 'invisible' 
-            },
-            nextBtnDisabledClass() {
-                if ( !this.isPageValid ) return 'disabled:opacity-50'
-            },
-            nextBtnDisabledProp() {
-                if ( !this.isPageValid ) return true
-            },
-
-            isFirstPage() {
-                return appStore.isNavStart()
-            },
-            isLastPage() {
-                return appStore.isNavEnd()
-            },
-
-        }, // computed
+    },
 
 
 
+    computed: {
 
-        methods: {
+      // shows a bit of dev info between the Prev | Next buttons.
+      showDevInfos() {
+          if (document.location) {
+              let host = new URL(document.location).hostname
+              if ( host == 'swissparaglide.com' ) return false
+          }
+          return true
+      },
 
-            swipeHandler() {
-                console.log("Swiped!")
-				
-            },
+      getAPIType() {
+          return 'API: ' + api.getAPIType()    // LIVE, STAGING or LOCAL
+      },
 
-            /**
-             * This handles the custom event that is fired from each Page (via the _Page base class)
-             * Here is where we manage enabling/disabling the Prev|Next buttons (Breadcrumbs...)
-             * @param {String} pageName 
-             * @param {Bool} isValid 
-             */
-            onPageValidEvent(pageName, isValid) {
-                // console.log("APP PageName:", pageName + '.', " isValid:", isValid)
-                this.isPageValid = isValid
+      currentPageName() {
+          return appStore.currentPageName()
+      },
 
-                // set focus to Next Button
-                if (isValid) {
-				    document.getElementById("nextBtn").focus()
-                }
-				
-            },
+      /**
+       * Used to control the 'disabled' .class of the Next button.
+       */
+      nextBtnHidden() {
+          if ( this.isLastPage ) return 'invisible' 
+      },
+      nextBtnDisabledClass() {
+          if ( !this.isPageValid ) return 'disabled:opacity-50'
+      },
+      nextBtnDisabledProp() {
+          if ( !this.isPageValid ) return true
+      },
 
-            prevPage() {
-                if (this.isFirstPage) return
-                appStore.prev()
-                // set focus to Next Button
-                document.getElementById("prevBtn").focus()
-				
-            },
+      isFirstPage() {
+          return appStore.isNavStart()
+      },
+      isLastPage() {
+          return appStore.isNavEnd()
+      },
 
-            nextPage() {
-                if (this.isLastPage || this.nextBtnDisabled) return
-                appStore.next()
-            },
+    }, // computed
 
 
-            // Test method.
-            onResetLocalStorage() {
-                console.warn("-> RESET LocalStorage")
-                appStore.resetLocalStorage()
-                location.reload() 
-                let span = document.getElementById('reset');
-                span.appendChild( document.createTextNode(" - Reset") );
-            }
 
-        }, // methods
 
-        watch: {
-            // // Update when the current Page name changes.
-            // currentPageName(newPage) {
-            //     //console.log("newPage: ", newPage)
-            //     this.currPage = newPage
-            // }
-        }, // watch
+      methods: {
 
-    }
+          swipeHandler() {
+              console.log("Swiped!")
+      
+          },
+
+          /**
+           * This handles the custom event that is fired from each Page (via the _Page base class)
+           * Here is where we manage enabling/disabling the Prev|Next buttons (Breadcrumbs...)
+           * @param {String} pageName 
+           * @param {Bool} isValid 
+           */
+          onPageValidEvent(pageName, isValid) {
+              // console.log("APP PageName:", pageName + '.', " isValid:", isValid)
+              this.isPageValid = isValid
+
+              // set focus to Next Button
+              if (isValid) {
+          document.getElementById("nextBtn").focus()
+              }
+      
+          },
+
+          prevPage() {
+              if (this.isFirstPage) return
+              appStore.prev()
+              // set focus to Next Button
+              document.getElementById("prevBtn").focus()
+      
+          },
+
+          nextPage() {
+              if (this.isLastPage || this.nextBtnDisabled) return
+              appStore.next()
+          },
+
+
+          // Test method.
+          onResetLocalStorage() {
+              console.warn("-> RESET LocalStorage")
+              appStore.resetLocalStorage()
+              location.reload() 
+              let span = document.getElementById('reset');
+              span.appendChild( document.createTextNode(" - Reset") );
+          }
+
+      }, // methods
+
+      watch: {
+          // // Update when the current Page name changes.
+          // currentPageName(newPage) {
+          //     //console.log("newPage: ", newPage)
+          //     this.currPage = newPage
+          // }
+      }, // watch
+
+  }
 
 </script>
 
