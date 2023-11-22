@@ -447,9 +447,11 @@
             <textarea 
               :value="state.description"
               @change="onChangedPassDescription"
+              @focusout="onFocusoutDescription"
               id="assistanceMsg" name="assistanceMsg" 
               rows="4" 
               class="w-full rounded-md focus:ring-indigo-600 "
+              :class="passDescriptionMissing ? 'border-red-400  border-[2px]' : '' "
             ></textarea>
           </div>
         </div>
@@ -502,9 +504,22 @@
 
 
   // Passenger Description ----------------------
+  const passDescriptionMissing = ref(false)
+  function onFocusoutDescription(val) {
+    const msg = val.target.value
+    console.log('onFocusoutDescription', state.confidence, msg )
+    if ( state.confidence === 0) {
+      if ( msg === '' ) passDescriptionMissing.value = true
+      if ( msg !== '' ) passDescriptionMissing.value = false
+    } else {
+      passDescriptionMissing.value = false
+    }
+    console.log('passDescriptionMissing', passDescriptionMissing.value)
+  }
   function onChangedPassDescription(val) {
-    //console.log('onChangedPassDescription', val.target.value)
+    //console.log('onChangedPassDescription', val.target.value, isPassengerPanelValid)
     state.description = val.target.value
+    // const forceCheck = isPassengerPanelValid
     const t = "passengerForm_" + props.index
     const myForm = document.getElementById(t)
     myForm.dispatchEvent(new Event("change"))
@@ -709,6 +724,7 @@
 
 			
 	const isPassengerPanelValid = computed(() => {
+    //console.log("isPassengerPanelValid")
 		// Contact Passenger Phone + Email valid.
 		if (props.index === 1 ) {
 			if (isContactInfoValid() === false) return false
@@ -726,6 +742,11 @@
     //console.log(state.confidence, state.weightKg)
     if (state.confidence == -1) return false
     if (state.weightKg == -1) return false
+
+    // Tough Passenger input field. Need some infos here if it gets displayed to 
+    // the User (at the moment it's just if Speed == 0)
+    //console.log(state.confidence, state.description)
+    if (state.confidence === 0 && state.description === '') return false
 
 		return true
 
