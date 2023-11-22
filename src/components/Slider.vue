@@ -22,15 +22,15 @@
       class="flex grow flex-col relative  "
     >
       <input type="range" 
-        :value="_val"
+        :id="id"
         :min="min" :max="max" :step="step"
-        @input="onSlide"
-        @change="$emit('change', _val)"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
         class="h-7 pt-6 z-2 relative
           w-full bg-transparent cursor-pointer appearance-none disabled:opacity-50 
           disabled:pointer-events-none focus:outline-none
-          [&::-webkit-slider-thumb]:w-2.5
-          [&::-webkit-slider-thumb]:h-2.5
+          [&::-webkit-slider-thumb]:w-3.5
+          [&::-webkit-slider-thumb]:h-3.5
           [&::-webkit-slider-thumb]:-mt-0.5
           [&::-webkit-slider-thumb]:appearance-none
           [&::-webkit-slider-thumb]:bg-white
@@ -41,8 +41,8 @@
           [&::-webkit-slider-thumb]:ease-in-out
           [&::-webkit-slider-thumb]:dark:bg-slate-700
 
-          [&::-moz-range-thumb]:w-4
-          [&::-moz-range-thumb]:h-4
+          [&::-moz-range-thumb]:w-5
+          [&::-moz-range-thumb]:h-5
           [&::-moz-range-thumb]:appearance-none
           [&::-moz-range-thumb]:bg-white
           [&::-moz-range-thumb]:border-4
@@ -89,52 +89,37 @@
 
 <script setup>
 
-  import { ref, computed } from 'vue'
+  import { ref, computed, onMounted } from 'vue'
   
   // ----------- Props ------------
   const props = defineProps({
+    id: [String],   // Unique id name for this slider.
     // Is -1 if Slider hasn't been 'touched'
-    startValue: {
-      type: [Number]
-    },
+    modelValue: [Number],
     min: [Number],
     max: [Number],
     step: [Number],
   })
 
   // ----------- Events ------------
-  const emit = defineEmits(['change'])
+  const emit = defineEmits(['update:modelValue'])
 
-  const _val = ref(props.startValue)
-
-	function onSlide(ev) {
-    const sliderClickVal = ev.target.value
-    // console.log('onClick: ', sliderClickVal)
-    _val.value = Number(sliderClickVal)
-    emit('change', _val.value)
-  }
-
+ 
 	function adjust(step) {
-    // Dagnabbit js - stop with all the Number String twaddle!
-    // The html 5 slider input is casting the _val back to String... Why???
-    //console.log('Slider Btn adjust: ', step)
-    // console.log('Slider Btn adjust: ', Number(_val.value), typeof Number(_val.value))
-    const targetVal = Number(_val.value) + step
+    let targetVal = Number(props.modelValue) + step
     // console.log('targetVal : ', targetVal)
     if (targetVal < (props.min - step) ) {    // this accounts for inital -1 value.
-      _val.value = props.min 
+      targetVal = props.min 
       
     } else if (targetVal > props.max  ) {
-      _val.value = props.max 
+      targetVal = props.max 
       
     } else  {
-      _val.value = Number(_val.value) + step
+      targetVal = Number(props.modelValue) + step
     }
-
-    emit('change', _val.value)
+    emit('update:modelValue', targetVal)
   }
 
-			
 
 
 </script>

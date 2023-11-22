@@ -194,7 +194,7 @@
 					<!-- Sex Radio Group. -->
 					<fieldset class="mt-2">
 						
-						<div class="flex flex-center mb-1">
+						<div class="flex flex-center mb-4">
               <input 
                 :id="`M_Check_${index}`" 
                 :name="`Sex_Check_${index}`" 
@@ -203,10 +203,10 @@
                 value="male"
                 @focusout="sexTouched = true"
                 :checked="state.sex === 'male'"
-                class="h-5 w-5  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+                class="h-7 w-7  border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`M_Check_${index}`" 
-                class="ml-2 block font-medium leading-6 "
+                class="ml-2 block font-medium leading-6 text-lg"
                 :class="( sexTouched === false || v$.sex.$invalid === false ) ? 'text-gray-900' : 'text-red-700' "
               >
                 Male
@@ -222,10 +222,10 @@
                 value="female"
                 @focusout="sexTouched = true"
                 :checked="state.sex === 'female'"
-                class="h-5 w-5 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
+                class="h-7 w-7 border-2 border-gray-400 text-indigo-600 focus:ring-gray-300"
               />
               <label :for="`FCheck_${index}`" 
-                class="ml-2 block font-medium leading-6 text-gray-900"
+                class="ml-2 block font-medium leading-6 text-gray-900 text-lg"
                 :class="( sexTouched === false || v$.sex.$invalid === false ) ? 'text-gray-900' : 'text-red-700' "
               >
                 Female
@@ -247,8 +247,8 @@
 
           <!-- Age input.  -->
           <div class="custom-number-input h-10 w-32">
+            <div class="font-medium leading-6 text-gray-900 text-sm">Age</div>
             <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-
               <button
                 @click="increment(-1, $event)"
                 class="plusButtn 
@@ -259,14 +259,14 @@
                   h-full w-20 rounded-l-md cursor-pointer"
                 :class="ageInt !== null && ageInt <= minVal ? 'opacity-40' : 'opacity-100' "
               >
-                <span class="m-auto text-2xl font-thin">−</span>
+                <span class="m-auto text-2xl font-medium">−</span>
               </button>
 
               <input 
                 :id="`Age_${index}`" 
                 type="text" inputmode="numeric"
                 class="z-[0]  ring-gray-400 ring-inset border-0 focus:outline-none text-center w-full 
-                  font-semibold text-md 
+                  font-semibold text-xl 
                   hover:text-black focus:text-black  md:text-basecursor-default flex items-center text-gray-700  outline-none
                   placeholder:font-light placeholder:italic placeholder:text-slate-400" 
                 :class="v$.age.$invalid && ageTouched === true ? 'ring-red-400  ring-[2px]' : 'ring-gray-400 ring-[1px]' "
@@ -289,7 +289,7 @@
                   h-full w-20 rounded-r-md cursor-pointer"
                 :class="ageInt >= maxVal ? 'opacity-40' : 'opacity-100' "
               >
-                <span class="m-auto text-2xl font-thin">+</span>
+                <span class="m-auto text-2xl font-medium">+</span>
               </button>
             </div>
             <p v-if="v$.age.$invalid && ageTouched === true"
@@ -320,12 +320,12 @@
         <!-- Confidence Slider.  -->
         <Slider 
           v-if="vueTimingHack"
-          :startValue="Number(state.confidence)"
+          :id="`confSlider_${index}`" 
+          v-model.number="state.confidence"
           :min="confSliderMin"
           :max="confSliderMax"
           :step="confSliderStep"
           class="mt-8 mx-4"
-          @change="onConfidenceChanged"
         >
           <!-- Turtle icon.  -->
           <template v-slot:preIcon>
@@ -364,12 +364,12 @@
         <!-- Weight Slider.  -->
         <Slider 
           v-if="vueTimingHack"
-          :startValue="Number(state.weightKg)"
+          :id="`wghtSlider_${index}`" 
+          v-model.number="state.weightKg"
           :min="weightSliderMin"
           :max="weightSliderMax"
           :step="weightSliderStep"
           class="mt-10 mx-4"
-          @change="onWeightChanged"
         >
           <!-- Small kg Icon.  -->
           <template v-slot:preIcon>
@@ -395,13 +395,13 @@
             <span v-if="Number(state.weightKg) === -1" class="text-sm text-gray-600">
               Please enter your Weight
             </span>
-            <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-base text-gray-800">
+            <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-sm text-gray-800">
               <span class="font-bold">
                 {{ weightConverter.kg }} <span class="font-semibold">Kilos</span>
               </span>,
               <span class="font-light">
                 {{ parseInt(weightConverter.pounds) }} Pounds,
-                {{ parseInt(weightConverter.stone) }} Stone
+                {{ weightConverter.stone }} Stone
               </span>
             </span>
           </template>
@@ -463,7 +463,7 @@
   const confSliderMax = 10
   const confSliderStep = 2
 	function onConfidenceChanged(val) {
-    //console.log('onConfidenceChanged', val)
+    console.log('onConfidenceChanged', val)
     state.confidence = Number(val)
       // console.log("state.confidence changed. Update form", newValue, oldValue)
     const t = "passengerForm_" + props.index
@@ -495,7 +495,9 @@
     const weightObj = {
       "kg":     state.weightKg,
       "pounds": (state.weightKg * 2.20462),
-      "stone":  (state.weightKg * 0.157473),
+      // "stone":  (state.weightKg * 0.157473),
+      "stone":  Math.round( (state.weightKg * 0.157473) *2 ) / 2,
+      
     }
     return weightObj
   })
