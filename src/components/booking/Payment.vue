@@ -10,88 +10,93 @@
     <!-- This is the Confirm Booking Intro text. -->
     <div id="confirmBookingWrapper" v-if="hasConfirmedBooking === false">
       <div>
-        <p class="pb-2">
+        <p class="pb-4">
           Please check to make sure your Booking Details are correct. If you find any mistakes, 
           click the "Previous" button below...
         </p>
       </div>
 
+      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow-lg">
+        <div class="px-2 pb-6 ">
 
-      <!-- This is the Confirm Booking Grid. -->
-      <p class="mt-4 ml-4 mb-1 italic text-orange-800">
-        Flight Details:
-      </p>
-      <div id="confirmFlightGrid"
-        style="grid-template-columns: 160px auto;"
-        class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  "
-      >
-        <div class="rowLabel">People Flying:</div>
-        <div class="rowValue">{{ totalPassengers }}</div>
 
-        <div class="rowLabel">Flight Date:</div>
-        <div class="rowValue">{{ getFlghtDayName }} &mdash; {{ getFlghtDateFormatted }}</div>
+            <!-- This is the Confirm Booking Grid. -->
+            <p class="mt-4 ml-4 mb-1 italic text-orange-800">
+              Flight Details:
+            </p>
+            <div id="confirmFlightGrid"
+              style="grid-template-columns: 160px auto;"
+              class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  "
+            >
+              <div class="rowLabel">People Flying:</div>
+              <div class="rowValue">{{ totalPassengers }}</div>
 
-        <div class="rowLabel">Meeting Time(s):</div>
-        <div class="rowValue">{{ meetingTime }}</div>
+              <div class="rowLabel">Flight Date:</div>
+              <div class="rowValue">{{ getFlghtDayName }} &mdash; {{ getFlghtDateFormatted }}</div>
 
-        <div class="rowLabel">Flight:</div>
-        <div class="rowValue">{{ flight }}</div>
+              <div class="rowLabel">Meeting Time(s):</div>
+              <div class="rowValue">{{ meetingTime }}</div>
 
-        <div class="rowLabel">Photos + Videos:</div>
-        <div class="rowValue">{{ photos }}</div>
+              <div class="rowLabel">Flight:</div>
+              <div class="rowValue">{{ flight }}</div>
+
+              <div class="rowLabel">Photos + Videos:</div>
+              <div class="rowValue">{{ photos }}</div>
+            </div>
+
+            <!-- This is the Confirm Contact Grid. -->
+            <p class="mt-4 ml-4 mb-1 italic text-orange-800">
+              Contact Details:
+            </p>
+            <div id="confirmContactGrid"
+              style="grid-template-columns: 130px auto;"
+              class="mt-0  mx-4   grid grid-flow-row-dense 
+                sm:max-w-screen-sm  "
+            >
+              <div class="rowLabel">Telephone:</div>
+              <div class="rowValue">{{ telephone }}</div>
+
+              <div class="rowLabel">Email:</div>
+              <div class="rowValue">{{ email }}</div>
+
+            </div>
+
+            <div class="text-center mt-8">
+              <button type="button" 
+                @click="hasConfirmedBooking = true"
+                class="animate-pulse hover:animate-none   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
+                  border-[1px] border-gray-400
+                  ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
+                Confirm Booking
+              </button>
+            </div>
+
+            <!-- Pasengers lising Grid. -->
+            <p class="mt-4 ml-0 mb-1 italic text-orange-800">
+              Passengers:
+            </p>
+            <div id="confirmPassengersGrid"
+              style="grid-template-columns: auto 50px 50px 90px 30px;"
+              class="mt-0 mx-auto   grid grid-flow-row-dense   text-sm  border-2 border-slate-50  "
+            >
+              <div class="cpHeader pl-2">Name</div>
+              <div class="cpHeader text-center">M/F</div>
+              <div class="cpHeader text-center">Age</div>
+              <div class="cpHeader text-center">Confidence</div>
+              <div class="cpHeader text-center">Kg</div>
+
+              <template v-for="aPassenger in allPassengers">
+                <div class="pl-2">{{ aPassenger.name }}</div>
+                <div class="text-center">{{ aPassenger.sex }}</div>
+                <div class="text-center">{{ aPassenger.age }}</div>
+                <div class="text-center">{{ aPassenger.confidence }}</div>
+                <div class="text-center">{{ aPassenger.weightKg }}</div>
+              </template>
+
+            </div>
+
+        </div>
       </div>
-
-      <!-- This is the Confirm Contact Grid. -->
-      <p class="mt-4 ml-4 mb-1 italic text-orange-800">
-        Contact Details:
-      </p>
-      <div id="confirmContactGrid"
-        style="grid-template-columns: 130px auto;"
-        class="mt-0  mx-4   grid grid-flow-row-dense 
-           sm:max-w-screen-sm  "
-      >
-        <div class="rowLabel">Telephone:</div>
-        <div class="rowValue">{{ telephone }}</div>
-
-        <div class="rowLabel">Email:</div>
-        <div class="rowValue">{{ email }}</div>
-
-      </div>
-
-      <div class="text-center mt-8">
-        <button type="button" 
-          @click="hasConfirmedBooking = true"
-          class="animate-pulse hover:animate-none   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
-            border-[1px] border-gray-400
-            ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
-          Confirm Booking
-        </button>
-      </div>
-
-      <!-- Pasengers lising Grid. -->
-      <p class="mt-4 ml-0 mb-1 italic text-orange-800">
-        Passengers:
-      </p>
-      <div id="confirmPassengersGrid"
-        style="grid-template-columns: auto 50px 50px 90px 30px;"
-        class="mt-0 mx-auto  grid grid-flow-row-dense    border-2 border-slate-50 sm:max-w-screen-sm  "
-      >
-        <div>Name</div>
-        <div>M/F</div>
-        <div>Age</div>
-        <div>Confidence</div>
-        <div>Kg</div>
-
-        <template v-for="aPassenger in allPassengers">
-          <div>{{ aPassenger.name }}</div>
-          <div>{{ aPassenger.sex }}</div>
-          <div>{{ aPassenger.age }}</div>
-          <div>{{ aPassenger.confidence }}</div>
-          <div>{{ aPassenger.weightKg }}</div>
-        </template>
-
-      </div>
-
 
     </div><!-- END: Confirm Booking Wrapper.  -->
 
@@ -133,7 +138,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </button>
-            Show Booking Details...
+            Show Booking Details again...
           </div>
 
         </div>
@@ -224,7 +229,7 @@
 
         <p id="bookFlightMsg" 
           v-if="tAndCsChecked"
-          class="text-orange-700 text-sm pt-2"
+          class="text-orag-700 text-sm pt-2"
         >
           (this will capture your card and complete your Booking)
         </p>
@@ -410,7 +415,13 @@
       background-color: rgba(0,0,0, 0.03);
     }
 
+    div.cpHeader {
+      font-weight: 500;
+      background-color: rgba(0,0,0, 0.05);
+    }
     #confirmPassengersGrid > div {
+      padding-top: 0.2em;
+      padding-bottom: 0.2em;
       border-bottom: 1px solid rgba(0,0,0, 0.05);
     }
 
