@@ -22,7 +22,7 @@
         Flight Details:
       </p>
       <div id="confirmFlightGrid"
-        style="grid-template-columns: 200px auto;"
+        style="grid-template-columns: 160px auto;"
         class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  "
       >
         <div class="rowLabel">People Flying:</div>
@@ -61,8 +61,9 @@
       <div class="text-center mt-8">
         <button type="button" 
           @click="hasConfirmedBooking = true"
-          class="animate-pulse   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
-            ring-2 ring-inset ring-orange-700 hover:bg-gray-100">
+          class="animate-pulse hover:animate-none   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
+            border-[1px] border-gray-400
+            ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
           Confirm Booking
         </button>
       </div>
@@ -94,6 +95,80 @@
 
     </div><!-- END: Confirm Booking Wrapper.  -->
 
+
+    <!-- Payment Block -->
+    <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
+      <div>
+        <p class="pb-6">
+          Enter your card details to complete your Booking.
+        </p>
+      </div>
+
+      <!-- Passengers, date and Show Booking Details...  -->
+      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+        <div class="px-4 py-5 sm:p-6">
+
+          <p class="text-center">
+            <svg class="h-8 w-8 inline mr-2 fill-orange-600"
+              xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" 
+              width="48"
+            >
+              <path d="M120-120v-60h720v60H120Zm64-208L81-503l43-8 70 62 226-61-171-287 58-17 285 257 216-58q27-8 49 9.5t22 46.5q0 19-11.5 34T838-505L184-328Z"/>
+            </svg>
+            {{ totalPassengers }} Passenger(s): {{ getFlghtDayName }} &ndash; {{ getFlghtDateFormatted }}
+          </p>
+
+          <!-- Show Booking Detail btn  -->
+          <div class="text-sm cursor-pointer hover:text-orange-800 text-center"
+            @click="hasConfirmedBooking = false"
+          >
+            <button type="button" 
+              @click="hasConfirmedBooking = false"
+              class=" relative top-1.5 mr-1 rounded-full h-6 w-6  bg-white px-0 py-0 text-sm font-semibold text-gray-900 
+              shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" 
+                class="w-6 h-6"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+            Show Booking Details...
+          </div>
+
+        </div>
+      </div><!-- END: Passengers, date and Show Booking Details...  -->
+
+
+
+      <!-- Table Showing Flights w/ costs and Photos/Vids  -->
+      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+        <div class="px-4 py-5 sm:p-6">
+          total costs overview...
+        </div>
+      </div><!-- END: Table Showing Flights w/ costs and Photos/Vids  -->
+
+
+
+      <!-- Booking Notes  -->
+      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+        <div class="px-4 py-5 sm:p-6">
+          Booking Notes here.
+        </div>
+      </div><!-- END: Booking Notes -->
+
+
+      <!-- Stripe Checkout component  -->
+      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+        <div class="px-4 py-5 sm:p-6">
+          Stripe Checkout component here.
+        </div>
+      </div><!-- END: Stripe Checkout component -->
+
+
+
+
+    </div> <!-- END: Payment Block -->
 
 
   </div>
