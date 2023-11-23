@@ -80,7 +80,9 @@
 
         </div>
 
-        <p class="mt-2 block text-center text-xs text-gray-500">&copy; {{ currentYear }} by Swiss Paraglide Zermatt. All rights reserved.</p>
+        <p class="mt-2 block text-center text-xs text-gray-500" aria-hidden="true">
+          &copy; {{ currentYear }} by Swiss Paraglide Zermatt. All rights reserved.
+        </p>
 
         
     </div>
