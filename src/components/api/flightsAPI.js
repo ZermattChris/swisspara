@@ -17,16 +17,19 @@ export default {
 							{
 									"id":77,
 									"name":"Classic High",
+									"price":"240",
 									"descriptionId": 100
 							},
 							{
 									"id":32,
 									"name":"Scenic",
+									"price":"190",
 									"descriptionId": 200
 							},
 							{
 									"id":5,
 									"name":"Elite*",
+									"price":"420",
 									"descriptionId": 300
 							}
 						]

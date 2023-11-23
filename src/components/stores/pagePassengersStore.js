@@ -40,9 +40,9 @@ export const pagePassengersStore = reactive({
 	getAllPassengersList() {
 		return this._passengersList		
 	},
-		// getPassengerList(index) {
-		// 	return this._passengersList[index]	
-		// },
+  getPassengerList(index) {
+    return this._passengersList[index]	
+  },
 
 	// Call this as the user blurs each form field, to make sure
 	// that all data gets pushed to the _cache.

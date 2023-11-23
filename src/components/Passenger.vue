@@ -9,7 +9,7 @@
 		<!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
 		<form
 			:id="`passengerForm_${index}`" 
-			@change="$emit('change', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'phone':phoneNumber, 'state':state})"
+			@change="$emit('change', {'index':index, 'formValid':isPassengerPanelValid, 'target':$event.target, 'value':$event.target.value, '$event':$event, 'phone':phoneInputData.formatInternational, 'state':state})"
 		>
 
 
@@ -90,13 +90,16 @@
 						:ignored-countries="['AC']"
 						size="md"
 						countrySelectorWidth="6rem"
-						@update="onPhoneUpdated"
+						@update="onPhoneUpdated( $event)"
 						@focusout="onPhoneUpdated"
 					/>
 					<div v-if="phoneNumberValid === false && phoneNumber !== undefined"
 						class="pointer-events-none absolute inset-y-0 right-2 top-0.5 flex items-center pr-3 z-10">
 						<ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
 					</div>
+          <!-- <code>
+            {{ phoneInputData }}
+          </code> -->
 				</div>
 
 				<!-- Contact Email.  -->
@@ -483,6 +486,7 @@
 
 	const phoneNumber = ref()
 	const phoneNumberValid = ref(false)
+  const phoneInputData = ref()
 
 	const sexTouched = ref(false)   // Sounds wrong, but keep track if user has touched sex.
 	const ageTouched = ref(false)
@@ -702,9 +706,10 @@
 
 
 	function onPhoneUpdated(ev) {
-    //console.log('Phone Valid: ', ev.isValid, phoneNumber.value)
 		if ( ev.isValid === undefined ) return 		// stop from setting to undefined
+    console.log('Phone Valid: ', ev.isValid, ev)
 		phoneNumberValid.value = ev.isValid
+    phoneInputData.value = ev   // saves all the MAZ Phone input returned data
   }
 
 			
