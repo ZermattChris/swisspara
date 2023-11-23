@@ -165,8 +165,19 @@
         </div>
       </div><!-- END: Stripe Checkout component -->
 
-
-
+      <div class="relative flex items-start">
+        <div class="flex h-6 items-center">
+          <input id="terms" aria-describedby="comments-description" name="terms" type="checkbox" class="h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
+        </div>
+        <div class="ml-3 text-sm leading-6">
+          <label for="terms" class="font-medium text-gray-900">Terms &amp; Conditions</label>
+          <p id="terms-description" class="text-gray-700">
+            Check here to indicate that you have read and agree to the 
+            <a href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
+            of the Swiss Paraglide Zermatt Customer Agreement.
+          </p>
+        </div>
+      </div>
 
     </div> <!-- END: Payment Block -->
 
