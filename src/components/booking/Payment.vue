@@ -14,9 +14,6 @@
           Please check to make sure your Booking Details are correct. If you find any mistakes, 
           click the "Previous" button below...
         </p>
-        <p class="">
-          If all is good, click on the "Confirm" to continue.
-        </p>
       </div>
 
 
@@ -24,7 +21,7 @@
       <p class="mt-4 ml-4 mb-1 italic text-orange-800">
         Flight Details:
       </p>
-      <div id="confirmGrid"
+      <div id="confirmFlightGrid"
         style="grid-template-columns: 200px auto;"
         class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  "
       >
@@ -32,7 +29,7 @@
         <div class="rowValue">{{ totalPassengers }}</div>
 
         <div class="rowLabel">Flight Date:</div>
-        <div class="rowValue">{{ flightDate }}</div>
+        <div class="rowValue">{{ getFlghtDayName }} &mdash; {{ getFlghtDateFormatted }}</div>
 
         <div class="rowLabel">Meeting Time(s):</div>
         <div class="rowValue">{{ meetingTime }}</div>
@@ -48,9 +45,10 @@
       <p class="mt-4 ml-4 mb-1 italic text-orange-800">
         Contact Details:
       </p>
-      <div id="confirmGrid"
-        style="grid-template-columns: 200px auto;"
-        class="mt-0 mx-auto   grid grid-flow-row auto-rows-max   sm:max-w-screen-sm  "
+      <div id="confirmContactGrid"
+        style="grid-template-columns: 130px auto;"
+        class="mt-0  mx-4   grid grid-flow-row-dense 
+           sm:max-w-screen-sm  "
       >
         <div class="rowLabel">Telephone:</div>
         <div class="rowValue">{{ telephone }}</div>
@@ -69,19 +67,27 @@
         </button>
       </div>
 
-      <!-- This is the Confirm Contact Grid. -->
-      <p class="mt-4 ml-4 mb-1 italic text-orange-800">
+      <!-- Pasengers lising Grid. -->
+      <p class="mt-4 ml-0 mb-1 italic text-orange-800">
         Passengers:
       </p>
-      <div id="confirmGrid"
-        style="grid-template-columns: 200px auto;"
-        class="mt-0 mx-auto   grid grid-flow-row auto-rows-max   sm:max-w-screen-sm  "
+      <div id="confirmPassengersGrid"
+        style="grid-template-columns: auto 50px 50px 90px 30px;"
+        class="mt-0 mx-auto  grid grid-flow-row-dense    border-2 border-slate-50 sm:max-w-screen-sm  "
       >
-        <div class="rowLabel">Telephone:</div>
-        <div class="rowValue">{{ telephone }}</div>
+        <div>Name</div>
+        <div>M/F</div>
+        <div>Age</div>
+        <div>Confidence</div>
+        <div>Kg</div>
 
-        <div class="rowLabel">Email:</div>
-        <div class="rowValue">{{ email }}</div>
+        <template v-for="aPassenger in allPassengers">
+          <div>{{ aPassenger.name }}</div>
+          <div>{{ aPassenger.sex }}</div>
+          <div>{{ aPassenger.age }}</div>
+          <div>{{ aPassenger.confidence }}</div>
+          <div>{{ aPassenger.weightKg }}</div>
+        </template>
 
       </div>
 
@@ -92,6 +98,7 @@
 
   </div>
 
+  <div id="footer-spacer" class="h-14"></div>
 
 </template>
 
@@ -107,6 +114,10 @@
   // Parent component for all "Pages"
   import _Page from './_Page.vue'
 
+	// Calendar Utils.
+	import {calendarUtils as calUtils} from '@components/booking/calendarUtils.js'
+
+  import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear } from 'date-fns'
 
   export default {
     name: 'PagePayment',
@@ -117,7 +128,8 @@
 		data() {
 			return {
         hasConfirmedBooking: false,
-        contactPassenger: passengersStore.getPassengerList(1)
+        contactPassenger: passengersStore.getPassengerList(1),
+        allPassengers: passengersStore.getAllPassengersList(),
 			}
 		},
 
@@ -174,6 +186,30 @@
         //       change their minds easily.
       },
 
+
+      getFlghtDayName() {
+        const fltDate = new Date( Date.parse( this.flightDate ) )
+        // console.log("fltDate", fltDate)
+        const dayInt = fltDate.getDay()
+        return calUtils.getDayString(dayInt)
+      },
+
+      getFlghtDateFormatted () {
+        const fltDate = new Date( Date.parse( this.flightDate  ) )
+        //console.log("fltDate", fltDate)
+        const day = fltDate.getDate()
+        const dayInt = fltDate.getDay()
+        const dayName = calUtils.getDayString(dayInt)
+        // const dayTh = calUtils.getLocalizedDayPostfix(dayInt)
+        const monthInt = fltDate.getMonth()
+        const monthName = calUtils.getMonthString(monthInt)
+        const year = fltDate.getFullYear()
+        // console.log("fltDate", dayInt, dayName, monthName)
+        return `${monthName} ${day}, ${year}`
+      },
+
+
+
       /**
        * This computed value is requried by the base '_Page' class.
        * It is tightly coupled, but lets the base handle all event
@@ -194,21 +230,31 @@
 
 <style>
 
-  #confirmGrid > div {
+  #confirmFlightGrid > div  {
     padding-left: 1rem;
     padding-right: 1rem;
     border-bottom: 1px solid rgba(0,0,0, 0.05);
   }
+
+  #confirmContactGrid > div {
+    border-bottom: 1px solid rgba(0,0,0, 0.05);
+  }
+
     /* Gives the lower grid lines */
-    #confirmGrid > div:nth-child(-n + 2) {
+    #confirmFlightGrid > div:nth-child(-n + 2),
+    #confirmContactGrid > div:nth-child(-n + 2) {
       border-top: 1px solid rgba(0,0,0, 0.03);
     }
     /* Row background color */
-    #confirmGrid > div:nth-child(4n-2) {
+    #confirmFlightGrid > div:nth-child(4n-2) {
       background-color: rgba(0,0,0, 0.03);
     }
-    #confirmGrid > div:nth-child(4n-3) {
+    #confirmFlightGrid > div:nth-child(4n-3) {
       background-color: rgba(0,0,0, 0.03);
+    }
+
+    #confirmPassengersGrid > div {
+      border-bottom: 1px solid rgba(0,0,0, 0.05);
     }
 
 </style>

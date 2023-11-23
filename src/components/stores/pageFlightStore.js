@@ -85,7 +85,7 @@ export const pageFlightStore = reactive({
         // Return the flight object for the given flight id.
         for (const aFlyObj of this._flightsList) {
             if (aFlyObj.id === this.getFlightChosen() ) {
-                console.log("FOUND aFlyObj:", aFlyObj)
+                //console.log("FOUND aFlyObj:", aFlyObj)
                 foundFlObj = aFlyObj
             }
         }
