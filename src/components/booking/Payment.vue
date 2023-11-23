@@ -106,7 +106,7 @@
 
       <!-- Passengers, date and Show Booking Details...  -->
       <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
-        <div class="px-4 py-5 sm:p-6">
+        <div class="px-4 py-5 ">
 
           <p class="text-center">
             <svg class="h-8 w-8 inline mr-2 fill-orange-600"
@@ -143,7 +143,7 @@
 
       <!-- Table Showing Flights w/ costs and Photos/Vids  -->
       <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
-        <div class="px-4 py-5 sm:p-6">
+        <div class="px-4 py-5 ">
           total costs overview...
         </div>
       </div><!-- END: Table Showing Flights w/ costs and Photos/Vids  -->
@@ -151,36 +151,87 @@
 
 
       <!-- Booking Notes  -->
-      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
-        <div class="px-4 py-5 sm:p-6">
-          Booking Notes here.
+      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+        <div class="px-4 py-5 ">
+
+          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
+            <svg 
+              class="w-6 h-6 inline relative -top-0.5 fill-orange-700"
+              xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" 
+            >
+              <path d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/>
+            </svg>
+
+            <p class="text-sm inline ml-1">
+              Click here to add a Booking Message.
+            </p>
+          </div>
+
+          <div v-if="toggleBookingMsg">
+
+            <p class="mt-2 text-sm text-gray-700">
+              If you have any questions, special wishes or have extra information regarding your Booking,
+              please let us know here.
+            </p>
+            <div class="mt-2 px-0" >
+              <textarea 
+                id="assistanceMsg" name="assistanceMsg" 
+                rows="4" 
+                class="w-full rounded-md focus:ring-indigo-600 "
+              ></textarea>
+            </div>
+
+          </div>
+
         </div>
       </div><!-- END: Booking Notes -->
 
 
       <!-- Stripe Checkout component  -->
       <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
-        <div class="px-4 py-5 sm:p-6">
+        <div class="px-4 py-5 ">
           Stripe Checkout component here.
         </div>
       </div><!-- END: Stripe Checkout component -->
 
-      <div class="relative flex items-start">
+      <!-- T&C's checkbox.  -->
+      <div class="pl-6 pr-2 relative flex items-start">
         <div class="flex h-6 items-center">
-          <input id="terms" aria-describedby="comments-description" name="terms" type="checkbox" class="h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
+          <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms" type="checkbox" class="h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
           <label for="terms" class="font-medium text-gray-900">Terms &amp; Conditions</label>
           <p id="terms-description" class="text-gray-700">
-            Check here to indicate that you have read and agree to the 
+            To complete your Booking, click here to indicate that you have read and agree to the 
             <a href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
             of the Swiss Paraglide Zermatt Customer Agreement.
           </p>
         </div>
-      </div>
+      </div> <!-- END: T&C's checkbox.  -->
 
-    </div> <!-- END: Payment Block -->
+      <!-- Book Flight Btn -->
+      <div class="text-center mt-6 mb-6">
+        <button type="button" 
+          class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          :class="_isPageValid ? '': 'opacity-50' "
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+            class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Book Flight
+        </button>
 
+        <p id="bookFlightMsg" 
+          v-if="tAndCsChecked"
+          class="text-orange-700 text-sm pt-2"
+        >
+          (this will capture your card and complete your Booking)
+        </p>
+
+      </div> <!-- END: Book Flight Btn -->
+
+    </div>
 
   </div>
 
@@ -214,11 +265,24 @@
 		data() {
 			return {
         hasConfirmedBooking: false,
+
         contactPassenger: passengersStore.getPassengerList(1),
         allPassengers: passengersStore.getAllPassengersList(),
+
+        toggleBookingMsg: false,
+        tAndCsChecked: false,
 			}
 		},
 
+
+		methods: {
+
+      onTAndCsChecked(ev) {
+        // console.log(ev.target.checked)
+        this.tAndCsChecked = ev.target.checked
+      },
+
+    },
 
 
     computed: {
@@ -302,7 +366,14 @@
        * work for all child Pages in the same manner.
        */
       _isPageValid() {
+
         if(this.hasConfirmedBooking === false) return false
+
+        // Check if Stripe is happy...
+
+        // and T&Cs are checked
+        if ( this.tAndCsChecked === false ) return false
+
         return true
       },
 
