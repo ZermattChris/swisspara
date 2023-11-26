@@ -60,10 +60,11 @@
               <div class="rowValue">{{ email }}</div>
 
             </div>
-
+            
+            <!-- Confirm Booking Button.  -->
             <div class="text-center mt-8">
               <button type="button" 
-                @click="hasConfirmedBooking = true"
+                @click="confirmBooking"
                 class="animate-pulse hover:animate-none   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
                   border-[1px] border-gray-400
                   ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
@@ -128,7 +129,7 @@
             @click="hasConfirmedBooking = false"
           >
             <button type="button" 
-              @click="hasConfirmedBooking = false"
+              @click="toggleBookingMsg = true"
               class=" relative top-1.5 mr-1 rounded-full h-6 w-6  bg-white px-0 py-0 text-sm font-semibold text-gray-900 
               shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             >
@@ -208,8 +209,8 @@
           <label for="terms" class="font-medium text-gray-900">Terms &amp; Conditions</label>
           <p id="terms-description" class="text-gray-700">
             To complete your Booking, click here to indicate that you have read and agree to the 
-            <a href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
-            of the Swiss Paraglide Zermatt Customer Agreement.
+            <a class="underline" href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
+            of Swiss Paraglide Zermatt's Customer Agreement.
           </p>
         </div>
       </div> <!-- END: T&C's checkbox.  -->
@@ -238,6 +239,9 @@
 
     </div>
 
+    <!-- hasConfirmedBooking: {{hasConfirmedBooking}} -- 
+    storageHashChanged: {{ storageHashChanged }} -->
+
   </div>
 
   <div id="footer-spacer" class="h-14"></div>
@@ -248,6 +252,7 @@
 <script>
 
 	// Stores
+  import {appStore} from '@stores/appStore.js' 
 	import {flightDateStore as dateStore} from '@stores/pageDateStore.js' 
 	import {pageFlightStore as flightStore} from '@stores/pageFlightStore.js' 
 	import {pageTimeSlotsStore as timeStore} from '@stores/pageTimeSlotsStore.js' 
@@ -269,7 +274,10 @@
 
 		data() {
 			return {
-        hasConfirmedBooking: false,
+        // Use these two to show/hide the 'Confirm' Booking overview UI.
+        // hasConfirmedBooking: false,
+        storageHashChanged: appStore.hasStorageChanged(),
+        // hasConfirmedBooking: appStore.getBookingConfirmed(),
 
         contactPassenger: passengersStore.getPassengerList(1),
         allPassengers: passengersStore.getAllPassengersList(),
@@ -279,8 +287,21 @@
 			}
 		},
 
+		mounted() {
+			// console.log("PAY - Mounted.")
+      if (this.storageHashChanged) {
+        appStore.setBookingConfirmed('false')
+      }
+		},
+
 
 		methods: {
+
+
+      confirmBooking() {
+        console.log("confirmBooking")
+        appStore.setBookingConfirmed('true')
+      },
 
       onTAndCsChecked(ev) {
         // console.log(ev.target.checked)
@@ -291,6 +312,14 @@
 
 
     computed: {
+
+      hasConfirmedBooking () {
+        return appStore.getBookingConfirmed()
+      },
+
+      // hasStorageChanged () {
+      //   return this.contactPassenger.phone
+      // },
 
       telephone () {
         return this.contactPassenger.phone

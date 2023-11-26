@@ -11,6 +11,62 @@ export const appStore = reactive({
 	// { 1: Object: {name: 'PagePassengers', ...}}
 	pageItems: {},
 
+  // Custom system to check if the LocalStorage has changed or not.
+  // Let's us show the "Confirm Booking" UI on the Pay page correctly.
+  // undefined | string (number)
+  _savedStorageHash: localStorage._savedStorageHash, 
+  _userHasConfirmedBooking: localStorage._confirmedBooking,
+  hasStorageChanged() {
+    const currLSHash = this._generateStorageHash() + ''     // make sure is string.
+    console.log("currLSHash", currLSHash, "_savedStorageHash", this._savedStorageHash)
+    if (currLSHash === this._savedStorageHash) {
+      //console.log("-> LocalStorage has NOT changed.")
+      return false
+    } else {
+      //console.log("-> LocalStorage CHANGED!")
+      this._savedStorageHash = currLSHash
+      localStorage._savedStorageHash = currLSHash
+      return true
+    }
+  },
+  _generateStorageHash() {
+    const string = localStorage._cachePassengersList + 
+                                localStorage._cacheTimeSlotsPassengerList +
+                                localStorage.arriveDate +
+                                localStorage.flightDate +
+                                localStorage.departDate +
+                                localStorage.selectedFlight +
+                                localStorage.photosVideos
+                                
+    // console.log("APP - gen Hash LS string: ", string)
+    let hash = 0;
+    if (string.length == 0) return hash;
+    for (let i = 0; i < string.length; i++) {
+      const char = string.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return hash;
+  },
+	getBookingConfirmed() {
+    if (this._userHasConfirmedBooking === undefined ) {    // init.
+      this._userHasConfirmedBooking = 'false'
+      localStorage._confirmedBooking = this._userHasConfirmedBooking
+    }
+    // As our internal var is a 'string', need to convert to a useful bool.
+    if (this._userHasConfirmedBooking === 'true') return true
+    return false
+  },
+	setBookingConfirmed(confirmedBoolStr) {
+    console.log("confirmedBoolStr", confirmedBoolStr)
+    this._userHasConfirmedBooking = confirmedBoolStr
+    localStorage._confirmedBooking = this._userHasConfirmedBooking
+  },
+
+
+
+
+
 	/**
 	 * Set up the list of Navigation Page names. Called from App mounted() hook.
 	 * @param {Component} listOfPageNames 

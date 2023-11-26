@@ -707,7 +707,7 @@
 
 	function onPhoneUpdated(ev) {
 		if ( ev.isValid === undefined ) return 		// stop from setting to undefined
-    console.log('Phone Valid: ', ev.isValid, ev)
+    //console.log('Phone Valid: ', ev.isValid, ev)
 		phoneNumberValid.value = ev.isValid
     phoneInputData.value = ev   // saves all the MAZ Phone input returned data
   }

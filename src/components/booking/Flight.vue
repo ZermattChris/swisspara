@@ -58,6 +58,14 @@
       </template>
     </Modal>
 
+    <p>
+      Here we can give a short explanation of the Flight they've chosen, combined with their flight date.
+      Elite gets a proper one. Classic - Rothorn, Gornergrat and Rotenboden.
+    </p>
+    <p>
+      Head's up on age, weight and confidence levels for chosen flight + date.
+    </p>
+
   </div>
 
 
