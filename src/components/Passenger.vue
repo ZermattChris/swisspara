@@ -265,10 +265,8 @@
                 style="text-shadow: 1px 1px 2px black/10;"
                 name="custom-input-number" 
                 autocomplete="off"
-                :value="ageInt"
-                @focusout="ageTouched = true"
+                v-model="ageInt"
                 placeholder="Age"
-                @input="onInput"
                 @change="onChanged"
               />
 
@@ -457,7 +455,7 @@
 
 
 <script setup>
-	import { ref, reactive, computed, onMounted, watch } from 'vue'
+	import { ref, reactive, computed, onMounted, watch, nextTick } from 'vue'
 
 	import {pagePassengersStore as store} from '@stores/pagePassengersStore.js' 
 
@@ -565,19 +563,34 @@
   const minVal = 5
   const maxVal = 69
 
-  function onInput(ev) {
-    // Need to listen for this event and update the ageInt manually.
-    // This event gets called on every keypress, so don't do any range
-    // checks here -- onChanged() handles bad value resets.
-    //console.log('onInput',ev.target.value)
-    //onChanged(ev)
-    // const enteredVal = parseInt(ev.target.value)
-    // ageInt.value = enteredVal
-  }
+  // async function onAgeInputBlur(ev) {
+  //   await nextTick()
+
+  //   const myInput = document.getElementById( "Age_" + props.index )
+
+  //   console.log('input blur: ', myInput.value) 
+  // }
+
+  // function onAgeInputOut(ev) {
+  //   ageTouched.value = true
+  //   onChanged(ev)
+  //   console.log('onAgeInputOut', ev.target.value)
+  // }
+
+  // function onInput(ev) {
+
+  //   // Need to listen for this event and update the ageInt manually.
+  //   // This event gets called on every keypress, so don't do any range
+  //   // checks here -- onChanged() handles bad value resets.
+  //   //console.log('onInput',ev.target.value)
+  //   //onChanged(ev)
+  //   // const enteredVal = parseInt(ev.target.value)
+  //   // ageInt.value = enteredVal
+  // }
 
 	function onChanged(ev) {
     // Need to listen for this event and update the ageInt manually.
-    // console.log('onChanged',ev.target.value,  isNaN(ev.target.value))
+     console.log('onChanged', ev.target.value,  isNaN(ev.target.value))
 
     const evVal = ev.target.value
     if ( evVal.trim() == '' || isNaN(evVal) ) {
@@ -592,7 +605,7 @@
     }
 
     const enteredVal = parseInt(ev.target.value)
-    //console.log('onInput:', enteredVal)
+    console.log('onInput:', enteredVal)
     if (enteredVal < minVal) {
       //console.log('onInput under Min:', enteredVal)   // set an info field for user to know what's up.
       ageInt.value  = minVal

@@ -59,6 +59,9 @@
     </Modal>
 
     <p>
+      If we're closed on the date they've chosen, then here a Message.
+    </p>
+    <p>
       Here we can give a short explanation of the Flight they've chosen, combined with their flight date.
       Elite gets a proper one. Classic - Rothorn, Gornergrat and Rotenboden.
     </p>

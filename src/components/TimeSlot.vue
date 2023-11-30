@@ -2,7 +2,7 @@
 
   <div 
     class="px-2 py-1.5 rounded-lg "
-    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? ' border-2 border-black/50 bg-black/5' : '' ]"
+    :class="[ `timeSlot_${slideIndex}`, isSlideSelected? ' border-2 border-black/50 bg-black/10' : 'border-[1px] border-indigo-100' ]"
   >
 
     <!-- Header Box.  -->
