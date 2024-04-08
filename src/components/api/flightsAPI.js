@@ -7,30 +7,27 @@ export default {
 
 	get() {
 
+    // fake local api.
 		if ( api.isLocalAPI() ) {
 			const loadingDelay = 500
-
 			return new Promise((resolve) => {
 				setTimeout(() => {
 					resolve(
 						[
 							{
 									"id":77,
-									"name":"Classic High",
-									"price":"240",
-									"descriptionId": 100
+									"name":"Classic High local",
+									"price":"240"
 							},
 							{
 									"id":32,
 									"name":"Scenic",
-									"price":"190",
-									"descriptionId": 200
+									"price":"190"
 							},
 							{
 									"id":5,
 									"name":"Elite*",
-									"price":"420",
-									"descriptionId": 300
+									"price":"420"
 							}
 						]
 					);
@@ -38,14 +35,18 @@ export default {
 			});
 		}
 
-
+    // Staging API
 		if ( api.isStagingAPI() ) {
-				console.warn("TODO: build Staging API call for flightsAPI")
-				return 'TODO: Staging'
+        // Switch between v1 and staging.
+        const json = api.callAPI("https://api.swissparaglide.com/staging/flights/2023-07-26")
+				return json
 		}
 
-		console.warn("TODO: build Live API call for flightsAPI")
-		return 'TODO: Live'
+    // Live API
+    // Change this to 'v1' once staging is working properly and all db data has been
+    // cloned to match.
+    const json = api.callAPI("https://api.swissparaglide.com/staging/flights/2023-07-26")
+    return json
 
 	},
 

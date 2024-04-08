@@ -129,7 +129,7 @@
             @click="hasConfirmedBooking = false"
           >
             <button type="button" 
-              @click="toggleBookingMsg = true"
+              @click="hasConfirmedBooking = true"
               class=" relative top-1.5 mr-1 rounded-full h-6 w-6  bg-white px-0 py-0 text-sm font-semibold text-gray-900 
               shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
             >
@@ -203,12 +203,13 @@
       <!-- T&C's checkbox.  -->
       <div class="pl-6 pr-2 relative flex items-start">
         <div class="flex h-6 items-center">
-          <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms" type="checkbox" class="h-4 w-4 rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
+          <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms" type="checkbox" 
+            class="h-4 w-4 cursor-pointer rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
-          <label for="terms" class="font-medium text-gray-900">Terms &amp; Conditions</label>
+          <label for="terms" class="font-medium cursor-pointer text-gray-900">Terms &amp; Conditions</label>
           <p id="terms-description" class="text-gray-700">
-            To complete your Booking, click here to indicate that you have read and agree to the 
+            To complete your Booking, click this checkbox to indicate that you have read and agree to the 
             <a class="underline" href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
             of Swiss Paraglide Zermatt's Customer Agreement.
           </p>
@@ -313,8 +314,15 @@
 
     computed: {
 
-      hasConfirmedBooking () {
-        return appStore.getBookingConfirmed()
+      hasConfirmedBooking: {
+        // getter
+        get() {
+          return appStore.getBookingConfirmed()
+        },
+        // setter
+        set(newValue) {
+          appStore.setBookingConfirmed(newValue)
+        }
       },
 
       // hasStorageChanged () {
