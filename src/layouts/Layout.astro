@@ -28,7 +28,9 @@ const { title } = Astro.props;
 	</head>
 	<body>
 
-		<div class="flex flex-col h-screen justify-between">
+		<div 
+      class="flex flex-col h-screen justify-between" 
+    >
 
 			<Navbar />
 			
@@ -79,5 +81,12 @@ const { title } = Astro.props;
 	footer nav > div > a:hover, #navMenu a:hover {
 		color: rgb(233 213 255);
 	}
+
+  .strong-text-shadow {
+    text-shadow:
+      0px 0px 2px black,
+      0px 0px 4px black,
+      0px 0px 8px black
+  }
 
 </style>
