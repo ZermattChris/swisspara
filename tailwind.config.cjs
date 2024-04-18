@@ -11,6 +11,7 @@ module.exports = {
 	plugins: [
 		// require('@vueform/vueform/tailwind'),
 		// require('@vueform/slider/tailwind'),
+    require('@tailwindcss/aspect-ratio'),
 		require('@tailwindcss/forms'),
     require('preline/plugin'),
 	],
