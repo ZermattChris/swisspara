@@ -13,7 +13,10 @@ export default defineConfig(
       vue(),
       tailwind(), 
       sitemap()
-    ]
+    ],
+    prefetch: {
+      prefetchAll: true
+    }
   }
 
 
