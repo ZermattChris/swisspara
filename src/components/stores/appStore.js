@@ -1,8 +1,17 @@
 import { reactive, markRaw  } from 'vue'
 
+import settingsAPI from "@components/api/settingsAPI.js"
 
 
 export const appStore = reactive({
+
+  // Load the App's basic settings from our server's API.
+  // Max pilots, video cost, etc.
+  _appSettings: await settingsAPI.get(),
+
+	getVideoPrice() {
+    return this._appSettings['video-cost'] ? this._appSettings['video-cost'] : -1
+  },
 
 
 	page: +localStorage.page || 1,

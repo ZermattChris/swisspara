@@ -11,10 +11,10 @@ let useLocalAPI = false
 
 if (document.location) {
   let params = new URL(document.location).searchParams
-	if ( params.has("api") ) {
-		if (params.get("api") === 'staging') useStagingAPI = true
-		if (params.get("api") === 'local') useLocalAPI = true
-	}
+  if (params.has("api")) {
+    if (params.get("api") === 'staging') useStagingAPI = true
+    if (params.get("api") === 'local') useLocalAPI = true
+  }
 }
 
 console.log("Use local API:", useLocalAPI);
@@ -24,26 +24,41 @@ console.log("Use Staging API:", useStagingAPI);
 
 export default {
 
-	getAPIType() {
-		if (useLocalAPI) return 'LOCAL'
-		if (useStagingAPI) return 'STAGING'
-		return 'LIVE'
-	},
+  getAPIType() {
+    if (useLocalAPI) return 'LOCAL'
+    if (useStagingAPI) return 'STAGING'
+    return 'LIVE'
+  },
 
-	isStagingAPI() {
-		return useStagingAPI
-	},
+  isStagingAPI() {
+    return useStagingAPI
+  },
 
-	isLocalAPI() {
-		return useLocalAPI
-	},
+  isLocalAPI() {
+    return useLocalAPI
+  },
 
-	async callAPI(pPath) {
-    const response = await fetch(pPath + token)
-    const json = await response.json()
-    //console.log("calling callAPI:", pPath, json)
-    return json
-	},
+
+  async callAPI(pPath) {
+
+    let json = {}
+    try {
+      const response = await fetch(pPath + token, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      json = await response.json()
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+      // ...
+    } catch (error) {
+      console.error(error.message);
+    }
+    return json // Promise!!!
+
+  },
 
 
 }

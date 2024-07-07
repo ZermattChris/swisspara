@@ -236,9 +236,6 @@ export default {
   mounted() {
     //console.log("Date component mounted")
     window.addEventListener('click', this.onBackgroundClick)
-
-    this.test();
-    
   },
   unmounted() {
     //console.log("-> Date component unmounted")
@@ -263,6 +260,7 @@ export default {
 
   methods: {
 
+    // Just a quick API test call.
     async test() {
       console.log('test')
       const response = await fetch('https://admin.swissparaglide.com/api/v1/settings')
