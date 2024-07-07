@@ -236,6 +236,9 @@ export default {
   mounted() {
     //console.log("Date component mounted")
     window.addEventListener('click', this.onBackgroundClick)
+
+    this.test();
+    
   },
   unmounted() {
     //console.log("-> Date component unmounted")
