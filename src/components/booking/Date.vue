@@ -260,6 +260,13 @@ export default {
 
   methods: {
 
+    async test() {
+      console.log('test')
+      const response = await fetch('https://admin.swissparaglide.com/api/v1/settings')
+      const json = await response.json()
+      console.log(json)
+    },
+
     onDateSelect(modelData) {
       //console.log("modelData", modelData)
       this.flightDate = modelData
