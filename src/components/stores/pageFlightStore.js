@@ -8,6 +8,8 @@ const { MODE, PROD, DEV, SSR, BASE_URL, VITE_MY_VAR } = import.meta.env;
 
 export const pageFlightStore = reactive({
 
+  flightDate: localStorage.flightDate || '',
+
     selectedFlight: +localStorage.selectedFlight || -1,
 
     _flightsList: [{}],
@@ -20,27 +22,29 @@ export const pageFlightStore = reactive({
     // ---- Set up this page's data ----.
     initialize() {
 
-        // If the cache already exists, then use that.
-        // Otherwise do an API call for fresh data (FD changed, etc.)
-        try {
-            this._flightsList = localStorage._cacheFlightsList ? JSON.parse(localStorage._cacheFlightsList) : [{}]
-        } catch (error) {
-            // cache had bad data stored, so do API call.
-            console.log("Bad cache data, doing new API call.")
-            this.callAPI()
-            return
-        } 
-        
-        const unwrappedObj = toRaw(this._flightsList[0])
-        if ( Object.keys(unwrappedObj).length === 0 ) {
+      // If the cache already exists, then use that.
+      // Otherwise do an API call for fresh data (FD changed, etc.)
+      try {
+          this._flightsList = localStorage._cacheFlightsList ? JSON.parse(localStorage._cacheFlightsList) : [{}]
+      } catch (error) {
+          // cache had bad data stored, so do API call.
+          console.log("Bad cache data, doing new API call.")
+          this.callAPI()
+          return
+      } 
+      
+      if (this._flightsList[0] === null || this._flightsList[0] === undefined) {
+        // const unwrappedObj = toRaw(this._flightsList[0])
+        // if ( Object.keys(unwrappedObj).length === 0 ) {
             console.log("this._flightsList is empty -> grabbing data from API call.")
             this.callAPI()
             return
-        }
+        // }
+      }
 
-        // 
-        console.log("Using data from cache.")
-        //console.log( this._flightsList )
+      //  
+      console.log("Using data from cache.")
+      //console.log( this._flightsList )
 
     },
 
@@ -48,7 +52,8 @@ export const pageFlightStore = reactive({
     async callAPI() {
       this.loading = true
       // Grabs a list of flights available for the selected Flight Date.
-      this._flightsList = await flightAPI.get()
+      // TODO: If bad flight date from cache, then return to start page and log to console.
+      this._flightsList = await flightAPI.get(this.flightDate)
       localStorage._cacheFlightsList = JSON.stringify(toRaw(this._flightsList))   // Save to cache.
       this.loading = false
     },

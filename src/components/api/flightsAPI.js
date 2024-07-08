@@ -5,7 +5,7 @@ import api from "./_apiBase.js"
 
 export default {
 
-	get() {
+	get(pISODate) {
 
     // fake local api.
 		if ( api.isLocalAPI() ) {
@@ -38,14 +38,15 @@ export default {
     // Staging API
 		if ( api.isStagingAPI() ) {
         // Switch between v1 and staging.
-        const json = api.callAPI("https://api.swissparaglide.com/staging/flights/2023-07-26")
+        // TODO: Need a staging version of the Server.
+        const json = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
 				return json
 		}
 
     // Live API
     // Change this to 'v1' once staging is working properly and all db data has been
     // cloned to match.
-    const json = api.callAPI("https://api.swissparaglide.com/staging/flights/2023-07-26")
+    const json = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
     return json
 
 	},
