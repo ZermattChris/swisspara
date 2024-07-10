@@ -33,18 +33,15 @@ export const pageFlightStore = reactive({
           return
       } 
       
-      if (this._flightsList[0] === null || this._flightsList[0] === undefined) {
-        // const unwrappedObj = toRaw(this._flightsList[0])
-        // if ( Object.keys(unwrappedObj).length === 0 ) {
-            console.log("this._flightsList is empty -> grabbing data from API call.")
-            this.callAPI()
-            return
-        // }
+      const unwrappedObj = toRaw(this._flightsList[0])
+      if ( Object.keys(unwrappedObj).length === 0 ) {
+        console.log("this._flightsList is empty -> grabbing data from API call.")
+        this.callAPI()
+        return
       }
 
-      //  
       console.log("Using data from cache.")
-      //console.log( this._flightsList )
+      console.log( this._flightsList )
 
     },
 
