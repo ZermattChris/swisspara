@@ -39,7 +39,7 @@ export const pageTimeSlotsStore = reactive({
 
 
   flightDate: localStorage.flightDate || '',
-  selectedFlight: +localStorage.selectedFlight || -1,
+  selectedFlight: +localStorage.selectedFlight || '!Bad Flight ID',
 
 	_timeSlotsList: [{}],							// List of API returned dates/slots to display to user.
 	_timeSlotsPassengersList: loadTimeSlotPassengersList(),		// The passengers added to the current Flight Date by the user.
@@ -52,6 +52,7 @@ export const pageTimeSlotsStore = reactive({
 	initialize() {
 
     this.flightDate = localStorage.flightDate || ''
+    this.selectedFlight = +localStorage.selectedFlight || '!! Bad Flight ID !!',
 		
 		this.loadTimeSlotList()
 		loadTimeSlotPassengersList()
