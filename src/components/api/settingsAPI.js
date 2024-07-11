@@ -29,15 +29,15 @@ export default {
 		if ( api.isStagingAPI() ) {
         // TODO: Need a staging version of the Server.
         console.log("Staging API not yet implemented -> TODO: staging environment on our Bookings server. Just calling 'Live' for now...")
-        const json = api.callAPI("https://admin.swissparaglide.com/api/v1/settings")
-				return json
+        const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/settings")
+				return promisedJSON
 		}
 
     // Live API
     // Change this to 'v1' once staging is working properly and all db data has been
     // cloned to match.
-    const json = api.callAPI("https://admin.swissparaglide.com/api/v1/settings")
-    return json
+    const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/settings")
+    return promisedJSON
 
 	},
 

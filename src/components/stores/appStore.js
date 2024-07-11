@@ -89,6 +89,8 @@ export const appStore = reactive({
 		//console.log('pageItems', this.pageItems)
 		this._savePage()
 
+		console.log('_appSettings', this._appSettings)    //TODO: remove
+
 	},
 
 

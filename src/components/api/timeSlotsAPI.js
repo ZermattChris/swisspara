@@ -5,29 +5,33 @@ import api from "./_apiBase.js"
 
 export default {
 
-	get() {
+  get(pFlightId, pISODate) {
 
-		if ( api.isLocalAPI() ) {
-			const loadingDelay = 500
+    if (api.isLocalAPI()) {
+      const loadingDelay = 500
 
-			return new Promise((resolve) => {
-				setTimeout(() => {
-					resolve(
-						_buildFlightList()
-					)
-				}, loadingDelay)
-			})
-		}
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(
+            _buildFlightList()
+          )
+        }, loadingDelay)
+      })
+    }
 
-		if ( api.isStagingAPI() ) {
-			console.warn("TODO: build Staging API call for timeSlotsAPI")
-			return 'TODO: Staging'
-		}
+    if (api.isStagingAPI()) {
+      console.warn("TODO: build Staging API call for timeSlotsAPI")
+      const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/flightsavailable/" + pFlightId + "/" + pISODate)
+      return promisedJSON
+    }
 
-		console.warn("TODO: build Live API call for timeSlotsAPI")
-		return 'TODO: Live'
+    // console.warn("TODO: build Live API call for timeSlotsAPI")
+    // http://spzadmin.local:88/api/v1/flightsavailable/1/2024-07-09
+    const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/flightsavailable/" + pFlightId + "/" + pISODate)
+    console.log( "json: ", promisedJSON )
+    return promisedJSON
 
-	},
+  },
 
 }
 
@@ -65,62 +69,66 @@ const simpleISO = (dateObj) => {
 // Use input dates to build a local flight list.
 const _buildDaySlots = () => {
 
-	const nrSlots = 6
-	const maxPilots = 4
-	let currTime = 8
-	let slotObj = {}
+  const nrSlots = 6
+  const maxPilots = 4
+  let currTime = 8
+  let slotObj = {}
 
-	for (let i = 0; i < nrSlots; i++) {
-		//console.log("Slot: ", i+1, 'Time: ', ( currTime * 100 ) + '' )
+  for (let i = 0; i < nrSlots; i++) {
+    //console.log("Slot: ", i+1, 'Time: ', ( currTime * 100 ) + '' )
 
-		const nrPilots = getRandomInt(-1, maxPilots)
-		let formattedTime = ''
+    const nrPilots = getRandomInt(-1, maxPilots)
+    let formattedTime = ''
 
-		// Do string padding for time label.
-		if (currTime < 10) formattedTime = '0' + currTime + ':00'
-		if (currTime >= 10) formattedTime = currTime + ':00'
+    // Do string padding for time label.
+    if (currTime < 10) formattedTime = '0' + currTime + ':00'
+    if (currTime >= 10) formattedTime = currTime + ':00'
 
-		slotObj[formattedTime] = nrPilots
+    slotObj[formattedTime] = nrPilots
 
-		currTime += 2
-	}
+    currTime += 2
+  }
 
-	//console.log( slotObj )
-	return slotObj
+  //console.log( slotObj )
+  return slotObj
 
 }
 
 // Use input dates to build a local flight list.
 const _buildFlightList = () => {
 
-	const today = new Date().setHours(0, 0, 0, 0)
-	let arrDate = localStorage.arriveDate ? new Date( Date.parse(localStorage.arriveDate) ) : -1
-	if (arrDate == -1) console.warn( "Missing localStorage.arriveDate" )
-  const flDate = localStorage.flightDate ? new Date( Date.parse(localStorage.flightDate) ) : -1
-	if (flDate == -1) console.warn( "Missing localStorage.flightDate" )
-  const depDate = localStorage.departDate ? new Date( Date.parse(localStorage.departDate) ) : -1
-	if (depDate == -1) console.warn( "Missing localStorage.departDate" )
+  const today = new Date().setHours(0, 0, 0, 0)
+  let arrDate = localStorage.arriveDate ? new Date(Date.parse(localStorage.arriveDate)) : -1
+  if (arrDate == -1) console.warn("Missing localStorage.arriveDate")
+  const flDate = localStorage.flightDate ? new Date(Date.parse(localStorage.flightDate)) : -1
+  if (flDate == -1) console.warn("Missing localStorage.flightDate")
+  const depDate = localStorage.departDate ? new Date(Date.parse(localStorage.departDate)) : -1
+  if (depDate == -1) console.warn("Missing localStorage.departDate")
 
-	let daySlotsObj = {}
+  let daySlotsObj = {}
 
-	// First possible flight date is today (not arrival date)
-	//console.log("isBefore(arrDate, today): ", isBefore(arrDate, today))
-	if ( isBefore(arrDate, today) ) arrDate = today
-	
-	let nrFlightDays = differenceInDays( depDate, arrDate ) + 1
-	// if (nrFlightDays === 0) nrFlightDays = 1		// Always show at least one day!
-	//console.log("nrFlightDays: ", differenceInDays( arrDate, depDate ))
-    
-	for (let i = 0; i < nrFlightDays; i++) {
-		//console.log("Flight Day: ", i)
-		// Need to get this day's date string ISO '2023-11-24' to use as a key.
-		const dayKey = simpleISO( addDays(arrDate, i) )
-		daySlotsObj[dayKey] = _buildDaySlots()
-	}
+  // First possible flight date is today (not arrival date)
+  //console.log("isBefore(arrDate, today): ", isBefore(arrDate, today))
+  if (isBefore(arrDate, today)) arrDate = today
+
+  let nrFlightDays = differenceInDays(depDate, arrDate) + 1
+  // if (nrFlightDays === 0) nrFlightDays = 1		// Always show at least one day!
+  //console.log("nrFlightDays: ", differenceInDays( arrDate, depDate ))
+
+  for (let i = 0; i < nrFlightDays; i++) {
+    //console.log("Flight Day: ", i)
+    // Need to get this day's date string ISO '2023-11-24' to use as a key.
+    const dayKey = simpleISO(addDays(arrDate, i))
+    daySlotsObj[dayKey] = _buildDaySlots()
+  }
 
 
-	//console.log("daySlotsObj: ", daySlotsObj)
-	return [daySlotsObj]	// wrapped in array to match the flights list format.
+  console.log("_timeSlotsList: ", daySlotsObj)
+  return [daySlotsObj]	// wrapped in array to match the flights list format.
 
 
 }
+
+
+
+// [{ "2024-07-11": { "08:00": 3, "10:00": -1, "12:00": -1, "14:00": 1, "16:00": 3, "18:00": 1 }, "2024-07-12": { "08:00": 0, "10:00": 3, "12:00": 1, "14:00": 3, "16:00": 3, "18:00": -1 }, "2024-07-13": { "08:00": -1, "10:00": 3, "12:00": 0, "14:00": 0, "16:00": 2, "18:00": 0 } }]

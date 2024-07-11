@@ -39,15 +39,15 @@ export default {
 		if ( api.isStagingAPI() ) {
         // Switch between v1 and staging.
         // TODO: Need a staging version of the Server.
-        const json = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
-				return json
+        const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
+				return promisedJSON
 		}
 
     // Live API
     // Change this to 'v1' once staging is working properly and all db data has been
     // cloned to match.
-    const json = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
-    return json
+    const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/flightoptions/" + pISODate)
+    return promisedJSON
 
 	},
 

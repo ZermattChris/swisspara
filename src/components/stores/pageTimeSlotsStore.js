@@ -37,6 +37,10 @@ export const loadTimeSlotPassengersList = () => {
 
 export const pageTimeSlotsStore = reactive({
 
+
+  flightDate: localStorage.flightDate || '',
+  selectedFlight: +localStorage.selectedFlight || -1,
+
 	_timeSlotsList: [{}],							// List of API returned dates/slots to display to user.
 	_timeSlotsPassengersList: loadTimeSlotPassengersList(),		// The passengers added to the current Flight Date by the user.
 
@@ -46,6 +50,8 @@ export const pageTimeSlotsStore = reactive({
 
 	// ---- Set up this page's data ----.
 	initialize() {
+
+    this.flightDate = localStorage.flightDate || ''
 		
 		this.loadTimeSlotList()
 		loadTimeSlotPassengersList()
@@ -83,7 +89,7 @@ export const pageTimeSlotsStore = reactive({
 			this._timeSlotsList = localStorage._cacheTimeSlotsList ? JSON.parse(localStorage._cacheTimeSlotsList) : [{}]
 		} catch (error) {
 			// cache had bad data stored, so do API call.
-			//console.log("Bad cache data _cacheTimeSlotsList -> doing new API call.")
+			console.log("Bad cache data _cacheTimeSlotsList -> doing new API call.")
 			this.callAPI()
 			return
 		} 
@@ -92,13 +98,13 @@ export const pageTimeSlotsStore = reactive({
 
 		const unwrappedObj = toRaw(this._timeSlotsList[0])
 		if ( Object.keys(unwrappedObj).length === 0 ) {
-			//console.log("this._timeSlotsList is empty -> grabbing data from API call.")
+			console.log("this._timeSlotsList is empty -> grabbing data from API call.")
 			this.callAPI()
 			return
 		}
 
 		//console.log("Using data from cache.")
-		//console.log( this._timeSlotsList )
+		console.log( unwrappedObj )
 		
 	},
 
@@ -106,7 +112,7 @@ export const pageTimeSlotsStore = reactive({
 	async callAPI() {
 		this.loading = true
 		// Grabs a list of flights available for the selected Flight Date.
-		this._timeSlotsList = await timeSlotsAPI.get()
+		this._timeSlotsList = [await timeSlotsAPI.get(this.selectedFlight, this.flightDate)]
 		localStorage._cacheTimeSlotsList = JSON.stringify(toRaw(this._timeSlotsList))   // Save to cache.
 		this.loading = false
 	},
