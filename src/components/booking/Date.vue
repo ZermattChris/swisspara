@@ -219,8 +219,8 @@
 
     </div>
 
-    <div class="text-orange-700 text-sm  mt-4 pl-3">
-      Staying
+    <div class="text-orange-700 text-sm  mt-4 pl-11">
+      A total of
       <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">{{ getLengthStayInZermatt }}</span>
       {{ getLengthStayInZermatt === 1 ? 'day' : 'days' }} in Zermatt.
     </div>
