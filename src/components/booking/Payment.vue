@@ -65,10 +65,10 @@
             <div class="text-center mt-8">
               <button type="button" 
                 @click="confirmBooking"
-                class="animate-pulse hover:animate-none   rounded-full bg-gray-50 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
+                class="animate-pulse hover:animate-none   rounded-full bg-lime-200 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
                   border-[1px] border-gray-400
                   ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
-                Confirm Booking
+                Confirm Details
               </button>
             </div>
 

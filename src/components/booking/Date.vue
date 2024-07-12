@@ -23,7 +23,7 @@
       </svg>
       Choose your Flight Date:
     </label>
-    <div id="dateInputBox" class="mt-3 pl-0 md:pl-4">
+    <div id="dateInputBox" class="mt-3 pl-0 ">
 
       <input type="input" name="flightDateInput" id="flightDateInput" :value="displayDate(flightDate)" readonly
         @click="onDateInputClick('flightDateInput', $event)" placeholder="Click to enter your flight date..."
@@ -43,15 +43,33 @@
       </svg>
 
     </div>
+
+    <VueDatePicker 
+      v-if="showArriveDatePicker === false &&  showDepartDatePicker === false"
+      v-model="flightCal" 
+      :model-value="flightDate" 
+      :enable-time-picker="false"  
+      :max-date="getMaxFutureDate()" 
+      prevent-min-max-navigation 
+      @update:model-value="onDateSelect"  
+      inline 
+      auto-apply 
+      :min-date="new Date()"   
+      class="inline-block mt-4 z-[98] drop-shadow-xl"
+    ></VueDatePicker>
+
+
   </div>
+
+  
 
   <!-- Modal Calendar pop ups here.  -->
   <Transition name="fade">
-    <div v-if="showFlightDatePicker || showArriveDatePicker || showDepartDatePicker" id="calendarModal"
+    <div v-if="showArriveDatePicker || showDepartDatePicker" id="calendarModal"
       class="fixed inset-0 z-[97] w-screen bg-gray-500 bg-opacity-90 overflow-y-auto">
       <div class="flex flex-col place-content-center gap-4  p-4 text-center h-screen ">
 
-        <div v-if="showFlightDatePicker"
+        <!-- <div v-if="showArriveDatePicker || showDepartDatePicker"
           class="flex -mt-32 place-self-center justify-center  w-60 text-2xl text-black bg-white py-2 px-4 rounded-3xl font-bold drop-shadow-lg ">
 
           <svg class="w-6 h-6 inline-block mt-1 mr-2 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -60,9 +78,9 @@
               d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
           </svg>
           Flight Date
-        </div>
+        </div> -->
 
-        <div v-if="showArriveDatePicker"
+        <!-- <div v-if="showArriveDatePicker"
           class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-2 rounded-3xl drop-shadow-lg ">
           <svg class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24" fill="currentColor">
@@ -71,38 +89,78 @@
               clip-rule="evenodd" />
           </svg>
           Arrival Date
-        </div>
+        </div> -->
 
-        <div v-if="showDepartDatePicker"
+        <!-- <div v-if="showDepartDatePicker"
           class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-4 rounded-3xl drop-shadow-lg ">
           <svg class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
           </svg>
           Depart Date
-        </div>
-
-
-        <!-- Flight Calendar  -->
-        <VueDatePicker v-if="showFlightDatePicker" id="flightDatePicker" v-model="flightCal" :model-value="flightDate"
-          :enable-time-picker="false" inline teleport-center auto-apply :min-date="new Date()"
-          :max-date="getMaxFutureDate()" prevent-min-max-navigation @update:model-value="onDateSelect"
-          class="absolute z-[98] drop-shadow-xl"></VueDatePicker>
+        </div> -->
+          
 
 
         <!-- Arrive Calendar  -->
-        <VueDatePicker v-if="showArriveDatePicker" id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
-          :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
-          :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()" prevent-min-max-navigation
-          @update:model-value="onArriveDateSelect" class="absolute z-[98] drop-shadow-xl"></VueDatePicker>
+        <div v-if="showArriveDatePicker" class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
+
+          <div class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
+                clip-rule="evenodd" />
+            </svg>
+            Arrival Date
+          </div>
+
+          <div class="text-sm mb-2 text-gray-800">
+            Which day are you arriving in Zermatt?
+          </div>
+
+          <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
+            :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
+            :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()" prevent-min-max-navigation
+            @update:model-value="onArriveDateSelect" class="dpMenuArrive  absolute z-[98] drop-shadow-xl ">
+          </VueDatePicker>
+          
+          <div class="text-sm mt-2 text-gray-800">
+            About what time do you arrive in Zermatt? <br>
+            [----- slider here -----]<br>
+            (if you don't know, just leave it blank.)
+          </div>
+          
+        </div>
 
 
         <!-- Depart Calendar  -->
-        <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal" :model-value="departDate"
-          :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
-          :min-date="getMinDepartDate()" :max-date="getMaxDepartDate()" prevent-min-max-navigation
-          @update:model-value="onDepartDateSelect" class="absolute z-[98] drop-shadow-xl"></VueDatePicker>
+        <div v-if="showDepartDatePicker"  class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
 
+          <div class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+            Depart Date
+          </div>
+
+          <div class="text-sm mb-2 text-gray-800">
+            Which day are you departing Zermatt?
+          </div>
+
+          <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal" :model-value="departDate"
+            :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
+            :min-date="getMinDepartDate()" :max-date="getMaxDepartDate()" prevent-min-max-navigation
+            @update:model-value="onDepartDateSelect" class="dpMenuDepart  absolute z-[98] drop-shadow-xl">
+          </VueDatePicker>
+
+          <div class="text-sm mt-2 text-gray-800">
+            About what time do you leave Zermatt? <br>
+            [----- slider here -----]<br>
+            (if you don't know, just leave it blank.)
+          </div>
+
+        </div>
 
 
       </div>
@@ -216,7 +274,7 @@ export default {
       // Flight Date
       flightDate: flightDateStore.getFlightDate(),    // get from Store.
       flightCal: null,
-      showFlightDatePicker: false,
+      // showFlightDatePicker: true,
 
       // Arrive Date
       arriveDate: flightDateStore.getArriveDate(),    // get from Store.
@@ -278,7 +336,7 @@ export default {
       this.departDateDate = ''
       flightDateStore.setDepartDate('')
       // Hide Calendar.
-      this.showFlightDatePicker = false
+      // this.showFlightDatePicker = false
 
       // Automatically show the 'Arrival Date' pop up calendar.
       setTimeout(() => {
@@ -291,7 +349,7 @@ export default {
       // console.log('clicked', el, ev)
       // Flight Date Picker is initially shown, as soon as user clicks a date, it hides itself
       // and the Arrive & Depart Dates are displayed.
-      this.showFlightDatePicker = true
+      // this.showFlightDatePicker = true
       ev.stopPropagation()
     },
 
@@ -342,7 +400,7 @@ export default {
 
     onBackgroundClick: function (event) {
       // close Calendar pickers on outside click.
-      this.showFlightDatePicker = false
+      // this.showFlightDatePicker = false
       this.showArriveDatePicker = false
       this.showDepartDatePicker = false
     },
@@ -473,6 +531,16 @@ export default {
 /* Custom Calendar tweaks */
 
 /* Changing the colors and font weights of each day in calendar */
+
+.dpMenuArrive {
+  border: 1px solid rgba(76, 187, 23, 1);
+  border-radius: 5px;
+}
+.dpMenuDepart {
+  border: 1px solid rgba(231, 98, 0, 1);
+  border-radius: 5px;
+}
+
 .dp__cell_inner {
   font-weight: bold;
 }
