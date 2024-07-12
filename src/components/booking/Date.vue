@@ -26,7 +26,7 @@
     <div id="dateInputBox" class="mt-3 pl-0 ">
 
       <input type="input" name="flightDateInput" id="flightDateInput" :value="displayDate(flightDate)" readonly
-        placeholder="Click a Day in the Calendar..."
+        placeholder="Click a Day below..."
         @click="onDateInputClick('flightDateInput', $event)"
         class="inline-block  rounded-md border-0 
           text-lg font-bold
@@ -51,12 +51,21 @@
     </div>
 
     <!-- This is the Main Flight Date picker that's always shown  -->
-    <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false" v-model="flightCal"
-      :model-value="flightDate" :enable-time-picker="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
-      @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
+    <VueDatePicker 
+      v-if="showArriveDatePicker === false && showDepartDatePicker === false" 
+      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md"
+      v-model="flightCal"
+      :model-value="flightDate" 
+      :highlight="highlightedDates()"
+      :enable-time-picker="false" 
+      :max-date="getMaxFutureDate()" 
+      prevent-min-max-navigation
+      @update:model-value="onDateSelect" 
+      inline 
+      auto-apply 
+      :min-date="new Date()"
       :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"
-      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md">
-    </VueDatePicker>
+    ></VueDatePicker>
 
 
   </div>
@@ -95,7 +104,7 @@
           </VueDatePicker>
 
           <div class="text-md mt-6 text-gray-800">
-            Around what time do you arrive in Zermatt?
+            Around what time are you arriving?
             <!-- Arrival Time Slider -->
             <SliderTime id="arriveSlider" class="my-4 mx-0"
               min="1" max="12" step="0.5" >
@@ -226,7 +235,7 @@
     </div>
 
     <div class="text-sm  mt-4 pl-">
-      <svg class="w-6 h-6 inline-block relative -top-0.5  text-orange-700" viewBox="0 0 24 24" fill="currentColor">
+      <svg class="w-6 h-6 inline-block relative -top-0.5  text-yellow-600" viewBox="0 0 24 24" fill="currentColor">
         <path d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z"></path>
       </svg>
       TIP: It's easy to change your flight dates later if needed.
@@ -253,7 +262,7 @@ import { flightDateStore } from '@stores/pageDateStore.js'
 
 // Calendar Utils.
 import { calendarUtils as calUtils } from './calendarUtils.js'
-// import addDays from 'date-fns/addDays';
+import addDays from 'date-fns/addDays';
 
 // Components
 import VueDatePicker from '@vuepic/vue-datepicker'
@@ -270,6 +279,7 @@ export default {
     VueDatePicker,
     SliderTime
   },
+
 
   data() {
     return {
@@ -305,6 +315,18 @@ export default {
 
   computed: {
 
+
+    //   var tmp = ref(hiliteArray)
+    //   console.log('-> hiliteArray: ', tmp)
+    //   return tmp
+
+    //   // return ref([
+    //   //   addDays(new Date(), 1),
+    //   //   addDays(new Date(), 2),
+    //   //   addDays(new Date(), 3),
+    //   // ])
+    // },
+
     getLengthStayInZermatt() {
 
       var arrTime = new Date(flightDateStore.getArriveDate())
@@ -327,6 +349,22 @@ export default {
 
 
   methods: {
+
+    highlightedDates() {
+
+      var arrTime = new Date(flightDateStore.getArriveDate())
+      var depTime = new Date(flightDateStore.getDepartDate())
+      var days = ( ( depTime - arrTime) / 86_400_000 ) + 1
+
+      var hiliteArray = []
+      for (let i = 0; i < days; i++) {
+        // console.log('-> i: ', i)
+        hiliteArray.push(addDays(arrTime, i))
+      }
+
+      return hiliteArray
+
+    },
 
     scrollToElement() {
       setTimeout(() => {
@@ -540,6 +578,18 @@ export default {
 
 /* Changing the colors and font weights of each day in calendar */
 
+.dp__cell_highlight {
+  background-color: rgb(247 254 231);
+  border-bottom: 2px solid rgb(39, 117, 3);
+}
+
+.dp__active_date {
+  color: white;
+  background-color: rgba(76, 187, 23, 1);
+  border: 1px solid rgb(34, 99, 4);
+  border-radius: 5px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+}
 .dpMenuArrive {
   border: 1px solid rgba(76, 187, 23, 1);
   border-radius: 5px;
