@@ -26,7 +26,7 @@
     <div id="dateInputBox" class="mt-3 pl-0 ">
 
       <input type="input" name="flightDateInput" id="flightDateInput" :value="displayDate(flightDate)" readonly
-        @click="onDateInputClick('flightDateInput', $event)" 
+        @click="onDateInputClick('flightDateInput', $event)"
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
@@ -46,25 +46,16 @@
     </div>
 
     <!-- This is the Main Flight Date picker that's always shown  -->
-    <VueDatePicker 
-      v-if="showArriveDatePicker === false &&  showDepartDatePicker === false"
-      v-model="flightCal" 
-      :model-value="flightDate" 
-      :enable-time-picker="false"  
-      :max-date="getMaxFutureDate()" 
-      prevent-min-max-navigation 
-      @update:model-value="onDateSelect"  
-      inline 
-      auto-apply 
-      :min-date="new Date()"   
-      :year-range="[new Date().getFullYear(), new Date().getFullYear()+1]"
-      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md"
-    ></VueDatePicker>
+    <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false" v-model="flightCal"
+      :model-value="flightDate" :enable-time-picker="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
+      @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
+      :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"
+      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md"></VueDatePicker>
 
 
   </div>
 
-  
+
 
   <!-- Modal Calendar pop ups here.  -->
   <Transition name="fade">
@@ -72,44 +63,14 @@
       class="fixed inset-0 z-[97] w-screen bg-gray-500 bg-opacity-90 overflow-y-auto">
       <div class="flex flex-col place-content-center gap-4  p-4 text-center h-screen ">
 
-        <!-- <div v-if="showArriveDatePicker || showDepartDatePicker"
-          class="flex -mt-32 place-self-center justify-center  w-60 text-2xl text-black bg-white py-2 px-4 rounded-3xl font-bold drop-shadow-lg ">
-
-          <svg class="w-6 h-6 inline-block mt-1 mr-2 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-          </svg>
-          Flight Date
-        </div> -->
-
-        <!-- <div v-if="showArriveDatePicker"
-          class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-2 rounded-3xl drop-shadow-lg ">
-          <svg class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24" fill="currentColor">
-            <path fill-rule="evenodd"
-              d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
-              clip-rule="evenodd" />
-          </svg>
-          Arrival Date
-        </div> -->
-
-        <!-- <div v-if="showDepartDatePicker"
-          class="flex  -mt-32  place-self-center justify-center  w-[190px] text-xl italic text-black bg-white py-2 px-4 rounded-3xl drop-shadow-lg ">
-          <svg class="w-6 h-6 inline-block mb-1 mr-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-          </svg>
-          Depart Date
-        </div> -->
-          
-
-
         <!-- Arrive Calendar  -->
-        <div v-if="showArriveDatePicker" class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
+        <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
+          class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
 
-          <div class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
-            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <div
+            class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="currentColor">
               <path fill-rule="evenodd"
                 d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
                 clip-rule="evenodd" />
@@ -126,20 +87,27 @@
             :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()" prevent-min-max-navigation
             @update:model-value="onArriveDateSelect" class="dpMenuArrive  absolute z-[98] drop-shadow-xl ">
           </VueDatePicker>
-          
-          <div class="text-sm mt-2 text-gray-800">
-            Around what time do you arrive in Zermatt? <br>
-            [----- slider here -----]<br>
-            (if you don't know, just leave it blank.)
+
+          <div class="text-md mt-6 text-gray-800">
+            Around what time do you arrive in Zermatt?
+            <!-- Arrival Time Slider -->
+            <SliderTime id="arriveSlider" class="my-4 mx-0"
+              min="1" max="12" step="0.5" >
+            </SliderTime>
+            <span class="text-slate-600">(if you don't know, just leave blank.)</span>
           </div>
+
           
+
         </div>
 
 
         <!-- Depart Calendar  -->
-        <div v-if="showDepartDatePicker"  class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
+        <div v-if="showDepartDatePicker"
+          class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
 
-          <div class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+          <div
+            class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
             <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none"
               viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -160,7 +128,8 @@
           <div class="text-sm mt-2 text-gray-800">
             About what time do you leave Zermatt? <br>
             [----- slider here -----]<br>
-            <span class="text-orange-800"> (This information helps us if we have to reschedule due to weather &ndash; if you don't know, just leave it blank.) </span> 
+            <span class="text-orange-800"> (This information helps us if we have to reschedule due to weather &ndash; if
+              you don't know, just leave it blank.) </span>
           </div>
 
         </div>
@@ -171,7 +140,8 @@
   </Transition>
 
   <!-- Arrive Date input and Calendar.  -->
-  <div id="arriveDateBox" v-if="flightDate" class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+  <div id="arriveDateBox" v-if="flightDate"
+    class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
     <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
       <svg class="w-6 h-6 inline-block mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -193,7 +163,7 @@
     <div id="arriveDateInputBox" class="mt-3 pl-0 md:pl-4">
 
       <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
-        @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Arriving in Zermatt..."
+        @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
@@ -239,8 +209,10 @@
 
     </div>
 
-    <div class="text-orange-800 text-sm  mt-4 pl-3">
-      Staying in Zermatt for a total of [XXX] days.
+    <div class="text-orange-700 text-sm  mt-4 pl-3">
+      Staying
+      <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">{{ getLengthStayInZermatt }}</span>
+      {{ getLengthStayInZermatt === 1 ? 'day' : 'days' }} in Zermatt.
     </div>
 
   </div>
@@ -268,6 +240,7 @@ import { calendarUtils as calUtils } from './calendarUtils.js'
 // Components
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
+import SliderTime from '@components/SliderTime.vue'
 
 export default {
   name: 'PageDate',
@@ -276,7 +249,8 @@ export default {
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
   components: {
-    VueDatePicker
+    VueDatePicker,
+    SliderTime
   },
 
   data() {
@@ -296,7 +270,7 @@ export default {
       departCal: null,
       showDepartDatePicker: false,
 
-      // viewPortH: 0,
+      daysInZermatt: 0,
     };
   },
 
@@ -313,6 +287,14 @@ export default {
 
   computed: {
 
+    getLengthStayInZermatt() {
+
+      var arrTime = new Date(flightDateStore.getArriveDate())
+      var depTime = new Date(flightDateStore.getDepartDate())
+      return ( ( depTime - arrTime) / 86_400_000 ) + 1
+      
+    },
+
     /**
      * This computed value is requried by the base '_Page' class.
      * It is tightly coupled, but lets the base handle all event
@@ -328,19 +310,11 @@ export default {
 
   methods: {
 
-    scrollToElement() {      
+    scrollToElement() {
       setTimeout(() => {
-      this.$refs.bottomOfPage?.scrollIntoView({ behavior: 'smooth' });
+        this.$refs.bottomOfPage?.scrollIntoView({ behavior: 'smooth' });
       }, "100")
     },
-
-    // // Just a quick API test call.
-    // async test() {
-    //   console.log('test')
-    //   const response = await fetch('https://admin.swissparaglide.com/api/v1/settings')
-    //   const json = await response.json()
-    //   console.log(json)
-    // },
 
     onDateSelect(modelData) {
       //console.log("modelData", modelData)
@@ -391,7 +365,7 @@ export default {
       this.showDepartDatePicker = false
 
       this.scrollToElement()
-      
+
     },
     onDepartDateInputClick(el, ev) {
       // console.log('clicked', el, ev)
@@ -552,6 +526,7 @@ export default {
   border: 1px solid rgba(76, 187, 23, 1);
   border-radius: 5px;
 }
+
 .dpMenuDepart {
   border: 1px solid rgba(231, 98, 0, 1);
   border-radius: 5px;
