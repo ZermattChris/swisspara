@@ -128,7 +128,7 @@
           </VueDatePicker>
           
           <div class="text-sm mt-2 text-gray-800">
-            About what time do you arrive in Zermatt? <br>
+            Around what time do you arrive in Zermatt? <br>
             [----- slider here -----]<br>
             (if you don't know, just leave it blank.)
           </div>
@@ -160,7 +160,7 @@
           <div class="text-sm mt-2 text-gray-800">
             About what time do you leave Zermatt? <br>
             [----- slider here -----]<br>
-            (if you don't know, just leave it blank.)
+            <span class="text-orange-800"> (This information helps us if we have to reschedule due to weather &ndash; if you don't know, just leave it blank.) </span> 
           </div>
 
         </div>
@@ -238,7 +238,13 @@
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 " />
 
     </div>
+
+    <div class="text-orange-800 text-sm  mt-4 pl-3">
+      Staying in Zermatt for a total of [XXX] days.
+    </div>
+
   </div>
+
 
   <div ref="bottomOfPage"></div>
 
