@@ -2,7 +2,7 @@
 
   <!-- Dynamic Vue 'Page' components being swapped out  -->
   <!-- Listen to current page's validity events.  -->
-  <div id="app" class="absolute top-[4em] w-full min-h-[450px] overflow-hidden">
+  <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
     <div id="sizeBox" class="
             w-full max-[320px]:w-11/12
             mx-auto 

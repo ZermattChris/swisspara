@@ -26,14 +26,15 @@
     <div id="dateInputBox" class="mt-3 pl-0 ">
 
       <input type="input" name="flightDateInput" id="flightDateInput" :value="displayDate(flightDate)" readonly
-        @click="onDateInputClick('flightDateInput', $event)" placeholder="Click to enter your flight date..."
+        @click="onDateInputClick('flightDateInput', $event)" 
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
           overflow-clip
-          cursor-pointer
-          read-only:bg-gray-100
-          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 " />
+          cursor-default
+          read-only
+          bg-gray-50
+          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:appearance-none focus:outline-none" />
       <!-- This would make a good sep component.  -->
       <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!flightDate ? 'hidden' : '']"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -44,6 +45,7 @@
 
     </div>
 
+    <!-- This is the Main Flight Date picker that's always shown  -->
     <VueDatePicker 
       v-if="showArriveDatePicker === false &&  showDepartDatePicker === false"
       v-model="flightCal" 
@@ -55,7 +57,8 @@
       inline 
       auto-apply 
       :min-date="new Date()"   
-      class="inline-block mt-4 z-[98] drop-shadow-xl"
+      :year-range="[new Date().getFullYear(), new Date().getFullYear()+1]"
+      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md"
     ></VueDatePicker>
 
 
@@ -168,8 +171,7 @@
   </Transition>
 
   <!-- Arrive Date input and Calendar.  -->
-  <div id="arriveDateBox" v-if="flightDate"
-    class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+  <div id="arriveDateBox" v-if="flightDate" class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
     <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
       <svg class="w-6 h-6 inline-block mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -205,7 +207,7 @@
 
   <!-- Depart Date input and Calendar.  -->
   <div id="departDateBox" v-if="arriveDate"
-    class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+    class="mb-16 pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
     <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
       <svg class="w-6 h-6 inline-block mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -238,6 +240,7 @@
     </div>
   </div>
 
+  <div ref="bottomOfPage"></div>
 
 </template>
 
@@ -247,6 +250,7 @@
 <script>
 // Parent component for all "Pages"
 import _Page from './_Page.vue'
+import { ref } from 'vue'
 
 // Store
 import { flightDateStore } from '@stores/pageDateStore.js'
@@ -318,13 +322,19 @@ export default {
 
   methods: {
 
-    // Just a quick API test call.
-    async test() {
-      console.log('test')
-      const response = await fetch('https://admin.swissparaglide.com/api/v1/settings')
-      const json = await response.json()
-      console.log(json)
+    scrollToElement() {      
+      setTimeout(() => {
+      this.$refs.bottomOfPage?.scrollIntoView({ behavior: 'smooth' });
+      }, "100")
     },
+
+    // // Just a quick API test call.
+    // async test() {
+    //   console.log('test')
+    //   const response = await fetch('https://admin.swissparaglide.com/api/v1/settings')
+    //   const json = await response.json()
+    //   console.log(json)
+    // },
 
     onDateSelect(modelData) {
       //console.log("modelData", modelData)
@@ -341,14 +351,11 @@ export default {
       // Automatically show the 'Arrival Date' pop up calendar.
       setTimeout(() => {
         this.showArriveDatePicker = true
-      }, "150")
+      }, "50")
 
     },
 
     onDateInputClick(el, ev) {
-      // console.log('clicked', el, ev)
-      // Flight Date Picker is initially shown, as soon as user clicks a date, it hides itself
-      // and the Arrive & Depart Dates are displayed.
       // this.showFlightDatePicker = true
       ev.stopPropagation()
     },
@@ -362,7 +369,7 @@ export default {
       // Automatically show the 'Arrival Date' pop up calendar.
       setTimeout(() => {
         this.showDepartDatePicker = true
-      }, "150");
+      }, "50");
 
     },
     onArriveDateInputClick(el, ev) {
@@ -376,6 +383,9 @@ export default {
       this.departDate = modelData
       flightDateStore.setDepartDate(modelData)    // set in Store.
       this.showDepartDatePicker = false
+
+      this.scrollToElement()
+      
     },
     onDepartDateInputClick(el, ev) {
       // console.log('clicked', el, ev)
