@@ -26,15 +26,20 @@
     <div id="dateInputBox" class="mt-3 pl-0 ">
 
       <input type="input" name="flightDateInput" id="flightDateInput" :value="displayDate(flightDate)" readonly
+        placeholder="Click a Day in the Calendar..."
         @click="onDateInputClick('flightDateInput', $event)"
         class="inline-block  rounded-md border-0 
+          text-lg font-bold
           ml-2 py-2 px-2 
           w-72 sm:w-80
           overflow-clip
+          text-center
           cursor-default
           read-only
           bg-gray-50
-          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:appearance-none focus:outline-none" />
+          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:appearance-none focus:outline-none" 
+        :class="{ 'bg-lime-100': flightDate }"
+        />
       <!-- This would make a good sep component.  -->
       <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!flightDate ? 'hidden' : '']"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -50,7 +55,8 @@
       :model-value="flightDate" :enable-time-picker="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
       @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
       :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"
-      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md"></VueDatePicker>
+      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md">
+    </VueDatePicker>
 
 
   </div>
@@ -164,12 +170,14 @@
 
       <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
         @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
+        :class="{ 'bg-lime-100': arriveDate }"
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
           overflow-clip
+          text-center
           cursor-pointer
-          read-only:bg-gray-100
+        bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 " />
 
     </div>
@@ -198,13 +206,15 @@
     <div id="departDateInputBox" class="mt-3 pl-0 md:pl-4">
 
       <input type="input" name="departDateInput" id="departDateInput" :value="displayDate(departDate)" readonly
-        @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Departing Zermatt..."
+        @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Please enter your Departure date..."
+        :class="{ 'bg-lime-100': departDate }"
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
           overflow-clip
+          text-center
           cursor-pointer
-          read-only:bg-gray-100
+          bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 " />
 
     </div>
