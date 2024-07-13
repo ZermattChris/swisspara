@@ -158,15 +158,15 @@
   <div id="arriveDateBox" v-if="flightDate"
     class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
-    <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
-      <svg class="w-6 h-6 inline-block mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-        fill="currentColor">
+    <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-emerald-900">
+      <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
         <path fill-rule="evenodd"
-          d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
-          clip-rule="evenodd" />
+          d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z" clip-rule="evenodd" />
       </svg>
 
-      Arriving in Zermatt:
+      <span class="font-bold ">  
+        Arriving in Zermatt:
+      </span>
 
       <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!arriveDate ? 'hidden' : '']"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -179,7 +179,7 @@
 
       <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
         @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
-        :class="{ 'bg-lime-50': arriveDate }"
+        :class="{ 'bg-emerald-50': arriveDate }"
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
@@ -196,14 +196,16 @@
   <div id="departDateBox" v-if="arriveDate"
     class="mb-16 pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
-    <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-gray-900">
-      <svg class="w-6 h-6 inline-block mb-1 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none"
+    <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
+      <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none"
         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
       </svg>
 
 
-      Departing Zermatt:
+      <span class="font-bold ">  
+        Departing Zermatt:
+      </span>
 
       <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!departDate ? 'hidden' : '']"
         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -216,7 +218,7 @@
 
       <input type="input" name="departDateInput" id="departDateInput" :value="displayDate(departDate)" readonly
         @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Please enter your Departure date..."
-        :class="{ 'bg-lime-50': departDate }"
+        :class="{ 'bg-orange-50': departDate }"
         class="inline-block  rounded-md border-0 
           ml-2 py-2 px-2 
           w-72 sm:w-80
@@ -238,7 +240,7 @@
       <svg class="w-6 h-6 inline-block relative -top-0.5  text-yellow-600" viewBox="0 0 24 24" fill="currentColor">
         <path d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z"></path>
       </svg>
-      TIP: It's easy to change your flight dates later if needed.
+      TIP: It's easy to change your flight dates here if needed.
     </div>
 
 
@@ -576,12 +578,20 @@ export default {
 
 /* Custom Calendar tweaks */
 
-/* Changing the colors and font weights of each day in calendar */
+/* Changing the colors and font weights of each day in calendar   rgb(167 243 208) */ 
 
-.dp__cell_highlight {
+
+
+/**
+* Looking to show the start date hilite colour to match the Arriving in Zermatt scheme.
+*/
+
+.dp__cell_highlight ~ .dp__cell_highlight {
   background-color: rgb(247 254 231);
   border-bottom: 2px solid rgb(39, 117, 3);
 }
+
+
 
 .dp__active_date {
   color: white;
@@ -589,6 +599,7 @@ export default {
   border: 1px solid rgb(34, 99, 4);
   border-radius: 5px;
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 4px rgb(34, 99, 4);
 }
 .dpMenuArrive {
   border: 1px solid rgba(76, 187, 23, 1);
