@@ -227,7 +227,7 @@
           overflow-clip
           cursor-pointer
           bg-gray-100
-          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 " />
+          text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 " />
 
     </div>
 
