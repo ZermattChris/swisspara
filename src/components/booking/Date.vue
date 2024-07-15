@@ -1,7 +1,7 @@
 <template>
 
   <h1 class="pb-8 md:pb-12 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
-    1. Get Started
+    1. Flight Date
   </h1>
 
 
@@ -69,7 +69,7 @@
 
         <!-- Arrive Calendar  -->
         <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
-          class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
+          class="flex flex-col  place-self-center justify-center  bg-white px-8 pt-8 pb-4 rounded-md shadow-md">
 
           <div
             class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -82,11 +82,12 @@
             Arrival Date
           </div>
 
-          <div class="text-sm mb-2 text-gray-800">
+          <div class="text-sm mb-6 text-gray-800">
             Which day are you arriving in Zermatt?
           </div>
 
           <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
+            :month-change-on-scroll="false" 
             :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
             :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()" prevent-min-max-navigation
             @update:model-value="onArriveDateSelect" class="dpMenuArrive  absolute z-[98] drop-shadow-xl ">
@@ -95,9 +96,8 @@
           <div class="text-md mt-6 text-gray-800">
             Around what time are you arriving?
             <!-- Arrival Time Slider -->
-            <SliderTime id="arriveSlider" class="my-4 mx-0" min="1" max="12" step="0.5">
-            </SliderTime>
-            <span class="text-slate-600">(if you don't know, just leave blank.)</span>
+            <SliderTime id="arriveSlider" class="my-4 mx-0" min="1" max="12" step="0.5"></SliderTime>
+            <div>Slider Ouput here...</div>
           </div>
 
 
@@ -107,7 +107,7 @@
 
         <!-- Depart Calendar  -->
         <div v-if="showDepartDatePicker"
-          class="flex flex-col  place-self-center justify-center  bg-white px-8 py-4 rounded-md shadow-md">
+          class="flex flex-col  place-self-center justify-center  bg-white px-8 pt-8 pb-4 rounded-md shadow-md">
 
           <div
             class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -118,21 +118,22 @@
             Depart Date
           </div>
 
-          <div class="text-sm mb-2 text-gray-800">
+          <div class="text-sm mb-6 text-gray-800">
             Which day are you departing Zermatt?
           </div>
 
           <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal" :model-value="departDate"
+            :month-change-on-scroll="false" 
             :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline teleport-center auto-apply
             :min-date="getMinDepartDate()" :max-date="getMaxDepartDate()" prevent-min-max-navigation
             @update:model-value="onDepartDateSelect" class="dpMenuDepart  absolute z-[98] drop-shadow-xl">
           </VueDatePicker>
 
           <div class="text-sm mt-2 text-gray-800">
-            About what time do you leave Zermatt? <br>
-            [----- slider here -----]<br>
-            <span class="text-orange-800"> (This information helps us if we have to reschedule due to weather &ndash; if
-              you don't know, just leave it blank.) </span>
+            About what time do you leave Zermatt?
+            <!-- Arrival Time Slider -->
+            <SliderTime id="arriveSlider" class="my-4 mx-0" min="1" max="12" step="0.5"></SliderTime>
+            <div>Slider Ouput here...</div>
           </div>
 
         </div>
