@@ -1,5 +1,7 @@
 <template>
 
+  <Stepper class="mb-14"></Stepper>
+
   <h1 class="pb-8 md:pb-12 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
     1. Flight Date
   </h1>
@@ -332,6 +334,8 @@ import {parseISO, addDays, format} from 'date-fns';
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import SliderTime from '@components/SliderTime.vue'
+import Stepper from '@components/StepperDates.vue'
+
 
 export default {
   name: 'PageDate',
@@ -341,7 +345,8 @@ export default {
 
   components: {
     VueDatePicker,
-    SliderTime
+    SliderTime,
+    Stepper
   },
 
 

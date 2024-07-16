@@ -4,14 +4,14 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper></Stepper>
-
-
-    <div id="sizeBox" class="
-            w-full max-[320px]:w-11/12
+    <div 
+      id="sizeBox" 
+      class="w-full max-[320px]:w-11/12
             mx-auto 
             px-0 sm:px-0
-            py-6 sm:py-16" @click="onBackgroundClick">
+            pt-4 pb-6 sm:py-16" 
+      @click="onBackgroundClick"
+    >
 
       <component :is="currentPageName" @pagevalid="onPageValidEvent"></component>
 
@@ -103,7 +103,6 @@ import PageTime from '@components/booking/Time.vue'
 import PagePassengers from '@components/booking/Passengers.vue'
 import PagePay from '@components/booking/Payment.vue'
 
-import Stepper from '@components/Stepper.vue'
 
 // import PagePaySuccess from '@components/booking/Success.vue'
 // import PagePayFailed from '@components/booking/Failed.vue'
@@ -121,7 +120,6 @@ export default {
     PageTime,
     PagePassengers,
     PagePay,
-    Stepper,
 
     // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
     // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
