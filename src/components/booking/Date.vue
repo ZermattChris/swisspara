@@ -53,7 +53,7 @@
     <!-- This is the Main Flight Date picker that's always shown  -->
     <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"
       class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md" v-model="flightCal"
-      :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"
+      :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"  :month-change-on-scroll="false"
       :max-date="getMaxFutureDate()" prevent-min-max-navigation @update:model-value="onDateSelect" inline auto-apply
       :min-date="new Date()" :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"></VueDatePicker>
 

@@ -52,8 +52,7 @@
 
 
       <button @click="nextPage" type="button" id="nextBtn"
-        class="
-                    text-sm lg:text-lg min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 font-semibold text-white shadow-sm  outline outline-2 outline-offset-2 outline-indigo-600"
+        class="text-sm lg:text-lg min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 font-semibold text-white shadow-sm  outline outline-2 outline-offset-2 outline-indigo-600"
         :class="[nextBtnHidden, nextBtnDisabledClass, { 'hover:bg-indigo-500': nextBtnDisabledProp }]"
         :disabled="nextBtnDisabledProp">
         Next
