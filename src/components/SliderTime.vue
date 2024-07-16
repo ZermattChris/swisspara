@@ -9,7 +9,7 @@
       type="button" 
       @click="adjust(-step)"
       class="mr-4 rounded-full rounded-r-none w-14 min-w-[52px]
-       bg-gray-100 pr-2 pl-3 py-2.5 text-sm font-semibold
+       bg-gray-100 pr-2 pl-3 py-2.5 text-sm font-semibold select-none
       text-gray-900 shadow ring-1 ring-inset ring-gray-300"
       :class=" (modelValue <= min) ? 'opacity-50 cursor-default' : 'hover:bg-gray-50  hover:ring-indigo-600 ' "
     >
@@ -77,7 +77,7 @@
     <button 
       type="button" 
       @click="adjust(step)"
-      class="ml-4 rounded-full rounded-l-none w-14
+      class="ml-4 rounded-full rounded-l-none w-14 select-none
       bg-gray-100 pl-2 pr-3 py-2.5 text-sm font-semibold
       text-gray-900 shadow ring-1 ring-inset ring-gray-300 "
       :class=" (modelValue >= max) ? 'opacity-50 cursor-default' : 'hover:bg-gray-50  hover:ring-indigo-600 ' "
@@ -109,8 +109,9 @@
 
  
 	function adjust(step) {
+    step = step * 1.0
     let targetVal = Number(props.modelValue) + step
-    // console.log('targetVal : ', targetVal)
+    //console.log('targetVal : ', targetVal)
     if (targetVal < (props.min - step) ) {    // this accounts for inital -1 value.
       targetVal = props.min 
       
