@@ -70,7 +70,7 @@
 
         <!-- Arrive Calendar  -->
         <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
-          class="flex flex-col  place-self-center justify-center  bg-white px-8 pt-8 pb-4 rounded-md shadow-md">
+          class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
 
           <div
             class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -83,7 +83,7 @@
             Arrival Date
           </div>
 
-          <div v-if="!arriveDate" class="text-sm mb-6 text-gray-800">
+          <div v-if="!arriveDate" class="text-sm mt-2 mb-4 text-gray-800">
             Which day are you arriving in Zermatt?
           </div>
           <div v-if="arriveDate" class="text-sm mb-6 text-gray-800">
@@ -134,7 +134,7 @@
 
         <!-- Depart Calendar  -->
         <div v-if="showDepartDatePicker" @click="(e) => { e.stopPropagation() }"
-          class="flex flex-col  place-self-center justify-center  bg-white px-8 pt-8 pb-4 rounded-md shadow-md">
+          class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
 
           <div
             class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -145,11 +145,11 @@
             Depart Date
           </div>
 
-          <div v-if="departDate"  class="text-sm mb-6 text-gray-800">
+          <div v-if="departDate"  class="text-sm mt-2 mb-4 text-gray-800">
             You depart on: 
             {{ this.getFormattedDepartDate() }}
           </div>
-          <div v-else class="text-sm mb-6 text-gray-800">
+          <div v-else class="text-sm mt-2 mb-4 text-gray-800">
             Which day are you departing Zermatt?
           </div>
 
