@@ -186,7 +186,7 @@
           </div>
 
           <div class="text-center mt-10 mb-6">
-            <button type="button" @click="showDepartDatePicker = false" class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
+            <button type="button" @click="onContinueDepartDialog()" class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
               Continue
             </button>
           </div>
@@ -355,13 +355,13 @@ export default {
       // Arrive Date
       arriveDate: flightDateStore.getArriveDate(),    // get from Store.
       arriveCal: null,
-      arrivalTime: 7.5,
+      arrivalTime: flightDateStore.getArriveTime(),    // get from Store.
       showArriveDatePicker: false,
 
       // Depart Date
       departDate: flightDateStore.getDepartDate(),    // get from Store.
       departCal: null,
-      departTime: 20.5,
+      departTime: flightDateStore.getDepartTime(),     // get from Store.
       showDepartDatePicker: false,
 
       daysInZermatt: 0,
@@ -369,15 +369,14 @@ export default {
   },
 
 
-  mounted() {
-    //console.log("Date component mounted")
-    window.addEventListener('click', this.onBackgroundClick)
-  },
-  unmounted() {
-    //console.log("-> Date component unmounted")
-    window.removeEventListener('click', this.onBackgroundClick)
-
-  },
+  // mounted() {
+  //   //console.log("Date component mounted")
+  //   window.addEventListener('click', this.onBackgroundClick)
+  // },
+  // unmounted() {
+  //   //console.log("-> Date component unmounted")
+  //   window.removeEventListener('click', this.onBackgroundClick)
+  // },
 
   computed: {
 
@@ -456,27 +455,21 @@ export default {
 
 
     getLengthStayInZermatt() {
-
       var arrTime = new Date(flightDateStore.getArriveDate())
       var depTime = new Date(flightDateStore.getDepartDate())
       return ((depTime - arrTime) / 86_400_000) + 1
-
     },
 
     highlightedDates() {
-
       var arrTime = new Date(flightDateStore.getArriveDate())
       var depTime = new Date(flightDateStore.getDepartDate())
       var days = ((depTime - arrTime) / 86_400_000) + 1
-
       var hiliteArray = []
       for (let i = 0; i < days; i++) {
         // console.log('-> i: ', i)
         hiliteArray.push(addDays(arrTime, i))
       }
-
       return hiliteArray
-
     },
 
     scrollToElement() {
@@ -512,6 +505,9 @@ export default {
     onContinueArriveDialog() {
       this.showArriveDatePicker = false
 
+      // Save the Arrival Time
+      flightDateStore.setArriveTime(this.arrivalTime)    // set in Store.
+
       // IF there is no Depart Date, or it's now invaild, then show the 'Depart Date' pop up calendar.
       if (!this.departDate || this.departDate === '') {
         setTimeout(() => {
@@ -520,12 +516,15 @@ export default {
       }
     },
 
+    onContinueDepartDialog() {
+      this.showDepartDatePicker = false
+      // Save the Arrival Time
+      flightDateStore.setDepartTime(this.departTime)    // set in Store.
+    },
 
     onArriveDateSelect(modelData) {
       this.arriveDate = modelData
       flightDateStore.setArriveDate(modelData)    // set in Store.
-
-
     },
     onArriveDateInputClick(el, ev) {
       // console.log('clicked', el, ev)
@@ -566,8 +565,8 @@ export default {
     onBackgroundClick: function (event) {
       // close Calendar pickers on outside click.
       // this.showFlightDatePicker = false
-      this.showArriveDatePicker = false
-      this.showDepartDatePicker = false
+      // this.showArriveDatePicker = false
+      // this.showDepartDatePicker = false
     },
 
     // Only allow date picking to today + 9 months

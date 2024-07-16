@@ -54,6 +54,8 @@ export const flightDateStore = reactive({
   arriveDate: localStorage.arriveDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.arriveDate) ) ) : '',
   departDate: localStorage.departDate ? formatDateToSimpleISO( new Date( Date.parse(localStorage.departDate) ) ) : '',
   
+  arriveTime: localStorage.arriveTime ? +localStorage.arriveTime : 7.5,   // defaults to 07:30 -> "don't know our arrival time"
+  departTime: localStorage.departTime ? +localStorage.departTime : 20.5,  // defaults to 20:30 -> "don't know our depart time"
 
   //---------------------
 
@@ -120,7 +122,23 @@ export const flightDateStore = reactive({
     localStorage.arriveDate = this.arriveDate
   },//
 
+  // ---- Arrival Time ----.
+  getArriveTime() {
+    return this.arriveTime
+  },
+  setArriveTime(arrTime) {
+    this.arriveTime = arrTime
+    localStorage.arriveTime = this.arriveTime
+  },
 
+  // ---- Depart Time ----.
+  getDepartTime() {
+    return this.departTime
+  },
+  setDepartTime(depTime) {
+    this.departTime = depTime
+    localStorage.departTime = this.departTime
+  },
 
 
   // Departure Date.
