@@ -5,6 +5,9 @@
 		2. Select a Flight
 	</h1>
 
+
+  <a href="#" @click="valid()">Test Valid()</a>
+
   <div id="flightDateBox"
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] "
   >
@@ -113,6 +116,14 @@
 			store.initialize()
 		},
 
+    updated() {
+      console.log("Page-Flight Updated: ", this.valid() ? 'valid page' : 'Not valid page')
+    },
+
+    mounted() {
+      console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
+    },
+
     computed: {
 
 			loading() {
@@ -124,6 +135,7 @@
        * It is tightly coupled, but lets the base handle all event
        * work for all child Pages in the same manner.
        */
+      // TODO: remove this - use valid() method instead.
       _isPageValid() {
         return store.isPageValid()
       },
@@ -150,6 +162,22 @@
 
 
 		methods: {
+
+      /**
+       * This method must be overrided in each of these Page components.
+       * A new attempt at sorting out the current messy navigation system.
+       */
+      valid() {
+        // Overriden from the base '_Page' class.
+        // console.log('-> Date.vue: valid()')
+
+        let result = true
+        // -> Flight Date checks.
+        if (store.selectedFlight < 1) result = false
+        return result
+
+      },
+
 
       /**
        * Handle onChange event fired from the InputSelect component.

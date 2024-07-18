@@ -86,7 +86,7 @@
   
 <script>
 
-	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
+	import {datesStore as datesStore} from '@stores/pageDateStore.js' 
 	import {pageTimeSlotsStore as store} from '@stores/pageTimeSlotsStore.js' 
 
 	import TimeSlot from "@components/TimeSlot.vue"

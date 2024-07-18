@@ -17,8 +17,8 @@ if (document.location) {
   }
 }
 
-console.log("Use local API:", useLocalAPI);
-console.log("Use Staging API:", useStagingAPI);
+//console.log("Use local API:", useLocalAPI);
+//console.log("Use Staging API:", useStagingAPI);
 
 
 

@@ -12,6 +12,8 @@
       <span class="italic text-gray-500 block pt-1">We never share any information with 3rd parties.</span>
     </p>
 
+    <a href="#" @click="valid()">Test Valid()</a>
+    
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
       :index="index"

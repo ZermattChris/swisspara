@@ -46,7 +46,7 @@ const _readFlightDateFromLocalStorage = () => {
 
 
 
-export const flightDateStore = reactive({
+export const datesStore = reactive({
 
   // Read in data from localStorage.   Format saved date string, create a new Date Obj and then format it with our helper to '2023-11-22'  ||  empty string ''
   flightDate: _readFlightDateFromLocalStorage(),
@@ -59,9 +59,13 @@ export const flightDateStore = reactive({
 
   //---------------------
 
+  // TODO: changing this for a less wonky solution, that calls a method in
+  //       each Page component to check if it's valid or not.
+
   // Get if this 'Page' is valid or not. Used to manage the Prev/Next
   // buttons and breadcrumbs.
   isPageValid() {
+    console.log("Deprecated -> isPageValid() in pageDateStore.js")
     let result = true
 
     // -> Flight Date checks.

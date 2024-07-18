@@ -89,7 +89,7 @@ export const appStore = reactive({
 		//console.log('pageItems', this.pageItems)
 		this._savePage()
 
-		console.log('_appSettings', this._appSettings)    //TODO: remove
+		// console.log('_appSettings', this._appSettings) 
 
 	},
 
@@ -130,7 +130,6 @@ export const appStore = reactive({
 		}
 		//--------------------------------------------------------
 
-		//console.log('page component: ', this.pageItems[test].component.name)
 		//console.log('this.page',this.page)
 		return this.pageItems[this.page].component
 	},
@@ -163,7 +162,30 @@ export const appStore = reactive({
     //return this.pageItems[this.page].name
   },
 
+  // Navigate to a specific page.
+  gotoPage(pageNr) {
+    if (pageNr < 1 || pageNr > this._nrOfPageItems()) {
+      console.error("Invalid page number: ", pageNr)
+      return
+    }
+    // // Only allow Nav from pages that are valid.
+    // if ( !this.pageValid(pageNr-1) ) {
+    //   console.log( "appStore.gotoPage(pageNr) isn't valid " + pageNr-1 )
+    //   return
+    // }
 
+    this._navigate(pageNr)
+  },
+
+  // Is this Page Nr valid?
+  pageValid(pageNr) {
+    if (pageNr < 1 || pageNr > this._nrOfPageItems()) {
+      console.error("Invalid page number for appStore.pageValid(pageNr): ", pageNr)
+      return false
+    }
+    var isPageValid = this.pageItems[pageNr].component.computed._isPageValid()
+    return isPageValid
+  },
 
   //---------------------
 

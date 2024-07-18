@@ -59,9 +59,14 @@ export const pageFlightStore = reactive({
 
   //---------------------
 
+
+  // TODO: changing this for a less wonky solution, that calls a method in
+  //       each Page component to check if it's valid or not.
+
   // Get if this 'Page' is valid or not. Used to manage the Prev/Next
   // buttons and breadcrumbs.
   isPageValid() {
+    console.log("Deprecated -> isPageValid() in pageFlightStore.js")
     let result = true
 
     // -> Flight Date checks.

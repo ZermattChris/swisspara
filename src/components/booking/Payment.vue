@@ -7,6 +7,8 @@
 		  5. Complete Your Booking
     </h1>
 
+    <a href="#" @click="valid()">Test Valid()</a>
+    
     <!-- This is the Confirm Booking Intro text. -->
     <div id="confirmBookingWrapper" v-if="hasConfirmedBooking === false">
       <div>
@@ -254,7 +256,7 @@
 
 	// Stores
   import {appStore} from '@stores/appStore.js' 
-	import {flightDateStore as dateStore} from '@stores/pageDateStore.js' 
+	import {datesStore as dateStore} from '@stores/pageDateStore.js' 
 	import {pageFlightStore as flightStore} from '@stores/pageFlightStore.js' 
 	import {pageTimeSlotsStore as timeStore} from '@stores/pageTimeSlotsStore.js' 
 	import {pagePassengersStore as passengersStore} from '@stores/pagePassengersStore.js' 

@@ -4,20 +4,29 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
 
-    <div 
-      id="sizeBox" 
+    <Stepper class="mb-14"></Stepper>
+
+    <div id="sizeBox" 
       class="w-full max-[320px]:w-11/12
-            mx-auto 
-            px-0 sm:px-0
-            pt-4 pb-6 sm:py-16" 
+        mx-auto 
+        px-0 sm:px-0
+        pt-4 pb-6 sm:py-16" 
       @click="onBackgroundClick"
     >
 
-      <component :is="currentPageName" @pagevalid="onPageValidEvent"></component>
+      <component :is="currentPageName" @pagevalid="onPageValidEvent">
+      </component>
 
     </div>
   </div>
 
+
+
+  <a @click="gotoPage(1)" href="#">Page 1</a>
+  <a @click="gotoPage(2)" href="#">Page 2</a>
+  <a @click="gotoPage(3)" href="#">Page 3</a>
+  <a @click="gotoPage(4)" href="#">Page 4</a>
+  <a @click="gotoPage(5)" href="#">Page 5</a>
 
   <!-- Previous/Next Buttons -->
   <div class="fixed bottom-0 right-0 left-0
@@ -92,6 +101,7 @@
 
 
 <script>
+import { shallowRef,  ref, computed } from 'vue'
 
 import api from '@components/api/_apiBase.js'
 import settingsAPI from "@components/api/settingsAPI.js"
@@ -103,6 +113,8 @@ import PageTime from '@components/booking/Time.vue'
 import PagePassengers from '@components/booking/Passengers.vue'
 import PagePay from '@components/booking/Payment.vue'
 
+
+import Stepper from '@components/Stepper.vue'
 
 // import PagePaySuccess from '@components/booking/Success.vue'
 // import PagePayFailed from '@components/booking/Failed.vue'
@@ -120,6 +132,7 @@ export default {
     PageTime,
     PagePassengers,
     PagePay,
+    Stepper
 
     // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
     // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
@@ -130,26 +143,24 @@ export default {
       // currPage: appStore.currentPageName(),
       isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
       currentYear: '',
+      pages: [
+        shallowRef(PageDate),
+        shallowRef(PageFlight),
+        shallowRef(PageTime),
+        shallowRef(PagePassengers),
+        shallowRef(PagePay),
+      ],
     };
   },
 
   mounted() {
 
-    // Load settings from API from the AppStore.
-    // const tmpSettingsObj = appStore.loadSettings()
-    // console.log("APP mounted() - Settings: ", tmpSettingsObj)
-    console.log("Video Price: ", appStore.getVideoPrice() )
+    console.log("currentPageName: ", this.currentPageName )
 
 
     // Send our page list as strings to the store.
     // Need to add 'label' and 'icon' to use in Breadcrumbs.
-    appStore.initNav([
-      PageDate,
-      PageFlight,
-      PageTime,
-      PagePassengers,
-      PagePay,
-    ])
+    appStore.initNav(this.pages)
 
     this.currentYear = new Date().getFullYear() + ''
 
@@ -173,6 +184,7 @@ export default {
     },
 
     currentPageName() {
+      console.log("currentPageName: ", appStore.currentPageName())
       return appStore.currentPageName()
     },
 
@@ -203,15 +215,21 @@ export default {
 
   methods: {
 
+    gotoPage(pageNr) {
+      //
+      appStore.gotoPage(pageNr)
+    },
+
+
     async loadSettings() {
       
     },
 
 
-    swipeHandler() {
-      console.log("Swiped!")
+    // swipeHandler() {
+    //   console.log("Swiped!")
 
-    },
+    // },
 
     /**
      * This handles the custom event that is fired from each Page (via the _Page base class)

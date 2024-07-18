@@ -11,6 +11,7 @@
 
 	</div>
 
+  <a href="#" @click="valid()">Test Valid()</a>
 
 	<!-- This is our wrapper around Splide  -->
 	<div id="sliderWrapper" class="px-0 pt-4 max-w-screen-2xl m-auto">

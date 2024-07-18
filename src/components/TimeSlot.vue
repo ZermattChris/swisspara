@@ -156,7 +156,7 @@
 <script setup>
   import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw, onUpdated } from 'vue'
   
-	import {flightDateStore as datesStore} from '@stores/pageDateStore.js' 
+	import {datesStore as datesStore} from '@stores/pageDateStore.js' 
 	import {pageTimeSlotsStore as timeSlotStore} from '@stores/pageTimeSlotsStore.js' 
 
 	// Calendar Utils.

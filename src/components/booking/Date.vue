@@ -1,11 +1,10 @@
 <template>
 
-  <Stepper class="mb-14"></Stepper>
-
   <h1 class="pb-8 md:pb-12 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
     1. Flight Date
   </h1>
 
+  <a href="#" @click="console.log( valid() ? 'valid page' : 'Not valid page')">Test Valid()</a>
 
   <div id="flightDateBox"
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
@@ -25,7 +24,7 @@
       </svg>
       Choose your Flight Date:
     </label>
-    <div  id="dateInputBox" class="mt-3 pl-0">
+    <div id="dateInputBox" class="mt-3 pl-0">
 
       <div v-show="flightDate" class="inline-block  rounded-md border-0 
           text-lg font-bold
@@ -38,8 +37,7 @@
           bg-gray-50
           text-gray-400
           ring-1 ring-inset ring-gray-300 placeholder:text-gray-400  focus:appearance-none focus:outline-none"
-        :class="{ 'bg-lime-100 text-gray-900': flightDate }" style="-webkit-user-select:none; user-select:none;"
-      >
+        :class="{ 'bg-lime-100 text-gray-900': flightDate }" style="-webkit-user-select:none; user-select:none;">
         {{ displayDate(flightDate) }}
       </div>
       <!-- This would make a good sep component.  -->
@@ -55,9 +53,10 @@
     <!-- This is the Main Flight Date picker that's always shown  -->
     <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"
       class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md" v-model="flightCal"
-      :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"  :month-change-on-scroll="false"
-      :max-date="getMaxFutureDate()" prevent-min-max-navigation @update:model-value="onDateSelect" inline auto-apply
-      :min-date="new Date()" :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"></VueDatePicker>
+      :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"
+      :month-change-on-scroll="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
+      @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
+      :year-range="[new Date().getFullYear(), new Date().getFullYear() + 1]"></VueDatePicker>
 
 
   </div>
@@ -89,7 +88,7 @@
             Which day are you arriving in Zermatt?
           </div>
           <div v-if="arriveDate" class="text-sm mb-6 text-gray-800">
-            You arrive on: 
+            You arrive on:
             {{ this.getFormattedArrivalDate() }}
           </div>
 
@@ -103,22 +102,30 @@
           <div class="text-md mt-6 text-gray-800">
             Around what time are you arriving?
             <!-- Arrival Time Slider -->
-            <SliderTime id="arriveSlider" v-model.number="arrivalTime" class="my-4 mx-0" min="7.5" max="20.5" step="0.5">
+            <SliderTime id="arriveSlider" v-model.number="arrivalTime" class="my-4 mx-0" min="7.5" max="20.5"
+              step="0.5">
               <!-- Early Btn -->
               <template v-slot:preIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"   class="h-6 w-6 py-0 pl-1 relative left-1">
-                  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-6 w-6 py-0 pl-1 relative left-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
                 </svg>
               </template>
               <!-- Late Btn -->
               <template v-slot:postIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"   class="h-8 w-8 py-0 pl-1">
-                  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-8 w-8 py-0 pl-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
                 </svg>
               </template>
               <!-- Time display -->
               <template v-slot:message>
-                <div class="text-sm" :class="[ arrivalTime < 8 || arrivalTime > 20 ? 'text-red-700 italic' : '', arrivalTime >= 8 && arrivalTime < 12 ? 'text-green-700' : '', arrivalTime >= 12 && arrivalTime < 18 ? 'text-orange-700' : '',  arrivalTime >= 18 ? 'text-gray-700' : '' ]">
+                <div class="text-sm"
+                  :class="[arrivalTime < 8 || arrivalTime > 20 ? 'text-red-700 italic' : '', arrivalTime >= 8 && arrivalTime < 12 ? 'text-green-700' : '', arrivalTime >= 12 && arrivalTime < 18 ? 'text-orange-700' : '', arrivalTime >= 18 ? 'text-gray-700' : '']">
                   {{ (arrivalTime < 8 || arrivalTime > 20) ? "I don't know my arrival time" : getFormattedArrialTime() }}
                 </div>
               </template>
@@ -126,7 +133,8 @@
           </div>
 
           <div class="text-center mt-10 mb-6">
-            <button type="button" @click="onContinueArriveDialog()" class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
+            <button type="button" @click="onContinueArriveDialog()"
+              class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
               Continue
             </button>
           </div>
@@ -147,8 +155,8 @@
             Depart Date
           </div>
 
-          <div v-if="departDate"  class="text-sm mt-2 mb-4 text-gray-800">
-            You depart on: 
+          <div v-if="departDate" class="text-sm mt-2 mb-4 text-gray-800">
+            You depart on:
             {{ this.getFormattedDepartDate() }}
           </div>
           <div v-else class="text-sm mt-2 mb-4 text-gray-800">
@@ -168,27 +176,35 @@
             <SliderTime id="departSlider" v-model.number="departTime" class="my-4 mx-0" min="7.5" max="20.5" step="0.5">
               <!-- Early Btn -->
               <template v-slot:preIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"   class="h-6 w-6 py-0 pl-1">
-                  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-6 w-6 py-0 pl-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
                 </svg>
               </template>
               <!-- Late Btn -->
               <template v-slot:postIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"   class="h-8 w-8 py-0 pl-1">
-                  <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-8 w-8 py-0 pl-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
                 </svg>
               </template>
               <!-- Time display -->
               <template v-slot:message>
-                <div class="text-sm" :class="[ departTime < 8 || departTime > 20 ? 'text-red-700 italic' : '', departTime >= 8 && departTime < 12 ? 'text-green-700' : '', departTime >= 12 && departTime < 18 ? 'text-orange-700' : '',  departTime >= 18 ? 'text-gray-700' : '' ]">
-                  {{ (departTime < 8 || departTime > 20) ? "I don't know my arrival time" : getFormattedDepartTime() }}
+                <div class="text-sm"
+                  :class="[departTime < 8 || departTime > 20 ? 'text-red-700 italic' : '', departTime >= 8 && departTime < 12 ? 'text-green-700' : '', departTime >= 12 && departTime < 18 ? 'text-orange-700' : '', departTime >= 18 ? 'text-gray-700' : '']">
+                  {{ (departTime < 8 || departTime > 20) ? "I don't know my Departure time" : getFormattedDepartTime() }}
                 </div>
               </template>
             </SliderTime>
           </div>
 
           <div class="text-center mt-10 mb-6">
-            <button type="button" @click="onContinueDepartDialog()" class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
+            <button type="button" @click="onContinueDepartDialog()"
+              class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
               Continue
             </button>
           </div>
@@ -298,7 +314,7 @@
       {{ getLengthStayInZermatt() === 1 ? 'day' : 'days' }} in Zermatt.
     </div>
 
-    <div class="text-sm  mt-8 pl-">
+    <div class="text-sm  mt-8 -ml-2">
       <svg class="w-6 h-6 inline-block relative -top-0.5  text-yellow-600" viewBox="0 0 24 24" fill="currentColor">
         <path
           d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z">
@@ -324,17 +340,16 @@ import _Page from './_Page.vue'
 import { ref, toRaw } from 'vue'
 
 // Store
-import { flightDateStore } from '@stores/pageDateStore.js'
+import { datesStore } from '@stores/pageDateStore.js'
 
 // Calendar Utils.
 import { calendarUtils as calUtils } from './calendarUtils.js'
-import {parseISO, addDays, format} from 'date-fns';
+import { parseISO, addDays, format, isBefore } from 'date-fns';
 
 // Components
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 import SliderTime from '@components/SliderTime.vue'
-import Stepper from '@components/StepperDates.vue'
 
 
 export default {
@@ -345,39 +360,40 @@ export default {
 
   components: {
     VueDatePicker,
-    SliderTime,
-    Stepper
+    SliderTime
   },
 
 
   data() {
     return {
       // Flight Date
-      flightDate: flightDateStore.getFlightDate(),    // get from Store.
+      flightDate: datesStore.getFlightDate(),    // get from Store.
       flightCal: null,
       // showFlightDatePicker: true,
 
       // Arrive Date
-      arriveDate: flightDateStore.getArriveDate(),    // get from Store.
+      arriveDate: datesStore.getArriveDate(),    // get from Store.
       arriveCal: null,
-      arrivalTime: flightDateStore.getArriveTime(),    // get from Store.
+      arrivalTime: datesStore.getArriveTime(),    // get from Store.
       showArriveDatePicker: false,
 
       // Depart Date
-      departDate: flightDateStore.getDepartDate(),    // get from Store.
+      departDate: datesStore.getDepartDate(),    // get from Store.
       departCal: null,
-      departTime: flightDateStore.getDepartTime(),     // get from Store.
+      departTime: datesStore.getDepartTime(),     // get from Store.
       showDepartDatePicker: false,
 
       daysInZermatt: 0,
     };
   },
 
+  updated() {
+    console.log("Page-Date Updated: ", this.valid() ? 'valid page' : 'Not valid page')
+  },
 
-  // mounted() {
-  //   //console.log("Date component mounted")
-  //   window.addEventListener('click', this.onBackgroundClick)
-  // },
+  mounted() {
+    console.log("Page-Date Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
+  },
   // unmounted() {
   //   //console.log("-> Date component unmounted")
   //   window.removeEventListener('click', this.onBackgroundClick)
@@ -398,14 +414,14 @@ export default {
     //   // ])
     // },
 
-
+// TODO: remove this - use valid() method instead.
     /**
      * This computed value is requried by the base '_Page' class.
      * It is tightly coupled, but lets the base handle all event
      * work for all child Pages in the same manner.
      */
     _isPageValid() {
-      return flightDateStore.isPageValid()
+      return datesStore.isPageValid()
     },
 
 
@@ -414,13 +430,43 @@ export default {
 
   methods: {
 
+    /**
+     * This method must be overrided in each of these Page components.
+     * A new attempt at sorting out the current messy navigation system.
+     */
+    valid() {
+      // Overriden from the base '_Page' class.
+      // console.log('-> Date.vue: valid()')
+
+      let result = true
+
+      // -> Flight Date checks.
+      if (this.flightDate === '') result = false
+
+      // date-fns update
+      if (isBefore(new Date(this.flightDate), new Date(new Date().toDateString()))) {  // toDateString() kills time and Timezone.
+        result = false
+      }
+
+      // Arrive Date checks.
+      if (this.arriveDate === '') result = false
+
+      // Depart Date checks.
+      if (this.departDate === '') result = false
+
+      return result
+
+    },
+
+
+
     getFormattedArrivalDate() {
       if (this.arriveDate === null) return
-      return format( new Date(this.arriveDate), 'EEEE, MMMM do,	yyyy') 
+      return format(new Date(this.arriveDate), 'EEEE, MMMM do,	yyyy')
     },
     getFormattedDepartDate() {
       if (this.arriveDate === null) return
-      return format( new Date(this.departDate), 'EEEE, MMMM do,	yyyy') 
+      return format(new Date(this.departDate), 'EEEE, MMMM do,	yyyy')
     },
 
     // Displays selected Time and hint below the Arrive / Depart Time sliders.
@@ -460,14 +506,14 @@ export default {
 
 
     getLengthStayInZermatt() {
-      var arrTime = new Date(flightDateStore.getArriveDate())
-      var depTime = new Date(flightDateStore.getDepartDate())
+      var arrTime = new Date(datesStore.getArriveDate())
+      var depTime = new Date(datesStore.getDepartDate())
       return ((depTime - arrTime) / 86_400_000) + 1
     },
 
     highlightedDates() {
-      var arrTime = new Date(flightDateStore.getArriveDate())
-      var depTime = new Date(flightDateStore.getDepartDate())
+      var arrTime = new Date(datesStore.getArriveDate())
+      var depTime = new Date(datesStore.getDepartDate())
       var days = ((depTime - arrTime) / 86_400_000) + 1
       var hiliteArray = []
       for (let i = 0; i < days; i++) {
@@ -486,12 +532,12 @@ export default {
     onDateSelect(modelData) {
       //console.log("modelData", modelData)
       this.flightDate = modelData
-      flightDateStore.setFlightDate(modelData)    // set in Store.
+      datesStore.setFlightDate(modelData)    // set in Store.
       // Reset Arrive & Depart.
       this.arriveDate = ''
-      flightDateStore.setArriveDate('')
+      datesStore.setArriveDate('')
       this.departDateDate = ''
-      flightDateStore.setDepartDate('')
+      datesStore.setDepartDate('')
       // Hide Calendar.
       // this.showFlightDatePicker = false
 
@@ -511,7 +557,7 @@ export default {
       this.showArriveDatePicker = false
 
       // Save the Arrival Time
-      flightDateStore.setArriveTime(this.arrivalTime)    // set in Store.
+      datesStore.setArriveTime(this.arrivalTime)    // set in Store.
 
       // IF there is no Depart Date, or it's now invaild, then show the 'Depart Date' pop up calendar.
       if (!this.departDate || this.departDate === '') {
@@ -524,12 +570,12 @@ export default {
     onContinueDepartDialog() {
       this.showDepartDatePicker = false
       // Save the Arrival Time
-      flightDateStore.setDepartTime(this.departTime)    // set in Store.
+      datesStore.setDepartTime(this.departTime)    // set in Store.
     },
 
     onArriveDateSelect(modelData) {
       this.arriveDate = modelData
-      flightDateStore.setArriveDate(modelData)    // set in Store.
+      datesStore.setArriveDate(modelData)    // set in Store.
     },
     onArriveDateInputClick(el, ev) {
       // console.log('clicked', el, ev)
@@ -540,7 +586,7 @@ export default {
 
     onDepartDateSelect(modelData) {
       this.departDate = modelData
-      flightDateStore.setDepartDate(modelData)    // set in Store.
+      datesStore.setDepartDate(modelData)    // set in Store.
       //this.showDepartDatePicker = false
 
       this.scrollToElement()
@@ -758,4 +804,4 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-</style>
+</style>@src/components/Stepper.vue
