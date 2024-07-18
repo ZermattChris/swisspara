@@ -216,7 +216,7 @@ export default {
   methods: {
 
     gotoPage(pageNr) {
-      //
+      // -- This is my new Nave method --
       appStore.gotoPage(pageNr)
     },
 
