@@ -13,7 +13,7 @@
     </p>
 
     <a href="#" @click="valid()">Test Valid()</a>
-    
+
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
       :index="index"
@@ -47,6 +47,7 @@
 
   export default {
     name: 'PagePassengers',
+    stepperName: 'Details',
 	
     extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
     emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue

@@ -1,10 +1,13 @@
 <template>
 
+{{ currentPage }}
+
+
   <nav aria-label="Progress" class="mx-auto flex justify-center">
     <ol role="list" class="flex items-center  mx-auto">
 
       <li v-for="(aPage, index) in pages" class="relative pr-10 sm:pr-20">
-        {{ aPage._value.stepperName }}
+        {{ aPage.value.stepperName }}
         
       </li>
 
@@ -91,6 +94,7 @@
 <script>
 
 import { ref, computed, onMounted } from 'vue'
+import { appStore } from '@stores/appStore.js'
 
 export default {
 
@@ -100,7 +104,7 @@ export default {
   // ----------- Data ------------
   data() {
     return {
-      
+      currentPage: appStore.page,
     };
   },
 

@@ -4,7 +4,10 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper :pages="pages" class="mb-14"></Stepper>
+    <Stepper 
+      :pages="pages"
+      class="mb-14"
+    ></Stepper>
 
     <div id="sizeBox" 
       class="w-full max-[320px]:w-11/12
@@ -169,6 +172,7 @@ export default {
 
 
   computed: {
+
 
     // shows a bit of dev info between the Prev | Next buttons.
     showDevInfos() {

@@ -8,7 +8,7 @@
     </h1>
 
     <a href="#" @click="valid()">Test Valid()</a>
-    
+
     <!-- This is the Confirm Booking Intro text. -->
     <div id="confirmBookingWrapper" v-if="hasConfirmedBooking === false">
       <div>
@@ -271,6 +271,7 @@
 
   export default {
     name: 'PagePayment',
+    stepperName: 'Confirm',
 	
     extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
     emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
