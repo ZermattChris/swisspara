@@ -1,16 +1,33 @@
 <template>
 
-{{ currentPage }}
+  {{ currentPage }}
 
 
   <nav aria-label="Progress" class="mx-auto flex justify-center">
     <ol role="list" class="flex items-center  mx-auto">
 
-      <li v-for="(aPage, index) in pages" class="relative pr-10 sm:pr-20">
-        {{ aPage.value.stepperName }}
-        
-      </li>
+      <li v-for="(aPage, index) in pages" id="stepper_{{index}}" class="relative pr-10 sm:pr-20">
 
+        <!-- Current Step -->
+        <div v-if="currentPage == index +1">
+          <div class="absolute inset-0 flex items-center" aria-hidden="true">
+            <div class="h-0.5 w-full bg-gray-200"></div>
+          </div>
+          <div
+            class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white  drop-shadow"
+            aria-current="step">
+            <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
+            <span class="absolute text-sm top-8 select-none drop-shadow-sm">
+              {{ aPage.value.stepperName }} {{ currentPage }} {{ index+1 }}
+            </span>
+          </div>
+        </div>
+        <!-- END: Current Step -->
+
+
+
+
+      </li>
 
 
       <!-- Current Step -->
@@ -99,12 +116,12 @@ import { appStore } from '@stores/appStore.js'
 export default {
 
   name: "stepper",
-  components: { },
+  components: {},
 
   // ----------- Data ------------
   data() {
     return {
-      currentPage: appStore.page,
+      _currentPage: appStore.page,
     };
   },
 
@@ -119,6 +136,18 @@ export default {
     console.log("Pages prop to Stepper: ", this.pages)
 
   },
+
+
+  computed: {
+
+
+    // shows a bit of dev info between the Prev | Next buttons.
+    currentPage() {
+      return appStore.page
+    },
+
+  }
+
 
 }
 
