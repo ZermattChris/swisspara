@@ -355,6 +355,8 @@ import SliderTime from '@components/SliderTime.vue'
 export default {
   name: 'PageDate',
 
+  stepperName: 'Dates',
+
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 

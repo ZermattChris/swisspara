@@ -1,21 +1,30 @@
 <template>
 
-<nav aria-label="Progress" class="mx-auto flex justify-center">
-  <ol role="list" class="flex items-center  mx-auto">
+  <nav aria-label="Progress" class="mx-auto flex justify-center">
+    <ol role="list" class="flex items-center  mx-auto">
 
-    <!-- Current Step -->
-    <li class="relative pr-10 sm:pr-20">
-      <div class="absolute inset-0 flex items-center" aria-hidden="true">
-        <div class="h-0.5 w-full bg-gray-200"></div>
-      </div>
-      <div class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white  drop-shadow" aria-current="step">
-        <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
-        <span class="absolute text-sm top-8 select-none drop-shadow-sm">Dates</span>
-      </div>
-    </li>
+      <li v-for="(aPage, index) in pages" class="relative pr-10 sm:pr-20">
+        {{ aPage._value.stepperName }}
+        
+      </li>
 
-    <!-- Completed Step -->
-    <!-- <li class="relative pr-10 sm:pr-20">
+
+
+      <!-- Current Step -->
+      <!-- <li class="relative pr-10 sm:pr-20">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="h-0.5 w-full bg-gray-200"></div>
+        </div>
+        <div
+          class="relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-indigo-600 bg-white  drop-shadow"
+          aria-current="step">
+          <span class="h-2.5 w-2.5 rounded-full bg-indigo-600" aria-hidden="true"></span>
+          <span class="absolute text-sm top-8 select-none drop-shadow-sm">Dates</span>
+        </div>
+      </li> -->
+
+      <!-- Completed Step -->
+      <!-- <li class="relative pr-10 sm:pr-20">
       <div class="absolute inset-0 flex items-center" aria-hidden="true">
         <div class="h-0.5 w-full bg-indigo-600"></div>
       </div>
@@ -27,19 +36,20 @@
       </a>
     </li> -->
 
-    <!-- Upcoming Step -->
-    <li class="relative pr-10 sm:pr-20">
-      <div class="absolute inset-0 flex items-center" aria-hidden="true">
-        <div class="h-0.5 w-full bg-gray-200"></div>
-      </div>
-      <div class="group relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white ">
-        <span class="h-2.5 w-2.5 rounded-full bg-transparent " aria-hidden="true"></span>
-        <span class="absolute text-sm top-8 text-gray-400">Flight</span>
-      </div>
-    </li>
+      <!-- Upcoming Step -->
+      <!-- <li class="relative pr-10 sm:pr-20">
+        <div class="absolute inset-0 flex items-center" aria-hidden="true">
+          <div class="h-0.5 w-full bg-gray-200"></div>
+        </div>
+        <div
+          class="group relative flex h-8 w-8 items-center justify-center rounded-full border-2 border-gray-300 bg-white ">
+          <span class="h-2.5 w-2.5 rounded-full bg-transparent " aria-hidden="true"></span>
+          <span class="absolute text-sm top-8 text-gray-400">Flight</span>
+        </div>
+      </li> -->
 
-    <!-- Upcoming Step -->
-    <!-- <li class="relative pr-10 sm:pr-20">
+      <!-- Upcoming Step -->
+      <!-- <li class="relative pr-10 sm:pr-20">
       <div class="absolute inset-0 flex items-center" aria-hidden="true">
         <div class="h-0.5 w-full bg-gray-200"></div>
       </div>
@@ -49,8 +59,8 @@
       </a>
     </li> -->
 
-    <!-- Upcoming Step -->
-    <!-- <li class="relative pr-10 sm:pr-20">
+      <!-- Upcoming Step -->
+      <!-- <li class="relative pr-10 sm:pr-20">
       <div class="absolute inset-0 flex items-center" aria-hidden="true">
         <div class="h-0.5 w-full bg-gray-200"></div>
       </div>
@@ -60,8 +70,8 @@
       </a>
     </li> -->
 
-    <!-- Upcoming Step -->
-    <!-- <li class="relative">
+      <!-- Upcoming Step -->
+      <!-- <li class="relative">
       <div class="absolute inset-0 flex items-center" aria-hidden="true">
         <div class="h-0.5 w-full bg-gray-200"></div>
       </div>
@@ -72,45 +82,40 @@
     </li> -->
 
 
-  </ol>
-</nav>
+    </ol>
+  </nav>
 
 </template>
 
 
-<script setup>
+<script>
 
-  import { ref, computed, onMounted } from 'vue'
-  
+import { ref, computed, onMounted } from 'vue'
+
+export default {
+
+  name: "stepper",
+  components: { },
+
+  // ----------- Data ------------
+  data() {
+    return {
+      
+    };
+  },
+
   // ----------- Props ------------
-  // const props = defineProps({
-  //   id: [String],   // Unique id name for this slider.
-  //   // Is -1 if Slider hasn't been 'touched'
-  //   modelValue: [Number],
-  //   min: [Number],
-  //   max: [Number],
-  //   step: [Number],
-  // })
+  props: {
+    pages: 'Array'
+  },
 
-  // ----------- Events ------------
-  //const emit = defineEmits(['update:modelValue'])
+  // ----------- Lifecycle ------------
+  mounted() {
 
- 
-	// function adjust(step) {
-  //   let targetVal = Number(props.modelValue) + step
-  //   // console.log('targetVal : ', targetVal)
-  //   if (targetVal < (props.min - step) ) {    // this accounts for inital -1 value.
-  //     targetVal = props.min 
-      
-  //   } else if (targetVal > props.max  ) {
-  //     targetVal = props.max 
-      
-  //   } else  {
-  //     targetVal = Number(props.modelValue) + step
-  //   }
-  //   emit('update:modelValue', targetVal)
-  // }
+    console.log("Pages prop to Stepper: ", this.pages)
 
+  },
 
+}
 
 </script>

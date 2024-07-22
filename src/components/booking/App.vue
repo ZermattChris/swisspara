@@ -4,7 +4,7 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper class="mb-14"></Stepper>
+    <Stepper :pages="pages" class="mb-14"></Stepper>
 
     <div id="sizeBox" 
       class="w-full max-[320px]:w-11/12
@@ -22,11 +22,11 @@
 
 
 
-  <a @click="gotoPage(1)" href="#">Page 1</a>
+  <!-- <a @click="gotoPage(1)" href="#">Page 1</a>
   <a @click="gotoPage(2)" href="#">Page 2</a>
   <a @click="gotoPage(3)" href="#">Page 3</a>
   <a @click="gotoPage(4)" href="#">Page 4</a>
-  <a @click="gotoPage(5)" href="#">Page 5</a>
+  <a @click="gotoPage(5)" href="#">Page 5</a> -->
 
   <!-- Previous/Next Buttons -->
   <div class="fixed bottom-0 right-0 left-0
