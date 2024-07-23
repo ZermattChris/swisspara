@@ -32,7 +32,7 @@
 
     <!-- Photos & Videos toggle switch  -->
     <PhotosToggle
-      label='Photos & Videos (optional)'
+      :label='photosPriceString'
       :enabled="photosBool"
       @change="onPhotoToggle" 
     >
@@ -88,6 +88,7 @@
 	import Modal from "@components/Modal.vue"
 
 	// Store
+	import {appStore} from '@stores/appStore.js' 
 	import {pageFlightStore as store} from '@stores/pageFlightStore.js' 
 
 
@@ -107,7 +108,7 @@
 
 		data() {
 			return {
-
+        photoPrice: appStore.getVideoPrice(),
       };
 		},
 
@@ -157,6 +158,9 @@
         return store.getPhotosToggle()
       },
 
+      photosPriceString() {
+        return "Add the Photo & Video Package (" + (this.photoPrice / 100) + ".– CHF)"
+      },
 
     }, // computed
 
