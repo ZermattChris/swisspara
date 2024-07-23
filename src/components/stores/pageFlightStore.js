@@ -22,6 +22,14 @@ export const pageFlightStore = reactive({
   // ---- Set up this page's data ----.
   initialize() {
 
+    // TODO: How do we want to handle this -- cached or always fresh from server
+    // with a loading indicator?? Leaning towards server fresh data.
+    console.log("Grabbing fresh server flights on each load.")
+    this.callAPI()
+    return
+
+
+    // ------------ Previous code that did caching.---------------------
     this.flightDate = localStorage.flightDate || ''
 
     // If the cache already exists, then use that.
@@ -60,8 +68,8 @@ export const pageFlightStore = reactive({
   //---------------------
 
 
-  // TODO: changing this for a less wonky solution, that calls a method in
-  //       each Page component to check if it's valid or not.
+  // Changed this for a less wonky solution, that calls a method in
+  // each Page component to check if it's valid or not.
 
   // Get if this 'Page' is valid or not. Used to manage the Prev/Next
   // buttons and breadcrumbs.
