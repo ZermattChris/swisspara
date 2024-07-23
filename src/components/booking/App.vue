@@ -6,7 +6,7 @@
 
     <Stepper 
       :pages="pages"
-      class="mt-6 mb-6"
+      class="mt-6 mb-12"
     ></Stepper>
 
     <div id="sizeBox" 

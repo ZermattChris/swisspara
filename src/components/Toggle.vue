@@ -1,7 +1,7 @@
 <template>
   <SwitchGroup>
     <div class="flex items-center">
-      <div class="py-16 ml-8">
+      <div class="pt-8 pb-10 ml-8">
         <Switch v-model="toggled" :class="toggled ? 'bg-lime-600' : 'bg-black/20'" class="relative inline-flex h-[38px] w-[76px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75
                     outline outline-2 outline-offset-2 outline-black/20
                     ">
@@ -10,7 +10,7 @@
             class="pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out"></span>
         </Switch>
       </div>
-      <SwitchLabel class="ml-4">{{ label }}</SwitchLabel>
+      <SwitchLabel class="ml-4 text-sm sm:text-base" v-html="label"></SwitchLabel>
     </div>
   </SwitchGroup>
 

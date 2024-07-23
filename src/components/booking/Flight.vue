@@ -159,7 +159,7 @@
       },
 
       photosPriceString() {
-        return "Add the Photo & Video Package (" + (this.photoPrice / 100) + ".– CHF)"
+        return "Add the Photo &amp; Video Package (optional " + (this.photoPrice / 100) + ".00&nbsp;CHF)"
       },
 
     }, // computed
