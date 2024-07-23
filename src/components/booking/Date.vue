@@ -4,8 +4,6 @@
     1. Flight Date
   </h1>
 
-  <a href="#" @click="console.log( valid() ? 'Dates - valid page' : 'Dates - Not valid page')">Test Valid()</a>
-
   <div id="flightDateBox"
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
     <!-- (1) -->
@@ -424,6 +422,7 @@ export default {
      * work for all child Pages in the same manner.
      */
     _isPageValid() {
+      console.log("Date._isPageValid() is deprecated")
       return datesStore.isPageValid()
     },
 

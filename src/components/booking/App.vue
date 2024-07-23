@@ -225,9 +225,9 @@ export default {
     },
 
 
-    async loadSettings() {
+    // async loadSettings() {
       
-    },
+    // },
 
 
     // swipeHandler() {
@@ -238,6 +238,7 @@ export default {
     /**
      * This handles the custom event that is fired from each Page (via the _Page base class)
      * Here is where we manage enabling/disabling the Prev|Next buttons (Breadcrumbs...)
+     * NOTE: Have changed this to use the valid() method in each Page component.
      * @param {String} pageName 
      * @param {Bool} isValid 
      */

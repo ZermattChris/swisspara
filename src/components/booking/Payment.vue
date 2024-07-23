@@ -4,10 +4,10 @@
     class=" mx-auto pb-4 pr-2 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
     <h1 class="select-none pb-4 tracking-tighter md:pb-8 text-3xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
-		  5. Complete Your Booking
+		  5. Confirm Your Booking
     </h1>
 
-    <a href="#" @click="valid()">Test Valid()</a>
+    <a href="#" @click="console.log( valid() ? '5. Confirm - valid page' : '5. Confirm - Not valid page')">Test Valid()</a>
 
     <!-- This is the Confirm Booking Intro text. -->
     <div id="confirmBookingWrapper" v-if="hasConfirmedBooking === false">
@@ -301,6 +301,21 @@
 
 		methods: {
 
+    /**
+     * This method must be overrided in each of these Page components.
+     * A new attempt at sorting out the current messy navigation system.
+     */
+     valid() {
+      // Overriden from the base '_Page' class.
+      // console.log('-> Payment.vue: valid()')
+
+      let result = false
+      // if (store.getTotalPassengers() > 0) {
+      //   result = true
+      // }
+      return result
+
+    },
 
       confirmBooking() {
         console.log("confirmBooking")
@@ -410,7 +425,9 @@
        * It is tightly coupled, but lets the base handle all event
        * work for all child Pages in the same manner.
        */
+      // TODO: remove this - use valid() method instead.
       _isPageValid() {
+        console.log("Payment._isPageValid() is deprecated")
 
         if(this.hasConfirmedBooking === false) return false
 

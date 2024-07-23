@@ -1,4 +1,4 @@
-import { reactive, markRaw  } from 'vue'
+import { reactive, markRaw, isProxy, toRaw } from 'vue'
 
 import settingsAPI from "@components/api/settingsAPI.js"
 
@@ -113,7 +113,9 @@ export const appStore = reactive({
 		for (let x = 1; x <= nrPageItems; x++) {
 			//console.log('page component:', this.pageItems[x].component.name, this.pageItems[x])
 			//console.log("this.pageItems[x].", this.pageItems[x])
-			const thisPageValid = this.pageItems[x].component.computed._isPageValid()
+      // var test = this.pageItems[x].component.methods.valid()
+			// const thisPageValid = this.pageItems[x].component.computed._isPageValid()
+			const thisPageValid = this.pageItems[x].component.methods.valid()
 			//console.log("Page", x ,thisPageValid)
 			if (thisPageValid === false) {
 				//console.log("Page", x ,thisPageValid)
@@ -183,7 +185,8 @@ export const appStore = reactive({
       console.error("Invalid page number for appStore.pageValid(pageNr): ", pageNr)
       return false
     }
-    var isPageValid = this.pageItems[pageNr].component.computed._isPageValid()
+    // var isPageValid = this.pageItems[pageNr].component.computed._isPageValid()   // old Nav
+    var isPageValid = this.pageItems[pageNr].component.methods.valid()
     return isPageValid
   },
 

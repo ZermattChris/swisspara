@@ -43,7 +43,7 @@ export const pageFlightStore = reactive({
     }
 
     console.log("Using data from cache.")
-    console.log(this._flightsList)
+    // console.log(this._flightsList)
 
   },
 

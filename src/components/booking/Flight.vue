@@ -7,10 +7,6 @@
 
 
 
-  <a href="#" @click="console.log( valid() ? '2. Flight - valid page' : '2. Flight - Not valid page')">Test Valid()</a>
-
-
-
   <div id="flightDateBox"
     class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] "
   >
@@ -121,11 +117,11 @@
 		},
 
     updated() {
-      console.log("Page-Flight Updated: ", this.valid() ? 'valid page' : 'Not valid page')
+      //console.log("Page-Flight Updated: ", this.valid() ? 'valid page' : 'Not valid page')
     },
 
     mounted() {
-      console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
+      //console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
     },
 
     computed: {
@@ -141,6 +137,7 @@
        */
       // TODO: remove this - use valid() method instead.
       _isPageValid() {
+        console.log("Flight._isPageValid() is deprecated")
         return store.isPageValid()
       },
 
@@ -173,7 +170,7 @@
        */
       valid() {
         // Overriden from the base '_Page' class.
-        // console.log('-> Date.vue: valid()')
+        // console.log('-> Flight.vue: valid()')
 
         let result = true
         // -> Flight Date checks.

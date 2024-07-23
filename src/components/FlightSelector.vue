@@ -5,9 +5,9 @@
 		  <div class="space-y-3">
 			<RadioGroupOption
 			  as="template"
-			  v-for="(plan, id) in list"
-			  :key="plan.name"
-			  :value="plan.id"
+			  v-for="(flight, id) in list"
+			  :key="flight.name"
+			  :value="flight.id"
 			  v-slot="{ active, checked }"
 			>
 			  <div
@@ -27,36 +27,21 @@
 						:class="checked ? 'text-black' : 'text-gray-800'"
 						class="font-medium"
 					  >
-					  {{ plan.id }}	{{ plan.name }}
+					  {{ flight.id }}	{{ flight.name.charAt(0).toUpperCase() + flight.name.slice(1) }}
 					  </RadioGroupLabel>
 					  <RadioGroupDescription
-						as="span"
-						:class="checked ? 'text-sky-100' : 'text-gray-500'"
-						class="inline"
+              as="span"
+              :class="checked ? 'text-sky-100' : 'text-gray-500'"
+              class="inline"
 					  >
-						<!-- <span> {{ plan.ram }}/{{ plan.cpus }}</span>
-						<span aria-hidden="true"> &middot; </span>
-						<span>{{ plan.disk }}</span> -->
 					  </RadioGroupDescription>
 					</div>
 				  </div>
 				  <div v-show="checked" class="shrink-0 text-black">
-					<svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
-					  <circle
-						cx="12"
-						cy="12"
-						r="12"
-						fill="rgb(101 163 13)"
-						fill-opacity="01"
-					  />
-					  <path
-						d="M7 13l3 3 7-7"
-						stroke="#fff"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					  />
-					</svg>
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="12" fill="rgb(101 163 13)" fill-opacity="01" />
+              <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
 				  </div>
 				</div>
 			  </div>

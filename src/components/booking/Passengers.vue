@@ -12,7 +12,7 @@
       <span class="italic text-gray-500 block pt-1">We never share any information with 3rd parties.</span>
     </p>
 
-    <a href="#" @click="valid()">Test Valid()</a>
+    <a href="#" @click="console.log( valid() ? '4. Psngrs - valid page' : '4. Psngrs - Not valid page')">Test Valid()</a>
 
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
@@ -82,6 +82,36 @@
     methods: {
 
       /**
+       * This method must be overrided in each of these Page components.
+       * A new attempt at sorting out the current messy navigation system.
+       */
+       valid() {
+        // Overriden from the base '_Page' class.
+        // console.log('-> Passengers.vue: valid()')
+        // TODO func in store to check if all passenger forms are valid or not.
+        if (this.passengerCount < 1) return false
+
+        let allPassFormsValid = true
+        const passList = store.getAllPassengersList() 
+        for (let x = 1; x <= this.passengerCount; x++) {
+          // Need to guard against empty passenger forms (no data if not anything input yet by user...)
+          // Example, forms are filled in and user goes back to previous Step and adds another pass.
+          if ( passList[x] === undefined ) return false
+          //console.log("x", x )
+          //console.log("aPassForm", passList[x].valid )
+          if (passList[x].valid === false) {
+            allPassFormsValid = false
+            break
+          }
+
+        }
+
+        return allPassFormsValid
+
+      },
+
+
+      /**
        * 
        * @param {Custom Event} ev   // 'index':1, 'target':input#email..., 'value':'you@acme.com': 
        */
@@ -109,7 +139,8 @@
         store.updateAPassenger(ev.index, updatedPassOjb)
 
         // manually force page valid check
-    		this.$emit( 'pagevalid', 'PagePassengers', this._isPageValid)        // sends event back to 'App'
+        // Leave this as is !!!!
+    		this.$emit( 'pagevalid', 'PagePassengers', this._isPageValid)        // sends event back to 'App' base class (not calling the deprecated _isPageValid() !!!)
       }
     },
 
@@ -128,7 +159,9 @@
        * It is tightly coupled, but lets the base handle all event
        * work for all child Pages in the same manner.
        */
+      // TODO: remove this - use valid() method instead.
       _isPageValid() {
+        console.log("Passengers._isPageValid() is deprecated")
 
         // TODO func in store to check if all passenger forms are valid or not.
         if (this.passengerCount < 1) return false
