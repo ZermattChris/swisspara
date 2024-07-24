@@ -24,9 +24,9 @@ export const pageFlightStore = reactive({
 
     // TODO: How do we want to handle this -- cached or always fresh from server
     // with a loading indicator?? Leaning towards server fresh data.
-    console.log("Grabbing fresh server flights on each load.")
-    this.callAPI()
-    return
+    // console.log("Grabbing fresh server flights on each load.")
+    // this.callAPI()
+    // return
 
 
     // ------------ Previous code that did caching.---------------------
@@ -52,6 +52,27 @@ export const pageFlightStore = reactive({
 
     console.log("Using data from cache.")
     // console.log(this._flightsList)
+
+    // TODO: Check if the current flight is available in this._flightsList, if not, then
+    //       delete the selected flight and let user choose again.
+    if (this.selectedFlight > 0) {
+
+      let found = false
+      for (const aFlyObj of this._flightsList) {
+        if (aFlyObj.id === this.selectedFlight) {
+          found = true
+          break
+        }
+      }
+      if (found === false) {
+        console.log("Selected flight not found in current list, deleting selected flight.")
+        this.selectedFlight = -1
+        localStorage.removeItem("selectedFlight");
+      } else {
+        console.log("Selected flight still available!")
+      }
+
+    }
 
   },
 
@@ -79,7 +100,6 @@ export const pageFlightStore = reactive({
 
     // -> Flight Date checks.
     if (this.selectedFlight < 1) result = false
-
 
     return result
   },

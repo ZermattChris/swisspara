@@ -11,9 +11,7 @@
       enjoyable &amp; safe.
       <span class="italic text-gray-500 block pt-1">We never share any information with 3rd parties.</span>
     </p>
-
-    <a href="#" @click="console.log( valid() ? '4. Psngrs - valid page' : '4. Psngrs - Not valid page')">Test Valid()</a>
-
+    
     <Passenger
       v-for="(index) in passengerCount" :key="index" 
       :index="index"

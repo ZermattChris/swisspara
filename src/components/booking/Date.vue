@@ -578,6 +578,7 @@ export default {
     },
 
     onArriveDateSelect(modelData) {
+      //console.log('modelData:', modelData)
       this.arriveDate = modelData
       datesStore.setArriveDate(modelData)    // set in Store.
     },
