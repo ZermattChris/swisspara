@@ -27,9 +27,9 @@
         <!-- Completed Step -->
         <div v-if="currentPage > index + 1">
           <div class="absolute inset-0 flex items-center" aria-hidden="true">
-            <div class="h-0.5 w-full bg-indigo-600"></div>
+            <div class="h-0.5 w-full bg-gray-500"></div>
           </div>
-          <a @click="onStepperClick(index+1)" href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 hover:bg-indigo-900  drop-shadow">
+          <a @click="onStepperClick(index+1)" href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-orange-700 hover:bg-orange-600  drop-shadow">
             <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd"
                 d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
@@ -77,7 +77,7 @@ export default {
   // ----------- Data ------------
   data() {
     return {
-      _currentPage: appStore.page,
+      
     };
   },
 
@@ -86,23 +86,16 @@ export default {
     pages: 'Array'
   },
 
-  // ----------- Lifecycle ------------
-  mounted() {
-
-    console.log("Pages prop to Stepper: ", this.pages)
-
-  },
-
-
+  // ----------- Computed ------------
   computed: {
 
-    // shows a bit of dev info between the Prev | Next buttons.
     currentPage() {
       return appStore.page
     },
 
   },
 
+  // ----------- Methods ------------
   methods: {
 
     onStepperClick(pageNr) {
