@@ -183,8 +183,8 @@ export default {
       if (store.selectedFlight < 1) result = false
 
       // Also need to check that the flight date is valid (not the best solution here...) 
-      var fd = datesStore.getFlightDate()
-      if ( isBefore( new Date(fd), new Date(new Date().toDateString()) ) ) result = false
+      // var fd = datesStore.getFlightDate()
+      // if ( isBefore( new Date(fd), new Date(new Date().toDateString()) ) ) result = false
 
       return result
 

@@ -91,6 +91,7 @@ export const datesStore = reactive({
   // ---- Flight Date ----.
   getFlightDate() {
     //console.log("this.flightDate", this.flightDate)
+    // Guard against a missing or empty flightDate in localsStorage.
     return this.flightDate
   },
   // Recieving a js Date() object here.

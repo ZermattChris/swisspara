@@ -168,14 +168,23 @@ export default {
 
   },
 
+  beforeUpdate() {
+
+    //this.allPagesDataCheck()
+
+  },
+
 
   afterUpdate() {
     // App-wide data check (and reset if req.)
+    this.allPagesDataCheck()
+
+
     // TODO
-    var pageName = toRaw(this.currentPageName)
-    if (pageName !== undefined) {
-      pageName = pageName.name
-    }
+    // var pageName = toRaw(this.currentPageName)
+    // if (pageName !== undefined) {
+    //   pageName = pageName.name
+    // }
     //console.log("APP : beforeUpdate() -> Page: ", pageName, '. Thinking this is where we do a global check for data consistency.')
 
   },
@@ -236,19 +245,23 @@ export default {
       this.isDatePageDataValid()
 
       // Flight Time
+      this.isFlightPageDataValid()
 
 
     },
 
     /**
      * A set of methods to check if each page has valid data (cached too)
-     * Page Date.
+     * Page 1. Date.
      */
     isDatePageDataValid() {
       var goodData = true
 
       // Flight Date is in the past.
       var fd = datesStore.getFlightDate()
+      if (fd === undefined || fd === null || fd === '') {
+        goodData = false
+      }
       if (isBefore( new Date( fd ), new Date( new Date().toDateString() ))) {
         goodData = false
       }
@@ -256,12 +269,25 @@ export default {
       // Reset cache and goto Step 1 if bad data.
       if (goodData === false) {
         appStore.badCacheDataReset("App global data check failed -> App.isDatePageDataValid() is false :: Page Date.")
+        datesStore.setFlightDate('')
+        datesStore.setArriveDate('')
+        datesStore.setArriveTime(7.5)
+        datesStore.setDepartDate('')
+        datesStore.setDepartTime(20.5)
+        
         return
       }
-      
+
       console.log("APP Check -> Date Page has valid data")
     },
 
+
+    /**
+     * Page 2. Flight.
+     */
+     isFlightPageDataValid() {
+
+     },
 
     // ===================== END :: Global Data Checks =====================
 
@@ -341,4 +367,4 @@ export default {
 .disabled:hover {
   background-color: rgb(88, 80, 236);
 }
-</style>
+</style>datesStore, datesStore, 
