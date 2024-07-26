@@ -124,6 +124,10 @@ export default {
   },
 
   mounted() {
+    console.log("Page - Flight Mounted")
+    // Make sure cache matches the current state of the store.
+    store.setFlightChosen( store.getFlightChosen() )
+
     //console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
   },
 

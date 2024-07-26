@@ -29,8 +29,8 @@
           <div class="absolute inset-0 flex items-center" aria-hidden="true">
             <div class="h-0.5 w-full bg-gray-500"></div>
           </div>
-          <a @click="onStepperClick(index+1)" href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-orange-700 hover:bg-orange-600  drop-shadow">
-            <svg class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <a @click="onStepperClick(index+1)" href="#" class="relative flex h-8 w-8 items-center justify-center rounded-full bg-amber-400 border-2 border-amber-700 hover:bg-amber-300  drop-shadow">
+            <svg class="h-5 w-5 text-amber-950" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd"
                 d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
                 clip-rule="evenodd" />

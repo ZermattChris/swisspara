@@ -244,9 +244,11 @@ export default {
       // Flight Date
       this.isDatePageDataValid()
 
-      // Flight Time
+      // Flight 
       this.isFlightPageDataValid()
 
+      // Time Slot
+      this.isTimePageDataValid()
 
     },
 
@@ -262,7 +264,7 @@ export default {
       if (fd === undefined || fd === null || fd === '') {
         goodData = false
       }
-      if (isBefore( new Date( fd ), new Date( new Date().toDateString() ))) {
+      if (isBefore(new Date(fd), new Date(new Date().toDateString()))) {
         goodData = false
       }
 
@@ -274,7 +276,6 @@ export default {
         datesStore.setArriveTime(7.5)
         datesStore.setDepartDate('')
         datesStore.setDepartTime(20.5)
-        
         return
       }
 
@@ -285,17 +286,31 @@ export default {
     /**
      * Page 2. Flight.
      */
-     isFlightPageDataValid() {
+    isFlightPageDataValid() {
+      // Think this is being handled just fine at the moment.
+    },
 
-     },
+    /**
+     * Page 3. Time.
+     */
+     isTimePageDataValid() {
+
+      // If the Flight Date is old, this is already handled in the Date Page.
+
+      // Check if the chosen Time Slot is at least 1 hour from now.
+
+      
+      
+    },
 
     // ===================== END :: Global Data Checks =====================
 
 
 
     gotoPage(pageNr) {
-      // -- This is my new Nave method --
+      // -- This is my new Nav method --
       appStore.gotoPage(pageNr)
+      this.allPagesDataCheck()
     },
 
     // swipeHandler() {
@@ -326,7 +341,6 @@ export default {
       appStore.prev()
       // set focus to Next Button
       document.getElementById("prevBtn").focus()
-
     },
 
     nextPage() {
@@ -367,4 +381,4 @@ export default {
 .disabled:hover {
   background-color: rgb(88, 80, 236);
 }
-</style>datesStore, datesStore, 
+</style>datesStore, datesStore,

@@ -73,6 +73,10 @@ export default {
     store.initialize()
   },
 
+  mounted() {
+    
+  },
+
   // updated() {
   // 	console.log('updated PAGE Time')
   // },

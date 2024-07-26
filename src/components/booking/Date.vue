@@ -759,6 +759,8 @@ export default {
     font-size: 0.7em;
     color: var(--dp-primary-color);
     background-color: white;
+    padding-right: 3px;
+    padding-left: 3px;
 }
 
 /**
