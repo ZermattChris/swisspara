@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import { appStore } from '@stores/appStore.js'
 
 import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear } from 'date-fns'
 
@@ -90,12 +91,6 @@ export const datesStore = reactive({
   // ---- Flight Date ----.
   getFlightDate() {
     //console.log("this.flightDate", this.flightDate)
-    if ( isBefore( new Date(this.flightDate), new Date(new Date().toDateString()) ) ) {
-      console.warn("Stale Flight Date in getFlightDate:", this.flightDate)
-      this.setFlightDate('') 
-      this.setArriveDate('') 
-      this.setDepartDate('') 
-    }
     return this.flightDate
   },
   // Recieving a js Date() object here.
@@ -171,6 +166,8 @@ export const datesStore = reactive({
   // when needing the Flights List.
   bustFlightsCache() {
     localStorage._cacheFlightsList = ''
+    localStorage.selectedFlight = -1
+    localStorage._cacheTimeSlotsPassengerList = ''
   },
 
 })

@@ -752,7 +752,14 @@ export default {
 
 /* Changing the colors and font weights of each day in calendar   rgb(167 243 208) */
 
-
+.dp__today:after {
+    content: 'TODAY';
+    position: absolute;
+    bottom: -0.9em;
+    font-size: 0.7em;
+    color: var(--dp-primary-color);
+    background-color: white;
+}
 
 /**
 * Looking to show the start date hilite colour to match the Arriving in Zermatt scheme.

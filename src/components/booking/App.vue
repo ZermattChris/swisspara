@@ -4,18 +4,12 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper 
-      :pages="pages"
-      class="mt-6 mb-12"
-    ></Stepper>
+    <Stepper :pages="pages" class="mt-6 mb-12"></Stepper>
 
-    <div id="sizeBox" 
-      class="w-full max-[320px]:w-11/12
+    <div id="sizeBox" class="w-full max-[320px]:w-11/12
         mx-auto 
         px-0 sm:px-0
-        pt-4 pb-6 sm:py-16" 
-      @click="onBackgroundClick"
-    >
+        pt-4 pb-6 sm:py-16" @click="onBackgroundClick">
 
       <component :is="currentPageName" @pagevalid="onPageValidEvent">
       </component>
@@ -104,7 +98,9 @@
 
 
 <script>
-import { shallowRef,  ref, computed } from 'vue'
+import { shallowRef, ref, computed, toRaw } from 'vue'
+import { isAfter, isBefore } from 'date-fns'
+
 
 import api from '@components/api/_apiBase.js'
 import settingsAPI from "@components/api/settingsAPI.js"
@@ -124,6 +120,7 @@ import Stepper from '@components/Stepper.vue'
 
 // Store
 import { appStore } from '@stores/appStore.js'
+import { datesStore } from '@stores/pageDateStore.js'
 
 
 export default {
@@ -158,7 +155,7 @@ export default {
 
   mounted() {
 
-    console.log("currentPageName: ", this.currentPageName )
+    //console.log("currentPageName: ", this.currentPageName)
 
 
     // Send our page list as strings to the store.
@@ -167,8 +164,21 @@ export default {
 
     this.currentYear = new Date().getFullYear() + ''
 
+    this.allPagesDataCheck()
+
   },
 
+
+  afterUpdate() {
+    // App-wide data check (and reset if req.)
+    // TODO
+    var pageName = toRaw(this.currentPageName)
+    if (pageName !== undefined) {
+      pageName = pageName.name
+    }
+    //console.log("APP : beforeUpdate() -> Page: ", pageName, '. Thinking this is where we do a global check for data consistency.')
+
+  },
 
 
   computed: {
@@ -188,7 +198,7 @@ export default {
     },
 
     currentPageName() {
-      console.log("currentPageName: ", appStore.currentPageName())
+      //console.log("currentPageName: ", appStore.currentPageName())
       return appStore.currentPageName()
     },
 
@@ -219,16 +229,48 @@ export default {
 
   methods: {
 
+    // ===================== Global Data Checks =====================
+    allPagesDataCheck() {
+
+      // Flight Date
+      this.isDatePageDataValid()
+
+      // Flight Time
+
+
+    },
+
+    /**
+     * A set of methods to check if each page has valid data (cached too)
+     * Page Date.
+     */
+    isDatePageDataValid() {
+      var goodData = true
+
+      // Flight Date is in the past.
+      var fd = datesStore.getFlightDate()
+      if (isBefore( new Date( fd ), new Date( new Date().toDateString() ))) {
+        goodData = false
+      }
+
+      // Reset cache and goto Step 1 if bad data.
+      if (goodData === false) {
+        appStore.badCacheDataReset("App global data check failed -> App.isDatePageDataValid() is false :: Page Date.")
+        return
+      }
+      
+      console.log("APP Check -> Date Page has valid data")
+    },
+
+
+    // ===================== END :: Global Data Checks =====================
+
+
+
     gotoPage(pageNr) {
       // -- This is my new Nave method --
       appStore.gotoPage(pageNr)
     },
-
-
-    // async loadSettings() {
-      
-    // },
-
 
     // swipeHandler() {
     //   console.log("Swiped!")
@@ -266,8 +308,7 @@ export default {
       appStore.next()
     },
 
-
-    // Test method.
+    // Test method -- resets all localstorage data.
     onResetLocalStorage() {
       console.warn("-> RESET LocalStorage")
       appStore.resetLocalStorage()
@@ -278,13 +319,13 @@ export default {
 
   }, // methods
 
-  watch: {
-    // // Update when the current Page name changes.
-    // currentPageName(newPage) {
-    //     //console.log("newPage: ", newPage)
-    //     this.currPage = newPage
-    // }
-  }, // watch
+  // watch: {
+  //   // // Update when the current Page name changes.
+  //   // currentPageName(newPage) {
+  //   //     //console.log("newPage: ", newPage)
+  //   //     this.currPage = newPage
+  //   // }
+  // }, // watch
 
 }
 

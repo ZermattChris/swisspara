@@ -57,6 +57,31 @@ export const pageTimeSlotsStore = reactive({
 		this.loadTimeSlotList()
 		loadTimeSlotPassengersList()
 
+    // TODO: Future check if the selected flight is still available. Keepin it simple for now.
+    // // Check if the current flight is available in this._flightsList, if not, 
+    // // then delete the selected flight and let user choose again.
+    // if (this.selectedFlight > 0) {
+    //   let found = false
+    //   var list = toRaw(this._timeSlotsPassengersList)
+    //   const keys = Object.keys(list)
+    //   let x = 0
+    //   for (const index in keys) {
+    //     console.log("index", index, keys[index])
+        
+    //     //stopped here... Need to search for selected TimeSlots and see if still valid or not (could be messy)
+
+    //   }
+
+
+    //   // if (!found) {
+    //   //   console.log("Time Slot no longer available -> ????")
+    //   //   localStorage.removeItem("_cacheTimeSlotsPassengerList")
+		//   //   loadTimeSlotPassengersList()
+    //   // } else {
+    //   //   console.log("Selected Time Slot still available!")
+    //   // }
+    // }
+
 	},
 
 	// Count all of the passengers in the current Flight Date.
