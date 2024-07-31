@@ -25,7 +25,7 @@
       </div>
       <div class="ml-3">
         <h3 class="text-sm font-medium text-yellow-800">
-          We're sorry, but the Time you selected is no longer available. 
+          We're very sorry, but the Time you selected is no longer available. 
           Please pick a different Time.
         </h3>
       </div>
