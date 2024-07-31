@@ -28,9 +28,18 @@
       </span>
     </div><!-- END: Header Box.  -->
 
-
     <!-- Slot Box.  -->
     <ul role="list" class="space-y-1 py-1 ">
+
+      <!-- No Flights Today. (not available in Schedule)  -->
+      <li v-if="Array.isArray(dayObject) === true" class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative">
+        <span class="text-orange-700 italic">
+          We are not flying today.
+        </span>
+      </li>
+
+
+      <!-- Normal flights available -->
       <li v-for="(pilots, timeHint, index) in dayObject" :key="pilots.id"
         class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative"
         :class="[(pilots > 0) ? 'cursor-pointer shadow-md' : '', isSlideSelected ? 'z-[3]' : '']"

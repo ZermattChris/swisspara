@@ -8,10 +8,32 @@
     </h1>
 
     <p>
-      Please choose a Time Slot for each Passenger wanting to fly.
+      Please choose a Time for each Passenger wanting to fly.
     </p>
 
   </div>
+
+  <!--  -->
+  <div class="mb-4 rounded-md bg-yellow-50 p-4 sm:mx-auto max-w-md shadow-md border-amber-500 border" v-if="timeSlotNoLongerAvailable === true" >
+    <div class="flex">
+      <div class="flex-shrink-0">
+        <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+            d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="ml-3">
+        <h3 class="text-sm font-medium text-yellow-800">
+          We're sorry, but the Time you selected is no longer available. 
+          Please pick a different Time.
+        </h3>
+      </div>
+    </div>
+  </div>
+
+
+
 
   <!-- This is our wrapper around Splide  -->
   <div id="sliderWrapper" class="px-0 pt-10 max-w-screen-2xl m-auto">
@@ -69,7 +91,8 @@ export default {
 
   data() {
     return {
-      timeSliderKey: 0
+      timeSliderKey: 0,
+      timeSlotNoLongerAvailable: false
     }
   },
 
@@ -85,6 +108,7 @@ export default {
     let pSlotsStillValid = await store.arePassengersTimeSlotsStillAvailable(flightDate)
 
     if (pSlotsStillValid === false) {
+      this.timeSlotNoLongerAvailable = true
       console.log("(Server Data) Time Slot no longer Available, please choose another. TODO: Need some sort of UI for this.")
       // reset the User's selected TimeSlots (passengers) to 0
       store.setTimeSlotsPassengersList('')
