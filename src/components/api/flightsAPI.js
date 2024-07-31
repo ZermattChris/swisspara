@@ -15,18 +15,18 @@ export default {
 					resolve(
 						[
 							{
-									"id":77,
-									"name":"Classic High local",
+									"id":1,
+									"name":"Classic (local)",
 									"price":"240"
 							},
 							{
-									"id":32,
-									"name":"Scenic",
+									"id":2,
+									"name":"Scenic (local)",
 									"price":"190"
 							},
 							{
-									"id":5,
-									"name":"Elite*",
+									"id":3,
+									"name":"Elite* (local)",
 									"price":"420"
 							}
 						]

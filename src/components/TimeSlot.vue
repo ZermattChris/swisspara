@@ -35,9 +35,9 @@
         class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative"
         :class="[(pilots > 0) ? 'cursor-pointer shadow-md' : '', isSlideSelected ? 'z-[3]' : '']"
         @click="onSlotClick(ev, index, pilots)">
-
+        
         <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
-        <span v-if="(pilots > 0 && isFlightSlide && slotsCurrPassengerCount(timeHint) > 0)"
+        <span v-if="(pilots[0] > 0 && isFlightSlide && slotsCurrPassengerCount(timeHint) > 0)"
           class="absolute -right-6 top-2.5 z-50 ">
           <button :id="`nrPassPill_${slideIndex}_${index}`"
             class="rounded-full font-black text-xl  bg-white shadow-md shadow-black/50   h-11 w-11    border-amber-500 border-4 "
@@ -48,12 +48,12 @@
 
 
         <!-- Pilots: -1 means the flight isn't available at that time.  -->
-        <span v-if="(pilots == 0)" class="text-orange-700 italic">
+        <span v-if="(pilots[0] === 0)" class="text-orange-700 italic">
           {{ timeHint }} :: Fully Booked
         </span>
 
         <!-- Flight Available. Show Time hint and Places Free.  -->
-        <span v-if="(pilots > 0)">
+        <span v-if="(pilots[0] > 0)">
 
           <svg class="w-6 h-6 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke-width="1.5" stroke="currentColor">
@@ -61,29 +61,38 @@
           </svg>
 
 
-          <span v-if="(pilots > 0)" :class="(slotsCurrPassengerCount(timeHint) > 0) ? '' : ''">
+          <span v-if="(pilots[0] > 0)" :class="(slotsCurrPassengerCount(timeHint) > 0) ? '' : ''">
             {{ timeHint }}
           </span>
 
           <button class="rounded-full  px-4 h-8 ml-3  text-md  font-black bg-white  outline outline-offset-2  " :class="[
             (slotsCurrPassengerCount(timeHint) > 0) ? 'outline-amber-500' : 'outline-black/30',
-            (pilots - slotsCurrPassengerCount(timeHint) == 0) ? 'text-black/60' : '',
+            (pilots[0] - slotsCurrPassengerCount(timeHint) == 0) ? 'text-black/60' : '',
           ]">
-            {{ pilots - slotsCurrPassengerCount(timeHint) }} places free
+            {{ pilots[0] - slotsCurrPassengerCount(timeHint) }} places free
           </button>
 
 
         </span>
 
         <!-- Flight Not Available for this slot.  -->
-        <span v-if="(pilots == -1)" class="italic text-black/60">
+        <span v-if="(pilots[0] == -1)" class="italic text-black/60">
           {{ timeHint }} :: Flight not available
         </span>
 
+        <!-- Time Slot not enabled -->
+        <span v-if="(pilots[0] == -2)" class="italic text-black/60">
+          {{ timeHint }} :: Time not available
+        </span>
+
+        <!-- Time Slot in the past  -->
+        <span v-if="(pilots[0] == -3)" class="italic text-black/60">
+          {{ timeHint }} :: Is in the past
+        </span>
 
 
         <!-- Slot Details Box. -->
-        <span v-if="isSlideSelected && selectedSlot == index && (pilots > 0)"
+        <span v-if="isSlideSelected && selectedSlot == index && (pilots[0] > 0)"
           class="flex items-center justify-between w-full top-[57px] left-0 z-[10]  p-0 pt-2  ">
           <!-- Details Box {{ selectedSlot }} -->
           <button :id="`minusBtn_${slideIndex}_${index}`" class="rounded-full bg-amber-500 shadow-md shadow-black/50"

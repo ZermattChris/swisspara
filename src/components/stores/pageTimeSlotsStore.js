@@ -48,6 +48,23 @@ export const pageTimeSlotsStore = reactive({
 
 	loading: false,
 
+
+	// async checkThatTimesAreStillValid() {
+  //   // Compare the "_cacheTimeSlotsPassengerList" with returned value from the API Call.
+  //   var timeSlotsStillOkay = true
+
+
+
+  //   if (timeSlotsStillOkay === false) {
+  //     console.log("TODO: Your Time Slot is no longer available. Please choose another.")
+  //     localStorage.removeItem("_cacheTimeSlotsPassengerList")   
+  //     store.initialize()
+  //   }
+
+	// 	return false
+	// },
+
+
 	// ---- Set up this page's data ----.
 	initialize() {
 
@@ -57,32 +74,7 @@ export const pageTimeSlotsStore = reactive({
 		this.loadTimeSlotList()
 		loadTimeSlotPassengersList()
 
-    // TODO: Future check if the selected flight is still available. Keepin it simple for now.
-    // // Check if the current flight is available in this._flightsList, if not, 
-    // // then delete the selected flight and let user choose again.
-    // if (this.selectedFlight > 0) {
-    //   let found = false
-    //   var list = toRaw(this._timeSlotsPassengersList)
-    //   const keys = Object.keys(list)
-    //   let x = 0
-    //   for (const index in keys) {
-    //     console.log("index", index, keys[index])
-        
-    //     //stopped here... Need to search for selected TimeSlots and see if still valid or not (could be messy)
-
-    //   }
-
-
-    //   // if (!found) {
-    //   //   console.log("Time Slot no longer available -> ????")
-    //   //   localStorage.removeItem("_cacheTimeSlotsPassengerList")
-		//   //   loadTimeSlotPassengersList()
-    //   // } else {
-    //   //   console.log("Selected Time Slot still available!")
-    //   // }
-    // }
-
-	},
+  },
 
 	// Count all of the passengers in the current Flight Date.
 	getTotalPassengers() {
@@ -130,7 +122,7 @@ export const pageTimeSlotsStore = reactive({
 		}
 
 		//console.log("Using data from cache.")
-		console.log( unwrappedObj )
+		console.log("TimeStore -> this._timeSlotsList: ", unwrappedObj )
 		
 	},
 
@@ -140,9 +132,12 @@ export const pageTimeSlotsStore = reactive({
 		// Grabs a list of flights available for the selected Flight Date.
 		this._timeSlotsList = [await timeSlotsAPI.get(this.selectedFlight, this.flightDate)]
 		localStorage._cacheTimeSlotsList = JSON.stringify(toRaw(this._timeSlotsList))   // Save to cache.
+    console.log("Server Slot Data updated in Cache from API call.")
 		this.loading = false
 	},
-
+	// async getAPITimeSlotData() {
+	// 	return await timeSlotsAPI.get(this.selectedFlight, this.flightDate)
+	// },
 
 
 

@@ -14,13 +14,13 @@
 		<!-- <div class="m-auto text-center relative -top-4" >FlightDate: {{flightDate}} :: Sel slide: {{selectedSlideIndex }} </div> -->
 
         <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
-		<div class="flex items-center relative -top-4">
+		<div class="flex items-center relative -top-7">
 			<div id="totalPassengersPill" 
 				class="rounded-full text-center font-black text-2xl pt-0 mr-2  border-amber-500 border-4  shadow-black/50   h-10 w-10 "
 			>
 				{{ totalPassengers }}
 			</div>
-			Passenger(s) in Total
+        Passengers in Total
 		</div>
 
 
