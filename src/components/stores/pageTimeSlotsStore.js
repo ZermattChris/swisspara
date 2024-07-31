@@ -49,20 +49,56 @@ export const pageTimeSlotsStore = reactive({
 	loading: false,
 
 
-	// async checkThatTimesAreStillValid() {
-  //   // Compare the "_cacheTimeSlotsPassengerList" with returned value from the API Call.
-  //   var timeSlotsStillOkay = true
+
+  /**
+   * This is the call that checks if the User's selected TimeSlots are still available.
+   * 
+   * Called in the Time -> mounted() lifecycle hook.
+   * Called before completing the Payment process.
+   * 
+   * @param {'2024-06-12'} flightDate 
+   * @returns boolean
+   */
+  async arePassengersTimeSlotsStillAvailable(flightDate) {
+
+    let passList = toRaw(this.getTimeSlotsPassengersList())
+    const keys = Object.keys(passList)
+
+    await this.callAPI()       // refresh the TimeSlots data from the server.
+
+
+    let cachedSlotList = localStorage._cacheTimeSlotsList ? JSON.parse(localStorage._cacheTimeSlotsList) : {}
+    let flightDateSlotsList = cachedSlotList[0][flightDate]
+
+    let flightDateSlotsListKeys = Object.keys(flightDateSlotsList)
+    //console.log("flightDateSlotsList (from Server API call): ", flightDateSlotsList)
+
+
+    // This gives us access to the number of passengers selected by the user in each time slot for the flight Date.
+    let nrPilotsStillValid = true
+    let x = 0
+    for (const index in keys) {
+      let key = keys[index]
+      let slotNr = parseInt(index) + 1    // why is index a string???
+      let serverPilotsAtSlot = flightDateSlotsListKeys[index]
+      let usersBookedPilots = passList[key]
+      let serverAvailablePilots = flightDateSlotsList[serverPilotsAtSlot][0]
+      //console.log(`Slot: ${slotNr}`, keys[index], " Booked Pilots: ", usersBookedPilots, " Server Pilots: ", serverAvailablePilots)
+
+      if (usersBookedPilots > 0) {  // User has booked passengers at this slot.
+        if (usersBookedPilots > serverAvailablePilots) {
+            console.log("-> User's booked Pilots at Slot: ", passList[key], " Server Pilots: ", serverAvailablePilots)
+            nrPilotsStillValid = false
+            break
+        }
+
+      }
+    }
+    return nrPilotsStillValid
+  },
 
 
 
-  //   if (timeSlotsStillOkay === false) {
-  //     console.log("TODO: Your Time Slot is no longer available. Please choose another.")
-  //     localStorage.removeItem("_cacheTimeSlotsPassengerList")   
-  //     store.initialize()
-  //   }
-
-	// 	return false
-	// },
 
 
 	// ---- Set up this page's data ----.
@@ -122,7 +158,7 @@ export const pageTimeSlotsStore = reactive({
 		}
 
 		//console.log("Using data from cache.")
-		console.log("TimeStore -> this._timeSlotsList: ", unwrappedObj )
+		//console.log("TimeStore -> this._timeSlotsList: ", unwrappedObj )
 		
 	},
 
@@ -132,7 +168,7 @@ export const pageTimeSlotsStore = reactive({
 		// Grabs a list of flights available for the selected Flight Date.
 		this._timeSlotsList = [await timeSlotsAPI.get(this.selectedFlight, this.flightDate)]
 		localStorage._cacheTimeSlotsList = JSON.stringify(toRaw(this._timeSlotsList))   // Save to cache.
-    console.log("Server Slot Data updated in Cache from API call.")
+    //console.log("Server Slot Data updated in Cache from API call.")
 		this.loading = false
 	},
 	// async getAPITimeSlotData() {

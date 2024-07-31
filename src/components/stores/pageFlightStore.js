@@ -69,7 +69,7 @@ export const pageFlightStore = reactive({
         this.selectedFlight = -1
         localStorage.removeItem("selectedFlight");
       } else {
-        console.log("Selected flight still available!")
+        //console.log("Selected flight still available!")
       }
 
     }
