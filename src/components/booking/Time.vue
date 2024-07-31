@@ -92,7 +92,8 @@ export default {
   data() {
     return {
       timeSliderKey: 0,
-      timeSlotNoLongerAvailable: false
+      timeSlotNoLongerAvailable: false,
+      //timeSlotList: store.getTimeSlotsList(),
     }
   },
 

@@ -114,7 +114,8 @@ export const pageTimeSlotsStore = reactive({
 
 	// Count all of the passengers in the current Flight Date.
 	getTotalPassengers() {
-		return this._totalPassengers
+		this._totalPassengers = countTotalPassengers( loadTimeSlotPassengersList() )
+    return this._totalPassengers
 	},
 
 	setTotalPassengers(nrPassInt) {
