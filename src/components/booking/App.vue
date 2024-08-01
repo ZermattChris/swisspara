@@ -98,7 +98,7 @@
 
 
 <script>
-import { shallowRef, ref, computed, toRaw } from 'vue'
+import { shallowRef, ref, computed, toRaw, nextTick } from 'vue'
 import { isAfter, isBefore } from 'date-fns'
 
 
@@ -219,6 +219,7 @@ export default {
     },
     nextBtnDisabledClass() {
       if (!this.isPageValid) return 'disabled:opacity-50'
+      return ''
     },
     nextBtnDisabledProp() {
       if (!this.isPageValid) return true
@@ -245,10 +246,10 @@ export default {
       this.isDatePageDataValid()
 
       // Flight 
-      this.isFlightPageDataValid()
+      //this.isFlightPageDataValid()
 
       // Time Slot
-      this.isTimePageDataValid()
+      //this.isTimePageDataValid()
 
     },
 
@@ -283,25 +284,21 @@ export default {
     },
 
 
-    /**
-     * Page 2. Flight.
-     */
-    isFlightPageDataValid() {
-      // Think this is being handled just fine at the moment.
-    },
+    // /**
+    //  * Page 2. Flight.
+    //  */
+    // isFlightPageDataValid() {
+    //   // Think this is being handled just fine at the moment.
+    // },
 
-    /**
-     * Page 3. Time.
-     */
-     isTimePageDataValid() {
+    // /**
+    //  * Page 3. Time.
+    //  */
+    //  isTimePageDataValid() {
 
-      // If the Flight Date is old, this is already handled in the Date Page.
-
-      // Check if the chosen Time Slot is at least 1 hour from now.
-
+    //   // Also think is okay.
       
-      
-    },
+    // },
 
     // ===================== END :: Global Data Checks =====================
 
@@ -326,6 +323,10 @@ export default {
      * @param {Bool} isValid 
      */
     onPageValidEvent(pageName, isValid) {
+      // nextTick(() => {
+      //   this.$forceUpdate()
+      // })
+      
       // console.log("APP PageName:", pageName + '.', " isValid:", isValid)
       this.isPageValid = isValid
 
@@ -359,13 +360,12 @@ export default {
 
   }, // methods
 
-  // watch: {
-  //   // // Update when the current Page name changes.
-  //   // currentPageName(newPage) {
-  //   //     //console.log("newPage: ", newPage)
-  //   //     this.currPage = newPage
-  //   // }
-  // }, // watch
+  watch: {
+    isPageValid(old, nVal) {
+      // Trying to get the "Next" button to display properly when the Passenger form is valid (uhg!)
+      //console.log("isPageValid watch changed: ", old, nVal)
+    }
+  }, // watch
 
 }
 
@@ -381,4 +381,4 @@ export default {
 .disabled:hover {
   background-color: rgb(88, 80, 236);
 }
-</style>datesStore, datesStore,
+</style>datesStore, datesStore,import type { onPageLoad } from 'astro/virtual-modules/transitions-events.js'

@@ -113,7 +113,7 @@
        * 
        * @param {Custom Event} ev   // 'index':1, 'target':input#email..., 'value':'you@acme.com': 
        */
-      onFormChanged (ev,) {
+      onFormChanged (ev) {
         //console.log("Form Index: ", ev.index)
         // console.log("Form state: ", ev)
         //console.log("Form IsValid: ", ev.index, ev.formValid)
@@ -131,14 +131,17 @@
           'weightKg': ev.state.weightKg,
           'description': ev.state.description,
         }
-        //console.log('Update obj', ev.index,  updatedPassOjb)
+        console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)
 
         // manually force page valid check
         // Leave this as is !!!!
-    		this.$emit( 'pagevalid', 'PagePassengers', this._isPageValid)        // sends event back to 'App' base class (not calling the deprecated _isPageValid() !!!)
+    		//this.$emit( 'pagevalid', 'PagePassengers', this._isPageValid)        // sends event back to 'App' base class (not calling the deprecated _isPageValid() !!!)
+      
+    		this.$emit( 'pagevalid', 'PagePassengers', this.valid())  // New valid() method in each Page component.
+        
       }
     },
 
@@ -163,25 +166,25 @@
       _isPageValid() {
         console.log("Passengers._isPageValid() is deprecated")
 
-        // TODO func in store to check if all passenger forms are valid or not.
-        if (this.passengerCount < 1) return false
+        // // TODO func in store to check if all passenger forms are valid or not.
+        // if (this.passengerCount < 1) return false
 
-        let allPassFormsValid = true
-        const passList = store.getAllPassengersList() 
-        for (let x = 1; x <= this.passengerCount; x++) {
-          // Need to guard against empty passenger forms (no data if not anything input yet by user...)
-          // Example, forms are filled in and user goes back to previous Step and adds another pass.
-          if ( passList[x] === undefined ) return false
-          //console.log("x", x )
-          //console.log("aPassForm", passList[x].valid )
-          if (passList[x].valid === false) {
-            allPassFormsValid = false
-            break
-          }
+        // let allPassFormsValid = true
+        // const passList = store.getAllPassengersList() 
+        // for (let x = 1; x <= this.passengerCount; x++) {
+        //   // Need to guard against empty passenger forms (no data if not anything input yet by user...)
+        //   // Example, forms are filled in and user goes back to previous Step and adds another pass.
+        //   if ( passList[x] === undefined ) return false
+        //   //console.log("x", x )
+        //   //console.log("aPassForm", passList[x].valid )
+        //   if (passList[x].valid === false) {
+        //     allPassFormsValid = false
+        //     break
+        //   }
 
-        }
+        // }
 
-        return allPassFormsValid
+        // return allPassFormsValid
       },
 
     }, // computed

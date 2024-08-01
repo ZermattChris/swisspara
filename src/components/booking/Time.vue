@@ -114,14 +114,14 @@ export default {
   },
 
   async mounted() {
-    console.log("Time.vue component mounted()")
+    //console.log("Time.vue component mounted()")
 
     let flightDate = datesStore.getFlightDate()
     let pSlotsStillValid = await store.arePassengersTimeSlotsStillAvailable(flightDate)
 
     if (pSlotsStillValid === false) {
       this.timeSlotNoLongerAvailable = true
-      console.log("(Server Data) Time Slot no longer Available, please choose another. TODO: Need some sort of UI for this.")
+      //console.log("(Server Data) Time Slot no longer Available, please choose another.")
       // reset the User's selected TimeSlots (passengers) to 0
       store.setTimeSlotsPassengersList('')
       // Force a re-render of the TimeSlider component.
