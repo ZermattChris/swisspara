@@ -122,8 +122,8 @@
 
         const updatedPassOjb = {
           'valid': ev.formValid,
-          'phone': ev.phone,     // will be undefined unless contact passenger
-          'email': ev.state.email,   // will be undefined unless contact passenger
+          'phone': ev.phone ? ev.phone.formatInternational : null,     // will be undefined unless contact passenger
+          'email': ev.state ? ev.state.email : null,                   // will be undefined unless contact passenger
           'name': ev.state.name, 
           'sex': ev.state.sex,
           'age': ev.state.age + '',   // convert to string before saving to cache.
@@ -131,7 +131,7 @@
           'weightKg': ev.state.weightKg,
           'description': ev.state.description,
         }
-        console.log('Update obj', ev.index,  updatedPassOjb)
+        //console.log('Update obj', ev.index,  updatedPassOjb)
 
 
         store.updateAPassenger(ev.index, updatedPassOjb)

@@ -5,7 +5,7 @@
 
     <!-- Have the wrapping form collect all of the input changes and send them to the parent Passenger.vue -->
     <form :id="`passengerForm_${index}`"
-      @change="$emit('change', { 'index': index, 'formValid': isPassengerPanelValid, 'target': $event.target, 'value': $event.target.value, '$event': $event, 'phone': phoneInputData.formatInternational, 'state': state })">
+      @change="$emit('change', { 'index': index, 'formValid': isPassengerPanelValid, 'target': $event.target, 'value': $event.target.value, '$event': $event, 'phone': phoneInputData, 'state': state })">
 
 
       <!-- START Header box. Holds the Passenger's name and a 'Valid' icon.  -->
