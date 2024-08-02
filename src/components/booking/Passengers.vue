@@ -1,7 +1,7 @@
 <template>
 
   <div id="flightDateBox"
-		class=" mx-auto pb-4 pr-2 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
+		class=" mx-auto pb-4 pr-2 md:pb-6 pl-[3vw] sm:pl-0 w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
 		<h1 class="select-none pb-4 md:pb-8 text-4xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
       4. Passenger Details

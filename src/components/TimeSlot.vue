@@ -70,7 +70,7 @@
           </svg>
 
 
-          <span v-if="(pilots[0] > 0)" :class="(slotsCurrPassengerCount(timeHint) > 0) ? '' : ''">
+          <span v-if="(pilots[0] > 0)" class="relative top-0.5 ml-1" :class="(slotsCurrPassengerCount(timeHint) > 0) ? '' : ''">
             {{ timeHint }}
           </span>
 

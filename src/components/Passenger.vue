@@ -81,14 +81,13 @@
             <input v-model="state.email" type="email" name="email" :id="`email_${index}`" class="block w-full rounded-md border-0 py-2.5 pl-11 
 								ring-1 ring-inset  placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 
 								sm:text-sm sm:leading-6"
-              :class="(v$.email.$invalid && v$.email.$dirty) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300'"
+              :class="(v$.email.$invalid) ? 'text-red-700  ring-red-700' : 'text-gray-900  ring-gray-300'"
               placeholder="you@example.com" @focusout="v$.email.$touch" />
-            <div v-if="v$.email.$invalid && v$.email.$dirty"
+            <div v-if="v$.email.$invalid"
               class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
               <ExclamationCircleIcon class="h-5 w-5 text-red-700" aria-hidden="true" />
             </div>
           </div>
-
         </div>
 
         <!-- Get your phone and email right!  -->

@@ -200,6 +200,8 @@ export const pageTimeSlotsStore = reactive({
 
 
 	getTimeSlotsList() {
+    this.loadTimeSlotList()
+		loadTimeSlotPassengersList()
 		return this._timeSlotsList[0]		// unwrap back out of array, as this is what the Time component expects.
 	},
 

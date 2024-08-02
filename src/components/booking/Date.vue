@@ -5,7 +5,7 @@
   </h1>
 
   <div id="flightDateBox"
-    class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
+    class="mx-auto pb-8 md:pb-12 pl-[3vw] sm:pl-0 w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
     <!-- (1) -->
     <!-- <span class="w-12 h-12  sm:w-14 sm:h-14
             text-3xl sm:text-4xl 

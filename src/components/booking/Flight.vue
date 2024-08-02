@@ -8,7 +8,7 @@
 
 
   <div id="flightDateBox"
-    class="mx-auto pb-8 md:pb-12 pl-[3vw] w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
+    class="mx-auto pb-8 md:pb-12 pl-[3vw] sm:pl-0 w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
 
     <!-- Loading spinner.  -->
     <div v-if="loading" class="relative rounded-xl overflow-auto p-8">
