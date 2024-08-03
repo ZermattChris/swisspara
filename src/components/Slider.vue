@@ -109,7 +109,7 @@
  
 	function adjust(step) {
     let targetVal = Number(props.modelValue) + step
-    console.log('Slider: targetVal : ', targetVal)
+    //console.log('Slider: targetVal : ', targetVal)
     if (targetVal < props.min ) {    // this accounts for inital -1 value.
       targetVal = props.min 
     } else if (targetVal > props.max  ) {
@@ -117,7 +117,7 @@
     } else  {
       targetVal = Number(props.modelValue) + step
     }
-    console.log('Slider: updateedVal : ', targetVal)
+    //console.log('Slider: updateedVal : ', targetVal)
     emit('update:modelValue', targetVal)
   }
 
