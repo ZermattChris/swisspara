@@ -1,19 +1,19 @@
 <template>
 
-  <div id="headerBox" class=" mx-auto pb-4 pr-2 md:pb-6 pl-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
+  <div id="headerBox" class=" mx-auto pb-4 md:pb-6 py-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
     <h1
       class="select-none pb-4 tracking-tighter md:pb-8 text-3xl text-center font-black text-[color:var(--booking-hilite)] drop-shadow-md ">
       5. Confirm Your Booking
     </h1>
 
-    <a href="#" @click="console.log(valid() ? '5. Confirm - valid page' : '5. Confirm - Not valid page')">Test
-      Valid()</a>
+    <!-- <a href="#" @click="console.log(valid() ? '5. Confirm - valid page' : '5. Confirm - Not valid page')">Test
+      Valid()</a> -->
 
     <!-- This is the Confirm Booking Intro text. -->
     <div id="confirmBookingWrapper" v-if="hasConfirmedBooking === false">
       <div>
-        <p class="pb-4">
+        <p class="pb-4 px-2">
           Please check to make sure your Booking Details are correct. If you find any mistakes,
           click the "Previous" button below...
         </p>
@@ -80,17 +80,21 @@
             <div class="cpHeader text-center">Age</div>
             <div class="cpHeader text-center">Confidence</div>
             <div class="cpHeader text-center">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" class="h-5 w-5 ml-1">
-                <path d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z"></path>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true"
+                class="h-5 w-5 ml-1">
+                <path
+                  d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z">
+                </path>
               </svg>
             </div>
 
             <template v-for="aPassenger in allPassengers">
               <div class="pl-2">{{ aPassenger.name }}</div>
               <div class="text-center">{{ ucFirst(aPassenger.sex) }}</div>
-              <div class="text-center">{{ aPassenger.age }}<span class="text-gray-500 text-xs pl-0.5">Yrs</span></div>
+              <div class="text-center">{{ aPassenger.age }}<span class="text-gray-500 text-xs pl-0.5">years</span></div>
               <div class="text-center">{{ aPassenger.confidence }}</div>
-              <div class="text-center">{{ aPassenger.weightKg }}<span class="text-gray-500 text-xs pl-0.5">Kg</span></div>
+              <div class="text-center">{{ aPassenger.weightKg }}<span class="text-gray-500 text-xs pl-0.5">Kg</span>
+              </div>
             </template>
 
           </div>
@@ -109,7 +113,7 @@
     <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
       <div>
         <p class="pb-6">
-          Enter your card details to complete your Booking.
+          After checking that your details are correct, enter your Credit Card details to complete your booking. Your card will only be captured (not charged until after your flight).
         </p>
       </div>
 
@@ -145,9 +149,52 @@
 
 
       <!-- Table Showing Flights w/ costs and Photos/Vids  -->
-      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
         <div class="px-4 py-5 ">
-          total costs overview...
+          <section aria-labelledby="summary-heading" class="bg-gray-50 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pb-16">
+
+            <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg">Order summary</h2>
+
+            <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
+              <li class="flex items-start space-x-4 py-6">
+                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg"
+                  alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps."
+                  class="h-20 w-20 flex-none rounded-md object-cover object-center">
+                <div class="flex-auto space-y-1">
+                  <h3>Classic Flight</h3>
+                  <p class="text-gray-500">Moss</p>
+                  <p class="text-gray-500">5L</p>
+                </div>
+                <p class="flex-none text-base font-medium">480.- CHF</p>
+              </li>
+              <li class="flex items-start space-x-4 py-6">
+                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-02.jpg"
+                  alt="Front of satchel with tan canvas body, straps, handle, drawstring top, and front zipper pouch."
+                  class="h-20 w-20 flex-none rounded-md object-cover object-center">
+                <div class="flex-auto space-y-1">
+                  <h3>Photos &amp; Video Package</h3>
+                  <p class="text-gray-500">Sand</p>
+                  <p class="text-gray-500">18L</p>
+                </div>
+                <p class="flex-none text-base font-medium">80.- CHF</p>
+              </li>
+
+            </ul>
+
+            <dl class="space-y-6 pt-6 text-sm font-medium text-gray-900 lg:block">
+              <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+                <dt class="text-base">Total</dt>
+                <dd class="text-base">560.00 CHF</dd>
+              </div>
+            </dl>
+
+          </section>
+
+
+
+
+
+
         </div>
       </div><!-- END: Table Showing Flights w/ costs and Photos/Vids  -->
 
@@ -187,7 +234,7 @@
 
 
       <!-- Stripe Checkout component  -->
-      <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
+      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
         <div class="px-4 py-5 ">
           Stripe Checkout component here.
         </div>
@@ -201,12 +248,15 @@
             class="h-4 w-4 cursor-pointer rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
-          <label for="terms" class="font-medium cursor-pointer text-gray-900">Terms &amp; Conditions</label>
-          <p id="terms-description" class="text-gray-700">
-            To complete your Booking, click this checkbox to indicate that you have read and agree to the
-            <a class="underline" href="#">Terms&nbsp;&amp;&nbsp;Conditions</a>
-            of Swiss Paraglide Zermatt's Customer Agreement.
-          </p>
+          <label for="terms" class="font-medium cursor-pointer text-gray-900">
+            Terms &amp; Conditions
+            <span id="terms-description" class="text-gray-700 font-normal block">
+              To complete your Booking, click this checkbox to indicate that you have read and agree to the
+              <a class="underline font-bold text-indigo-800" href="#todo"
+                target="_blank">Terms&nbsp;&amp;&nbsp;Conditions</a>
+              of Swiss Paraglide Zermatt's Customer Agreement.
+            </span>
+          </label>
         </div>
       </div> <!-- END: T&C's checkbox.  -->
 
