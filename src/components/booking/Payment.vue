@@ -112,7 +112,7 @@
     <!-- Payment Block -->
     <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
       <div>
-        <p class="pb-6">
+        <p class="pb-6 px-2">
           After checking that your details are correct, enter your Credit Card details to complete your booking. Your card will only be captured (not charged until after your flight).
         </p>
       </div>
@@ -150,41 +150,49 @@
 
       <!-- Table Showing Flights w/ costs and Photos/Vids  -->
       <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
-        <div class="px-4 py-5 ">
-          <section aria-labelledby="summary-heading" class="bg-gray-50 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1 lg:bg-transparent lg:px-0 lg:pb-16">
+        <div class="sm:px-4 py-5 ">
+          <section aria-labelledby="summary-heading" class="bg-gray-100/75 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1   lg:pb-16">
 
-            <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg">Order summary</h2>
+            <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg">
+              Order Overview:
+            </h2>
 
             <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
+
               <li class="flex items-start space-x-4 py-6">
                 <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg"
                   alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps."
                   class="h-20 w-20 flex-none rounded-md object-cover object-center">
                 <div class="flex-auto space-y-1">
-                  <h3>Classic Flight</h3>
-                  <p class="text-gray-500">Moss</p>
-                  <p class="text-gray-500">5L</p>
+                  <h3 class="text-base">
+                    {{ totalPassengers }}x {{ flightName }} Paragliding Flight
+                  </h3>
+                  <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{ singleFlightPrice }}.- CHF</p>
                 </div>
-                <p class="flex-none text-base font-medium">480.- CHF</p>
+                <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
-              <li class="flex items-start space-x-4 py-6">
-                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-02.jpg"
-                  alt="Front of satchel with tan canvas body, straps, handle, drawstring top, and front zipper pouch."
+
+              <li v-if="hasPhotos" class="flex items-start space-x-4 py-6">
+                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg"
+                  alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps."
                   class="h-20 w-20 flex-none rounded-md object-cover object-center">
                 <div class="flex-auto space-y-1">
-                  <h3>Photos &amp; Video Package</h3>
-                  <p class="text-gray-500">Sand</p>
-                  <p class="text-gray-500">18L</p>
+                  <h3 class="text-base">
+                    {{ totalPassengers }}x Photos &amp; Videos Package
+                  </h3>
+                  <p class="text-gray-500">TODO: Photos Text here.<br> Package @ {{ photoVideoPackagePrice }}.- CHF</p>
                 </div>
-                <p class="flex-none text-base font-medium">80.- CHF</p>
+                <p class="flex-none text-base font-medium">{{ totalPassengers * photoVideoPackagePrice }}.- CHF</p>
               </li>
 
             </ul>
 
             <dl class="space-y-6 pt-6 text-sm font-medium text-gray-900 lg:block">
               <div class="flex items-center justify-between border-t border-gray-200 pt-6">
-                <dt class="text-base">Total</dt>
-                <dd class="text-base">560.00 CHF</dd>
+                <dt class="text-base text-indigo-800">Total</dt>
+                <dd class="text-base text-indigo-800 drop-shadow-sm">
+                  {{ totalPassengers * (singleFlightPrice + (hasPhotos ? photoVideoPackagePrice : 0) ) }}.- CHF
+                </dd>
               </div>
             </dl>
 
@@ -273,8 +281,8 @@
           Book Flight
         </button>
 
-        <p id="bookFlightMsg" v-if="tAndCsChecked" class="text-orag-700 text-sm pt-2">
-          (this will capture your card and complete your Booking)
+        <p id="bookFlightMsg" v-if="tAndCsChecked" class="text-orange-700 text-sm py-4">
+          Clicking "Book Flight" will capture your card and complete your Booking
         </p>
 
       </div> <!-- END: Book Flight Btn -->
@@ -335,6 +343,7 @@ export default {
 
   mounted() {
     // console.log("PAY - Mounted.")
+      flightStore.initialize()
     if (this.storageHashChanged) {
       appStore.setBookingConfirmed('false')
     }
@@ -342,6 +351,7 @@ export default {
 
 
   methods: {
+
 
     /**
      * This method must be overrided in each of these Page components.
@@ -370,6 +380,7 @@ export default {
     },
 
     ucFirst(string) {
+      if (string === undefined || string === null || string === '') return ''
       return string.charAt(0).toUpperCase() + string.slice(1)
     },
 
@@ -377,6 +388,20 @@ export default {
 
 
   computed: {
+
+    photoVideoPackagePrice() {
+      return appStore.getVideoPrice() / 100
+    },
+
+    flightName() {
+      const flObj = flightStore.getFlightObj()
+      return this.ucFirst(flObj.name)
+    },
+    singleFlightPrice() {
+      const price = flightStore.getFlightObj().price / 100
+      return price
+    },
+
 
     hasConfirmedBooking: {
       // getter
@@ -430,7 +455,6 @@ export default {
       return timesString
     },
     flightAndPrice() {
-      flightStore.initialize()
       const flObj = flightStore.getFlightObj()
       return this.ucFirst(flObj.name) + ": " + (flObj.price / 100) + ".- CHF"
     },
