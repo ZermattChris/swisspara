@@ -116,7 +116,7 @@
       onFormChanged (ev) {
         //console.log("Form Index: ", ev.index)
         // console.log("Form state: ", ev)
-        //console.log("Form IsValid: ", ev.index, ev.formValid)
+        console.log("Form IsValid: ", ev.index, ev.formValid)
         // update our simple passenger form valid tracking object.
         this.passengerFormsValidList[ev.index] = ev.formValid
 
