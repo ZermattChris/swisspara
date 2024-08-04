@@ -113,7 +113,9 @@
     <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
       <div>
         <p class="pb-6 px-2">
-          After checking that your details are correct, enter your Credit Card details to complete your booking. Your card will only be captured (not charged until after your flight).
+          After checking that your details are correct, enter your Credit Card details to complete your booking. Your
+          card
+          will only be captured (not charged until after your flight).
         </p>
       </div>
 
@@ -151,7 +153,8 @@
       <!-- Table Showing Flights w/ costs and Photos/Vids  -->
       <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
         <div class="sm:px-4 py-5 ">
-          <section aria-labelledby="summary-heading" class="bg-gray-100/75 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1   lg:pb-16">
+          <section aria-labelledby="summary-heading"
+            class="bg-gray-100/75 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1   lg:pb-16">
 
             <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg">
               Order Overview:
@@ -167,7 +170,9 @@
                   <h3 class="text-base">
                     {{ totalPassengers }}x {{ flightName }} Paragliding Flight
                   </h3>
-                  <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{ singleFlightPrice }}.- CHF</p>
+                  <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
+                    singleFlightPrice
+                    }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
@@ -191,7 +196,7 @@
               <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt class="text-base text-indigo-800">Total</dt>
                 <dd class="text-base text-indigo-800 drop-shadow-sm">
-                  {{ totalPassengers * (singleFlightPrice + (hasPhotos ? photoVideoPackagePrice : 0) ) }}.- CHF
+                  {{ totalPassengers * (singleFlightPrice + (hasPhotos ? photoVideoPackagePrice : 0)) }}.- CHF
                 </dd>
               </div>
             </dl>
@@ -243,7 +248,7 @@
 
       <!-- Stripe Checkout component  -->
       <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
-        <div class="px-4 py-5 ">
+        <div id="stripe-payment" class="px-4 py-5 ">
           Stripe Checkout component here.
         </div>
       </div><!-- END: Stripe Checkout component -->
@@ -301,6 +306,19 @@
 
 <script>
 
+import { loadStripe } from '@stripe/stripe-js/pure'
+
+// loadStripe.setLoadParameters({advancedFraudSignals: false});
+// const stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+// const appearance = { /* appearance */ };
+// const options = { /* options */ };
+// const elements = stripe.elements({ clientSecret, appearance });
+// const paymentElement = elements.create('payment', options);
+// paymentElement.mount('#stripe-payment');
+
+
+
 // Stores
 import { appStore } from '@stores/appStore.js'
 import { datesStore as dateStore } from '@stores/pageDateStore.js'
@@ -338,15 +356,77 @@ export default {
 
       hasPhotos: flightStore.getPhotosToggle() ? true : false,
 
+
+      // Store a "BookingHash" in LocalStorage. Use this to connect to our backend & Stripe.
+      _bookingHash: localStorage._bookingHash ? localStorage._bookingHash : '',
+
+      stripe: null,
+      elements: null,
     }
   },
 
-  mounted() {
+  async mounted() {
     // console.log("PAY - Mounted.")
-      flightStore.initialize()
+    flightStore.initialize()
     if (this.storageHashChanged) {
       appStore.setBookingConfirmed('false')
     }
+
+
+
+
+
+    // 1. Create/Update a Stripe Customer via the Server.
+    //    - Send the stored BookingHash from localstorage (if there's one)
+    //    - Send the User's Contact Details. Name, Phone, Email in case any of these need updating.
+    //    -> returns the Booking Hash, xxx, and yyyy
+  
+
+    // 2. Create a SetupIntent for this new customer.
+
+
+
+    let content = {}
+    try {
+
+      const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
+        method: 'POST',
+        headers: {'Accept': 'application/json', "Content-Type": "application/json" },
+        body: JSON.stringify({
+          "bookingHash": '941e1aaaba585b952b62c14a3a175a61'
+        })
+      });
+      content = await rawResponse.json()
+      if (!rawResponse.ok) {
+        throw new Error(`rawResponse status: ${rawResponse.status}`);
+      }
+      
+    } catch (error) {
+      console.error(error.message);
+    }
+
+    console.log("api/v1/stripe/setup: ", content)
+
+
+    // TODO: Stopped here. Yuck. Everytime learning the same rubbish over again (just differently!)
+
+    // loadStripe.setLoadParameters({ advancedFraudSignals: false });
+    // this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+    // this.elements = this.stripe.elements({clientSecret});
+
+    // const { error } = await this.stripe.confirmSetup({
+    //   elements,
+    //   confirmParams: {
+    //     // Return URL where the customer should be redirected after the SetupIntent is confirmed.
+    //     return_url: 'https://example.com',
+    //   },
+    // });
+    // if (error) {
+    //   // Inform the customer that there was an error.
+    //   console.log("Stripe Error: ", error)
+    // }
+
   },
 
 
@@ -559,4 +639,5 @@ div.cpHeader {
   padding-bottom: 0.2em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-</style>
+</style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from 'node_modules/astro/dist/core/logger/core'
+

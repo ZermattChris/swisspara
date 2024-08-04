@@ -98,6 +98,8 @@
 
 
 <script>
+
+
 import { shallowRef, ref, computed, toRaw, nextTick } from 'vue'
 import { isAfter, isBefore } from 'date-fns'
 
@@ -138,6 +140,7 @@ export default {
     // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
   },
 
+
   data() {
     return {
       // currPage: appStore.currentPageName(),
@@ -156,7 +159,6 @@ export default {
   mounted() {
 
     //console.log("currentPageName: ", this.currentPageName)
-
 
     // Send our page list as strings to the store.
     // Need to add 'label' and 'icon' to use in Breadcrumbs.
