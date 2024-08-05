@@ -356,9 +356,19 @@ export default {
 
       hasPhotos: flightStore.getPhotosToggle() ? true : false,
 
-
+      // -------- Stripe Payment Stuff --------
       // Store a "BookingHash" in LocalStorage. Use this to connect to our backend & Stripe.
       _bookingHash: localStorage._bookingHash ? localStorage._bookingHash : '',
+
+      // Pass in Date Time formats as something that Carbon can parse easily.
+      _flightDate: dateStore.getFlightDate() + ' 00:00:00',
+      // Arrive/Depart Date Time strings. YYYY-MM-DD HH:mm:ss.ss
+      _arriveDateTime: dateStore.getArriveDateTime(),
+      _departDateTime: dateStore.getDepartDateTime(),
+
+
+
+
 
       stripe: null,
       elements: null,
@@ -371,7 +381,6 @@ export default {
     if (this.storageHashChanged) {
       appStore.setBookingConfirmed('false')
     }
-
 
 
 
@@ -393,7 +402,10 @@ export default {
         method: 'POST',
         headers: {'Accept': 'application/json', "Content-Type": "application/json" },
         body: JSON.stringify({
-          "bookingHash": '941e1aaaba585b952b62c14a3a175a61'
+          "bookingHash": this._bookingHash,
+          "flightDate": this._flightDate,
+          "arriveDate": this._arriveDateTime,
+          "departDate": this._departDateTime,
         })
       });
       content = await rawResponse.json()

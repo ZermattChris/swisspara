@@ -104,6 +104,8 @@ export const datesStore = reactive({
     localStorage.flightDate = this.flightDate
   },
 
+
+
   // ---- Arrival Date ----.
   getArriveDate() {
     if ( isAfter( new Date(this.arriveDate), new Date(this.flightDate) ) ) {
@@ -120,7 +122,24 @@ export const datesStore = reactive({
     this.bustFlightsCache() // Bust flightsList cache if date has changed.
     this.arriveDate = newAD
     localStorage.arriveDate = this.arriveDate
-  },//
+  },
+  // Arrive DateTime -- put the arrival Date '2024-09-23' and the time 18.5 (18:30) together.
+  getArriveDateTime() {
+    // if the time is in the format of 14.5, then reformat it to 14:30
+    var formattedTime = ''
+    const pieces = this.arriveTime.toString().split('.')
+    if (pieces.length == 2) {
+      formattedTime = pieces[0] + ':30'
+    } else {
+      formattedTime = this.arr
+    }
+
+    var result = this.arriveDate + ' ' + formattedTime
+    return result
+  },
+
+
+
 
   // ---- Arrival Time ----.
   getArriveTime() {
@@ -161,6 +180,20 @@ export const datesStore = reactive({
     localStorage.departDate = this.departDate
   },
 
+  // Depart DateTime -- put the depart Date '2024-09-23' and the time 18.5 (18:30) together.
+  getDepartDateTime() {
+    // if the time is in the format of 14.5, then reformat it to 14:30
+    var formattedTime = ''
+    const pieces = this.departTime.toString().split('.')
+    if (pieces.length == 2) {
+      formattedTime = pieces[0] + ':30'
+    } else {
+      formattedTime = this.departTime
+    }
+
+    var result = this.departDate + ' ' + formattedTime
+    return result
+  },
 
   // Flights Cache buster.
   // Delete the cache in localStorage, causing the API call to run again
