@@ -287,7 +287,9 @@
         </button>
 
         <p id="bookFlightMsg" v-if="tAndCsChecked" class="text-orange-700 text-sm py-4">
-          Clicking "Book Flight" will capture your card and complete your Booking
+          Clicking 
+          "<span class="font-bold">Book Flight</span>" 
+          will capture your card details and complete your Booking.
         </p>
 
       </div> <!-- END: Book Flight Btn -->
@@ -366,8 +368,15 @@ export default {
       _arriveDateTime: dateStore.getArriveDateTime(),
       _departDateTime: dateStore.getDepartDateTime(),
 
+      _selectedFlightId: flightStore.getFlightChosen(),
+      _hasPhotosBool: flightStore.getPhotosToggle() ? true : false,   // same as above, but cleaner to follow the naming here.
 
 
+      // Time Slots.
+      _timeSlotsList: timeStore.getTimeSlotsList(),
+
+      // Passenger Details.
+      _passengersList: timeStore.getTimeSlotsPassengersList(),
 
 
       stripe: null,
@@ -406,6 +415,10 @@ export default {
           "flightDate": this._flightDate,
           "arriveDate": this._arriveDateTime,
           "departDate": this._departDateTime,
+          "selectedFlightId": this._selectedFlightId,
+          "hasPhotosBool": this._hasPhotosBool,
+          "timeSlotsList": this._timeSlotsList,
+          "passengersList": this._passengersList,
         })
       });
       content = await rawResponse.json()
