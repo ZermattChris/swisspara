@@ -248,6 +248,12 @@
 
       <!-- Stripe Checkout component  -->
       <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
+
+        <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg pt-4 pl-4 pb-2 shadow-sm">
+          Card Details
+          <span class="block text-sm font-light text-gray-700">A valid Card is required to complete your Booking.</span>
+        </h2>
+
         <div id="stripe-payment" class="px-4 py-5 ">
           Stripe Checkout component here.
         </div>
@@ -275,9 +281,9 @@
 
       <!-- Book Flight Btn -->
       <div class="text-center mt-6 mb-6">
-        <button type="button"
+        <button type="button" @click="bookFlight()"
           class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          :class="_isPageValid ? '' : 'opacity-50'">
+          :class="_isPageValid ? '' : 'opacity-50'" :disabled="!_isPageValid">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -287,8 +293,8 @@
         </button>
 
         <p id="bookFlightMsg" v-if="tAndCsChecked" class="text-orange-700 text-sm py-4">
-          Clicking 
-          "<span class="font-bold">Book Flight</span>" 
+          Clicking
+          "<span class="font-bold">Book Flight</span>"
           will capture your card details and complete your Booking.
         </p>
 
@@ -308,16 +314,10 @@
 
 <script>
 
-import { loadStripe } from '@stripe/stripe-js/pure'
+// import { loadStripe } from '@stripe/stripe-js/pure'
+import { loadStripe } from '@stripe/stripe-js';
 
-// loadStripe.setLoadParameters({advancedFraudSignals: false});
-// const stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
 
-// const appearance = { /* appearance */ };
-// const options = { /* options */ };
-// const elements = stripe.elements({ clientSecret, appearance });
-// const paymentElement = elements.create('payment', options);
-// paymentElement.mount('#stripe-payment');
 
 
 
@@ -373,14 +373,14 @@ export default {
 
 
       // Time Slots.
-      _timeSlotsList: timeStore.getTimeSlotsList(),
+      _timeSlotsList: timeStore.getTimeSlotsPassengersList(),
 
       // Passenger Details.
-      _passengersList: timeStore.getTimeSlotsPassengersList(),
+      _passengersList: passengersStore.getAllPassengersList(),
 
-
+      // Stripe
       stripe: null,
-      elements: null,
+
     }
   },
 
@@ -394,49 +394,57 @@ export default {
 
 
 
-    // 1. Create/Update a Stripe Customer via the Server.
-    //    - Send the stored BookingHash from localstorage (if there's one)
-    //    - Send the User's Contact Details. Name, Phone, Email in case any of these need updating.
-    //    -> returns the Booking Hash, xxx, and yyyy
-  
-
-    // 2. Create a SetupIntent for this new customer.
 
 
+    // let content = {}
+    // try {
 
-    let content = {}
-    try {
+    //   const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
+    //     method: 'POST',
+    //     headers: {'Accept': 'application/json', "Content-Type": "application/json" },
+    //     body: JSON.stringify({
+    //       "bookingHash": this._bookingHash,
+    //       "flightDate": this._flightDate,
+    //       "arriveDate": this._arriveDateTime,
+    //       "departDate": this._departDateTime,
+    //       "selectedFlightId": this._selectedFlightId,
+    //       "hasPhotosBool": this._hasPhotosBool,
+    //       "timeSlotsList": this._timeSlotsList,
+    //       "passengersList": this._passengersList,
+    //     })
+    //   });
+    //   content = await rawResponse.json()
+    //   if (!rawResponse.ok) {
+    //     throw new Error(`rawResponse status: ${rawResponse.status}`);
+    //   }
 
-      const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
-        method: 'POST',
-        headers: {'Accept': 'application/json', "Content-Type": "application/json" },
-        body: JSON.stringify({
-          "bookingHash": this._bookingHash,
-          "flightDate": this._flightDate,
-          "arriveDate": this._arriveDateTime,
-          "departDate": this._departDateTime,
-          "selectedFlightId": this._selectedFlightId,
-          "hasPhotosBool": this._hasPhotosBool,
-          "timeSlotsList": this._timeSlotsList,
-          "passengersList": this._passengersList,
-        })
-      });
-      content = await rawResponse.json()
-      if (!rawResponse.ok) {
-        throw new Error(`rawResponse status: ${rawResponse.status}`);
-      }
-      
-    } catch (error) {
-      console.error(error.message);
-    }
+    // } catch (error) {
+    //   console.error(error.message);
+    // }
 
-    console.log("api/v1/stripe/setup: ", content)
+    // console.log("api/v1/stripe/setup: ", content)
 
 
-    // TODO: Stopped here. Yuck. Everytime learning the same rubbish over again (just differently!)
-
+    // The Pure
     // loadStripe.setLoadParameters({ advancedFraudSignals: false });
-    // this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+    this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+    const options = {
+      mode: 'payment',
+      amount: 150,
+      currency: 'chf',
+      // Fully customizable with appearance API.
+      appearance: {/*...*/ },
+    };
+
+    // Set up Stripe.js and Elements to use in checkout form
+    const elements = this.stripe.elements(options);
+
+    // Create and mount the Payment Element
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#stripe-payment');
+
+
 
     // this.elements = this.stripe.elements({clientSecret});
 
@@ -456,6 +464,11 @@ export default {
 
 
   methods: {
+
+    bookFlight() {
+      console.log("Book Flight Btn pushed.")
+
+    },
 
 
     /**
@@ -664,5 +677,5 @@ div.cpHeader {
   padding-bottom: 0.2em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-</style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from 'node_modules/astro/dist/core/logger/core'
-
+</style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from
+'node_modules/astro/dist/core/logger/core'
