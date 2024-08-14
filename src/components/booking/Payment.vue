@@ -109,6 +109,7 @@
     </div><!-- END: Confirm Booking Wrapper.  -->
 
 
+
     <!-- Payment Block -->
     <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
       <div>
@@ -149,9 +150,42 @@
       </div><!-- END: Passengers, date and Show Booking Details...  -->
 
 
+      <!-- Booking Notes  -->
+      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
+        <div class="px-4 py-5 ">
+
+          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
+            <svg class="w-6 h-6 inline relative -top-0.5 fill-orange-700" xmlns="http://www.w3.org/2000/svg" height="48"
+              viewBox="0 -960 960 960">
+              <path
+                d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
+            </svg>
+
+            <p class="text-sm inline ml-1 text-gray-700">
+              Click here if you want to add an optional Booking Message...
+            </p>
+          </div>
+
+          <div v-if="toggleBookingMsg">
+
+            <p class="mt-2 text-sm text-gray-700">
+              If you have any questions, special wishes or have extra information regarding your Booking,
+              please let us know here.
+            </p>
+            <div class="mt-2 px-0">
+              <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
+                class="w-full rounded-md focus:ring-indigo-600 "></textarea>
+            </div>
+
+          </div>
+
+        </div>
+      </div><!-- END: Booking Notes -->
+
+
 
       <!-- Table Showing Flights w/ costs and Photos/Vids  -->
-      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
+      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[2px] sm:border-gray-400 sm:shadow">
         <div class="sm:px-4 py-5 ">
           <section aria-labelledby="summary-heading"
             class="bg-gray-100/75 px-4 pb-6 pt-4 sm:px-6 lg:col-start-2 lg:row-start-1   lg:pb-16">
@@ -183,7 +217,7 @@
                   class="h-20 w-20 flex-none rounded-md object-cover object-center">
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base">
-                    {{ totalPassengers }}x Photos &amp; Videos Package
+                    {{ totalPassengers }}x Photo/Video Package
                   </h3>
                   <p class="text-gray-500">TODO: Photos Text here.<br> Package @ {{ photoVideoPackagePrice }}.- CHF</p>
                 </div>
@@ -213,48 +247,15 @@
 
 
 
-      <!-- Booking Notes  -->
-      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow">
-        <div class="px-4 py-5 ">
-
-          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
-            <svg class="w-6 h-6 inline relative -top-0.5 fill-orange-700" xmlns="http://www.w3.org/2000/svg" height="48"
-              viewBox="0 -960 960 960">
-              <path
-                d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
-            </svg>
-
-            <p class="text-sm inline ml-1">
-              Click here to add a Booking Message.
-            </p>
-          </div>
-
-          <div v-if="toggleBookingMsg">
-
-            <p class="mt-2 text-sm text-gray-700">
-              If you have any questions, special wishes or have extra information regarding your Booking,
-              please let us know here.
-            </p>
-            <div class="mt-2 px-0">
-              <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
-                class="w-full rounded-md focus:ring-indigo-600 "></textarea>
-            </div>
-
-          </div>
-
-        </div>
-      </div><!-- END: Booking Notes -->
-
-
       <!-- Stripe Checkout component  -->
-      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white sm:border-[1px] sm:border-gray-300 sm:shadow">
+      <div class="mb-6 overflow-hidden sm:rounded-lg bg-white s sm:border-[2px] sm:border-gray-400 sm:shadow">
 
         <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg pt-4 pl-4 pb-2 shadow-sm">
           Card Details
           <span class="block text-sm font-light text-gray-700">A valid Card is required to complete your Booking.</span>
         </h2>
 
-        <div id="stripe-payment" class="px-4 py-5 ">
+        <div id="stripe-payment" class="px-4 py-5">
           Stripe Checkout component here.
         </div>
       </div><!-- END: Stripe Checkout component -->
@@ -283,7 +284,7 @@
       <div class="text-center mt-6 mb-6">
         <button type="button" @click="bookFlight()"
           class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          :class="_isPageValid ? '' : 'opacity-50'" :disabled="!_isPageValid">
+          :class="_isPageValid && stripeInputsCompleted ? '' : 'opacity-50'" :disabled="_isPageValid === false || stripeInputsCompleted === false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -292,13 +293,15 @@
           Book Flight
         </button>
 
-        <p id="bookFlightMsg" v-if="tAndCsChecked" class="text-orange-700 text-sm py-4">
+        <p id="bookFlightMsg" v-if="tAndCsChecked && _isPageValid && stripeInputsCompleted" class="text-orange-700 text-sm py-4">
           Clicking
           "<span class="font-bold">Book Flight</span>"
-          will capture your card details and complete your Booking.
+          will capture your card details<br> &amp; complete your Booking.
         </p>
 
       </div> <!-- END: Book Flight Btn -->
+
+      <!-- <p>{{ this.stripeInputsCompleted === true ? 'Stripe Good!' : 'Stripe xxx' }}</p> -->
 
     </div>
 
@@ -316,6 +319,7 @@
 
 // import { loadStripe } from '@stripe/stripe-js/pure'
 import { loadStripe } from '@stripe/stripe-js';
+// import { StripeElementCard } from '@vue-stripe/vue-stripe-js';
 
 
 
@@ -380,6 +384,8 @@ export default {
 
       // Stripe
       stripe: null,
+      paymentElement: null,
+      stripeInputsCompleted: false,
 
     }
   },
@@ -390,6 +396,26 @@ export default {
     if (this.storageHashChanged) {
       appStore.setBookingConfirmed('false')
     }
+
+    // loadStripe.setLoadParameters({ advancedFraudSignals: false });
+    this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+    const options = {
+      mode: 'payment',
+      amount: 150,
+      currency: 'chf',
+      // Fully customizable with appearance API.
+      appearance: {/*...*/ },
+    };
+
+    // Set up Stripe.js and Elements to use in checkout form
+    const elements = this.stripe.elements(options);
+
+    // Create and mount the Payment Element
+    this.paymentElement = elements.create('payment');
+    // Listen for the input completed event, so we can activate the Book Flight button.
+    this.paymentElement.on('change', this.onStripeElementsChange)
+    this.paymentElement.mount('#stripe-payment');
 
 
 
@@ -425,41 +451,6 @@ export default {
     // console.log("api/v1/stripe/setup: ", content)
 
 
-    // The Pure
-    // loadStripe.setLoadParameters({ advancedFraudSignals: false });
-    this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
-
-    const options = {
-      mode: 'payment',
-      amount: 150,
-      currency: 'chf',
-      // Fully customizable with appearance API.
-      appearance: {/*...*/ },
-    };
-
-    // Set up Stripe.js and Elements to use in checkout form
-    const elements = this.stripe.elements(options);
-
-    // Create and mount the Payment Element
-    const paymentElement = elements.create('payment');
-    paymentElement.mount('#stripe-payment');
-
-
-
-    // this.elements = this.stripe.elements({clientSecret});
-
-    // const { error } = await this.stripe.confirmSetup({
-    //   elements,
-    //   confirmParams: {
-    //     // Return URL where the customer should be redirected after the SetupIntent is confirmed.
-    //     return_url: 'https://example.com',
-    //   },
-    // });
-    // if (error) {
-    //   // Inform the customer that there was an error.
-    //   console.log("Stripe Error: ", error)
-    // }
-
   },
 
 
@@ -468,6 +459,20 @@ export default {
     bookFlight() {
       console.log("Book Flight Btn pushed.")
 
+      // Need to run the Stripe SetupIntent from here, so user can do all the possible
+      // 3D Secure stuff directly if required.
+
+    },
+
+    // Finally figured this out. 
+    onStripeElementsChange(ev) {
+      //console.log("Stripe Valid: ", ev.complete)
+      if (ev.complete === true) {
+        this.stripeInputsCompleted = true
+      } else {
+        this.stripeInputsCompleted = false
+      }
+    
     },
 
 
