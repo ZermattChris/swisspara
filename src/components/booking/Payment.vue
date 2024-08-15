@@ -162,7 +162,7 @@
             </svg>
 
             <p class="text-sm inline ml-1 text-gray-700">
-              Click here if you want to add an optional Booking Message...
+              Click to add an optional Booking Message...
             </p>
           </div>
 
@@ -230,20 +230,17 @@
               <div class="flex items-center justify-between border-t border-gray-200 pt-6">
                 <dt class="text-base text-indigo-800">Total</dt>
                 <dd class="text-base text-indigo-800 drop-shadow-sm">
-                  {{ totalPassengers * (singleFlightPrice + (hasPhotos ? photoVideoPackagePrice : 0)) }}.- CHF
+                  {{ orderTotalAmount() }}.- CHF
                 </dd>
               </div>
             </dl>
 
           </section>
 
-
-
-
-
-
         </div>
       </div><!-- END: Table Showing Flights w/ costs and Photos/Vids  -->
+
+
 
 
 
@@ -255,10 +252,14 @@
           <span class="block text-sm font-light text-gray-700">A valid Card is required to complete your Booking.</span>
         </h2>
 
-        <div id="stripe-payment" class="px-4 py-5">
-          Stripe Checkout component here.
+        <div id="stripe-card-element" class="px-4 py-5 text-gray-300">
+          (loading Payment)
         </div>
       </div><!-- END: Stripe Checkout component -->
+
+
+
+
 
       <!-- T&C's checkbox.  -->
       <div class="pl-6 pr-2 relative flex items-start">
@@ -283,8 +284,9 @@
       <!-- Book Flight Btn -->
       <div class="text-center mt-6 mb-6">
         <button type="button" @click="bookFlight()"
-          class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          :class="_isPageValid && stripeInputsCompleted ? '' : 'opacity-50'" :disabled="_isPageValid === false || stripeInputsCompleted === false">
+          class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
+          :class="_isPageValid && stripeInputsCompleted ? 'hover:bg-indigo-500' : 'opacity-50'"
+          :disabled="_isPageValid === false || stripeInputsCompleted === false">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
             stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -293,7 +295,8 @@
           Book Flight
         </button>
 
-        <p id="bookFlightMsg" v-if="tAndCsChecked && _isPageValid && stripeInputsCompleted" class="text-orange-700 text-sm py-4">
+        <p id="bookFlightMsg" v-if="tAndCsChecked && _isPageValid && stripeInputsCompleted"
+          class="text-orange-700 text-sm py-4">
           Clicking
           "<span class="font-bold">Book Flight</span>"
           will capture your card details<br> &amp; complete your Booking.
@@ -316,14 +319,9 @@
 
 
 <script>
+import { loadStripe } from '@stripe/stripe-js'
 
-// import { loadStripe } from '@stripe/stripe-js/pure'
-import { loadStripe } from '@stripe/stripe-js';
-// import { StripeElementCard } from '@vue-stripe/vue-stripe-js';
-
-
-
-
+import _api from "@components/api/_apiBase.js"
 
 // Stores
 import { appStore } from '@stores/appStore.js'
@@ -383,8 +381,11 @@ export default {
       _passengersList: passengersStore.getAllPassengersList(),
 
       // Stripe
+      apiType: _api.getAPIType(),
       stripe: null,
-      paymentElement: null,
+      stripeCardElement: null,
+      stripeErrorMessage: '',
+
       stripeInputsCompleted: false,
 
     }
@@ -397,25 +398,45 @@ export default {
       appStore.setBookingConfirmed('false')
     }
 
-    // loadStripe.setLoadParameters({ advancedFraudSignals: false });
-    this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+    // Grab our New Client (or existing if they reload) Stripe secret from our Server
+    const _secret = await this.getStripeSecret()
 
-    const options = {
-      mode: 'payment',
-      amount: 150,
-      currency: 'chf',
-      // Fully customizable with appearance API.
-      appearance: {/*...*/ },
-    };
+    // Initialize Stripe
+    this.stripe = Stripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+    const elements = this.stripe.elements({
+      clientSecret: _secret,
+      loader: "always",
+    });
 
-    // Set up Stripe.js and Elements to use in checkout form
-    const elements = this.stripe.elements(options);
+    // Create an instance of the card Element
+    this.cardElement = elements.create('payment');
 
-    // Create and mount the Payment Element
-    this.paymentElement = elements.create('payment');
-    // Listen for the input completed event, so we can activate the Book Flight button.
-    this.paymentElement.on('change', this.onStripeElementsChange)
-    this.paymentElement.mount('#stripe-payment');
+    // Add an instance of the card Element into the `card-element` <div>
+    this.cardElement.mount('#stripe-card-element');
+
+
+
+
+    // // loadStripe.setLoadParameters({ advancedFraudSignals: false });
+    // this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+    // const options = {
+    //   mode: 'setup',        // 'payment' or 'setup' -- we're using a SetupIntent here.
+    //   'setupFutureUsage': 'off_session',
+    //   amount: this.orderTotalAmount(),
+    //   currency: 'chf',
+    //   // Fully customizable with appearance API.
+    //   appearance: {/*...*/ },
+    // };
+
+    // // Set up Stripe.js and Elements to use in checkout form
+    // this.stripeElementsObj = this.stripe.elements(options);
+
+    // // Create and mount the Payment Element
+    // this.paymentElement = this.stripeElementsObj.create('card');
+    // // Listen for the input completed event, so we can activate the Book Flight button.
+    // this.paymentElement.on('change', this.onStripeElementsChange)
+    // this.paymentElement.mount('#stripe-card');
 
 
 
@@ -456,13 +477,92 @@ export default {
 
   methods: {
 
-    bookFlight() {
+    async getStripeSecret() {
+
+      // Customer ID is stored in LocalStorage, so we can re-use it if they reload the page.
+      let _stripeCustId = localStorage.stripeCustId ? localStorage.stripeCustId : ''
+
+      // TODO: !!! Don't want to call LIVE on the dev Sail.
+      // Local, Staging or LIVE path here.
+      let host = new URL(document.location).hostname
+      let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
+      if (host == 'swissparaglide.com') {
+        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+      } else {
+        console.log("Using SAIL for Stripe setup path: ", path)
+      }
+
+      let content = {}
+
+      try {
+        const rawResponse = await fetch(path, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "customerId": _stripeCustId,
+            "name": 'Big Test',
+            "email": 'chris@bsoft.ch',
+            "phone": '079 123 4567'
+          })
+        });
+        content = await rawResponse.json()
+        if (!rawResponse.ok) {
+          throw new Error(`rawResponse status: ${rawResponse.status}`);
+        }
+
+      } catch (error) {
+        console.error(error.message);
+      }
+
+      console.log("getStripeSecret() returned: ", content)
+
+      // Don't save the client secret anywhere.
+      const secret = content.client_secret
+
+      // Save the Customer ID to the LocalStorage.
+      // Pass this into Stripe setup API call, so we don't make a new Stripe
+      // Customer on each load here.
+      localStorage.stripeCustId = content.customer_id
+
+      return secret
+
+    },
+
+    async bookFlight() {
       console.log("Book Flight Btn pushed.")
 
       // Need to run the Stripe SetupIntent from here, so user can do all the possible
       // 3D Secure stuff directly if required.
 
+      // await const result = this.stripe.confirmSetupIntent('seti_1J0Z2eBAgiPA9UQuIh20l4wM', {
+      //   payment_method: {
+      //     card: this.paymentElement,
+      //     billing_details: {
+      //       name: 'Jenny Rosen',
+      //     },
+      //   },
+      // })
+
     },
+
+    // async getStripeSecret() {
+    //   // let json = {}
+    //   // try {
+    //   //   const response = await fetch('/stripe/secret', {
+    //   //     headers: {
+    //   //       "Content-Type": "application/json"
+    //   //     }
+    //   //   });
+    //   //   json = await response.json()
+    //   //   if (!response.ok) {
+    //   //     throw new Error(`Response status: ${response.status}`);
+    //   //   }
+    //   //   // ...
+    //   // } catch (error) {
+    //   //   console.error(error.message);
+    //   // }
+    //   // return json // Promise!!!
+    // }
 
     // Finally figured this out. 
     onStripeElementsChange(ev) {
@@ -472,7 +572,11 @@ export default {
       } else {
         this.stripeInputsCompleted = false
       }
-    
+
+    },
+
+    orderTotalAmount() {
+      return this.totalPassengers * (this.singleFlightPrice + (this.hasPhotos ? this.photoVideoPackagePrice : 0))
     },
 
 
@@ -683,4 +787,5 @@ div.cpHeader {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 </style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from
-'node_modules/astro/dist/core/logger/core'
+'node_modules/astro/dist/core/logger/core'import { log } from 'astro/dist/core/logger/core'
+
