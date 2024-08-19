@@ -4,7 +4,7 @@
     :class="[`timeSlot_${slideIndex}`, isSlideSelected ? ' border-2 border-black/50 bg-black/10' : 'border-[1px] border-indigo-100']">
 
     <!-- Header Box.  -->
-    <div class="time_slot_header py-1 text-xl  rounded-md text-center font-black   border-black/30 border-2"
+    <div class="time_slot_header py-1 mb-2 text-xl  rounded-md text-center font-black   border-black/30 border-2"
       :class="[isSlideSelected ? ' ring-2 ring-black ' : '', isFlightSlide ? 'bg-amber-500 ' : 'bg-black/70 text-white']">
 
       <span :class="isSlideSelected ? 'text-3xl' : ''">
@@ -32,9 +32,9 @@
     <ul role="list" class="space-y-1 py-1 ">
 
       <!-- No Flights Today. (not available in Schedule)  -->
-      <li v-if="Array.isArray(dayObject) === true" class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative">
+      <li v-if="Object.keys(dayObject).length === 0" class="bg-white px-4 py-4 shadow rounded-md sm:px-6 relative">
         <span class="text-orange-700 italic">
-          We are not flying today.
+          Sorry, We're not flying today.
         </span>
       </li>
 

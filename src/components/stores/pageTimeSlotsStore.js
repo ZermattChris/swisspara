@@ -172,9 +172,6 @@ export const pageTimeSlotsStore = reactive({
     //console.log("Server Slot Data updated in Cache from API call.")
 		this.loading = false
 	},
-	// async getAPITimeSlotData() {
-	// 	return await timeSlotsAPI.get(this.selectedFlight, this.flightDate)
-	// },
 
 
 
