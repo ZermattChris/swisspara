@@ -111,7 +111,7 @@
 
 
     <!-- Payment Block -->
-    <div id="checkoutWrapper" v-if="hasConfirmedBooking === true">
+    <div id="checkoutWrapper" v-show="hasConfirmedBooking === true">
       <div>
         <p class="pb-6 px-2">
           After checking that your details are correct, enter your Credit Card details to complete your booking. Your
@@ -252,8 +252,8 @@
           <span class="block text-sm font-light text-gray-700">A valid Card is required to complete your Booking.</span>
         </h2>
 
-        <div id="stripe-card-element" class="px-4 py-5 text-gray-300">
-          (loading Payment)
+        <div id="stripe-card-element" class="px-4 py-5 text-gray-300 min-h-[300px]">
+          loading...
         </div>
       </div><!-- END: Stripe Checkout component -->
 
@@ -383,8 +383,10 @@ export default {
       // Stripe
       apiType: _api.getAPIType(),
       stripe: null,
+      elements: null,
       stripeCardElement: null,
       stripeErrorMessage: '',
+      _secret: '',
 
       stripeInputsCompleted: false,
 
@@ -398,18 +400,25 @@ export default {
       appStore.setBookingConfirmed('false')
     }
 
-    // Grab our New Client (or existing if they reload) Stripe secret from our Server
-    const _secret = await this.getStripeSecret()
+    // Creates or finds a Stripe User.
+    // Creates a SetupIntent for the User.
+    // Saves the Booking data to the DB (for future confirmation via Webhook).
+    this._secret = await this.setupStripe()
 
     // Initialize Stripe
+    // TODO: Need to get the Public Key from a env var.
     this.stripe = Stripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
-    const elements = this.stripe.elements({
-      clientSecret: _secret,
+    const secret = this._secret
+    this.elements = this.stripe.elements({
+      clientSecret: secret,
       loader: "always",
     });
 
     // Create an instance of the card Element
-    this.cardElement = elements.create('payment');
+    this.cardElement = this.elements.create('payment');
+
+    // // Listen for the input completed event, so we can activate the Book Flight button.
+    this.cardElement.on('change', this.onStripeElementsChange)
 
     // Add an instance of the card Element into the `card-element` <div>
     this.cardElement.mount('#stripe-card-element');
@@ -477,12 +486,12 @@ export default {
 
   methods: {
 
-    async getStripeSecret() {
+    async setupStripe() {
 
       // Customer ID is stored in LocalStorage, so we can re-use it if they reload the page.
       let _stripeCustId = localStorage.stripeCustId ? localStorage.stripeCustId : ''
 
-      // TODO: !!! Don't want to call LIVE on the dev Sail.
+      // Don't want to call LIVE on the dev Sail.
       // Local, Staging or LIVE path here.
       let host = new URL(document.location).hostname
       let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
@@ -500,9 +509,9 @@ export default {
           headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
             "customerId": _stripeCustId,
-            "name": 'Big Test',
-            "email": 'chris@bsoft.ch',
-            "phone": '079 123 4567'
+            "name": this.contactPassenger.name,
+            "email": this.contactPassenger.email,
+            "phone": this.contactPassenger.phone
           })
         });
         content = await rawResponse.json()
@@ -531,42 +540,43 @@ export default {
     async bookFlight() {
       console.log("Book Flight Btn pushed.")
 
-      // Need to run the Stripe SetupIntent from here, so user can do all the possible
-      // 3D Secure stuff directly if required.
+      const secret = this._secret
+      const cardElement = this.cardElement
+      const elements = this.elements
 
-      // await const result = this.stripe.confirmSetupIntent('seti_1J0Z2eBAgiPA9UQuIh20l4wM', {
-      //   payment_method: {
-      //     card: this.paymentElement,
-      //     billing_details: {
-      //       name: 'Jenny Rosen',
-      //     },
-      //   },
-      // })
+      // This was the missing jiju for making this work with Stripe.
+      // Adding a Payment to the Stripe PaymentIntent.
+      var { error: submitError } = await this.elements.submit();
+      if (error) {
+        // Handle error here
+        console.error('this.elements.submit()', error);
+      } else {
+        // TODO: If success, then call the API to confirm the Booking.
+        console.log('this.elements.submit() worked');
+      }
+
+      // Confirm the Stripe SetupIntent here.
+      // Stay on this page and show the User a success message (or error and try again)
+      var { setupIntent, error } = await this.stripe.confirmSetup({
+        clientSecret: secret,
+        elements,
+        redirect: 'if_required'
+      });
+      if (error) {
+        // Handle error here
+        console.error('Stripe confirmSetup returned an Error', error);
+      } else {
+        // We've Captured the Card. Tell the user.
+        // The actual payment will be done after the flight.
+        // The Booking Addition is controlled by the Stripe Webhook.
+        console.log('SetupIntent succeeded:', setupIntent);
+      }
 
     },
 
-    // async getStripeSecret() {
-    //   // let json = {}
-    //   // try {
-    //   //   const response = await fetch('/stripe/secret', {
-    //   //     headers: {
-    //   //       "Content-Type": "application/json"
-    //   //     }
-    //   //   });
-    //   //   json = await response.json()
-    //   //   if (!response.ok) {
-    //   //     throw new Error(`Response status: ${response.status}`);
-    //   //   }
-    //   //   // ...
-    //   // } catch (error) {
-    //   //   console.error(error.message);
-    //   // }
-    //   // return json // Promise!!!
-    // }
-
-    // Finally figured this out. 
+    // Handle when the Stripe Card element is completed.
     onStripeElementsChange(ev) {
-      //console.log("Stripe Valid: ", ev.complete)
+      console.log("Stripe Valid: ", ev.complete)
       if (ev.complete === true) {
         this.stripeInputsCompleted = true
       } else {
@@ -788,4 +798,4 @@ div.cpHeader {
 }
 </style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from
 'node_modules/astro/dist/core/logger/core'import { log } from 'astro/dist/core/logger/core'
-
+import type { email } from '@vuelidate/validators'
