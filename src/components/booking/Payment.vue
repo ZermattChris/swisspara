@@ -306,6 +306,10 @@
 
       <!-- <p>{{ this.stripeInputsCompleted === true ? 'Stripe Good!' : 'Stripe xxx' }}</p> -->
 
+      <div v-html="stripeDevMessages">
+
+      </div>
+
     </div>
 
     <!-- hasConfirmedBooking: {{hasConfirmedBooking}} -- 
@@ -384,11 +388,12 @@ export default {
       apiType: _api.getAPIType(),
       stripe: null,
       elements: null,
-      stripeCardElement: null,
-      stripeErrorMessage: '',
       _secret: '',
-
+      // --
       stripeInputsCompleted: false,
+      // -- Stripe Card messages.
+      stripeDevMessages: '',
+      stripeBookingMessages: '',
 
     }
   },
@@ -404,6 +409,7 @@ export default {
     // Creates a SetupIntent for the User.
     // Saves the Booking data to the DB (for future confirmation via Webhook).
     this._secret = await this.setupStripe()
+    this.stripeDevMessages = '• Stripe Setup API complete -> Secret has been returned. </br>'
 
     // Initialize Stripe
     // TODO: Need to get the Public Key from a env var.
@@ -422,33 +428,7 @@ export default {
 
     // Add an instance of the card Element into the `card-element` <div>
     this.cardElement.mount('#stripe-card-element');
-
-
-
-
-    // // loadStripe.setLoadParameters({ advancedFraudSignals: false });
-    // this.stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
-
-    // const options = {
-    //   mode: 'setup',        // 'payment' or 'setup' -- we're using a SetupIntent here.
-    //   'setupFutureUsage': 'off_session',
-    //   amount: this.orderTotalAmount(),
-    //   currency: 'chf',
-    //   // Fully customizable with appearance API.
-    //   appearance: {/*...*/ },
-    // };
-
-    // // Set up Stripe.js and Elements to use in checkout form
-    // this.stripeElementsObj = this.stripe.elements(options);
-
-    // // Create and mount the Payment Element
-    // this.paymentElement = this.stripeElementsObj.create('card');
-    // // Listen for the input completed event, so we can activate the Book Flight button.
-    // this.paymentElement.on('change', this.onStripeElementsChange)
-    // this.paymentElement.mount('#stripe-card');
-
-
-
+    this.stripeDevMessages += '• Stripe Card Element mounted. </br>'
 
 
 
@@ -490,15 +470,24 @@ export default {
 
       // Customer ID is stored in LocalStorage, so we can re-use it if they reload the page.
       let _stripeCustId = localStorage.stripeCustId ? localStorage.stripeCustId : ''
+      if (_stripeCustId === '') {
+        this.stripeDevMessages += '• No Stripe Customer in LocalStorage. Will create a New Stripe Customer </br>'
+      } else {
+        this.stripeDevMessages += '• Found Stripe Customer in LocalStorage. Will use this Customer ID: ' + _stripeCustId + ' </br>'
+      }
 
       // Don't want to call LIVE on the dev Sail.
       // Local, Staging or LIVE path here.
       let host = new URL(document.location).hostname
       let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
-      if (host == 'swissparaglide.com') {
-        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+      if (host == 'spzadmin.local') {
+        this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + path + ' </br>'
+      } elseif (host == 'swisspara.netlify.app') {
+        this.stripeDevMessages += '• TODO!!!! On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
       } else {
-        console.log("Using SAIL for Stripe setup path: ", path)
+        // Live Stripe calls.
+        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+        this.stripeDevMessages += '• Live API path -> Real Stripe Card and Customer setup: ' + path + ' </br>'
       }
 
       let content = {}
