@@ -486,7 +486,8 @@ export default {
       } else if (host == 'swisspara.netlify.app') {
         // TODO: This is why the staging on Netlify is failing. Need to set a flag to the API 
         //       to use Stripe Test Mode. 
-        this.stripeDevMessages += '• TODO!!!! On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
+        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+        this.stripeDevMessages += '• On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
       } else {
         // Live Stripe calls.
         path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
