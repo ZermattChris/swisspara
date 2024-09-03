@@ -480,9 +480,9 @@ export default {
       // Local, Staging or LIVE path here.
       let host = new URL(document.location).hostname
       let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
-      if (host == 'spzadmin.local') {
+      if (host == 'localhost') {
         this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + path + ' </br>'
-      } elseif (host == 'swisspara.netlify.app') {
+      } else if (host == 'swisspara.netlify.app') {
         this.stripeDevMessages += '• TODO!!!! On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
       } else {
         // Live Stripe calls.
