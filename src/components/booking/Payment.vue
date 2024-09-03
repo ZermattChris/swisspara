@@ -409,7 +409,7 @@ export default {
     // Creates a SetupIntent for the User.
     // Saves the Booking data to the DB (for future confirmation via Webhook).
     this._secret = await this.setupStripe()
-    this.stripeDevMessages = '• Stripe Setup API complete -> Secret has been returned. </br>'
+    this.stripeDevMessages = `• Stripe Setup API complete -> Secret has been returned: ${this._secret} </br>`
 
     // Initialize Stripe
     // TODO: Need to get the Public Key from a env var.

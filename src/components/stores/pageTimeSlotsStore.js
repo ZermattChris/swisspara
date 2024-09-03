@@ -82,6 +82,7 @@ export const pageTimeSlotsStore = reactive({
       let slotNr = parseInt(index) + 1    // why is index a string???
       let serverPilotsAtSlot = flightDateSlotsListKeys[index]
       let usersBookedPilots = passList[key]
+      // TODO: This is throwing and error -- Uncaught (in promise) TypeError: Cannot read properties of undefined (reading '0')
       let serverAvailablePilots = flightDateSlotsList[serverPilotsAtSlot][0]
       //console.log(`Slot: ${slotNr}`, keys[index], " Booked Pilots: ", usersBookedPilots, " Server Pilots: ", serverAvailablePilots)
 
