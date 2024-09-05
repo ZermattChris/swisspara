@@ -364,9 +364,8 @@ export default {
 
       hasPhotos: flightStore.getPhotosToggle() ? true : false,
 
-      // -------- Stripe Payment Stuff --------
       // Store a "BookingHash" in LocalStorage. Use this to connect to our backend & Stripe.
-      _bookingHash: localStorage._bookingHash ? localStorage._bookingHash : '',
+      /// _bookingHash: localStorage._bookingHash ? localStorage._bookingHash : '',
 
       // Pass in Date Time formats as something that Carbon can parse easily.
       _flightDate: dateStore.getFlightDate() + ' 00:00:00',
@@ -384,7 +383,8 @@ export default {
       // Passenger Details.
       _passengersList: passengersStore.getAllPassengersList(),
 
-      // Stripe
+      
+      // -------- Stripe Payment Stuff --------
       apiType: _api.getAPIType(),
       stripe: null,
       elements: null,
@@ -456,23 +456,23 @@ export default {
       // Local, Staging or LIVE path here.
       let stripeTestMode = true
       let host = new URL(document.location).hostname
-      let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
+      let setupPath = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
       if (host == 'localhost') {
-        this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + path + ' </br>'
+        this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + setupPath + ' </br>'
       } else if (host == 'swisspara.netlify.app') {
-        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
-        this.stripeDevMessages += '• On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
+        setupPath = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+        this.stripeDevMessages += '• On Netlify Staging. Using Live API path with Dev flag: ' + setupPath + ' </br>'
       } else {
         // Live Stripe calls.
         stripeTestMode = false
-        path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
-        this.stripeDevMessages += '• Live API path -> Real Stripe Card and Customer setup: ' + path + ' </br>'
+        setupPath = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
+        this.stripeDevMessages += '• Live API path -> Real Stripe Card and Customer setup: ' + setupPath + ' </br>'
       }
 
       let content = {}
 
       try {
-        const rawResponse = await fetch(path, {
+        const rawResponse = await fetch(setupPath, {
           method: 'POST',
           headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -553,41 +553,55 @@ export default {
       this.stripeDevMessages += '✓ Stripe SetupIntent Success! </br>'
 
 
-      // TODO: If success, then call the API to create a New Booking in our system.__VLS_componentsOption
+      // TODO: If success, then call the API to create a New Booking in our system.
+      // -- Save the Booking to our DB.
       // -- Send customer emails
       // -- Send us New Booking email & SMS.
 
+      // -> NOTE: We are only capturing the customer's card and booking data here, no need for a Stripe Webhook until actual payment time.
+
+      let host = new URL(document.location).hostname
+      let bookPath = 'http://spzadmin.local:88/api/v1/book'   // Local or Staging.
+      if (host == 'localhost') {
+        this.stripeDevMessages += '• Local Dev API -> New Booking called on: ' + bookPath + ' </br>'
+      } else if (host == 'swisspara.netlify.app') {
+        bookPath = 'https://admin.swissparaglide.com/api/v1/book'
+        this.stripeDevMessages += '• Local Dev API -> New Booking called on: ' + bookPath + ' </br>'
+      } else {
+        // Live Stripe calls.
+        stripeTestMode = false
+        bookPath = 'https://admin.swissparaglide.com/api/v1/book'
+        this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' </br>'
+      }
+
+      let content = {}
+      try {
+        const rawResponse = await fetch(bookPath, {
+          method: 'POST',
+          headers: {'Accept': 'application/json', "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "bookingHash": this._bookingHash,
+            "flightDate": this._flightDate,
+            "arriveDate": this._arriveDateTime,
+            "departDate": this._departDateTime,
+            "selectedFlightId": this._selectedFlightId,
+            "hasPhotosBool": this._hasPhotosBool,
+            "timeSlotsList": this._timeSlotsList,
+            "passengersList": this._passengersList,
+          })
+        });
+        content = await rawResponse.json()
+        if (!rawResponse.ok) {
+          throw new Error(`rawResponse status: ${rawResponse.status}`);
+        }
+
+      } catch (error) {
+        console.error(error.message);
+      }
 
 
-      // let content = {}
-      // try {
 
-      //   const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
-      //     method: 'POST',
-      //     headers: {'Accept': 'application/json', "Content-Type": "application/json" },
-      //     body: JSON.stringify({
-      //       "bookingHash": this._bookingHash,
-      //       "flightDate": this._flightDate,
-      //       "arriveDate": this._arriveDateTime,
-      //       "departDate": this._departDateTime,
-      //       "selectedFlightId": this._selectedFlightId,
-      //       "hasPhotosBool": this._hasPhotosBool,
-      //       "timeSlotsList": this._timeSlotsList,
-      //       "passengersList": this._passengersList,
-      //     })
-      //   });
-      //   content = await rawResponse.json()
-      //   if (!rawResponse.ok) {
-      //     throw new Error(`rawResponse status: ${rawResponse.status}`);
-      //   }
-
-      // } catch (error) {
-      //   console.error(error.message);
-      // }
-
-
-
-      console.log('Booking Completed!');
+      console.log('Booking Completed!', content);
       this.stripeDevMessages += '✓ Booking Complete! Order shoulbe be in our db and Emails/SMS sent... </br>'
       
 
