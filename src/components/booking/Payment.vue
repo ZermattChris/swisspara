@@ -409,7 +409,7 @@ export default {
     // Creates a SetupIntent for the User.
     // Saves the Booking data to the DB (for future confirmation via Webhook).
     this._secret = await this.setupStripe()
-    this.stripeDevMessages = `• Stripe Setup API complete -> Secret has been returned: ${this._secret} </br>`
+    this.stripeDevMessages += `• Stripe Setup API complete -> Secret has been returned: ${this._secret} </br>`
 
     // Initialize Stripe
     // TODO: Need to get the Public Key from a env var.
@@ -470,6 +470,9 @@ export default {
 
       // Customer ID is stored in LocalStorage, so we can re-use it if they reload the page.
       let _stripeCustId = localStorage.stripeCustId ? localStorage.stripeCustId : ''
+      if (_stripeCustId === undefined) {
+        _stripeCustId = ''
+      }
       if (_stripeCustId === '') {
         this.stripeDevMessages += '• No Stripe Customer in LocalStorage. Will create a New Stripe Customer </br>'
       } else {
@@ -478,18 +481,18 @@ export default {
 
       // Don't want to call LIVE on the dev Sail.
       // Local, Staging or LIVE path here.
+      let stripeTestMode = true
       let host = new URL(document.location).hostname
       let path = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
       this.stripeDevMessages += '• This is the API Server path being set (check on Netlify): ' + path + ' </br>'
       if (host == 'localhost') {
         this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + path + ' </br>'
       } else if (host == 'swisspara.netlify.app') {
-        // TODO: This is why the staging on Netlify is failing. Need to set a flag to the API 
-        //       to use Stripe Test Mode. 
         path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
         this.stripeDevMessages += '• On Netlify Staging. Using Live API path with Dev flag: ' + path + ' </br>'
       } else {
         // Live Stripe calls.
+        stripeTestMode = false
         path = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
         this.stripeDevMessages += '• Live API path -> Real Stripe Card and Customer setup: ' + path + ' </br>'
       }
@@ -501,6 +504,7 @@ export default {
           method: 'POST',
           headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
+            "stripeTestMode": stripeTestMode,
             "customerId": _stripeCustId,
             "name": this.contactPassenger.name,
             "email": this.contactPassenger.email,
