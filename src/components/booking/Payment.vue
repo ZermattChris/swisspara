@@ -412,8 +412,12 @@ export default {
     this.stripeDevMessages += `• Stripe Setup API complete -> Secret has been returned: ${this._secret} </br>`
 
     // Initialize Stripe
+
+
     // TODO: Need to get the Public Key from a env var.
     this.stripe = Stripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+
+
     const secret = this._secret
     this.elements = this.stripe.elements({
       clientSecret: secret,
@@ -427,39 +431,8 @@ export default {
     this.cardElement.on('change', this.onStripeElementsChange)
 
     // Add an instance of the card Element into the `card-element` <div>
-    this.cardElement.mount('#stripe-card-element');
+    this.cardElement.mount('#stripe-card-element')
     this.stripeDevMessages += '• Stripe Card Element mounted. </br>'
-
-
-
-    // let content = {}
-    // try {
-
-    //   const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
-    //     method: 'POST',
-    //     headers: {'Accept': 'application/json', "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       "bookingHash": this._bookingHash,
-    //       "flightDate": this._flightDate,
-    //       "arriveDate": this._arriveDateTime,
-    //       "departDate": this._departDateTime,
-    //       "selectedFlightId": this._selectedFlightId,
-    //       "hasPhotosBool": this._hasPhotosBool,
-    //       "timeSlotsList": this._timeSlotsList,
-    //       "passengersList": this._passengersList,
-    //     })
-    //   });
-    //   content = await rawResponse.json()
-    //   if (!rawResponse.ok) {
-    //     throw new Error(`rawResponse status: ${rawResponse.status}`);
-    //   }
-
-    // } catch (error) {
-    //   console.error(error.message);
-    // }
-
-    // console.log("api/v1/stripe/setup: ", content)
-
 
   },
 
@@ -471,9 +444,9 @@ export default {
       // Customer ID is stored in LocalStorage, so we can re-use it if they reload the page.
       let _stripeCustId = localStorage.stripeCustId ? localStorage.stripeCustId : ''
       if (_stripeCustId === undefined) {
+        this.stripeDevMessages += '• No Stripe Customer in LocalStorage (was Undefined). Will create a New Stripe Customer </br>'
         _stripeCustId = ''
-      }
-      if (_stripeCustId === '') {
+      } else if (_stripeCustId === '') {
         this.stripeDevMessages += '• No Stripe Customer in LocalStorage. Will create a New Stripe Customer </br>'
       } else {
         this.stripeDevMessages += '• Found Stripe Customer in LocalStorage. Will use this Customer ID: ' + _stripeCustId + ' </br>'
@@ -519,7 +492,7 @@ export default {
         console.error(error.message);
       }
 
-      console.log("getStripeSecret() returned: ", content)
+      console.log("API /setup returned: ", content)
 
       // Don't save the client secret anywhere.
       const secret = content.client_secret
@@ -533,8 +506,12 @@ export default {
 
     },
 
+    /**
+     * Customer has clicked the "Book Flight" button.
+     */
     async bookFlight() {
-      console.log("Book Flight Btn pushed.")
+
+      this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
 
       const secret = this._secret
       const cardElement = this.cardElement
@@ -546,10 +523,13 @@ export default {
       if (error) {
         // Handle error here
         console.error('this.elements.submit()', error);
-      } else {
-        // TODO: If success, then call the API to confirm the Booking.
-        console.log('this.elements.submit() worked');
+        this.stripeDevMessages += '✓ Stripe Elements submit() FAILED. Retry??? </br>'
+        // TODO: Remove page blocker...
+        return
       }
+      console.log('this.elements.submit() worked');
+      this.stripeDevMessages += '✓ Stripe Elements submit() success. Payment Added to this Customer. </br>'
+      
 
       // Confirm the Stripe SetupIntent here.
       // Stay on this page and show the User a success message (or error and try again)
@@ -561,12 +541,55 @@ export default {
       if (error) {
         // Handle error here
         console.error('Stripe confirmSetup returned an Error', error);
-      } else {
-        // We've Captured the Card. Tell the user.
-        // The actual payment will be done after the flight.
-        // The Booking Addition is controlled by the Stripe Webhook.
-        console.log('SetupIntent succeeded:', setupIntent);
-      }
+        this.stripeDevMessages += '✘ Stripe SetupIntent Error. Get user to try again... </br>'
+        // TODO: Remove page blocker...
+        return
+      } 
+
+      // We've Captured the Card. Tell the user.
+      // The actual payment will be done after the flight.
+      // The Booking Addition is controlled by the Stripe Webhook.
+      console.log('SetupIntent succeeded:', setupIntent);
+      this.stripeDevMessages += '✓ Stripe SetupIntent Success! </br>'
+
+
+      // TODO: If success, then call the API to create a New Booking in our system.__VLS_componentsOption
+      // -- Send customer emails
+      // -- Send us New Booking email & SMS.
+
+
+
+      // let content = {}
+      // try {
+
+      //   const rawResponse = await fetch('http://spzadmin.local:88/api/v1/stripe/setup', {
+      //     method: 'POST',
+      //     headers: {'Accept': 'application/json', "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       "bookingHash": this._bookingHash,
+      //       "flightDate": this._flightDate,
+      //       "arriveDate": this._arriveDateTime,
+      //       "departDate": this._departDateTime,
+      //       "selectedFlightId": this._selectedFlightId,
+      //       "hasPhotosBool": this._hasPhotosBool,
+      //       "timeSlotsList": this._timeSlotsList,
+      //       "passengersList": this._passengersList,
+      //     })
+      //   });
+      //   content = await rawResponse.json()
+      //   if (!rawResponse.ok) {
+      //     throw new Error(`rawResponse status: ${rawResponse.status}`);
+      //   }
+
+      // } catch (error) {
+      //   console.error(error.message);
+      // }
+
+
+
+      console.log('Booking Completed!');
+      this.stripeDevMessages += '✓ Booking Complete! Order shoulbe be in our db and Emails/SMS sent... </br>'
+      
 
     },
 
@@ -592,13 +615,15 @@ export default {
      */
     valid() {
       // Overriden from the base '_Page' class.
-      // console.log('-> Payment.vue: valid()')
+      console.log('-> Payment.vue: valid()')
 
-      let result = false
-      // if (store.getTotalPassengers() > 0) {
-      //   result = true
-      // }
-      return result
+      // if (this.hasConfirmedBooking === false) return false
+      // // Check if Stripe is happy...
+
+      // // and T&Cs are checked
+      // if (this.tAndCsChecked === false) return false
+
+      return true
 
     },
 
