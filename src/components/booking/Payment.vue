@@ -508,6 +508,7 @@ export default {
       // Customer on each load here.
       this.stripeCustId = content.customer_id
       localStorage.stripeCustId = this.stripeCustId
+      this.stripeDevMessages += `-> New Stripe Customer created. ID: ${this.stripeCustId} </br>`
 
       return secret
 
@@ -578,6 +579,7 @@ export default {
         this.stripeDevMessages += '• STAGING API -> New Booking called on: ' + bookPath + ' (Stripe TEST MODE Customer and SetupIntent)</br>'
       } else {
         // Live Stripe calls.
+        // 'https://swissparaglide.com'
         stripeTestMode = false
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
         this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' (Stripe LIVE MODE)</br>'
@@ -603,10 +605,12 @@ export default {
         });
         content = await rawResponse.json()
         if (!rawResponse.ok) {
-          throw new Error(`rawResponse status: ${rawResponse.status}`);
+          throw new Error(`Status: ${rawResponse.status}. Returned: ${content.message}`);
         }
       } catch (error) {
         console.error(error.message);
+        this.stripeDevMessages += '✘ New Booking API Error. ' + error.message + ' </br>'
+        return
       }
 
 
