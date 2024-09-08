@@ -567,6 +567,8 @@ export default {
 
       // -> NOTE: We are only capturing the customer's card and booking data here, no need for a Stripe Webhook until actual payment time.
 
+      let stripeTestMode = true
+
       let host = new URL(document.location).hostname
       let bookPath = 'http://spzadmin.local:88/api/v1/book'   // Local or Staging.
       if (host == 'localhost') {
@@ -587,6 +589,7 @@ export default {
           method: 'POST',
           headers: {'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
+            "stripeTestMode": stripeTestMode,
             "customerId": this.stripeCustId,
             "setupIntentId": setupIntent.id,
             "flightDate": this._flightDate,
