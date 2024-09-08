@@ -22,55 +22,8 @@
       <div class="mb-6 overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow-lg">
         <div class="px-2 pb-6 ">
 
-
-          <!-- This is the Confirm Booking Grid. -->
-          <p class="mt-4 ml-4 mb-1 italic text-orange-800">
-            Flight Details:
-          </p>
-          <div id="confirmFlightGrid" style="grid-template-columns: 160px auto;"
-            class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  ">
-            <div class="rowLabel">People Flying:</div>
-            <div class="rowValue">{{ totalPassengers }}</div>
-
-            <div class="rowLabel">Flight Date:</div>
-            <div class="rowValue">{{ getFlghtDayName }} &mdash; {{ getFlghtDateFormatted }}</div>
-
-            <div class="rowLabel">Meeting Time(s):</div>
-            <div class="rowValue">{{ meetingTime }}</div>
-
-            <div class="rowLabel">Flight:</div>
-            <div class="rowValue">{{ flightAndPrice }}</div>
-
-            <div class="rowLabel">Photos + Videos:</div>
-            <div class="rowValue text-green-700" v-if="hasPhotos">{{ photos }}</div>
-            <div class="rowValue text-red-700" v-if="!hasPhotos">{{ photos }}</div>
-          </div>
-
-          <!-- This is the Confirm Contact Grid. -->
-          <p class="mt-4 ml-4 mb-1 italic text-orange-800">
-            Contact Details:
-          </p>
-          <div id="confirmContactGrid" style="grid-template-columns: 130px auto;" class="mt-0  mx-4   grid grid-flow-row-dense 
-                sm:max-w-screen-sm  ">
-            <div class="rowLabel">Telephone:</div>
-            <div class="rowValue">{{ telephone }}</div>
-
-            <div class="rowLabel">Email:</div>
-            <div class="rowValue underline">{{ email }}</div>
-
-          </div>
-
-          <!-- Confirm Booking Button.  -->
-          <div class="text-center mt-8">
-            <button type="button" @click="confirmBooking" class="uppercase   animate-pulse hover:animate-none   rounded-full bg-lime-200 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
-                  border-[1px] border-gray-400
-                  ring-4 ring-offset-2 ring-orange-700 hover:bg-lime-200 hover:text-green-900 hover:shadow-lg">
-              Confirm
-            </button>
-          </div>
-
           <!-- Pasengers lising Grid. -->
-          <p class="mt-4 ml-0 mb-1 italic text-orange-800">
+          <p class="mt-4 ml-0 mb-1 italic text-indigo-800">
             Passengers:
           </p>
           <div id="confirmPassengersGrid" style="grid-template-columns: auto 50px 50px 90px 30px;"
@@ -97,6 +50,58 @@
               </div>
             </template>
 
+          </div>
+
+          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto"/>
+
+          <!-- This is the Confirm Booking Grid. -->
+          <p class="mt-2 ml-4 mb-1 italic text-orange-800">
+            Flight Details:
+          </p>
+          <div id="confirmFlightGrid" style="grid-template-columns: 160px auto;"
+            class="m-auto   grid grid-flow-row auto-rows-max        sm:max-w-screen-sm  ">
+            <div class="rowLabel">People Flying:</div>
+            <div class="rowValue font-bold text-indigo-800">{{ totalPassengers }}x</div>
+
+            <div class="rowLabel">Flight Date:</div>
+            <div class="rowValue">{{ getFlghtDayName }} &mdash; {{ getFlghtDateFormatted }}</div>
+
+            <div class="rowLabel">Meeting Time(s):</div>
+            <div class="rowValue">{{ meetingTime }}</div>
+
+            <div class="rowLabel">Flight:</div>
+            <div class="rowValue">{{ flightAndPrice }}</div>
+
+            <div class="rowLabel">Photos + Videos:</div>
+            <div class="rowValue text-green-700" v-if="hasPhotos">{{ photos }}</div>
+            <div class="rowValue text-red-700" v-if="!hasPhotos">{{ photos }}</div>
+          </div>
+
+
+          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto"/>
+
+
+          <!-- This is the Confirm Contact Grid. -->
+          <p class="mt-2 ml-4 mb-1 italic text-orange-800">
+            Contact Details:
+          </p>
+          <div id="confirmContactGrid" style="grid-template-columns: 130px auto;" class="mt-0  mx-4   grid grid-flow-row-dense 
+                sm:max-w-screen-sm  ">
+            <div class="rowLabel">Telephone:</div>
+            <div class="rowValue">{{ telephone }}</div>
+
+            <div class="rowLabel">Email:</div>
+            <div class="rowValue underline">{{ email }}</div>
+
+          </div>
+
+          <!-- Confirm Booking Button.  -->
+          <div class="text-center mt-8">
+            <button type="button" @click="confirmBooking" class="uppercase   animate-pulse hover:animate-none   rounded-full bg-lime-200 px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm 
+                  border-[1px] border-gray-400
+                  ring-4 ring-offset-2 ring-orange-700 hover:bg-lime-200 hover:text-green-900 hover:shadow-lg">
+              Confirm
+            </button>
           </div>
 
           <div class=" text-indigo-800 text-sm mt-4 text-center" v-if="!hasPhotos">
@@ -148,39 +153,6 @@
 
         </div>
       </div><!-- END: Passengers, date and Show Booking Details...  -->
-
-
-      <!-- Booking Notes  -->
-      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
-        <div class="px-4 py-5 ">
-
-          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
-            <svg class="w-6 h-6 inline relative -top-0.5 fill-orange-700" xmlns="http://www.w3.org/2000/svg" height="48"
-              viewBox="0 -960 960 960">
-              <path
-                d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
-            </svg>
-
-            <p class="text-sm inline ml-1 text-gray-700">
-              Click to add an optional Booking Message...
-            </p>
-          </div>
-
-          <div v-if="toggleBookingMsg">
-
-            <p class="mt-2 text-sm text-gray-700">
-              If you have any questions, special wishes or have extra information regarding your Booking,
-              please let us know here.
-            </p>
-            <div class="mt-2 px-0">
-              <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
-                class="w-full rounded-md focus:ring-indigo-600 "></textarea>
-            </div>
-
-          </div>
-
-        </div>
-      </div><!-- END: Booking Notes -->
 
 
 
@@ -241,6 +213,39 @@
       </div><!-- END: Table Showing Flights w/ costs and Photos/Vids  -->
 
 
+
+
+      <!-- Booking Notes  -->
+      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
+        <div class="px-4 py-5 ">
+
+          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
+            <svg class="w-6 h-6 inline relative -top-0.5 fill-orange-700" xmlns="http://www.w3.org/2000/svg" height="48"
+              viewBox="0 -960 960 960">
+              <path
+                d="M453-280h60v-240h-60v240Zm26.982-314q14.018 0 23.518-9.2T513-626q0-14.45-9.482-24.225-9.483-9.775-23.5-9.775-14.018 0-23.518 9.775T447-626q0 13.6 9.482 22.8 9.483 9.2 23.5 9.2Zm.284 514q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80-397.681 80-480.5q0-82.819 31.5-155.659Q143-709 197.5-763t127.341-85.5Q397.681-880 480.5-880q82.819 0 155.659 31.5Q709-817 763-763t85.5 127Q880-563 880-480.266q0 82.734-31.5 155.5T763-197.684q-54 54.316-127 86Q563-80 480.266-80Zm.234-60Q622-140 721-239.5t99-241Q820-622 721.188-721 622.375-820 480-820q-141 0-240.5 98.812Q140-622.375 140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
+            </svg>
+
+            <p class="text-sm inline ml-1 text-gray-700">
+              Click here if you want to add an optional Booking Message...
+            </p>
+          </div>
+
+          <div v-if="toggleBookingMsg">
+
+            <p class="mt-2 text-sm text-gray-700">
+              If you have any questions, special wishes or have extra information regarding your Booking,
+              please let us know here.
+            </p>
+            <div class="mt-2 px-0">
+              <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
+                class="w-full rounded-md focus:ring-indigo-600 "></textarea>
+            </div>
+
+          </div>
+
+        </div>
+      </div><!-- END: Booking Notes -->
 
 
 
@@ -389,6 +394,7 @@ export default {
       stripe: null,
       elements: null,
       _secret: '',
+      stripeCustId: '',
       // --
       stripeInputsCompleted: false,
       // -- Stripe Card messages.
@@ -458,15 +464,15 @@ export default {
       let host = new URL(document.location).hostname
       let setupPath = 'http://spzadmin.local:88/api/v1/stripe/setup'   // Local or Staging.
       if (host == 'localhost') {
-        this.stripeDevMessages += '• On Local Dev. Using the Sail API path: ' + setupPath + ' </br>'
+        this.stripeDevMessages += '• LOCAL DEV. Using the Sail API path: ' + setupPath + ' </br>'
       } else if (host == 'swisspara.netlify.app') {
         setupPath = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
-        this.stripeDevMessages += '• On Netlify Staging. Using Live API path with Dev flag: ' + setupPath + ' </br>'
+        this.stripeDevMessages += '• On Netlify Staging. Using LIVE API path with Dev flag: ' + setupPath + ' </br>'
       } else {
         // Live Stripe calls.
         stripeTestMode = false
         setupPath = 'https://admin.swissparaglide.com/api/v1/stripe/setup'
-        this.stripeDevMessages += '• Live API path -> Real Stripe Card and Customer setup: ' + setupPath + ' </br>'
+        this.stripeDevMessages += '• LIVE API path -> Real Stripe Card and Customer setup: ' + setupPath + ' </br>'
       }
 
       let content = {}
@@ -500,7 +506,8 @@ export default {
       // Save the Customer ID to the LocalStorage.
       // Pass this into Stripe setup API call, so we don't make a new Stripe
       // Customer on each load here.
-      localStorage.stripeCustId = content.customer_id
+      this.stripeCustId = content.customer_id
+      localStorage.stripeCustId = this.stripeCustId
 
       return secret
 
@@ -539,9 +546,9 @@ export default {
         redirect: 'if_required'
       });
       if (error) {
-        // Handle error here
-        console.error('Stripe confirmSetup returned an Error', error);
-        this.stripeDevMessages += '✘ Stripe SetupIntent Error. Get user to try again... </br>'
+        // **************** This is where the SetupIntent fails. ****************
+        console.error('Stripe confirmSetup returned an Error', error.message);
+        this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
         // TODO: Remove page blocker...
         return
       } 
@@ -563,24 +570,25 @@ export default {
       let host = new URL(document.location).hostname
       let bookPath = 'http://spzadmin.local:88/api/v1/book'   // Local or Staging.
       if (host == 'localhost') {
-        this.stripeDevMessages += '• Local Dev API -> New Booking called on: ' + bookPath + ' </br>'
+        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + ' </br>'
       } else if (host == 'swisspara.netlify.app') {
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
-        this.stripeDevMessages += '• Local Dev API -> New Booking called on: ' + bookPath + ' </br>'
+        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + ' </br>'
       } else {
         // Live Stripe calls.
         stripeTestMode = false
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
         this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' </br>'
       }
-
+      // Create a new Booking via our API
       let content = {}
       try {
         const rawResponse = await fetch(bookPath, {
           method: 'POST',
           headers: {'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
-            "bookingHash": this._bookingHash,
+            "customerId": this.stripeCustId,
+            "setupIntentId": setupIntent.id,
             "flightDate": this._flightDate,
             "arriveDate": this._arriveDateTime,
             "departDate": this._departDateTime,
@@ -594,7 +602,6 @@ export default {
         if (!rawResponse.ok) {
           throw new Error(`rawResponse status: ${rawResponse.status}`);
         }
-
       } catch (error) {
         console.error(error.message);
       }
@@ -603,7 +610,10 @@ export default {
 
       console.log('Booking Completed!', content);
       this.stripeDevMessages += '✓ Booking Complete! Order shoulbe be in our db and Emails/SMS sent... </br>'
+      this.stripeDevMessages += `✓ Booking ID: ${content.bookingId}</br>`
       
+      // TODO: Delete localStorage???
+
 
     },
 
@@ -741,7 +751,7 @@ export default {
 
     getFlghtDayName() {
       const fltDate = new Date(Date.parse(this.flightDate))
-      return format(fltDate, 'EEE')
+      return format(fltDate, 'EEEE')
       // // console.log("fltDate", fltDate)
       // const dayInt = fltDate.getDay()
       // return calUtils.getDayString(dayInt)
