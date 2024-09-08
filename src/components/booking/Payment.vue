@@ -572,15 +572,15 @@ export default {
       let host = new URL(document.location).hostname
       let bookPath = 'http://spzadmin.local:88/api/v1/book'   // Local or Staging.
       if (host == 'localhost') {
-        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + ' </br>'
+        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + ' (Stripe TEST MODE Customer and SetupIntent)</br>'
       } else if (host == 'swisspara.netlify.app') {
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
-        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + ' </br>'
+        this.stripeDevMessages += '• STAGING API -> New Booking called on: ' + bookPath + ' (Stripe TEST MODE Customer and SetupIntent)</br>'
       } else {
         // Live Stripe calls.
         stripeTestMode = false
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
-        this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' </br>'
+        this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' (Stripe LIVE MODE)</br>'
       }
       // Create a new Booking via our API
       let content = {}
