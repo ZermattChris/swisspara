@@ -311,7 +311,9 @@
 
       <!-- <p>{{ this.stripeInputsCompleted === true ? 'Stripe Good!' : 'Stripe xxx' }}</p> -->
 
-      <div v-html="stripeDevMessages">
+
+      <div v-if="showDevInfos()" class="text-xl text-indigo-800 font-bold">DEV Messages::</div>
+      <div v-if="showDevInfos()" v-html="stripeDevMessages">
 
       </div>
 
@@ -645,6 +647,14 @@ export default {
       return this.totalPassengers * (this.singleFlightPrice + (this.hasPhotos ? this.photoVideoPackagePrice : 0))
     },
 
+
+    showDevInfos() {
+      if (document.location) {
+        let host = new URL(document.location).hostname
+        if (host == 'swissparaglide.com') return false
+      }
+      return true
+    },
 
     /**
      * This method must be overrided in each of these Page components.
