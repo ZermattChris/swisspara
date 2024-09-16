@@ -584,6 +584,10 @@ export default {
         bookPath = 'https://admin.swissparaglide.com/api/v1/book'
         this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + ' (Stripe LIVE MODE)</br>'
       }
+
+      let stripeTestModeString = stripeTestMode ? 'true' : 'false'
+      this.stripeDevMessages += `• Stripe TEST Mode: ${stripeTestModeString}</br>`
+
       // Create a new Booking via our API
       let content = {}
       try {
@@ -610,6 +614,8 @@ export default {
       } catch (error) {
         console.error(error.message);
         this.stripeDevMessages += '✘ New Booking API Error. ' + error.message + ' </br>'
+        // Maybe delete the Stripe Customer number here and retry??
+        // TODO: In theory this only happens if the Stiper Customer is deleted...
         return
       }
 
