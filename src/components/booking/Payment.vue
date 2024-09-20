@@ -254,7 +254,7 @@
 
         <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg pt-4 pl-4 pb-2 shadow-sm">
           Card Details
-          <span class="block text-sm font-light text-gray-700">A valid Card is required to complete your Booking.</span>
+          <span class="block text-sm font-light text-gray-700">A valid Credit/Debit Card is required to complete your Booking.</span>
         </h2>
 
         <div id="stripe-card-element" class="px-4 py-5 text-gray-300 min-h-[300px]">

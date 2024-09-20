@@ -1,6 +1,9 @@
 ---
 import Layout from "@layouts/Layout.astro";
 
+import BulletHDiv from "@src/components/widgets/BulletHDiv.astro";
+import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
+
 // import CTABook from '@components/CTA-Book.astro';
 ---
 
@@ -10,9 +13,9 @@ import Layout from "@layouts/Layout.astro";
   <main>
     <div class="bg-white">
       <div
-        class="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8"
+        class="mx-auto max-w-2xl px-4 pt-12 pb-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8"
       >
-        <div class="max-w-3xl">
+        <div class="max-w-3xl mb-12">
           <h1 id="features-heading" class="font-medium text-gray-700">
             Pre-flight
           </h1>
@@ -21,18 +24,103 @@ import Layout from "@layouts/Layout.astro";
           >
             Good to know before you book a flight with Swiss Paraglide Zermatt.
           </h2>
-          <p class="mt-4 text-gray-700">
+          <p class="text-lg mt-4 text-gray-700">
             General information for your tandem paragliding flight in Zermatt.
-            This will help you to prepare for your flight and to know what to
-            expect. Safety is our top priority, and wind/weather conditions
-            along with the fitness and confidence of the passenger all play a
+            This will help you to prepare for your flight and to know what 
+            expect. 
+          </p>
+          <p class="text-lg mt-4 text-gray-700">
+            <span class="font-bold">Safety &amp; Fun</span> are our top priorities. Wind &amp; weather conditions,
+            the time of year, together with the fitness and confidence of (you) the passenger all play a
             role our the decision to fly.
+          </p>
+          <p class="text-lg mt-4 text-gray-700">
+            When you book your flight, you will receive specific details via email.
           </p>
         </div>
 
+
+        <BulletHDiv></BulletHDiv>
+
+
         <div
-          class="mt-11 grid grid-cols-1 items-start gap-x-6 gap-y-16 sm:mt-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 text-sm font-light text-black"
+          class="mt-11 grid grid-cols-1 items-start gap-x-6 gap-y-16 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8 text-sm font-light text-black"
         >
+
+          <PreflightPoint title="Photos &amp; Videos">
+
+            <p class="mt-2">
+              Your pilot will use a specially designed (for amazing shots &
+              safety) GoPro to capture unforgetable photos &amp; videos of your
+              flight. 
+              This usually consists of 40-60 photos and 5-10 short video clips.
+              (Optional 40.- CHF package)
+            </p>
+            <p class="mt-2">
+              Phones and Selfie Sticks are not allowed during the actufal flight. 
+              For obvious safety reasons &ndash; nothing is allowed to fall during your flight...
+            </p>
+
+            <span slot="icon">
+              <svg
+                class="p-16"
+                viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"
+              >
+                <path d="M479.5-267q72.5 0 121.5-49t49-121.5q0-72.5-49-121T479.5-607q-72.5 0-121 48.5t-48.5 121q0 72.5 48.5 121.5t121 49Zm0-60q-47.5 0-78.5-31.5t-31-79q0-47.5 31-78.5t78.5-31q47.5 0 79 31t31.5 78.5q0 47.5-31.5 79t-79 31.5ZM140-120q-24 0-42-18t-18-42v-513q0-23 18-41.5t42-18.5h147l73-87h240l73 87h147q23 0 41.5 18.5T880-693v513q0 24-18.5 42T820-120H140Zm0-60h680v-513H645l-73-87H388l-73 87H140v513Zm340-257Z"></path>
+              </svg>
+            </span>
+
+          </PreflightPoint>
+
+
+          <BulletHDiv></BulletHDiv>
+
+
+          <div class="flex flex-col-reverse">
+            <div class="mt-6">
+              <h3 class="text-xl font-medium drop-shadow-md">Meeting Point</h3>
+
+              <p class="mt-2">
+                Winter Flights meet at the bottom of the Sunnegga/Rothorn lift,
+                along the river in Zermatt. Winter Flights are from Dec 1st
+                unitl the Ski Lifts close for the winter (usually around April
+                20th).
+              </p>
+              <p class="mt-2">
+                For Summer Flights the meeting point is in front of the
+                Gornergrat Railway station in Zermatt (directly across from
+                Zermatt's Main Train Station). Summer Flights are from the
+                closing of the Winter ski lifts (end of April), until the end of
+                November.
+              </p>
+            </div>
+
+            <div
+              class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100"
+            >
+              <svg
+                class="p-16"
+                width="32"
+                height="32"
+                viewBox="0 -960 960 960"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+                xmlns="http://www.w3.org/2000/svg"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+              >
+                <path
+                  d="M468-240q-96-5-162-74t-66-166q0-100 70-170t170-70q97 0 166 66t74 163l-63-20q-11-64-60-106.5T480-660q-75 0-127.5 52.5T300-480q0 67 42.5 116.5T449-303l19 63Zm48 158q-9 1-18 1.5t-18 .5q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 9-.5 18t-1.5 18l-58-18v-18q0-142-99-241t-241-99q-142 0-241 99t-99 241q0 142 99 241t241 99h18l18 58Zm305 22L650-231 600-80 480-480l400 120-151 50 171 171-79 79Z"
+                ></path>
+              </svg>
+            </div>
+          </div>
+
+
+          <BulletHDiv></BulletHDiv>
+
+
           <div class="flex flex-col-reverse">
             <div class="mt-6">
               <h3 class="text-xl font-medium drop-shadow-md">Weather</h3>
@@ -68,6 +156,9 @@ import Layout from "@layouts/Layout.astro";
               </svg>
             </div>
           </div>
+
+          <BulletHDiv></BulletHDiv>
+
 
           <div class="flex flex-col-reverse">
             <div class="mt-6">
@@ -106,13 +197,17 @@ import Layout from "@layouts/Layout.astro";
             </div>
           </div>
 
+
+          <BulletHDiv></BulletHDiv>
+
+
           <div class="flex flex-col-reverse">
             <div class="mt-6">
               <h3 class="text-xl font-medium drop-shadow-md">Age</h3>
               <p class="mt-2">
-                If you are between the ages of 5 to 69 and you meet our fitness
+                If you are between the ages of 5 to 70 and you meet our fitness
                 criteria (see 'Fitness'), we'll be happy to take you for an
-                amazing paragliding flight here in front of the Matterhorn.
+                amazing paragliding flight here in front of the Matterhorn (also see 'Weather').
               </p>
               <p class="mt-2">
                 We can make the occasional exception if you are fit &amp; sporty
@@ -142,19 +237,25 @@ import Layout from "@layouts/Layout.astro";
             </div>
           </div>
 
+
+          <BulletHDiv></BulletHDiv>
+
+
           <div class="flex flex-col-reverse">
             <div class="mt-6">
               <h3 class="text-xl font-medium drop-shadow-md">Safety</h3>
               <p class="mt-2">
-                Going for a tandem paragliding flight in Switzerland is quite a
-                safe activity. The Swiss Tandem Paragliding license is very
-                highly rated and issued by the Swiss Aviation Authority.
+                Going for a tandem paragliding flight in Switzerland is
+                generally a safe activity. The Swiss Tandem Paragliding license
+                is very highly rated and issued by the Swiss National Aviation
+                Authority.
               </p>
               <p class="mt-2">
-                That said, we are going flying in the highest mountains in the
-                Swiss Alps and there will always remain a small amount of risk
-                (your pilot is flying with you and is also very interested in a
-                fun, safe flight).
+                That said, we are going flying in the highest mountains of the
+                Swiss Alps and there will always remain a small amount of risk.
+                You and your pilot will work together as a Team (your pilot is
+                flying with you and is also very interested in a fun, safe
+                flight).
               </p>
             </div>
             <div
@@ -179,46 +280,15 @@ import Layout from "@layouts/Layout.astro";
             </div>
           </div>
 
-          <div class="flex flex-col-reverse">
-            <div class="mt-6">
-              <h3 class="text-xl font-medium drop-shadow-md">
-                Photos & Videos
-              </h3>
-              <p class="mt-2">
-                Your pilot will use a specially designed (for amazing shots &
-                safety) GoPro to capture unforgetable photos & videos of your
-                flight. (+40.- CHF option)
-              </p>
-              <p class="mt-2">
-                Phones and Selfie Sticks are not allowed &ndash; for safety
-                reasons &ndash; nothing is allowed to fall during your flight...
-              </p>
-            </div>
-            <div
-              class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100"
-            >
-              <svg
-                class="p-16"
-                width="32"
-                height="32"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-                xmlns="http://www.w3.org/2000/svg"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-              >
-                <path
-                  d="M479.5-267q72.5 0 121.5-49t49-121.5q0-72.5-49-121T479.5-607q-72.5 0-121 48.5t-48.5 121q0 72.5 48.5 121.5t121 49Zm0-60q-47.5 0-78.5-31.5t-31-79q0-47.5 31-78.5t78.5-31q47.5 0 79 31t31.5 78.5q0 47.5-31.5 79t-79 31.5ZM140-120q-24 0-42-18t-18-42v-513q0-23 18-41.5t42-18.5h147l73-87h240l73 87h147q23 0 41.5 18.5T880-693v513q0 24-18.5 42T820-120H140Zm0-60h680v-513H645l-73-87H388l-73 87H140v513Zm340-257Z"
-                ></path>
-              </svg>
-            </div>
-          </div>
+
+          <BulletHDiv></BulletHDiv>
+
 
           <div class="flex flex-col-reverse">
             <div class="mt-6">
-              <h3 class="text-xl font-medium drop-shadow-md">Transport</h3>
+              <h3 class="text-xl font-medium drop-shadow-md">
+                Mountain Transport
+              </h3>
               <p class="mt-2">
                 Our prices reflect the price of the Paragliding Flight only. If
                 you do not have a valid Ski Pass and/or Peak Pass, you will need
@@ -251,50 +321,15 @@ import Layout from "@layouts/Layout.astro";
             </div>
           </div>
 
-          <div class="flex flex-col-reverse">
-            <div class="mt-6">
-              <h3 class="text-xl font-medium drop-shadow-md">Meeting Point</h3>
 
-              <p class="mt-2">
-                Winter Flights meet at the bottom of the Sunnegga/Rothorn
-                lift, along the river in Zermatt. Winter Flights are from Dec
-                1st unitl the Ski Lifts close for the winter (usually around
-                April 20th).
-              </p>
-              <p class="mt-2">
-                For Summer Flights the meeting point is in front of the Gornergrat
-                Railway station in Zermatt (directly across from Zermatt's Main
-                Train Station). Summer Flights are from the closing of the
-                Winter ski lifts (end of April), until the end of November.
-              </p>
+          <BulletHDiv></BulletHDiv>
 
-            </div>
-
-            <div
-              class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100"
-            >
-              <svg
-                class="p-16"
-                width="32"
-                height="32"
-                viewBox="0 -960 960 960"
-                fill="currentColor"
-                aria-hidden="true"
-                focusable="false"
-                xmlns="http://www.w3.org/2000/svg"
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-              >
-                <path
-                  d="M468-240q-96-5-162-74t-66-166q0-100 70-170t170-70q97 0 166 66t74 163l-63-20q-11-64-60-106.5T480-660q-75 0-127.5 52.5T300-480q0 67 42.5 116.5T449-303l19 63Zm48 158q-9 1-18 1.5t-18 .5q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 9-.5 18t-1.5 18l-58-18v-18q0-142-99-241t-241-99q-142 0-241 99t-99 241q0 142 99 241t241 99h18l18 58Zm305 22L650-231 600-80 480-480l400 120-151 50 171 171-79 79Z"
-                ></path>
-              </svg>
-            </div>
-          </div>
 
           <div class="flex flex-col-reverse">
             <div class="mt-6">
-              <h3 class="text-xl font-medium drop-shadow-md">Cancelation</h3>
+              <h3 class="text-xl font-medium drop-shadow-md">
+                Flight Cancelations
+              </h3>
               <p class="mt-2">
                 Flights can be cancelled with no charge, up to 12:00 noon on the
                 day before the flight is scheduled. After this you will be
@@ -307,10 +342,8 @@ import Layout from "@layouts/Layout.astro";
               </p>
               <a
                 class="block mt-2 font-medium underline"
-                href="/terms-and-conditions"
-                >Terms &amp; Conditions for details...<span class="sr-only">
-                  about Cancelation</span
-                >
+                href="/terms-and-conditions#cancelation"
+                >Terms &amp; Conditions for details...
               </a>
             </div>
             <div
