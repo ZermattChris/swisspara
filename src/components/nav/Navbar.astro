@@ -10,12 +10,12 @@ import SVGLogo from "@components/nav/Logo.astro"
 <!-- <link rel="preload" as="image" href="/images/Swiss-Paraglide-Zermatt-in-front-of-Matthorn-summer-lowres.jpg"> -->
 
 <nav id="navbar"
-  class="sticky overflow-hidden top-0 z-[10] min-h-16
+  class="sticky  top-0 z-40 min-h-16
   flex flex-wrap items-center justify-between w-full py-4 px-4 
   text-lg text-gray-100"
 >
     <!-- SVG Logo  -->
-    <div class="relative top-[-10px] z-40">
+    <div class="relative top-[-10px] z-50">
         <a href="/" aria-label="Return to Swiss Paraglide Zermatt's home page">
             <SVGLogo/>
         </a>
@@ -50,9 +50,9 @@ import SVGLogo from "@components/nav/Logo.astro"
     > -->
     <div 
         id="menu"   
-        class="hidden absolute right-0 top-0 pt-[60px]
+        class="hidden absolute right-0 top-0 pt-[60px] z-40
         bg-cover md:bg-none 
-        bg-black/90
+        bg-black/85
         border-b-4 shadow-lg md:shadow-none md:border-none border-white
         w-screen   md:flex md:items-center md:w-auto md:pt-0 "
     >
