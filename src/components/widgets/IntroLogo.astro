@@ -4,21 +4,36 @@
 
 ---
 
-<div id="intro-content" class="outline outline-2 outline-orange-600">
-  <h1 class="spz-heading  heading-shadow text-white text-4xl font-semibold text-shadow !leading-[0.9em]" >
+<div id="intro-content"
+  class="
+    logo-container 
+    text-center
+    absolute z-20 top-[18vh] 
+    w-full 
+    sm:w-1/2 sm:left-1/4
+  "
+>
+
+  <h1 class="spz-heading relative max-w-[10em] mx-auto heading-shadow text-white  font-semibold text-shadow !leading-[0.9em]  " >
     <img
-      class="h-[4rem] mx-auto mb-3"
+      class="
+        h-[10vh] sm:h-[14vh]
+        mx-auto mb-3 
+      "
       src="/favicon.svg"
       alt="Swiss Paraglide Zermatt - Logo"
     />
     Swiss Paraglide
-    <span class="font-sans font-light text-sm pl-56"
-      >ZERMATT</span
-    >
+    <span class="relative h-2 w-0 ">
+      <span class="zermatt absolute right-0 -bottom-4 font-sans font-light text-sm">
+        ZERMATT
+      </span>
+    </span>
   </h1>
 
-  <div id="buttons">
+  <!-- <div id="buttons">
     <div class="mx-auto max-w-2xl text-center">
+    -->
       <!-- <ul>
       <li>Highly Experienced Zermatt Pilots</li>
       <li></li>
@@ -38,6 +53,16 @@
       class="text-shadow text-sm font-semibold leading-6 text-white md:text-lg"
     >
       Our Flights <span aria-hidden="true" class="text-2xl">→</span>
-    </a> -->
-  </div>
+    </a> 
+  </div>-->
 </div>
+
+<style>
+  .logo-container {
+    font-size: clamp(2rem, 6.5vw, 4rem);  
+  }
+  .logo-container .zermatt {
+    font-size: clamp(0.8rem, 1.5vw, 1.5rem);  
+  }
+
+</style>
