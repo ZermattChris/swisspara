@@ -1,5 +1,8 @@
 ---
-// A scalable Logo box
+// Logo and Intro page contents (all has to be inside this absolute container)
+
+import Reviews from "@components/widgets/Reviews.astro";
+
 ---
 
 <div id="intro-content"
@@ -30,16 +33,45 @@
 
 </div>
 
-<div class="absolute z-20 top-[20vh] w-full text-center">
-  <a
-    aria-label="Book Now!"
-    href="/book-now"
-    class="w-48 md:w-64   mx-auto mt-[45vh]   text-lg md:text-2xl     block rounded-md border-2 border-black bg-lime-300 px-3.5 py-2.5 font-semibold text-black shadow-sm hover:white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-lime-300"
+
+
+<div class="absolute z-20 top-[39vh] w-full text-center">
+  <a href="/flights">Our Flights</a> 
+  | 
+  <a href="/preflight">Pre-flight</a> 
+  | 
+  <a href="/reviews">Reviews</a> 
+</div>
+
+
+<div class="absolute z-20 top-[70vh] w-full text-center">
+
+  <a aria-label="Book Now!" href="/book-now"
+    class="w-48 md:w-64   mx-auto  mb-8   px-3.5 py-2.5  text-lg md:text-2xl     block rounded-md border-2 border-black bg-lime-300   select font-semibold text-black shadow-sm hover:white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-lime-300"
   >
     Book Online Now!
   </a>
-  <div class="mt-4 text-white px-3 py-2 max-w-fit mx-auto  bg-black/50  rounded">Easily choose your flight, date, time &amp; number of passengers.</div>
+
+  <!-- <div class="hidden sm:block mt-4 px-3 py-2 max-w-fit mx-auto  bg-white/60  sm:rounded">
+    <p class=""></p>
+      Easily choose your flight, date, time &amp; number of passengers.
+    </p>
+  
+    <p class="">
+      Let our Swiss Certified &amp; highly experienced tandem pilots take you on an experience of a lifetime.
+    </p>
+
+
+  </div> -->
+
+  <Reviews />
+
+  <!-- Highly recommended. The three of us had a phantastic flight with pilot Chris and his team pilots. 
+  An extraordinary experience to fly towards the Matterhorn and above the Bluelounge while the Zermatt unplugged Band played. 
+  They can also handle anxious Passengers very well, very patient. We will be back next year 🪂 Thank you Chris &amp; Team -->
+
 </div>
+
 
 
 <!-- <div id="buttons">
