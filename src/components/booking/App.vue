@@ -2,9 +2,9 @@
 
   <!-- Dynamic Vue 'Page' components being swapped out  -->
   <!-- Listen to current page's validity events.  -->
-  <div id="app" class="absolute top-[1em] w-full min-h-[450px] overflow-hidden">
+  <div id="app" class="absolute top-[80px] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper :pages="pages" class="mt-6 mb-12"></Stepper>
+    <Stepper :pages="pages" class="mt-6 mb-6"></Stepper>
 
     <div id="sizeBox" class="w-full max-[320px]:w-11/12
         mx-auto 
@@ -383,4 +383,4 @@ export default {
 .disabled:hover {
   background-color: rgb(88, 80, 236);
 }
-</style>datesStore, datesStore,import type { onPageLoad } from 'astro/virtual-modules/transitions-events.js'
+</style>

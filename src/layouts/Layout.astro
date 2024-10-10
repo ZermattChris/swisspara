@@ -30,6 +30,7 @@ const { title } = Astro.props;
   <body>
     <div class="flex flex-col h-screen justify-between">
       <Navbar />
+      <script src="@components/hamburger-menu.js"></script>
 
       <slot />
 
@@ -42,33 +43,33 @@ const { title } = Astro.props;
   // Vanilla JS.
   //document.addEventListener('astro:page-load', () => {
 
-  const button = document.querySelector("#menu-button");
-  const menu = document.querySelector("#menu");
-  const menuLinks = document.querySelectorAll("#menu a");
+  // const button = document.querySelector("#menu-button");
+  // const menu = document.querySelector("#menu");
+  // const menuLinks = document.querySelectorAll("#menu a");
 
-  button.addEventListener("click", () => {
-    menu.classList.toggle("hidden");
-  });
+  // button.addEventListener("click", () => {
+  //   menu.classList.toggle("hidden");
+  // });
 
-  menuLinks.forEach((mLink) => {
-    mLink.addEventListener("click", () => {
-      menu.classList.toggle("hidden");
-    });
-  });
-  function onClickOutside(el, cb) {
-    document.addEventListener("click", (event) => {
-      if (!el.contains(event.target)) cb();
-    });
-  }
+  // menuLinks.forEach((mLink) => {
+  //   mLink.addEventListener("click", () => {
+  //     menu.classList.toggle("hidden");
+  //   });
+  // });
+  // function onClickOutside(el, cb) {
+  //   document.addEventListener("click", (event) => {
+  //     if (!el.contains(event.target)) cb();
+  //   });
+  // }
 
-  // Close on outside clicks.
-  var navBar = document.getElementById("navbar");
+  // // Close on outside clicks.
+  // var navBar = document.getElementById("navbar");
 
-  onClickOutside(navBar, () => {
-    if (!menu.classList.contains("hidden")) {
-      menu.classList.add("hidden");
-    }
-  });
+  // onClickOutside(navBar, () => {
+  //   if (!menu.classList.contains("hidden")) {
+  //     menu.classList.add("hidden");
+  //   }
+  // });
 
   //});
 </script>
@@ -106,7 +107,9 @@ const { title } = Astro.props;
   }
 
   /* Nav + menu & Footer */
-  nav#navbar,
+  nav#navbar {
+    background-color: black;
+  }
   footer#footbar {
     background-color: #1d1d1d;
   }

@@ -26,34 +26,14 @@ const { title } = Astro.props;
 
 		<div class="flex flex-col h-screen justify-between">
 
-			<!-- <Navbar /> -->
+			<Navbar />
+      <script src="@components/hamburger-menu.js"></script>
+
 			<slot />
 
 
 		</div>
 		
-    <script>
-
-      window.onstorage = (e) => {
-        // When local storage changes, dump the list to
-        // the console.
-        // console.log(JSON.parse(window.localStorage.getItem("sampleList")));
-        //console.log(e)
-      };
-
-
-      // import {loadStripe} from '@stripe/stripe-js/pure'
-
-      // loadStripe.setLoadParameters({advancedFraudSignals: false});
-      // const stripe = await loadStripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
-
-      // const appearance = { /* appearance */ };
-      // const options = { /* options */ };
-      // const elements = stripe.elements({ clientSecret, appearance });
-      // const paymentElement = elements.create('payment', options);
-      // paymentElement.mount('#payment-element');
-
-    </script>
 	</body>
 </html>
 
@@ -83,8 +63,8 @@ const { title } = Astro.props;
 	/* ----------- Site wide CSS settings ----------- */
 
 	/* Nav + menu & Footer */
-	nav#navbar, footer#footbar {
-		background-color: #1d1d1d;
+	nav#navbar {
+		background-color: black;
 	}
 
 	footer nav > div > a, #navMenu a {
