@@ -3,6 +3,8 @@
   "compilerOptions": {
     "jsx": "preserve",
     "baseUrl": ".",
+    "sourceMap": true,
+    "inlineSourceMap": false,
     "paths": {
       "@src/*": ["src/*"],
       "@components/*": ["src/components/*"],

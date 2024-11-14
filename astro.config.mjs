@@ -14,6 +14,11 @@ export default defineConfig(
       tailwind(), 
       sitemap()
     ],
+    vite: {
+      build: {
+        sourcemap: true
+      }
+    },
     prefetch: {
       prefetchAll: true
     }
