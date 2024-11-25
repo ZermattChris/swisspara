@@ -31,7 +31,7 @@ import Reviews from "@components/widgets/Reviews.astro";
     </span>
   </h1>
 
-  <div class="relative   top-6 sm:top-10  text-base sm:text-lg md:text-xl   z-20 w-full text-center  text-white   font-light md:font-thin  select-none">
+  <div id="logoLinks" class="relative   top-6 sm:top-10  text-base sm:text-lg md:text-xl   z-20 w-full text-center  text-white   font-light md:font-thin  select-none">
     <a href="/flights">Our Flights</a> 
     &nbsp; | &nbsp;
     <a href="/preflight">Pre-flight</a> 
@@ -53,46 +53,12 @@ import Reviews from "@components/widgets/Reviews.astro";
     Book Online Now!
   </a>
 
-  <!-- <div class="hidden sm:block mt-4 px-3 py-2 max-w-fit mx-auto  bg-white/60  sm:rounded">
-    <p class=""></p>
-      Easily choose your flight, date, time &amp; number of passengers.
-    </p>
-  
-    <p class="">
-      Let our Swiss Certified &amp; highly experienced tandem pilots take you on an experience of a lifetime.
-    </p>
-
-
-  </div> -->
-
   <Reviews />
-
-  <!-- Highly recommended. The three of us had a phantastic flight with pilot Chris and his team pilots. 
-  An extraordinary experience to fly towards the Matterhorn and above the Bluelounge while the Zermatt unplugged Band played. 
-  They can also handle anxious Passengers very well, very patient. We will be back next year 🪂 Thank you Chris &amp; Team -->
 
 </div>
 
 
 
-<!-- <div id="buttons">
-  <div class="absolute z-20 top-[18vh] max-w-2xl text-center">
-    <a
-      aria-label="Book Now!"
-      href="/book-now"
-      class="w-48 md:w-64   mx-auto mt-[45vh]   text-lg md:text-2xl     block rounded-md border-2 border-black bg-lime-300 px-3.5 py-2.5 font-semibold text-black shadow-sm hover:white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-lime-300"
-    >
-      Book Online Now!
-    </a>
-  </div>
-
-  <div class="mt-12 flex items-center justify-center gap-x-6"></div>
-  
-  <div class="min-h-12   mx-auto    bg-white/80 sm:rounded ">
-
-  </div>
-
-</div> -->
 
 
 
@@ -102,5 +68,15 @@ import Reviews from "@components/widgets/Reviews.astro";
   }
   .logo-container .zermatt {
     font-size: clamp(0.8rem, 1.5vw, 1.5rem);
+  }
+
+
+  #logoLinks a {
+    font-weight: 400;
+    
+  }
+  #logoLinks a:hover {
+    text-decoration: underline;
+    
   }
 </style>
