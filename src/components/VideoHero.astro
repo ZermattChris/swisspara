@@ -72,8 +72,15 @@
     top: 49%;
     left: 49%;
     transform: translate(-49%, -49%);
-    visibility: hidden;
+    
+    opacity: 0;
+    transition: opacity 4s;
   }
+    .video-docker video.loaded {
+      opacity: 1;
+    }
+
+
   .video-docker::after {
     content: "";
     position: absolute;
@@ -98,6 +105,10 @@
     if (video.readyState >= 3) {
       // HAVE_FUTURE_DATA or higher
       console.log("Video is ready to play");
+
+      video.classList.add('loaded');
+
+
       // Hide loading spinner or perform other actions here
       clearInterval(checkInterval);
       removeEventListeners();
