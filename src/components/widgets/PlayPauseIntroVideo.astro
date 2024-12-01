@@ -1,0 +1,66 @@
+---
+
+---
+
+<div
+  id="playPause"
+  class="relative flex items-center justify-center text-sm text-white shadow-sm cursor-pointer"
+>
+  <svg
+    id="playIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M15.75 5.25v13.5m-7.5-13.5v13.5"></path>
+  </svg>
+
+  <svg
+    id="pauseIcon"
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="size-6 hidden"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
+    ></path>
+  </svg>
+
+  <div id="vidBtn" class="">
+    Pause
+  </div>
+</div>
+
+<script>
+  const video = document.querySelector("#introVideo");
+  const vidButton = document.querySelector("#vidBtn");
+  const playIcon = document.querySelector("#playIcon");
+  const pauseIcon = document.querySelector("#pauseIcon");
+
+  function toggleVideo() {
+    if (video.paused) {
+      video.play();
+      vidButton.textContent = "Pause";
+      playIcon.classList.remove("hidden");
+      pauseIcon.classList.add("hidden");
+    } else {
+      video.pause();
+      vidButton.textContent = "Play";
+      playIcon.classList.add("hidden");
+      pauseIcon.classList.remove("hidden");
+    }
+  }
+
+  vidButton.addEventListener("click", toggleVideo);
+</script>
