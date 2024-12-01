@@ -4,6 +4,7 @@
 >
   <div class="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
     <video
+      id="introVideo"
       class="min-w-full min-h-full absolute object-cover"
       autoplay
       muted
@@ -82,3 +83,53 @@
   }
 
 </style>
+
+<script>
+
+const video = document.querySelector("video");
+let checkInterval;
+let checkPerformed = false;
+
+function checkVideoLoaded() {
+    if (checkPerformed) return;
+
+    if (video.readyState >= 3) { // HAVE_FUTURE_DATA or higher
+        console.log("Video is ready to play");
+        // Hide loading spinner or perform other actions here
+        clearInterval(checkInterval);
+        removeEventListeners();
+        checkPerformed = true;
+    }
+}
+
+function removeEventListeners() {
+    video.removeEventListener("canplay", checkVideoLoaded);
+    video.removeEventListener("loadeddata", checkVideoLoaded);
+    video.removeEventListener("loadedmetadata", checkVideoLoaded);
+    window.removeEventListener("load", initVideoCheck);
+}
+
+function initVideoCheck() {
+    if (checkPerformed) return;
+
+    // Immediate check
+    checkVideoLoaded();
+    
+    // Set up periodic checking
+    checkInterval = setInterval(checkVideoLoaded, 100);
+
+    // Set up event listeners
+    video.addEventListener("canplay", checkVideoLoaded);
+    video.addEventListener("loadeddata", checkVideoLoaded);
+    video.addEventListener("loadedmetadata", checkVideoLoaded);
+}
+
+// Run on window load
+window.addEventListener("load", initVideoCheck);
+
+// Additional failsafe: check after a short delay
+setTimeout(initVideoCheck, 1000);
+
+
+
+</script>

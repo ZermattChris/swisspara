@@ -1,3 +1,17 @@
+# Update my Astro project:
+
+npx @astrojs/upgrade to update
+
+
+
+
+
+
+
+
+
+
+
 # Astro Starter Kit: Basics
 
 ```sh
