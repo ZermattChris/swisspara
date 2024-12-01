@@ -38,7 +38,7 @@
   </svg>
 
   <div id="vidBtn" class="">
-    Pause
+    Pause &nbsp;
   </div>
 </div>
 
@@ -51,12 +51,12 @@
   function toggleVideo() {
     if (video.paused) {
       video.play();
-      vidButton.textContent = "Pause";
+      vidButton.textContent = "Pause  &nbsp;";
       playIcon.classList.remove("hidden");
       pauseIcon.classList.add("hidden");
     } else {
       video.pause();
-      vidButton.textContent = "Play";
+      vidButton.textContent = "Play  &nbsp;";
       playIcon.classList.add("hidden");
       pauseIcon.classList.remove("hidden");
     }
