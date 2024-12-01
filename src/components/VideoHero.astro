@@ -1,8 +1,11 @@
 <section
   id="hero"
-  class="overflow-hidden relative h-screen z-0 flex flex-col border-0 shadow-none items-center justify-center text-center  py-0 px-0"
+  class="overflow-hidden relative h-screen z-0 flex flex-col border-0 shadow-none items-center justify-center text-center py-0 px-0"
 >
   <div class="video-docker absolute top-0 left-0 w-full h-full overflow-hidden">
+
+    <img src="/images/intro-quick-load.png" alt="Swiss Paraglide Zermatt" class="min-w-full min-h-full absolute object-cover" />
+
     <video
       id="introVideo"
       class="min-w-full min-h-full absolute object-cover"
@@ -10,6 +13,7 @@
       muted
       playsinline
       loop
+
     >
       <source
         src="/video/starter-matterhorn-paragliding-into2.webm"
@@ -21,9 +25,7 @@
       />
     </video>
 
-
   </div>
-
 
 </section>
 
@@ -70,6 +72,7 @@
     top: 49%;
     left: 49%;
     transform: translate(-49%, -49%);
+    visibility: hidden;
   }
   .video-docker::after {
     content: "";
@@ -81,40 +84,40 @@
     background: rgba(0, 0, 0, 0);
     z-index: 1;
   }
-
 </style>
 
 <script>
 
-const video = document.querySelector("video");
-let checkInterval;
-let checkPerformed = false;
+  const video = document.querySelector("video");
+  let checkInterval;
+  let checkPerformed = false;
 
-function checkVideoLoaded() {
+  function checkVideoLoaded() {
     if (checkPerformed) return;
 
-    if (video.readyState >= 3) { // HAVE_FUTURE_DATA or higher
-        console.log("Video is ready to play");
-        // Hide loading spinner or perform other actions here
-        clearInterval(checkInterval);
-        removeEventListeners();
-        checkPerformed = true;
+    if (video.readyState >= 3) {
+      // HAVE_FUTURE_DATA or higher
+      console.log("Video is ready to play");
+      // Hide loading spinner or perform other actions here
+      clearInterval(checkInterval);
+      removeEventListeners();
+      checkPerformed = true;
     }
-}
+  }
 
-function removeEventListeners() {
+  function removeEventListeners() {
     video.removeEventListener("canplay", checkVideoLoaded);
     video.removeEventListener("loadeddata", checkVideoLoaded);
     video.removeEventListener("loadedmetadata", checkVideoLoaded);
     window.removeEventListener("load", initVideoCheck);
-}
+  }
 
-function initVideoCheck() {
+  function initVideoCheck() {
     if (checkPerformed) return;
 
     // Immediate check
     checkVideoLoaded();
-    
+
     // Set up periodic checking
     checkInterval = setInterval(checkVideoLoaded, 100);
 
@@ -122,14 +125,12 @@ function initVideoCheck() {
     video.addEventListener("canplay", checkVideoLoaded);
     video.addEventListener("loadeddata", checkVideoLoaded);
     video.addEventListener("loadedmetadata", checkVideoLoaded);
-}
+  }
 
-// Run on window load
-window.addEventListener("load", initVideoCheck);
+  // Run on window load
+  window.addEventListener("load", initVideoCheck);
 
-// Additional failsafe: check after a short delay
-setTimeout(initVideoCheck, 1000);
-
-
+  // Additional failsafe: check after a short delay
+  setTimeout(initVideoCheck, 1000);
 
 </script>
