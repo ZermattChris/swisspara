@@ -57,21 +57,33 @@ const reviewFiles = await getCollection("reviews");
 
   const reviewCount = reviewFiles.length;
   var currentReviewIndex = 0;
-  var offscreenReview = document.getElementById("review_" + currentReviewIndex);
-  const delayInSeconds = 4 * 1000;
+  var offscreenReview = null;
+  var visibleReview = null;
+  const delayInSeconds = 9 * 1000;
+
+  //------------------------------------------
+  function copyOnscreen() {
+    // Copy from off-screen to on-screen
+    offscreenReviewHTML = document.getElementById("review_" + currentReviewIndex).outerHTML;
+    document.getElementById("reviewBox").innerHTML = offscreenReviewHTML;
+    return document.getElementById("reviewBox").firstElementChild;
+  }
+
 
   //------------------------------------------
   function setupReviews() {
     // Display the first Review on load.
     //currReview.classList.add("fade-in");
 
-    // Copy from off-screen to on-screen
-    document.getElementById("reviewBox").appendChild(offscreenReview);
+    // // Copy from off-screen to on-screen
+    // document.getElementById("reviewBox").appendChild(offscreenReview);
 
 
-    var visibleReview = document.getElementById("reviewBox").firstElementChild;
+    //visibleReview = document.getElementById("reviewBox").firstElementChild;
     // visibleReview.classList.add('fade-in');
 
+    //offscreenReview = document.getElementById("review_" + currentReviewIndex);
+    visibleReview = copyOnscreen();
     fadeIn(visibleReview);  
 
 
@@ -81,14 +93,29 @@ const reviewFiles = await getCollection("reviews");
     //   visibleReview.classList.add('visible');
     // }, 10); // Small delay to ensure the element is rendered before applying styles
 
-    // Runs the code that fades through the reviewsnpm
+    // Runs the code that fades through the reviews
     checkInterval = setInterval(cycleThroughReviews, delayInSeconds);
   }
 
   //------------------------------------------
   function cycleThroughReviews() {
     //console.log("Cycling through reviews: "  + reviewFiles.length);
-    //currReview.classList.remove("fade");
+
+    visibleReview.classList.remove("visible");
+    setTimeout(() => {
+      //visibleReview.classList.remove('visible');
+
+
+    // Copy next Review from off-screen to on-screen
+    currentReviewIndex++;
+    if (currentReviewIndex >= reviewCount) {
+      currentReviewIndex = 0;
+    }
+    offscreenReview = document.getElementById("review_" + currentReviewIndex);
+
+    visibleReview = copyOnscreen();
+    fadeIn(visibleReview);  
+  }, 2000); // match transition amount in css
 
    // fadeOutAndRemove(currReview);
 
@@ -102,7 +129,7 @@ const reviewFiles = await getCollection("reviews");
 
   //------------------------------------------
   function fadeIn(element) {
-    element.classList.add('fade-in');
+    //element.classList.add('visible');
     // Use setTimeout to trigger the transition
     // Add class to trigger transition
     setTimeout(() => {
