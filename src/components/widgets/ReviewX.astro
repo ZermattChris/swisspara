@@ -1,0 +1,217 @@
+---
+// Reads in a collection of reviews from .md format and
+// creates a rotating carousel of reviews with stars.
+import { getCollection } from "astro:content";
+const reviewFiles = await getCollection("reviews");
+---
+
+<div id="offscreenBox" class="absolute -top-[2000px] -left-[2000px]">
+<!-- This is an off-screen location where reviews are rendered by Astro. JS moves each on screen when required. -->
+{
+  reviewFiles.map((aReviewFile, index) => (
+    <div
+      id={`review_${index}`}
+      class="myReview mx-auto mt-8   max-w-xl transform scale-80  sm:scale-100 md:scale-110 lg:scale-120    border border-white rounded bg-white/70  "
+    >
+      <div class="ml-4">
+        <div id="stars" class="mt-2 flex items-center">
+          <h4 class="text-base font-bold text-gray-900 text-left mr-2 relative -bottom-0">
+            {aReviewFile.data.name}
+          </h4>
+
+          {Array.from({ length: aReviewFile.data.stars }, (_, i) => (
+            <svg
+              class="h-5 w-5 flex-shrink-0 text-yellow-600 stroke-yellow-300"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+              data-slot="icon"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          ))}
+        </div>
+      </div>
+
+      <div class="px-4 py-2 text-left">{aReviewFile.body}</div>
+    </div>
+  ))
+}
+</div>
+
+
+
+
+<!-- This is where the Reviews will be displayed.  -->
+<div id="reviewBox">
+</div>
+
+
+
+
+<script define:vars={{ reviewFiles }}>
+
+  const reviewCount = reviewFiles.length;
+  var currentReviewIndex = 0;
+  var offscreenReview = document.getElementById("review_" + currentReviewIndex);
+  const delayInSeconds = 4 * 1000;
+
+  //------------------------------------------
+  function setupReviews() {
+    // Display the first Review on load.
+    //currReview.classList.add("fade-in");
+
+    // Copy from off-screen to on-screen
+    document.getElementById("reviewBox").appendChild(offscreenReview);
+
+
+    var visibleReview = document.getElementById("reviewBox").firstElementChild;
+    // visibleReview.classList.add('fade-in');
+
+    fadeIn(visibleReview);  
+
+
+    // // Use setTimeout to trigger the transition
+    // // Add class to trigger transition
+    // setTimeout(() => {
+    //   visibleReview.classList.add('visible');
+    // }, 10); // Small delay to ensure the element is rendered before applying styles
+
+    // Runs the code that fades through the reviewsnpm
+    checkInterval = setInterval(cycleThroughReviews, delayInSeconds);
+  }
+
+  //------------------------------------------
+  function cycleThroughReviews() {
+    //console.log("Cycling through reviews: "  + reviewFiles.length);
+    //currReview.classList.remove("fade");
+
+   // fadeOutAndRemove(currReview);
+
+    // currentReviewIndex++;
+    // if (currentReviewIndex >= reviewCount) {
+    //   currentReviewIndex = 0;
+    // }
+    // currReview = document.getElementById("review_" + currentReviewIndex);
+    // currReview.classList.add("fade");
+  }
+
+  //------------------------------------------
+  function fadeIn(element) {
+    element.classList.add('fade-in');
+    // Use setTimeout to trigger the transition
+    // Add class to trigger transition
+    setTimeout(() => {
+      element.classList.add('visible');
+    }, 10); // Small delay to ensure the element is rendered before applying styles
+
+  }
+
+  window.addEventListener("load", setupReviews);
+
+</script>
+
+<style>
+
+  /** CSS to fade through Reviews (js driven) */
+  .myReview {
+    opacity: 0;
+    transition: opacity 2s;
+  }
+    .myReview.visible {
+      opacity: 1;
+    }
+
+
+  #stars svg {
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 1));
+  }
+
+</style>
+
+<script>
+  //------------------------------------------
+  // async function fadeOutAndRemove(element) {
+  //   element.classList.add('fade-out');
+  //   await sleep(delayInSeconds);
+  //   element.addEventListener('transitionend', function() {
+  //     hideElement(element);
+  //   });
+  // }
+  // //------------------------------------------
+  // function fadeIn(element) {
+  //   element.classList.add('fade-in');
+  // }
+
+  // function hideElement(element) {
+  //   console.log("Removing review: " + element);
+
+  //   element.style.position = 'absolute';
+  //   element.style.left = '-10000px';
+  //   element.style.top = '-10000px';
+  //   element.style.overflow = 'hidden';
+  // }
+
+  // function sleep(ms) {
+  //     return new Promise(resolve => setTimeout(resolve, ms));
+  // }
+
+
+
+  // reviewFiles.map((aReviewFile, index) => (
+  //   console.log(index + ': ' + aReviewFile.data.name)
+  // ));
+
+  // const video = document.querySelector("video");
+  // let checkInterval;
+  // let checkPerformed = false;
+
+  // function checkVideoLoaded() {
+  //   if (checkPerformed) return;
+
+  //   if (video.readyState >= 3) {
+  //     // HAVE_FUTURE_DATA or higher
+  //     console.log("Video is ready to play");
+
+  //     video.classList.add('loaded');
+
+  //     // Hide loading spinner or perform other actions here
+  //     clearInterval(checkInterval);
+  //     removeEventListeners();
+  //     checkPerformed = true;
+  //   }
+  // }
+
+  // function removeEventListeners() {
+  //   video.removeEventListener("canplay", checkVideoLoaded);
+  //   video.removeEventListener("loadeddata", checkVideoLoaded);
+  //   video.removeEventListener("loadedmetadata", checkVideoLoaded);
+  //   window.removeEventListener("load", initVideoCheck);
+  // }
+
+  // function initVideoCheck() {
+  //   if (checkPerformed) return;
+
+  //   // Immediate check
+  //   checkVideoLoaded();
+
+  //   // Set up periodic checking
+  //   checkInterval = setInterval(checkVideoLoaded, 100);
+
+  //   // Set up event listeners
+  //   video.addEventListener("canplay", checkVideoLoaded);
+  //   video.addEventListener("loadeddata", checkVideoLoaded);
+  //   video.addEventListener("loadedmetadata", checkVideoLoaded);
+  // }
+
+  // // Run on window load
+  // window.addEventListener("load", initVideoCheck);
+
+  // // Additional failsafe: check after a short delay
+  // setTimeout(initVideoCheck, 1000);
+
+</script>
