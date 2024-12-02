@@ -48,6 +48,7 @@ const reviewFiles = await getCollection("reviews");
 
 <!-- This is where the Reviews will be displayed.  -->
 <div id="reviewBox" class="overflow-visible">
+  <!-- Reviews will be moved here by JS -->
 </div>
 
 
@@ -127,86 +128,3 @@ const reviewFiles = await getCollection("reviews");
   }
 
 </style>
-
-<script>
-  //------------------------------------------
-  // async function fadeOutAndRemove(element) {
-  //   element.classList.add('fade-out');
-  //   await sleep(delayInSeconds);
-  //   element.addEventListener('transitionend', function() {
-  //     hideElement(element);
-  //   });
-  // }
-  // //------------------------------------------
-  // function fadeIn(element) {
-  //   element.classList.add('fade-in');
-  // }
-
-  // function hideElement(element) {
-  //   console.log("Removing review: " + element);
-
-  //   element.style.position = 'absolute';
-  //   element.style.left = '-10000px';
-  //   element.style.top = '-10000px';
-  //   element.style.overflow = 'hidden';
-  // }
-
-  // function sleep(ms) {
-  //     return new Promise(resolve => setTimeout(resolve, ms));
-  // }
-
-
-
-  // reviewFiles.map((aReviewFile, index) => (
-  //   console.log(index + ': ' + aReviewFile.data.name)
-  // ));
-
-  // const video = document.querySelector("video");
-  // let checkInterval;
-  // let checkPerformed = false;
-
-  // function checkVideoLoaded() {
-  //   if (checkPerformed) return;
-
-  //   if (video.readyState >= 3) {
-  //     // HAVE_FUTURE_DATA or higher
-  //     console.log("Video is ready to play");
-
-  //     video.classList.add('loaded');
-
-  //     // Hide loading spinner or perform other actions here
-  //     clearInterval(checkInterval);
-  //     removeEventListeners();
-  //     checkPerformed = true;
-  //   }
-  // }
-
-  // function removeEventListeners() {
-  //   video.removeEventListener("canplay", checkVideoLoaded);
-  //   video.removeEventListener("loadeddata", checkVideoLoaded);
-  //   video.removeEventListener("loadedmetadata", checkVideoLoaded);
-  //   window.removeEventListener("load", initVideoCheck);
-  // }
-
-  // function initVideoCheck() {
-  //   if (checkPerformed) return;
-
-  //   // Immediate check
-  //   checkVideoLoaded();
-
-  //   // Set up periodic checking
-  //   checkInterval = setInterval(checkVideoLoaded, 100);
-
-  //   // Set up event listeners
-  //   video.addEventListener("canplay", checkVideoLoaded);
-  //   video.addEventListener("loadeddata", checkVideoLoaded);
-  //   video.addEventListener("loadedmetadata", checkVideoLoaded);
-  // }
-
-  // // Run on window load
-  // window.addEventListener("load", initVideoCheck);
-
-  // // Additional failsafe: check after a short delay
-  // setTimeout(initVideoCheck, 1000);
-
-</script>
