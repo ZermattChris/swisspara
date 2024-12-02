@@ -11,6 +11,6 @@ stars: 5
     fly towards the Matterhorn and above the Bluelounge while the
     Zermatt unplugged Band played. They can also handle anxious
     Passengers very well, very patient. We will be back next year 🪂
-    <br><br>
+    <br>
     Thank you Chris &amp; Team (from Google Reviews)
   </p>
