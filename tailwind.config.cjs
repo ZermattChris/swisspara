@@ -10,7 +10,11 @@ module.exports = {
     'node_modules/preline/dist/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'tall': {'raw': '(min-height: 700px)'}
+      }
+    },
     scale: {
       '0': '0',
       '25': '.25',
