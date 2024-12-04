@@ -12,6 +12,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
+        // This hides divs on small screens. Use: "hidden tall:block"
         'tall': {'raw': '(min-height: 700px)'}
       }
     },

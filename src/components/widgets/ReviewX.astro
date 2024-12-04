@@ -5,13 +5,13 @@ import { getCollection } from "astro:content";
 const reviewFiles = await getCollection("reviews");
 ---
 
-<div id="offscreenBox" class="absolute -top-[2000px] -left-[2000px]">
+<div id="offscreenBox" class="absolute -top-[2000px] -left-[2000px] ">
 <!-- This is an off-screen location where reviews are rendered by Astro. JS moves each on screen when required. -->
 {
   reviewFiles.map((aReviewFile, index) => (
     <div
       id={`review_${index}`}
-      class="myReview mx-auto mt-0  z-50  max-w-xl transform scale-70 sm:scale-80  md:scale-90 xl:scale-110   border border-white rounded bg-white/70  "
+      class="myReview relative mx-auto mt-0    max-w-xl transform scale-70 sm:scale-80  md:scale-90 xl:scale-110   border border-white rounded bg-white/70  "
     >
       <div class="ml-4">
         <div id="stars" class="mt-2 flex items-center">
@@ -47,7 +47,7 @@ const reviewFiles = await getCollection("reviews");
 
 
 <!-- This is where the Reviews will be displayed.  -->
-<div id="reviewBox" class="overflow-visible">
+<div id="reviewBox" class="mt-0 md:mt-4 lg:mt-12 xl:mt-20">
   <!-- Reviews will be moved here by JS -->
 </div>
 
