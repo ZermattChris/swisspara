@@ -30,21 +30,35 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
         </p>
 
 
-        <div id="logoLinks" class="relative   top-6 sm:top-10  text-base sm:text-lg md:text-xl   z-20 w-full text-center  text-gray-700   font-light md:font-thin  select-none">
-          <a href="/flights">Our Flights</a> 
+
+        <div  id="top"    class="relative w-0 h-0 -top-16" ></div>
+
+        <div id="quickLinks" class="mt-4 lg:mt-8 text-sm  md:text-md  w-full text-center  text-gray-400   font-normal select-none">
+          <a href="#photos">Photos &amp; Videos</a> 
           &nbsp; | &nbsp;
-          <a href="/preflight">Pre-flight</a> 
+          <a href="#meeting">Meeting Point</a> 
           &nbsp; | &nbsp;
-          <a href="/reviews">Reviews</a> 
+          <a href="#weather">Weather</a>  
+          &nbsp; | &nbsp;
+          <a href="#fitness">Fitness</a>  
+          &nbsp; | &nbsp;
+          <a href="#age">Age</a>  
+          &nbsp; | &nbsp;
+          <a href="#safety">Safety</a>  
+          &nbsp; | &nbsp;
+          <a href="#transport">Transport</a>  
+          &nbsp; | &nbsp;
+          <a href="#cancellations">Cancellations</a>  
         </div>
 
 
 
         <div class="mt-10 xl:mt-20">
-          <ul role="list" class="myGrid   grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          <ul role="list" class="myGrid  relative   grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 
             <!-- Photos and Videos  -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="photos"    class="absolute -top-32  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -81,7 +95,9 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Meeting Point -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="meeting"    class="absolute -top-20  " ></div>
+              <a href="#top" class="toTop absolute right-4 top-4 ">TOP</a>  
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -121,7 +137,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Weather  -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="weather"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -157,7 +174,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Fitness  -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="fitness"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -192,7 +210,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Age  -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="age"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -229,7 +248,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Safety -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="safety"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -264,7 +284,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
             </li>
 
             <!-- Mountain Transport -->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="transport"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -298,7 +319,8 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
 
 
             <!-- Flight Cancelations-->
-            <li class="col-span-1 flex flex-col ">
+            <li class="col-span-1 flex flex-col relative">
+              <div  id="cancellations"    class="absolute -top-20  " ></div>
               <div class="flex flex-1 flex-col p-8  rounded-lg bg-white text-center shadow">
 
                 <svg
@@ -358,5 +380,25 @@ import PreflightPoint from "@src/components/widgets/PreflightPoint.astro";
     .myGrid dd{
       margin-bottom: 0.5rem;
     }
+
+    #quickLinks a {
+      text-decoration: underline;
+      color: #374151;
+    } 
+
+    .toTop {
+      font-size: small;
+      color: #374151;
+      cursor: pointer;
+    }
+
+      .toTop::before {
+        display: inline-block;
+        width: 0.7rem;
+        margin-right: 3px;
+        vertical-align: middle;
+        content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" ><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" /></svg>');
+      }
+
   </style>
 </Layout>
