@@ -4,9 +4,7 @@
 import Navbar from "@components/nav/Navbar.astro";
 import Footer from "@components/Footer.astro";
 
-
-import '@fontsource/inter'
-
+import "@fontsource/inter";
 
 interface Props {
   title: string;
@@ -95,15 +93,19 @@ const { title } = Astro.props;
     background: white;
     background-size: 224px;
   }
+  .reset-style,
+  .reset-style * {
+    all: revert;
+  }
 
   /* ----------- Site wide CSS settings ----------- */
   .spz-heading {
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
   .heading-shadow {
     text-shadow:
       0px 0px 2px black,
-      0px 0px 12px black
+      0px 0px 12px black;
   }
 
   /* Nav + menu & Footer */
