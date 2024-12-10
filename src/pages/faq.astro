@@ -1,12 +1,60 @@
 ---
-import Layout from '@layouts/Layout.astro';
-
+import Layout from "@layouts/Layout.astro";
+import FAQ from "@components/widgets/FAQ.astro";
 ---
 
-<Layout title="FAQ's - Frequently Asked Questions for Tandem Paragliding in Zermatt, Switzerland">
-	<main>
-		
+<Layout
+  title="FAQ's - Frequently Asked Questions for Tandem Paragliding in Zermatt, Switzerland"
+>
+  <main>
+    <div id="top" class="relative w-0 h-0 -top-16"></div>
+
+    <div class="bg-white px-6 pt-12 sm:pt-32 sm:pb-12 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          FAQs
+        </h2>
+        <p
+          class="mt-6 mb-4 sm:mb-6 text-lg leading-6 sm:leading-8 text-gray-600"
+        >
+          Some of our most Frequently Asked Questions.
+        </p>
+      </div>
+    </div>
 
 
-	</main>
+    <div class="mb-4 sm:mb-10 mx-auto max-w-3xl">
+      <div
+        class="relative px-4 py-5 sm:p-6 mx-4 sm:mx-6 rounded-lg bg-white shadow-md border-[1px] border-slate-200"
+      >
+
+        <FAQ question="An example question goes here...">
+          <p>
+            Upon making a Booking, the passenger confirms that he/she has
+            read, understood and accepted these General Terms and
+            Conditions.
+          </p>
+        </FAQ>
+
+
+        
+
+        <!-- <span class="plusIcon absolute right-4 top-5">
+          <svg class="w-6 h-6"                  xmlns="http://www.w3.org/2000/svg"                  viewBox="0 0 24 24"                  fill="currentColor">
+            <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM5 5V19H19V5H5ZM11 11V7H13V11H17V13H13V17H11V13H7V11H11Z"></path>
+          </svg>
+        </span>
+        <span class="minusIcon hidden    absolute right-4 top-5">
+          <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
+            <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM5 5V19H19V5H5ZM7 11H17V13H7V11Z"></path>
+          </svg>
+        </span> -->
+
+      </div>
+
+      <div class="relative top-6 mb-10 text-center w-full">
+        <a href="#top" class="toTop">TOP</a>
+      </div>
+    </div>
+  </main>
 </Layout>
