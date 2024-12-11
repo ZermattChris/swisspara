@@ -26,7 +26,7 @@ import FAQ from "@components/widgets/FAQ.astro";
     <div class="mx-auto max-w-3xl">
       <div class="FAQBox   mb-4 sm:mb-10    relative px-4 py-5 sm:p-6 mx-4 sm:mx-6 rounded-lg bg-white shadow-md border-[1px] border-slate-200">
 
-        <FAQ question="How do I book a flight?">
+        <FAQ question="1. &nbsp; How do I book a flight?">
           <p>
             Bookings are made on our custom online reservation system. Click Book Now! to make your reservation:
           </p>
@@ -48,7 +48,7 @@ import FAQ from "@components/widgets/FAQ.astro";
           </p>
         </FAQ>
 
-        <FAQ question="I'm scared of heights...">
+        <FAQ question="2. &nbsp; I'm scared of heights! Will I still be able to fly..?">
           <p>
             This is very normal! 
           </p>
@@ -60,32 +60,76 @@ import FAQ from "@components/widgets/FAQ.astro";
           </p>
         </FAQ>
 
-        <FAQ question="An example question goes here...">
+        <FAQ question="3. &nbsp; What are the Age limits">
           <p>
-            Upon making a Booking, the passenger confirms that he/she has
-            read, understood and accepted these General Terms and
-            Conditions.
+            If you are between the ages of 5 to 70 &ndash; and are reasonable fit, you will be able to
+            fly as a passenger with us. ( <a href="/preflight#fitness">See Pre-flight: Fitness &amp; Age</a> )
           </p>
         </FAQ>
 
-        <FAQ question="An example question goes here...">
+        <FAQ question="4. &nbsp; What are the weight limits?">
           <p>
-            Upon making a Booking, the passenger confirms that he/she has
-            read, understood and accepted these General Terms and
-            Conditions.
+            We can take passengers up to <strong>90kg</strong> flying. If you are heavier but very fit
+            &ndash; feel free to contact us, we might be able to organize a lighter pilot
+            and make an exception.
+            ( <a href="/preflight#fitness">See Pre-flight: Fitness &amp; Age</a> )
           </p>
         </FAQ>
 
-        <!-- <span class="plusIcon absolute right-4 top-5">
-          <svg class="w-6 h-6"                  xmlns="http://www.w3.org/2000/svg"                  viewBox="0 0 24 24"                  fill="currentColor">
-            <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM5 5V19H19V5H5ZM11 11V7H13V11H17V13H13V17H11V13H7V11H11Z"></path>
-          </svg>
-        </span>
-        <span class="minusIcon hidden    absolute right-4 top-5">
-          <svg class="w-6 h-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" >
-            <path d="M4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3ZM5 5V19H19V5H5ZM7 11H17V13H7V11Z"></path>
-          </svg>
-        </span> -->
+
+        <FAQ question="5. &nbsp; Is the Photo &amp; Video Package included in the flight price?">
+          <p>
+            The Photo &amp; Video Package is an optional CHF 40.- and is not included in the 
+            flight price.
+          </p>
+        </FAQ>
+
+        <FAQ question="6. &nbsp; Is the lift ticket included in the flight price?">
+          <p>
+            No. The lift ticket up the mountain is not included in the flight price.
+            Some people aready have purchased Ski Passes or Peak Passes and don not 
+            need to buy a one-way ticket to the take-off area.
+            ( <a href="/preflight#transport">See Pre-flight: Mountain Transport </a> )
+          </p>
+          <p>
+            The price of the lift ticket depends on which take-off we are going to and 
+            also what time of year (they use "dynamic" pricing). Exact information can 
+            be found on the Zermatt Bergbahnen (Lift Company) website: 
+            <a target="_blank" href="https://www.matterhornparadise.ch/en/information/tickets-prices">Zermatt Bergbahnen</a>
+          </p>
+          <p>
+            Unless we have informed you otherwise, please wait to purchase the lift ticket to 
+            the take-off area, until you have met your pilot. Otherwise you may find you have 
+            bought the wrong ticket (and they won't refund mistakes...)
+          </p>
+        </FAQ>
+
+
+        <FAQ question="7. &nbsp; I have a Swiss Pass (or Half Fare Card) from the Swiss Railways (SBB) - is the lift up free?">
+          <p>
+            If you have a valid Swiss Pass or Half Fare Card from Swiss Railways (SBB), you will
+            receive a 50% discount on one-way tickets to the take-off area.
+            <a target="_blank" href="https://www.swisspasses.com/railpass/">Swiss Passes</a>
+          </p>
+        </FAQ>
+
+        <FAQ question="8. &nbsp; Do I need insurance?">
+          <p>
+            Every passenger should have their own comprehensive accident insurance.
+          </p>
+          <p>
+            If you are from an EU country, then you are covered for paragliding by your standard health &amp; 
+            accident insurance.
+          </p>
+          <p>
+            Swiss Paraglide Zermatt also has an extra layer of insurance protection, offered through 
+            the Swiss Paragliding Association (SHV-FSVL), that covers up to CHR 100'00.- in Switzerland
+            (on top of your private insurance &ndash; this is an extra service we offer and is not 
+            meant to be your only insurance).
+            <a target="_blank" href="https://www.shv-fsvl.ch/en/member-service/insurance/">See "Tandem"</a>
+          </p>
+        </FAQ>
+
 
       </div>
 
@@ -101,6 +145,17 @@ import FAQ from "@components/widgets/FAQ.astro";
   .FAQBox p {
     margin-bottom: 1rem;
   }
+    .FAQBox a {
+      text-decoration: underline;
+      color: rgb(154 52 18);
+    }
+      .FAQBox a::before {
+        display: inline-block;
+        width: 1rem;
+        margin-right: 0.2rem;
+        vertical-align: middle;
+        content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgb(154 52 18)"><path d="M18.3638 15.5355L16.9496 14.1213L18.3638 12.7071C20.3164 10.7545 20.3164 7.58866 18.3638 5.63604C16.4112 3.68341 13.2453 3.68341 11.2927 5.63604L9.87849 7.05025L8.46428 5.63604L9.87849 4.22182C12.6122 1.48815 17.0443 1.48815 19.778 4.22182C22.5117 6.95549 22.5117 11.3876 19.778 14.1213L18.3638 15.5355ZM15.5353 18.364L14.1211 19.7782C11.3875 22.5118 6.95531 22.5118 4.22164 19.7782C1.48797 17.0445 1.48797 12.6123 4.22164 9.87868L5.63585 8.46446L7.05007 9.87868L5.63585 11.2929C3.68323 13.2455 3.68323 16.4113 5.63585 18.364C7.58847 20.3166 10.7543 20.3166 12.7069 18.364L14.1211 16.9497L15.5353 18.364ZM14.8282 7.75736L16.2425 9.17157L9.17139 16.2426L7.75717 14.8284L14.8282 7.75736Z"></path></svg>');
+      }
 
   .toTop {
     font-size: small;
