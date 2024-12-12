@@ -3,6 +3,8 @@
 // creates a rotating carousel of reviews with stars.
 import { getCollection } from "astro:content";
 const reviewFiles = await getCollection("reviews");
+
+
 ---
 
 <div id="offscreenBox" class="absolute -top-[2000px] -left-[2000px] ">
