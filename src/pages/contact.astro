@@ -1,76 +1,153 @@
 ---
 import Layout from "@layouts/Layout.astro";
-
-// import CTABook from '@components/CTA-Book.astro';
+import FAQ from "@components/widgets/FAQ.astro";
 ---
 
-<Layout title="Book your Paraglidig flight with Swiss Paraglide Zermatt">
+<Layout
+  title="FAQ's - Frequently Asked Questions for Tandem Paragliding in Zermatt, Switzerland"
+>
   <main>
-    <div
-      class="py-12"
-      style="background: no-repeat url('/images/paragliding/Winter-paragliding-zermatt-swiss-paraglide.jpg'); background-size:cover; background-attachment:fixed;"
-    >
-      <div
-        class="mx-auto max-w-7xl px-6 lg:px-8 mt-8 md:mt-16"
-        style="min-height: calc(100vh - 287px);"
-      >
-        <h2
-          class="mt-2 py-4 px-4 text-6xl text-center font-bold strong-text-shadow text-white drop-shadow-lg bg-black/60 rounded-lg"
-        >
-          Contact Info
+    <div id="top" class="relative w-0 h-0 -top-16"></div>
+
+    <div class="bg-white px-6 pt-12 sm:pt-32 pb-8 sm:pb-12 lg:px-8">
+      <div class="mx-auto max-w-2xl text-center">
+        <h2 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+          Swiss Paraglide Zermatt
         </h2>
+        <p
+          class="mt-6 mb-4 sm:mb-6 text-lg leading-6 sm:leading-8 text-gray-600"
+        >
+          How to get in touch with us...
+        </p>
+      </div>
+    </div>
 
-        <div class="rounded-lg bg-white/90">
-          <p
-            class="mt-6 sm:mt-8 md:mt-16 py-4 px-4 sm:ml-12  font-normal tracking-tight text-black drop-shadow-lg"
-          >
-            Telephone &amp; Whatsapp:
-            <a
-              class="text-4xl md:text-6xl mx-auto pt-12 pb-4 pl-4  sm:-ml-12   text-center block font-bold"
-              href="tel:+41 76 651 0065"
-              title="Click to call Swiss Paraglide Zermatt"
-            >
-              +41 76 651 0065
 
+    <div class="mx-auto max-w-3xl">
+      <div class="FAQBox   mb-4 sm:mb-10    relative px-4 py-5 sm:p-6 mx-4 sm:mx-6 rounded-lg bg-white shadow-md border-[1px] border-slate-200">
+
+        <FAQ question="1. &nbsp; How do I book a flight?">
+          <p>
+            Bookings are made on our custom online reservation system. Click Book Now! to make your reservation:
+          </p>
+          <p>
+            <a class=" block text-center" 
+              href="/book-now" aria-label="Book Now!" 
+            > 
+              <button type="button" class="rounded text-black shadow-md bg-lime-300 px-2 py-1 text-md font-semibold hover:bg-gray-100 ring-1 ring-inset ring-white hover:ring-lime-300 " 
+              >
+                Book Now!
+              </button>
             </a>
           </p>
-
-          <p class="mt-2 sm:mt-8 py-4 px-4 sm:ml-12 text-lg">
-            Email:
-            <a
-              class="text-2xl sm:text-4xl mx-auto py-4 pl-4 sm:-ml-12     text-center block font-bold strong-text-shadow text-white"
-              href="mailto:info@swissparaglide.com"
-              title="Click to send an Email to Swiss Paraglide Zermatt"
-            >
-              info@swissparaglide.com
-
-            </a>
+          <p>
+            You'll be asked when you want to fly, how many people and
+            some basic information (age, finess, etc...). Complete your booking/reservation,
+            you'll be asked for a valid credit card. Final payment happens after your flight
+            is completed.
           </p>
+        </FAQ>
 
-          <p
-            class="relative mt-4 sm:mt-12 pl-20 pr-4 py-6 text-lg grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-12 gap-y-8"
-          >
+
+        <FAQ question="2. &nbsp; For General Questions, please drop us an Email">
+          <p>
+            If you have general questions about flying with us, please drop us an Email &ndash; 
+            we'll do our best to get back to you as soon as possible (usually in the evening).
+          </p>
+          <p>
+            Click here to <a href="mailto:info@swissparaglide.com?subject=Information%20Request%20-%20Swiss%20Paraglide%20%3A%3A%20">Email us</a>
+          </p>
+        </FAQ>
+
+        <FAQ question="2. &nbsp; If you have already booked a flight with us &amp; have last minute questions...">
+          <p>
+            For last minute information for booked flights, please call us (best) or drop us a WhatsApp on the 
+            following work number:
+          </p>
+          <p class="font-bold ml-4">
+            Click here to WhatsApp us: <a href="https://wa.me/41766510065" target="_blank">+41 76 651 0065</a>
+          </p>
+          <p class="ml-4">
+            Call us: <a href="tel:+41766510065" >+41 76 651 0065</a>
+          </p>
+          <p class="text-gray-700 italic">
+            Please note: we are a small company and are not always able to answer the phone directly (for example,
+            when we are flying...). We will do our best to call you back as soon as possible though.
+          </p>
+        </FAQ>
+
+
+
+
+      </div>
+
+
+    <div class="mx-auto max-w-3xl">
+      <div class="CompanyInfoBox  mb-4 sm:mb-10      relative px-4 py-5 sm:p-6 mx-4 sm:mx-6 rounded-lg bg-white shadow-md border-[1px] border-slate-200">
+
+        <div class="flex flex-col md:flex-row justify-between">
+          <div class="ml-8 md:ml-12   w-full md:w-1/2 flex flex-col space-y-4">
             <span class="relative">
-              <span class="font-bold -ml-4 relative">Address:</span>
-            <br />
-            Swiss Paraglide Zermatt <br />
-            Untere Mattenstrasse 34 <br />
-            3920 Zermatt <br />
-            Switzerland
-          </span>
-
-            <span class=" text-gray-600">
-              Swiss/Wallis Registration Number: <br/>
+              <span class="font-bold -ml-4 relative">Mailing Address:</span>
+              <br />
+              Swiss Paraglide Zermatt <br />
+              Untere Mattenstrasse 34 <br />
+              3920 Zermatt <br />
+              Switzerland
+            </span>
+          </div>
+          <div class="ml-8 md:ml-12   w-full md:w-1/2 flex flex-col space-y-4 mt-4 md:mt-0">
+            <span class="relative ">
+              <span class="font-bold -ml-4 relative">Swiss Registration Number:</span>
+              <br/>
               CHE-498.039.128
             </span>
-
-
-          </p>
-
+          </div>
         </div>
 
+        
 
+      </div>
+    </div>
+
+
+
+      <div class="relative top-6 mb-10 text-center w-full">
+        <a href="#top" class="toTop">TOP</a>
       </div>
     </div>
   </main>
 </Layout>
+
+<style>
+
+  .FAQBox p {
+    margin-bottom: 1rem;
+  }
+    .FAQBox a {
+      text-decoration: underline;
+      color: rgb(154 52 18);
+    }
+      .FAQBox a::before {
+        display: inline-block;
+        width: 1rem;
+        margin-right: 0.2rem;
+        vertical-align: middle;
+        content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgb(154 52 18)"><path d="M18.3638 15.5355L16.9496 14.1213L18.3638 12.7071C20.3164 10.7545 20.3164 7.58866 18.3638 5.63604C16.4112 3.68341 13.2453 3.68341 11.2927 5.63604L9.87849 7.05025L8.46428 5.63604L9.87849 4.22182C12.6122 1.48815 17.0443 1.48815 19.778 4.22182C22.5117 6.95549 22.5117 11.3876 19.778 14.1213L18.3638 15.5355ZM15.5353 18.364L14.1211 19.7782C11.3875 22.5118 6.95531 22.5118 4.22164 19.7782C1.48797 17.0445 1.48797 12.6123 4.22164 9.87868L5.63585 8.46446L7.05007 9.87868L5.63585 11.2929C3.68323 13.2455 3.68323 16.4113 5.63585 18.364C7.58847 20.3166 10.7543 20.3166 12.7069 18.364L14.1211 16.9497L15.5353 18.364ZM14.8282 7.75736L16.2425 9.17157L9.17139 16.2426L7.75717 14.8284L14.8282 7.75736Z"></path></svg>');
+      }
+
+  .toTop {
+    font-size: small;
+    color: #374151;
+    cursor: pointer;
+  }
+
+    .toTop::before {
+      display: inline-block;
+      width: 0.7rem;
+      margin-right: 3px;
+      vertical-align: middle;
+      content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" ><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" /></svg>');
+    }
+
+</style>
