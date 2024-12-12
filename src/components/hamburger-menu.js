@@ -6,8 +6,12 @@ const button = document.querySelector("#menu-button");
 const menu = document.querySelector("#menu");
 const menuLinks = document.querySelectorAll("#menu a");
 
+const bookNowBtn = document.querySelector("#smallBookNowBtn");
+
 button.addEventListener("click", () => {
   menu.classList.toggle("hidden");
+
+  //bookNowBtn.classList.toggle("hidden");
 });
 
 menuLinks.forEach((mLink) => {
