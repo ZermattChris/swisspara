@@ -4,7 +4,8 @@
     1. Flight Date
   </h1>
 
-  <div id="flightDateBox" class="flex flex-col items-start">
+  <div id="flightDateBox"
+    class="flex flex-col items-start">
     <!-- (1) -->
     <!-- <span class="w-12 h-12  sm:w-14 sm:h-14
             text-3xl sm:text-4xl 
@@ -21,7 +22,7 @@
       </svg>
       Choose your Flight Date:
     </label>
-    <div id="dateInputBox" class="mx-auto   mt-3 mb-1 pl-0">
+    <div id="dateInputBox" class="mx-auto   mt-3 pl-0">
 
       <div v-show="flightDate" class="inline-block  rounded-md border-0 
           sm:text-lg font-bold
@@ -49,7 +50,7 @@
 
     <!-- This is the Main Flight Date picker that's always shown  -->
     <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"
-      class="inline-block relative -left-[5px] mt-4 mb-8 mx-auto z-1  max-w-[350px] drop-shadow-md" v-model="flightCal"
+      class="inline-block relative -left-[5px] mt-4 mx-auto z-1  max-w-[350px] drop-shadow-md" v-model="flightCal"
       :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"
       :month-change-on-scroll="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
       @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
@@ -57,56 +58,52 @@
     </VueDatePicker>
 
 
+  </div>
 
 
 
-    <!-- Modal Calendar pop ups here.  -->
-    <Transition name="fade">
-      <div v-if="showArriveDatePicker || showDepartDatePicker" id="calendarModal"
-        class="fixed inset-0 z-[97] w-screen bg-gray-500 bg-opacity-90 overflow-y-auto">
-        <div class="flex flex-col place-content-center gap-4  p-4 text-center h-screen ">
+  <!-- Modal Calendar pop ups here.  -->
+  <Transition name="fade">
+    <div v-if="showArriveDatePicker || showDepartDatePicker" id="calendarModal"
+      class="fixed inset-0 z-[97] w-screen bg-gray-500 bg-opacity-90 overflow-y-auto">
+      <div class="flex flex-col place-content-center gap-4  p-4 text-center h-screen ">
 
-          <!-- Arrive Calendar  -->
-          <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
-            class="flex flex-col  place-self-center justify-center  bg-white p-4 md:p-6 xl:py-12 xl:px-20 rounded-md shadow-md">
+        <!-- Arrive Calendar  -->
+        <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
+          class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
 
-            <div
-              class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
-              <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                fill="currentColor">
-                <path fill-rule="evenodd"
-                  d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
-                  clip-rule="evenodd" />
-              </svg>
-              Arrival Date
-            </div>
+          <div
+            class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+              fill="currentColor">
+              <path fill-rule="evenodd"
+                d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
+                clip-rule="evenodd" />
+            </svg>
+            Arrival Date
+          </div>
 
-            <div v-if="!arriveDate" class="text-sm mt-2 text-gray-800">
-              Which day are you arriving in Zermatt?
-            </div>
-            <div v-if="arriveDate" class="text-sm mb-4 text-gray-800">
-              You arrive on:
-              {{ this.getFormattedArrivalDate() }}
-            </div>
+          <div v-if="!arriveDate" class="text-sm mt-2 mb-4 text-gray-800">
+            Which day are you arriving in Zermatt?
+          </div>
+          <div v-if="arriveDate" class="text-sm mb-6 text-gray-800">
+            You arrive on:
+            {{ this.getFormattedArrivalDate() }}
+          </div>
 
-            <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
-              :month-change-on-scroll="false" :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline
-              teleport-center auto-apply :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()"
-              prevent-min-max-navigation @update:model-value="onArriveDateSelect"
-              class="dpMenuArrive my-4  absolute z-[98] drop-shadow-xl ">
-            </VueDatePicker>
+          <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
+            :month-change-on-scroll="false" :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline
+            teleport-center auto-apply :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()"
+            prevent-min-max-navigation @update:model-value="onArriveDateSelect"
+            class="dpMenuArrive  absolute z-[98] drop-shadow-xl ">
+          </VueDatePicker>
 
-
-            <div class="text-sm mt-2 text-gray-800">
-              Click a day above to continue...
-            </div>
-
-            <!-- <div class="text-md mt-6 text-gray-800">
+          <div class="text-md mt-6 text-gray-800">
             Around what time are you arriving?
-            
+            <!-- Arrival Time Slider -->
             <SliderTime id="arriveSlider" v-model.number="arrivalTime" class="my-4 mx-0" min="7.5" max="20.5"
               step="0.5">
-              
+              <!-- Early Btn -->
               <template v-slot:preIcon>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                   class="h-6 w-6 py-0 pl-1 relative left-1">
@@ -115,84 +112,7 @@
                   </path>
                 </svg>
               </template>
-
-<template v-slot:postIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                  class="h-8 w-8 py-0 pl-1">
-                  <path
-                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
-                  </path>
-                </svg>
-              </template>
-
-<template v-slot:message>
-                <div class="text-sm"
-                  :class="[arrivalTime < 8 || arrivalTime > 20 ? 'text-red-700 italic' : '', arrivalTime >= 8 && arrivalTime < 12 ? 'text-green-700' : '', arrivalTime >= 12 && arrivalTime < 18 ? 'text-orange-700' : '', arrivalTime >= 18 ? 'text-gray-700' : '']">
-                  {{ (arrivalTime < 8 || arrivalTime > 20) ? "I don't know my arrival time" : getFormattedArrialTime() }}
-                </div>
-              </template>
-</SliderTime>
-</div> -->
-
-            <!-- <div class="text-center mt-10 mb-6">
-            <button type="button" @click="onContinueArriveDialog()"
-              class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
-              Continue
-            </button>
-          </div> -->
-
-          </div>
-
-
-          <!-- Depart Calendar  -->
-          <div v-if="showDepartDatePicker" @click="(e) => { e.stopPropagation() }"
-            class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
-
-            <div
-              class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
-              <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-              </svg>
-              Depart Date
-            </div>
-
-            <div v-if="departDate" class="text-sm mt-2 mb-4 text-gray-800">
-              You depart on:
-              {{ this.getFormattedDepartDate() }}
-            </div>
-            <div v-else class="text-sm mt-2 mb-4 text-gray-800">
-              Which day are you departing Zermatt?
-            </div>
-
-            <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal"
-              :model-value="departDate" :month-change-on-scroll="false" :markers="getFlightDateMakerObj()"
-              :enable-time-picker="false" inline teleport-center auto-apply :min-date="getMinDepartDate()"
-              :max-date="getMaxDepartDate()" prevent-min-max-navigation @update:model-value="onDepartDateSelect"
-              class="dpMenuDepart  absolute z-[98] drop-shadow-xl">
-            </VueDatePicker>
-
-
-            <div class="text-sm mt-2 text-gray-800">
-              Click a date above to continue...
-            </div>
-
-
-
-            <!-- <div class="text-sm mt-2 text-gray-800">
-            About what time do you leave Zermatt?
-            
-            <SliderTime id="departSlider" v-model.number="departTime" class="my-4 mx-0" min="7.5" max="20.5" step="0.5">
-              
-              <template v-slot:preIcon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                  class="h-6 w-6 py-0 pl-1">
-                  <path
-                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
-                  </path>
-                </svg>
-              </template>
-              
+              <!-- Late Btn -->
               <template v-slot:postIcon>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                   class="h-8 w-8 py-0 pl-1">
@@ -201,7 +121,77 @@
                   </path>
                 </svg>
               </template>
-              
+              <!-- Time display -->
+              <template v-slot:message>
+                <div class="text-sm"
+                  :class="[arrivalTime < 8 || arrivalTime > 20 ? 'text-red-700 italic' : '', arrivalTime >= 8 && arrivalTime < 12 ? 'text-green-700' : '', arrivalTime >= 12 && arrivalTime < 18 ? 'text-orange-700' : '', arrivalTime >= 18 ? 'text-gray-700' : '']">
+                  {{ (arrivalTime < 8 || arrivalTime > 20) ? "I don't know my arrival time" : getFormattedArrialTime() }}
+                </div>
+              </template>
+            </SliderTime>
+          </div>
+
+          <div class="text-center mt-10 mb-6">
+            <button type="button" @click="onContinueArriveDialog()"
+              class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
+              Continue
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- Depart Calendar  -->
+        <div v-if="showDepartDatePicker" @click="(e) => { e.stopPropagation() }"
+          class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
+
+          <div
+            class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+            <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+            </svg>
+            Depart Date
+          </div>
+
+          <div v-if="departDate" class="text-sm mt-2 mb-4 text-gray-800">
+            You depart on:
+            {{ this.getFormattedDepartDate() }}
+          </div>
+          <div v-else class="text-sm mt-2 mb-4 text-gray-800">
+            Which day are you departing Zermatt?
+          </div>
+
+          <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal" :model-value="departDate"
+            :month-change-on-scroll="false" :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline
+            teleport-center auto-apply :min-date="getMinDepartDate()" :max-date="getMaxDepartDate()"
+            prevent-min-max-navigation @update:model-value="onDepartDateSelect"
+            class="dpMenuDepart  absolute z-[98] drop-shadow-xl">
+          </VueDatePicker>
+
+          <div class="text-sm mt-2 text-gray-800">
+            About what time do you leave Zermatt?
+            <!-- Arrival Time Slider -->
+            <SliderTime id="departSlider" v-model.number="departTime" class="my-4 mx-0" min="7.5" max="20.5" step="0.5">
+              <!-- Early Btn -->
+              <template v-slot:preIcon>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-6 w-6 py-0 pl-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
+                </svg>
+              </template>
+              <!-- Late Btn -->
+              <template v-slot:postIcon>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="h-8 w-8 py-0 pl-1">
+                  <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z">
+                  </path>
+                </svg>
+              </template>
+              <!-- Time display -->
               <template v-slot:message>
                 <div class="text-sm"
                   :class="[departTime < 8 || departTime > 20 ? 'text-red-700 italic' : '', departTime >= 8 && departTime < 12 ? 'text-green-700' : '', departTime >= 12 && departTime < 18 ? 'text-orange-700' : '', departTime >= 18 ? 'text-gray-700' : '']">
@@ -216,96 +206,96 @@
               class="animate-pulse hover:animate-none rounded-full bg-lime-200 px-8 py-2.5 text-sm font-semibold text-gray-900 shadow-sm border-[1px] border-gray-400 ring-4 ring-offset-2 ring-orange-700 hover:bg-gray-100">
               Continue
             </button>
-          </div> -->
-
           </div>
 
-
         </div>
+
+
       </div>
-    </Transition>
+    </div>
+  </Transition>
 
-    <!-- Arrive Date input and Calendar.  -->
-    <div id="arriveDateBox" v-if="flightDate"
-      class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+  <!-- Arrive Date input and Calendar.  -->
+  <div id="arriveDateBox" v-if="flightDate"
+    class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
 
-      <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-emerald-900">
-        <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-          fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
-            clip-rule="evenodd" />
-        </svg>
+    <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-emerald-900">
+      <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+        fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M3.97 3.97a.75.75 0 011.06 0l13.72 13.72V8.25a.75.75 0 011.5 0V19.5a.75.75 0 01-.75.75H8.25a.75.75 0 010-1.5h9.44L3.97 5.03a.75.75 0 010-1.06z"
+          clip-rule="evenodd" />
+      </svg>
 
-        <span class="font-bold ">
-          Arriving in Zermatt:
-        </span>
+      <span class="font-bold ">
+        Arriving in Zermatt:
+      </span>
 
-        <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!arriveDate ? 'hidden' : '']"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-            clip-rule="evenodd" />
-        </svg>
-      </label>
+      <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!arriveDate ? 'hidden' : '']"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+          clip-rule="evenodd" />
+      </svg>
+    </label>
 
-      <div id="arriveDateInputBox" class="relative mt-3 pl-4">
+    <div id="arriveDateInputBox" class="relative mt-3 pl-4">
 
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-emerald-900">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-emerald-900">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+      </svg>
 
-        <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
-          @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
-          :class="{ 'bg-indigo-50/50': arriveDate }"
-          class="inline-block  rounded-md border-0 
+      <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
+        @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
+        :class="{ 'bg-indigo-50/50': arriveDate }"
+        class="inline-block  rounded-md border-0 
           ml-2 py-2 pl-12 pr-2 
           w-72 sm:w-80
           overflow-clip
           cursor-pointer
         bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 " />
-      </div>
-
     </div>
 
-    <!-- Depart Date input and Calendar.  -->
-    <div id="departDateBox" v-if="arriveDate"
-      class="mb-16 pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+  </div>
 
-      <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
-        <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke-width="1.5" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-        </svg>
+  <!-- Depart Date input and Calendar.  -->
+  <div id="departDateBox" v-if="arriveDate"
+    class="mb-16 pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+
+    <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
+      <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+      </svg>
 
 
-        <span class="font-bold ">
-          Departing Zermatt:
-        </span>
+      <span class="font-bold ">
+        Departing Zermatt:
+      </span>
 
-        <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!departDate ? 'hidden' : '']"
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
-            clip-rule="evenodd" />
-        </svg>
-      </label>
+      <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!departDate ? 'hidden' : '']"
+        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z"
+          clip-rule="evenodd" />
+      </svg>
+    </label>
 
-      <div id="departDateInputBox" class="relative mt-3 pl-4">
+    <div id="departDateInputBox" class="relative mt-3 pl-4">
 
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-orange-700">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
-        </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-orange-700">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
+      </svg>
 
-        <input type="input" name="departDateInput" id="departDateInput" :value="displayDate(departDate)" readonly
-          @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Please enter your Departure date..."
-          :class="{ 'bg-indigo-50/50': departDate }"
-          class="inline-block  rounded-md border-0 
+      <input type="input" name="departDateInput" id="departDateInput" :value="displayDate(departDate)" readonly
+        @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Please enter your Departure date..."
+        :class="{ 'bg-indigo-50/50': departDate }"
+        class="inline-block  rounded-md border-0 
           ml-2 py-2 pl-12 pr-2 
           w-72 sm:w-80
           overflow-clip
@@ -313,30 +303,27 @@
           bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 " />
 
-      </div>
-
-      <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700 text-sm  mt-4 pl-11">
-        You are staying
-        <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">
-          {{ getLengthStayInZermatt() }}
-        </span>
-        {{ getLengthStayInZermatt() === 1 ? 'day' : 'days' }} in Zermatt.
-      </div>
-
-      <div class="flex text-sm  mt-8 -ml-2">
-        <svg class="w-6 h-6 inline-block relative -top-0.5  text-justify-center-600" viewBox="0 0 24 24"
-          fill="currentColor">
-          <path
-            d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z">
-          </path>
-        </svg>
-        <span class="pl-1 pr-2">
-          TIP: It's easy to adjust your dates here if needed.
-        </span>
-      </div>
-
-
     </div>
+
+    <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700 text-sm  mt-4 pl-11">
+      You are staying
+      <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">
+        {{ getLengthStayInZermatt() }}
+      </span>
+      {{ getLengthStayInZermatt() === 1 ? 'day' : 'days' }} in Zermatt.
+    </div>
+
+    <div class="flex text-sm  mt-8 -ml-2">
+      <svg class="w-6 h-6 inline-block relative -top-0.5  text-justify-center-600" viewBox="0 0 24 24" fill="currentColor">
+        <path
+          d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z">
+        </path>
+      </svg>
+      <span class="pl-1 pr-2">
+        TIP: It's easy to adjust your dates here if needed.
+      </span>
+    </div>
+
 
   </div>
 
@@ -431,7 +418,7 @@ export default {
     //   // ])
     // },
 
-    // TODO: remove this - use valid() method instead.
+// TODO: remove this - use valid() method instead.
     /**
      * This computed value is requried by the base '_Page' class.
      * It is tightly coupled, but lets the base handle all event
@@ -595,12 +582,7 @@ export default {
       //console.log('modelData:', modelData)
       this.arriveDate = modelData
       datesStore.setArriveDate(modelData)    // set in Store.
-      this.showArriveDatePicker = false   // close the calendar.
-      this.showDepartDatePicker = true    // open the Depart Date calendar.
     },
-
-
-
     onArriveDateInputClick(el, ev) {
       // console.log('clicked', el, ev)
       // Arrive Date
@@ -611,7 +593,7 @@ export default {
     onDepartDateSelect(modelData) {
       this.departDate = modelData
       datesStore.setDepartDate(modelData)    // set in Store.
-      this.showDepartDatePicker = false
+      //this.showDepartDatePicker = false
 
       this.scrollToElement()
 
@@ -771,20 +753,15 @@ export default {
 
 /* Changing the colors and font weights of each day in calendar   rgb(167 243 208) */
 
-.dp__today {
-  border: none;
-  color: var(--dp-primary-color);
-}
-
 .dp__today:after {
-  content: 'TODAY';
-  position: absolute;
-  bottom: -0.25em;
-  font-size: 0.7em;
-  color: rgba(25,118,210, 0.5);
-  background-color: transparent;
-  padding-right: 3px;
-  padding-left: 3px;
+    content: 'TODAY';
+    position: absolute;
+    bottom: -0.9em;
+    font-size: 0.7em;
+    color: var(--dp-primary-color);
+    background-color: white;
+    padding-right: 3px;
+    padding-left: 3px;
 }
 
 /**
@@ -806,13 +783,6 @@ export default {
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
   text-shadow: 0 0 4px rgb(34, 99, 4);
 }
-  .dp__active_date::before {
-    position: absolute;
-    top: -0.35rem; right: 0.01rem;
-    width: 0.7rem;
-    height: 0.7rem;
-    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8.94737L22 14V16L14 13.4737V18.8333L17 20.5V22L12.5 21L8 22V20.5L11 18.8333V13.4737L3 16V14L11 8.94737V3.5C11 2.67157 11.6716 2 12.5 2C13.3284 2 14 2.67157 14 3.5V8.94737Z"></path></svg>');
-  }
 
 .dpMenuArrive {
   border: 1px solid rgba(76, 187, 23, 1);
