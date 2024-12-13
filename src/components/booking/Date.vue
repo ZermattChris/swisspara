@@ -4,7 +4,7 @@
     1. Flight Date
   </h1>
 
-  <div id="flightDateBox" class="flex flex-col items-start">
+  <div id="flightDateBox" class="flex flex-col items-start  pb-20">
     <!-- (1) -->
     <!-- <span class="w-12 h-12  sm:w-14 sm:h-14
             text-3xl sm:text-4xl 
@@ -48,8 +48,8 @@
     </div>
 
     <!-- This is the Main Flight Date picker that's always shown  -->
-    <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"
-      class="inline-block relative -left-[5px] mt-4 mb-8 mx-auto z-1  max-w-[350px] drop-shadow-md" v-model="flightCal"
+    <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"  :day-class="getFlightDayClass"
+      class="inline-block relative  mt-4 mb-8 mx-auto z-1  max-w-[350px] drop-shadow-md " v-model="flightCal"
       :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"
       :month-change-on-scroll="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
       @update:model-value="onDateSelect" inline auto-apply :min-date="new Date()"
@@ -68,7 +68,16 @@
 
           <!-- Arrive Calendar  -->
           <div v-if="showArriveDatePicker" @click="(e) => { e.stopPropagation() }"
-            class="flex flex-col  place-self-center justify-center  bg-white p-4 md:p-6 xl:py-12 xl:px-20 rounded-md shadow-md">
+            class="flex flex-col  place-self-center justify-center  relative  bg-white p-4 md:p-6 xl:py-12 xl:px-20 rounded-md shadow-md">
+
+            <div id="closeArriveDialog" @click="this.showArriveDatePicker = false"
+              class="h-6 w-6  text-gray-500 hover:text-black hover:cursor-pointer  absolute top-2 right-2 ">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
+                </path>
+              </svg>
+            </div>
 
             <div
               class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -89,7 +98,7 @@
               {{ this.getFormattedArrivalDate() }}
             </div>
 
-            <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"
+            <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate" 
               :month-change-on-scroll="false" :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline
               teleport-center auto-apply :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()"
               prevent-min-max-navigation @update:model-value="onArriveDateSelect"
@@ -146,7 +155,16 @@
 
           <!-- Depart Calendar  -->
           <div v-if="showDepartDatePicker" @click="(e) => { e.stopPropagation() }"
-            class="flex flex-col  place-self-center justify-center  bg-white px-4 pt-8 pb-4 rounded-md shadow-md">
+            class="flex flex-col  place-self-center justify-center relative bg-white  px-6 pt-8 pb-8 rounded-md shadow-md">
+
+            <div id="closeArriveDialog" @click="this.showDepartDatePicker = false"
+              class="h-6 w-6  text-gray-500 hover:text-black hover:cursor-pointer  absolute top-2 right-2 ">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z">
+                </path>
+              </svg>
+            </div>
 
             <div
               class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-orange-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
@@ -173,7 +191,7 @@
             </VueDatePicker>
 
 
-            <div class="text-sm mt-2 text-gray-800">
+            <div v-if="departDate === ''" class="text-sm mt-2 text-gray-800">
               Click a date above to continue...
             </div>
 
@@ -226,10 +244,9 @@
     </Transition>
 
     <!-- Arrive Date input and Calendar.  -->
-    <div id="arriveDateBox" v-if="flightDate"
-      class="pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+    <div id="arriveDateBox" v-if="flightDate" class="mx-auto pb-8 md:pb-12 ">
 
-      <label for="arriveDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-emerald-900">
+      <label for="arriveDateInput" class="italic text-lg md:text-xl inline font-normal text-emerald-900">
         <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
           fill="currentColor">
           <path fill-rule="evenodd"
@@ -249,21 +266,19 @@
         </svg>
       </label>
 
-      <div id="arriveDateInputBox" class="relative mt-3 pl-4">
+      <div id="arriveDateInputBox" class="relative mt-3 ">
 
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-emerald-900">
+          class="absolute left-3 top-2   w-6 h-6 inline-block mb-1 text-emerald-900">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
         </svg>
 
         <input type="input" name="arriveDateInput" id="arriveDateInput" :value="displayDate(arriveDate)" readonly
-          @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="Please enter your Arrival Date..."
+          @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="click me"
           :class="{ 'bg-indigo-50/50': arriveDate }"
           class="inline-block  rounded-md border-0 
-          ml-2 py-2 pl-12 pr-2 
-          w-72 sm:w-80
-          overflow-clip
+          py-2 pl-12 pr-2
           cursor-pointer
         bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 " />
@@ -272,8 +287,7 @@
     </div>
 
     <!-- Depart Date input and Calendar.  -->
-    <div id="departDateBox" v-if="arriveDate"
-      class="mb-16 pb-8 md:pb-12 pl-12 md:pl-20 mx-auto  w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em]">
+    <div id="departDateBox" v-if="arriveDate" class="mx-auto pb-8 md:pb-12 ">
 
       <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
         <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -283,7 +297,7 @@
 
 
         <span class="font-bold ">
-          Departing Zermatt:
+          Departing from Zermatt:
         </span>
 
         <svg class="w-6 h-6 inline-block ml-2 mb-1 text-lime-600" :class="[!departDate ? 'hidden' : '']"
@@ -294,20 +308,19 @@
         </svg>
       </label>
 
-      <div id="departDateInputBox" class="relative mt-3 pl-4">
+      <div id="departDateInputBox" class="relative mt-3 ">
 
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="absolute left-8 top-1   w-6 h-6 inline-block mb-1 text-orange-700">
+          class="absolute left-3 top-2   w-6 h-6 inline-block mb-1 text-orange-700">
           <path stroke-linecap="round" stroke-linejoin="round"
             d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z" />
         </svg>
 
         <input type="input" name="departDateInput" id="departDateInput" :value="displayDate(departDate)" readonly
-          @click="onDepartDateInputClick('departDateInput', $event)" placeholder="Please enter your Departure date..."
+          @click="onDepartDateInputClick('departDateInput', $event)" placeholder="click me"
           :class="{ 'bg-indigo-50/50': departDate }"
           class="inline-block  rounded-md border-0 
-          ml-2 py-2 pl-12 pr-2 
-          w-72 sm:w-80
+          py-2 pl-12 pr-2 
           overflow-clip
           cursor-pointer
           bg-gray-100
@@ -315,7 +328,12 @@
 
       </div>
 
-      <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700 text-sm  mt-4 pl-11">
+
+    </div>
+
+
+    <div class="mx-auto ">
+      <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700 text-sm  mt-4 ">
         You are staying
         <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">
           {{ getLengthStayInZermatt() }}
@@ -323,20 +341,19 @@
         {{ getLengthStayInZermatt() === 1 ? 'day' : 'days' }} in Zermatt.
       </div>
 
-      <div class="flex text-sm  mt-8 -ml-2">
+      <!-- <div class="flex text-sm  mt-8">
         <svg class="w-6 h-6 inline-block relative -top-0.5  text-justify-center-600" viewBox="0 0 24 24"
           fill="currentColor">
           <path
             d="M9.97308 18H14.0269C14.1589 16.7984 14.7721 15.8065 15.7676 14.7226C15.8797 14.6006 16.5988 13.8564 16.6841 13.7501C17.5318 12.6931 18 11.385 18 10C18 6.68629 15.3137 4 12 4C8.68629 4 6 6.68629 6 10C6 11.3843 6.46774 12.6917 7.31462 13.7484C7.40004 13.855 8.12081 14.6012 8.23154 14.7218C9.22766 15.8064 9.84103 16.7984 9.97308 18ZM14 20H10V21H14V20ZM5.75395 14.9992C4.65645 13.6297 4 11.8915 4 10C4 5.58172 7.58172 2 12 2C16.4183 2 20 5.58172 20 10C20 11.8925 19.3428 13.6315 18.2443 15.0014C17.624 15.7748 16 17 16 18.5V21C16 22.1046 15.1046 23 14 23H10C8.89543 23 8 22.1046 8 21V18.5C8 17 6.37458 15.7736 5.75395 14.9992ZM13 10.0048H15.5L11 16.0048V12.0048H8.5L13 6V10.0048Z">
           </path>
         </svg>
-        <span class="pl-1 pr-2">
+        <span class="">
           TIP: It's easy to adjust your dates here if needed.
         </span>
-      </div>
-
-
+      </div> -->
     </div>
+
 
   </div>
 
@@ -377,6 +394,7 @@ export default {
     VueDatePicker,
     SliderTime
   },
+
 
 
   data() {
@@ -653,11 +671,32 @@ export default {
 
     // Arrive Date must be <= flightDate
     getMinArriveDate() {
+      // --> this gives a set time in the past...
+      // const noOfDays = -7        // 2 weeks in the past.
+      // let minDate = new Date(Date.parse(this.flightDate))
+      // //console.log('-> minDate(): ', this.flightDate)
+      // minDate.setTime(minDate.getTime() + (noOfDays * (1000 * 60 * 60 * 24)));
+      // return minDate.toDateString()
+
+
       const noOfDays = -7        // 2 weeks in the past.
       let minDate = new Date(Date.parse(this.flightDate))
       //console.log('-> minDate(): ', this.flightDate)
       minDate.setTime(minDate.getTime() + (noOfDays * (1000 * 60 * 60 * 24)));
+
+      // Set earliest date to today if less than the noOfDays above
+      if (  this.isDateBeforeToday(minDate) ) {
+        return new Date().toDateString()
+      }
+
+      // return noOfDays above as min arrive date.
       return minDate.toDateString()
+
+    },
+    isDateBeforeToday(date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date < today;
     },
     getMaxArriveDate() {
       return new Date(this.flightDate).toDateString()
@@ -679,14 +718,43 @@ export default {
     },
 
 
+    /** These methods are used by the Calendars to show FLY, Arrive & Depart */
+    getFlightDayClass(day) {
+      // Used by the pop-up Calendars to add css to hilite the flight date.
+      const dayDate = this.formatDate(new Date(day));
+      const flightDay = this.formatDate(new Date(this.flightDate));
+      if (dayDate === flightDay) {
+        return 'mark-flight-date';
+      }
+      return '';
+    },
+    getArriveDayClass(day) {
+      // Used by the pop-up Calendars to add css to hilite the flight date.
+      const dayDate = this.formatDate(new Date(day));
+      const flightDay = this.formatDate(new Date(this.flightDate));
+      if (dayDate === flightDay) {
+        return 'custom-flight-date';
+      }
+      return '';
+    },
+    formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    },
+
+
+
     getFlightDateMakerObj() {
       const markers = [{
         date: new Date(this.flightDate),
-        type: 'line',
-        color: 'green',
-        tooltip: [
-          { text: 'Your Flight', color: 'green' },
-        ],
+        class: 'custom-date-class',
+        type: 'none',
+        // color: 'green',
+        // tooltip: [
+        //   { text: 'Your Flight', color: 'green' },
+        // ],
       }]
       return markers
     },
@@ -771,6 +839,11 @@ export default {
 
 /* Changing the colors and font weights of each day in calendar   rgb(167 243 208) */
 
+.custom-date-class {
+  font-weight: bold;
+  background-color: purple;
+}
+
 .dp__today {
   border: none;
   color: var(--dp-primary-color);
@@ -781,7 +854,7 @@ export default {
   position: absolute;
   bottom: -0.25em;
   font-size: 0.7em;
-  color: rgba(25,118,210, 0.5);
+  color: rgba(25, 118, 210, 0.5);
   background-color: transparent;
   padding-right: 3px;
   padding-left: 3px;
@@ -798,7 +871,7 @@ export default {
 
 
 
-.dp__active_date {
+.mark-flight-date {
   color: white;
   background-color: rgba(76, 187, 23, 1);
   border: 1px solid rgb(34, 99, 4);
@@ -806,15 +879,16 @@ export default {
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.5);
   text-shadow: 0 0 4px rgb(34, 99, 4);
 }
-  .dp__active_date::before {
+.mark-flight-date::before {
     position: absolute;
-    top: -0.35rem; right: 0.01rem;
+    top: -0.4rem;
+    right: 0.01rem;
     width: 0.7rem;
     height: 0.7rem;
     content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M14 8.94737L22 14V16L14 13.4737V18.8333L17 20.5V22L12.5 21L8 22V20.5L11 18.8333V13.4737L3 16V14L11 8.94737V3.5C11 2.67157 11.6716 2 12.5 2C13.3284 2 14 2.67157 14 3.5V8.94737Z"></path></svg>');
     filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.7));
   }
-  .dp__active_date:after {
+  .mark-flight-date:after {
     content: 'FLY';
     position: absolute;
     bottom: -0.35em;
@@ -857,4 +931,4 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-</style>@src/components/Stepper.vue
+</style>
