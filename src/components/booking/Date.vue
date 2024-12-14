@@ -297,7 +297,8 @@
     <!-- Depart Date input and Calendar.  -->
     <!-- <div id="departDateBox" v-if="arriveDate" class="mx-auto pb-8 md:pb-12 "> -->
 
-      <label for="departDateInput" class="mx-auto    italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
+      <div id="departDateBox" v-if="arriveDate" class="mx-auto ">
+      <label for="departDateInput" class="   italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
         <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
           stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -316,7 +317,7 @@
         </svg>
       </label>
 
-      <div id="departDateInputBox" class="mx-auto  relative mt-3 ">
+      <div id="departDateInputBox" class="  relative mt-3 ">
 
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="absolute left-3 top-2   w-6 h-6 inline-block mb-1 text-orange-700">
@@ -335,9 +336,7 @@
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 " />
 
       </div>
-
-
-    <!-- </div> -->
+    </div>
 
 
     <div class="mx-auto mt-4 lg:mt-8   text-sm lg:text-lg">
