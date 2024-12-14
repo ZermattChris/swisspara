@@ -87,7 +87,7 @@ import Modal from "@components/Modal.vue"
 
 // Store
 import { appStore } from '@stores/appStore.js'
-import { pageFlightStore as store } from '@stores/pageFlightStore.js'
+import { pageFlightStore as flightsStore } from '@stores/pageFlightStore.js'
 import { datesStore } from '@stores/pageDateStore.js'
 
 import { isBefore } from 'date-fns'
@@ -116,7 +116,7 @@ export default {
 
   created() {
     //console.log("Date component mounted")
-    store.initialize()
+    flightsStore.initialize()
   },
 
   updated() {
@@ -125,8 +125,8 @@ export default {
 
   mounted() {
     console.log("Page - Flight Mounted")
-    // Make sure cache matches the current state of the store.
-    store.setFlightChosen( store.getFlightChosen() )
+    // Make sure cache matches the current state of the flightsStore.
+    flightsStore.setFlightChosen( flightsStore.getFlightChosen() )
 
     //console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
   },
@@ -134,7 +134,7 @@ export default {
   computed: {
 
     loading() {
-      return store.loading
+      return flightsStore.loading
     },
 
     /**
@@ -145,23 +145,23 @@ export default {
     // TODO: remove this - use valid() method instead.
     _isPageValid() {
       console.log("Flight._isPageValid() is deprecated")
-      return store.isPageValid()
+      return flightsStore.isPageValid()
     },
 
     selectedFlightId() {
-      return store.selectedFlight
+      return flightsStore.selectedFlight
     },
 
     flightObject() {
-      return store.getFlightObj()
+      return flightsStore.getFlightObj()
     },
 
     flightsList() {
-      return store._flightsList
+      return flightsStore._flightsList
     },
 
     photosBool() {
-      return store.getPhotosToggle()
+      return flightsStore.getPhotosToggle()
     },
 
     photosPriceString() {
@@ -184,7 +184,7 @@ export default {
 
       let result = true
       // -> Flight Date checks.
-      if (store.selectedFlight < 1) result = false
+      if (flightsStore.selectedFlight < 1) result = false
 
       // Also need to check that the flight date is valid (not the best solution here...) 
       // var fd = datesStore.getFlightDate()
@@ -202,15 +202,15 @@ export default {
      */
     onChange(id) {
       //console.log("Clicked on Flight id: ", id)
-      store.setFlightChosen(id)
-      // const chosenFlightObj = store.getFlightObj(id)
+      flightsStore.setFlightChosen(id)
+      // const chosenFlightObj = flightsStore.getFlightObj(id)
       // console.log("chosenFlightObj:", chosenFlightObj)
       this.openModal()
     },
 
     onPhotoToggle(bool) {
       //console.log("Clicked on Photos Toggle: ", bool)
-      store.setPhotosToggle(bool)
+      flightsStore.setPhotosToggle(bool)
     },
 
     openModal() {
