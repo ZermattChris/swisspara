@@ -576,19 +576,66 @@ export default {
       //console.log("modelData", modelData)
       this.flightDate = modelData
       datesStore.setFlightDate(modelData)    // set in Store.
+
+
+      // ------- New Dates Logic here ------
+
+      // 1. If no Arrive Date yet, then trigger showing Arrive Cal.
+      if (!this.arriveDate || this.arriveDate === '') {
+        this.showArriveCal()
+        return
+      }
+
+      // 2. If Flight Date between the Arrive & Depart Dates, all good.
+      if (this.arriveDate <= this.flightDate && this.flightDate <= this.departDate) {
+        //console.log('-> Flight Date between Arrive & Depart Dates')
+        return
+      }
+
+      // 3. If Flight Date is before Arrive Date, then reset Arrive Date.
+      if (this.flightDate < this.arriveDate) {
+        //console.log('-> Flight Date is before Arrive Date')
+        this.arriveDate = ''
+        datesStore.setArriveDate('')
+        this.showArriveCal()
+        return
+      }
+
+      // 4. If Flight Date is after Depart Date, then reset Depart Date.
+      if (this.flightDate > this.departDate) {
+        //console.log('-> Flight Date is after Depart Date')
+        this.departDate = ''
+        datesStore.setDepartDate('')
+        this.showDepartCal()
+        return
+      }
+
+
       // Reset Arrive & Depart.
-      this.arriveDate = ''
-      datesStore.setArriveDate('')
-      this.departDateDate = ''
-      datesStore.setDepartDate('')
+      // this.arriveDate = ''
+      // datesStore.setArriveDate('')
+      // this.departDateDate = ''
+      // datesStore.setDepartDate('')
       // Hide Calendar.
       // this.showFlightDatePicker = false
 
       // Automatically show the 'Arrival Date' pop up calendar.
+      // setTimeout(() => {
+      //   this.showArriveDatePicker = true
+      // }, "50")
+
+    },
+
+    showArriveCal () {
       setTimeout(() => {
         this.showArriveDatePicker = true
       }, "50")
+    },
 
+    showDepartCal () {
+      setTimeout(() => {
+        this.showDepartDatePicker = true
+      }, "50")
     },
 
     // onDateInputClick(el, ev) {
