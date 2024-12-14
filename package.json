@@ -12,30 +12,30 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.3",
-    "@astrojs/vue": "^5.0.1",
+    "@astrojs/vue": "^5.0.2",
     "@fontsource-variable/inter": "^5.1.0",
-    "@fontsource-variable/open-sans": "^5.0.29",
+    "@fontsource-variable/open-sans": "^5.1.0",
     "@fontsource/inter": "^5.1.0",
-    "@headlessui/vue": "^1.7.22",
-    "@heroicons/vue": "^2.1.5",
+    "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.2.0",
     "@splidejs/vue-splide": "^0.6.12",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@vue-stripe/vue-stripe": "^4.5.0",
     "@vueform/slider": "^2.1.10",
-    "@vueform/vueform": "^1.10.2",
+    "@vueform/vueform": "^1.12.0",
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "@vuepic/vue-datepicker": "^7.4.1",
-    "astro": "^5.0.4",
-    "date-fns": "^2.30.0",
-    "libphonenumber-js": "^1.11.5",
-    "maz-ui": "^3.44.3",
+    "astro": "^5.0.5",
+    "date-fns": "^4.1.0",
+    "libphonenumber-js": "^1.11.16",
+    "maz-ui": "^3.50.1",
     "md5-js-tools": "^1.0.2",
-    "preline": "^2.4.1",
-    "tailwindcss": "^3.4.7",
+    "preline": "^2.6.0",
+    "tailwindcss": "^3.4.16",
     "vue": "^3.2.30"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.7"
+    "@tailwindcss/forms": "^0.5.9"
   }
 }
