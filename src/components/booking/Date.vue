@@ -48,7 +48,7 @@
     </div>
 
     <!-- This is the Main Flight Date picker that's always shown  -->
-    <VueDatePicker v-if="showArriveDatePicker === false && showDepartDatePicker === false"  :day-class="getFlightDayClass"
+    <VueDatePicker  :day-class="getFlightDayClass"
       class="inline-block relative  mt-4 mb-8 mx-auto z-1  max-w-[350px] drop-shadow-md " v-model="flightCal"
       :model-value="flightDate" :highlight="highlightedDates()" :enable-time-picker="false"
       :month-change-on-scroll="false" :max-date="getMaxFutureDate()" prevent-min-max-navigation
@@ -80,7 +80,7 @@
             </div>
 
             <div
-              class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
+              class="flex  place-self-center justify-center  w-[190px] text-xl italic text-black bg-lime-200 border-2 border-gray-600 mt-43mb-2 py-2 px-2 rounded-3xl drop-shadow-lg ">
               <svg class="w-6 h-6 inline-block mb-1 mr-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                 fill="currentColor">
                 <path fill-rule="evenodd"
@@ -90,16 +90,16 @@
               Arrival Date
             </div>
 
-            <div v-if="!arriveDate" class="text-sm mt-2 text-gray-800">
+            <div v-if="!arriveDate" class="text-sm mt-4 text-gray-800">
               Which day are you arriving in Zermatt?
             </div>
-            <div v-if="arriveDate" class="text-sm mb-4 text-gray-800">
+            <div v-if="arriveDate" class="text-sm mt-4 mb-2 text-gray-800">
               You arrive on:
               {{ this.getFormattedArrivalDate() }}
             </div>
 
-            <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate" 
-              :month-change-on-scroll="false" :markers="getFlightDateMakerObj()" :enable-time-picker="false" inline
+            <VueDatePicker id="arriveDatePicker" v-model="arriveCal" :model-value="arriveDate"  :day-class="getFlightDayClass"
+              :month-change-on-scroll="false" :enable-time-picker="false" inline
               teleport-center auto-apply :min-date="getMinArriveDate()" :max-date="getMaxArriveDate()"
               prevent-min-max-navigation @update:model-value="onArriveDateSelect"
               class="dpMenuArrive my-4  absolute z-[98] drop-shadow-xl ">
@@ -183,7 +183,7 @@
               Which day are you departing Zermatt?
             </div>
 
-            <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal"
+            <VueDatePicker v-if="showDepartDatePicker" id="departDatePicker" v-model="departCal" :day-class="getFlightDayClass"
               :model-value="departDate" :month-change-on-scroll="false" :markers="getFlightDateMakerObj()"
               :enable-time-picker="false" inline teleport-center auto-apply :min-date="getMinDepartDate()"
               :max-date="getMaxDepartDate()" prevent-min-max-navigation @update:model-value="onDepartDateSelect"
@@ -244,9 +244,10 @@
     </Transition>
 
     <!-- Arrive Date input and Calendar.  -->
-    <div id="arriveDateBox" v-if="flightDate" class="mx-auto pb-8 md:pb-12 ">
+    <div id="arriveDateBox" v-if="flightDate"  class="mx-auto  flex flex-col items-start  pb-8 md:pb-12 ">
+    <!-- <div id="arriveDateBox" v-if="flightDate" class=" mx-auto pb-8 md:pb-12 "> -->
 
-      <label for="arriveDateInput" class="italic text-lg md:text-xl inline font-normal text-emerald-900">
+      <label for="arriveDateInput" class="mx-auto  italic text-lg md:text-xl inline font-normal text-emerald-900">
         <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
           fill="currentColor">
           <path fill-rule="evenodd"
@@ -278,18 +279,25 @@
           @click="onArriveDateInputClick('arriveDateInput', $event)" placeholder="click me"
           :class="{ 'bg-indigo-50/50': arriveDate }"
           class="inline-block  rounded-md border-0 
+          w-72 sm:w-80
+          overflow-clip
           py-2 pl-12 pr-2
           cursor-pointer
         bg-gray-100
           text-gray-900 shadow-sm ring-1 ring-inset ring-gray-500 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 " />
       </div>
 
+
+
+
+
+
     </div>
 
     <!-- Depart Date input and Calendar.  -->
-    <div id="departDateBox" v-if="arriveDate" class="mx-auto pb-8 md:pb-12 ">
+    <!-- <div id="departDateBox" v-if="arriveDate" class="mx-auto pb-8 md:pb-12 "> -->
 
-      <label for="departDateInput" class="italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
+      <label for="departDateInput" class="mx-auto    italic text-lg md:text-xl inline pl-2 font-normal text-orange-700">
         <svg class="w-6 h-6 inline-block mb-1 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
           stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -308,7 +316,7 @@
         </svg>
       </label>
 
-      <div id="departDateInputBox" class="relative mt-3 ">
+      <div id="departDateInputBox" class="mx-auto  relative mt-3 ">
 
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="absolute left-3 top-2   w-6 h-6 inline-block mb-1 text-orange-700">
@@ -320,7 +328,7 @@
           @click="onDepartDateInputClick('departDateInput', $event)" placeholder="click me"
           :class="{ 'bg-indigo-50/50': departDate }"
           class="inline-block  rounded-md border-0 
-          py-2 pl-12 pr-2 
+          py-2 pl-12 pr-2 w-72 sm:w-80
           overflow-clip
           cursor-pointer
           bg-gray-100
@@ -329,11 +337,11 @@
       </div>
 
 
-    </div>
+    <!-- </div> -->
 
 
-    <div class="mx-auto ">
-      <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700 text-sm  mt-4 ">
+    <div class="mx-auto mt-4 lg:mt-8   text-sm lg:text-lg">
+      <div v-if="!isNaN(getLengthStayInZermatt())" class="text-gray-700  mt-0">
         You are staying
         <span class="bg-yellow-200 text-orange-800 px-1 py-0.5 font-bold">
           {{ getLengthStayInZermatt() }}
@@ -614,7 +622,11 @@ export default {
       this.arriveDate = modelData
       datesStore.setArriveDate(modelData)    // set in Store.
       this.showArriveDatePicker = false   // close the calendar.
-      this.showDepartDatePicker = true    // open the Depart Date calendar.
+
+      // Only open the depart Cal if not yet selected, or if invalid.
+      if (!this.departDate) {
+        this.showDepartDatePicker = true    // open the Depart Date calendar.
+      }
     },
 
 
@@ -839,13 +851,9 @@ export default {
 
 /* Changing the colors and font weights of each day in calendar   rgb(167 243 208) */
 
-.custom-date-class {
-  font-weight: bold;
-  background-color: purple;
-}
-
 .dp__today {
   border: none;
+  background-color: transparent;
   color: var(--dp-primary-color);
 }
 
