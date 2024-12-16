@@ -6,9 +6,14 @@
   </h1>
 
 
-
   <div id="flightDateBox"
     class="mx-auto pb-8 md:pb-12 pl-[3vw] sm:pl-0 w-full sm:w-3/4 md:w-4/5 lg:w-1/2 xl:w-2/5 2xl:w-[30em] ">
+
+
+    <p class="mt-6 mb-4">
+      Please choose an available flight from the list below.
+    </p>
+
 
     <!-- Loading spinner.  -->
     <div v-if="loading" class="relative rounded-xl overflow-auto p-8">
@@ -24,11 +29,12 @@
       </div>
     </div>
 
-    <FlightSelector v-if="loading === false" @change="onChange" :list="flightsList" :flightId="selectedFlightId"
+    <FlightSelector v-if="loading === false" @change="onChange" :list="onlineFlightsList" :flightId="selectedFlightId"
       class="mr-4"></FlightSelector>
 
     <!-- Photos & Videos toggle switch  -->
-    <PhotosToggle :label='photosPriceString' :enabled="photosBool" @change="onPhotoToggle">
+    <PhotosToggle :label='photosToggleLabel' :description="photosToggleDesc" :enabled="photosBool"
+      @change="onPhotoToggle">
     </PhotosToggle>
 
     <!-- <p>{{ flightObject }}</p> -->
@@ -36,38 +42,49 @@
     <!-- Flight Infos dialog.  -->
     <Modal ref="modal">
       <template v-slot:title>
-        Flight -> {{ flightObject.name }}
+        The {{ flightName() }}
       </template>
 
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
+      <div v-if="flightObject.name === 'classic'">
+        <p>
+          The Classic flight requires that you be reasonably fit and sporty.
+        </p>
+      </div>
 
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
+      <div v-if="flightObject.name === 'scenic'">
+        <p>
+          The Scenic flight is our most popular flight summer flight, with easy, grassy take offs.
+        </p>
+      </div>
 
-      <p>TODO. Text goes here for selected flight, using the descriptionId: {{ flightObject.descriptionId }}</p>
-
-
-      <p>TODO. Text goes here for selected flight, using the descriptioxt goes here for selected flight, using the
-        descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the
-        descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the
-        descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the
-        descriptioxt goes here for selected flight, using the descriptioxt goes here for selected flight, using the
-        descriptionId: {{ flightObject.descriptionId }}</p>
+      <div v-if="flightObject.name === 'elite'">
+        <p>
+          Elite (Classic) is the highest Tandem flight available in the Alps. As such it requires a high level of
+          fitness
+          for your age and weight.
+        </p>
+      </div>
 
       <template v-slot:button>
         Got it!
       </template>
     </Modal>
 
-    <p>
-      If we're closed on the date they've chosen, then here a Message.
-    </p>
-    <p>
-      Here we can give a short explanation of the Flight they've chosen, combined with their flight date.
-      Elite gets a proper one. Classic - Rothorn, Gornergrat and Rotenboden.
-    </p>
-    <p>
-      Head's up on age, weight and confidence levels for chosen flight + date.
-    </p>
+    <div id="flightDateDescBox" v-if="getSeasonString() === 'winter'">
+      <div v-if="flightObject.name === 'classic'">
+        <p>
+          The Classic flight requires that you be reasonably fit and sporty.
+        </p>
+      </div>
+      <div v-if="flightObject.name === 'elite'">
+        <p>
+          The Elite (Classic) is also available in the winter season.
+        </p>
+        <p>
+          As it is often too windy up high in the winter, the Classic flight from Rothorn as a backup.
+        </p>
+      </div>
+    </div> <!-- END:: Winter  -->
 
   </div>
 
@@ -90,7 +107,10 @@ import { appStore } from '@stores/appStore.js'
 import { pageFlightStore as flightsStore } from '@stores/pageFlightStore.js'
 import { datesStore } from '@stores/pageDateStore.js'
 
-import { isBefore } from 'date-fns'
+import { isBefore, isAfter } from 'date-fns'
+
+// dynamic imports for Flight Descriptions.
+//import { defineAsyncComponent, ref, computed } from 'vue'
 
 
 
@@ -126,7 +146,7 @@ export default {
   mounted() {
     console.log("Page - Flight Mounted")
     // Make sure cache matches the current state of the flightsStore.
-    flightsStore.setFlightChosen( flightsStore.getFlightChosen() )
+    flightsStore.setFlightChosen(flightsStore.getFlightChosen())
 
     //console.log("Page-Flight Mounted: ", this.valid() ? 'valid page' : 'Not valid page')
   },
@@ -152,6 +172,8 @@ export default {
       return flightsStore.selectedFlight
     },
 
+
+
     flightObject() {
       return flightsStore.getFlightObj()
     },
@@ -160,12 +182,24 @@ export default {
       return flightsStore._flightsList
     },
 
+    // TODO: This should be done on the server side.  
+    // The server might return a Flight that's not available for online booking.
+    // Only display the flights that are available for online booking.
+    onlineFlightsList() {
+      let rawFlightsList = flightsStore._flightsList
+      return rawFlightsList.filter(f => f.show_online === 1)
+    },
+
     photosBool() {
       return flightsStore.getPhotosToggle()
     },
 
-    photosPriceString() {
-      return "Add the Photo &amp; Video Package (optional " + (this.photoPrice / 100) + ".00&nbsp;CHF)"
+
+    photosToggleLabel() {
+      return "Photo &amp; Video Package"
+    },
+    photosToggleDesc() {
+      return "(optional " + (this.photoPrice / 100) + ".00&nbsp;CHF)"
     },
 
   }, // computed
@@ -173,6 +207,38 @@ export default {
 
 
   methods: {
+
+    // Seasons are used to display a flight message.
+    getSeasonString() {
+
+      // Use flight date to display season specific messages.
+      const fd = new Date(datesStore.getFlightDate())
+      console.log("Flight Date: ", fd)
+
+      // todo -- grab this year..
+
+      // Winter Season
+      if (isBefore(fd, new Date('2022-04-20')) && isAfter(fd, new Date('2021-11-30'))) return 'winter'
+      // Spring Season
+      if (isBefore(fd, new Date('2022-06-01')) && isAfter(fd, new Date('2022-04-20'))) return 'spring'
+      // Summer Season
+      if (isBefore(fd, new Date('2022-10-01')) && isAfter(fd, new Date('2022-05-31'))) return 'summer'
+      // Autumn Season
+      if (isBefore(fd, new Date('2022-12-01')) && isAfter(fd, new Date('2022-10-01'))) return 'autumn'
+
+      return 'winter'
+    },
+
+
+
+    flightName() {
+      var fObj = flightsStore.getFlightObj()
+      return this.capitalizeFirstLetter(fObj.name)
+    },
+
+    capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    },
 
     /**
      * This method must be overrided in each of these Page components.
@@ -231,4 +297,3 @@ export default {
 
 
 </script>import type { datesStore } from '../stores/pageDateStore'
-
