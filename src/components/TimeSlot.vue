@@ -242,6 +242,12 @@ function onRemovePassenger(slotNr, timeHint) {
 
 
 function slotsCurrPassengerCount(timeHint) {
+  // Issues with NaN popping up on local API
+  const currPassengers = nrPassengersList[timeHint]
+  if (currPassengers === undefined) {
+    console.log("NaN in slotsCurrPassengerCount")
+    return 0
+  }
   return nrPassengersList[timeHint]
 }
 function slotsMaxPassengerCount(timeHint) {

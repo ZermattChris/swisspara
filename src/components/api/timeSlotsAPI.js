@@ -8,7 +8,9 @@ export default {
   get(pFlightId, pISODate) {
 
     if (api.isLocalAPI()) {
-      const promisedJSON = api.callAPI("http://spzadmin.local:88/api/v1/flightsavailable/" + pFlightId + "/" + pISODate)
+      const path = "http://spzadmin.local:88/api/v1/flightsavailable/" + pFlightId + "/" + pISODate
+      console.log('Calling Local Server API: ', path)
+      const promisedJSON = api.callAPI(path)
       return promisedJSON
       // --- this was the original dynamic return JSON created below. Now using the real data from the Local dev server ---
       // const loadingDelay = 500
@@ -27,9 +29,10 @@ export default {
       return promisedJSON
     }
 
-    // console.warn("TODO: build Live API call for timeSlotsAPI")
-    // http://spzadmin.local:88/api/v1/flightsavailable/1/2024-07-09
-    const promisedJSON = api.callAPI("https://admin.swissparaglide.com/api/v1/flightsavailable/" + pFlightId + "/" + pISODate)
+    // Live API
+    const path = "https://admin.swissparaglide.com/api/v1/flightsavailable/" + pFlightId + "/" + pISODate
+    console.log('Calling Live Server API: ', path)
+    const promisedJSON = api.callAPI(path)
     //console.log( "json: ", promisedJSON )
     return promisedJSON
 
