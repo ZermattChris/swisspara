@@ -118,7 +118,11 @@
       targetVal = Number(props.modelValue) + step
     }
     //console.log('Slider: updateedVal : ', targetVal)
-    emit('update:modelValue', targetVal)
+
+    setTimeout(() => {
+      emit('update:modelValue', targetVal)
+    }, "20")
+    
   }
 
 

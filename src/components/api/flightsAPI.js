@@ -12,7 +12,7 @@ export default {
       const path = "http://spzadmin.local:88/api/v1/flightoptions/" + pISODate
       console.log('Calling Local Server API: ', path)
       const promisedJSON = api.callAPI(path)
-
+      return promisedJSON
 
       // const loadingDelay = 500
       // console.log("Calling Local dev API for Flights List.")

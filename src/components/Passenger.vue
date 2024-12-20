@@ -222,8 +222,9 @@
 
 
         <!-- Confidence Slider.  -->
-        <div class="mt-8 font-medium text-center text-gray-900 text-sm">Confidence &amp; Running Ability: {{
-          state.confidence }}</div>
+        <div class="mt-8 font-medium text-center text-gray-900 text-sm">
+          Confidence &amp; Running Ability: {{ state.confidence > -1 ? state.confidence : '' }}
+        </div>
         <Slider v-if="vueTimingHack" :id="`confSlider_${index}`" v-model.number="state.confidence" :min="confSliderMin"
           :max="confSliderMax" :step="confSliderStep" class="mt-0 mx-4">
           <!-- Turtle icon.  -->
@@ -244,22 +245,33 @@
           </template>
 
           <!-- Confidence Message (below slider)  -->
-          <template v-slot:message>
-            <span v-if="Number(state.confidence) === -1" class="text-sm text-gray-600">
+          <template v-slot:message >
+            <!-- <span v-if="Number(state.confidence) === -1" class="text-sm text-gray-600">
               Please enter your Confidence Level
             </span>
-            <span v-if="Number(state.confidence) >= confSliderMin" class="text-sm  block"
-              :class="state.confidence > confSliderMin ? 'text-gray-80' : 'text-orange-700'">
+            <span v-if="Number(state.confidence) >= -1" class="text-sm  block" :class="state.confidence > confSliderMin ? 'text-gray-80' : 'text-orange-700'">
               {{ confidenceMessages[state.confidence].confidence }}
             </span>
-            <span v-if="Number(state.confidence) >= confSliderMin"
-              class="italic text-sm text-gray-600 block relative -top-1">
-              {{ confidenceMessages[state.confidence].speed }}
-            </span>
+            <span v-if="Number(state.confidence) >= -1" class="italic text-sm text-gray-600 block relative -top-1">
+              {{ state.confidence[state.confidence].speed }}
+            </span> -->
           </template>
 
         </Slider>
 
+        {{ state.confidence }}
+
+        <div v-if="typeof confidenceMessages[state.confidence]  === 'undefined' || confidenceMessages[state.confidence] === null  || Number(state.confidence) < 0  "  class="text-sm text-gray-800">
+          Please enter your Confidence Level
+        </div>
+
+        <div v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null  ">
+          {{ confidenceMessages[state.confidence].confidence }}
+        </div>
+
+        <div v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null  ">
+          {{ confidenceMessages[state.confidence].speed }}
+        </div>
 
 
         <!-- Weight Slider.  -->
@@ -393,7 +405,7 @@ function onChangedPassDescription(val) {
 // Confidence Slider --------------------------
 const confSliderMin = 0
 const confSliderMax = 10
-const confSliderStep = 2
+const confSliderStep = 1
 function onConfidenceChanged(val) {
   console.log('onConfidenceChanged', val)
   state.confidence = Number(val)
@@ -403,11 +415,16 @@ function onConfidenceChanged(val) {
 }
 const confidenceMessages = {
   0: { "confidence": "* Assistance Required *", "speed": "(see message below...)" },
-  2: { "confidence": "Minimal Confidence", "speed": "Speed Slow" },
+  1: { "confidence": "* Assistance Required *", "speed": "(see message below...)" },
+  2: { "confidence": "Minimal Confidence", "speed": "Speed Very Slow" },
+  3: { "confidence": "Minimal Confidence", "speed": "Speed Slow" },
   4: { "confidence": "A bit nerverous", "speed": "Speed Slow-ish" },
-  6: { "confidence": "Confidence Normal", "speed": "Speed okay" },
-  8: { "confidence": "Quite Confident", "speed": "Speed Quick" },
-  10: { "confidence": "Totally Confident", "speed": "Speed Fast" },
+  5: { "confidence": "A bit nerverous", "speed": "Speed Okay" },
+  6: { "confidence": "Confidence Normal", "speed": "Speed Good" },
+  7: { "confidence": "Confidence Normal", "speed": "Speed Quick" },
+  8: { "confidence": "Quite Confident", "speed": "Speed Fast" },
+  9: { "confidence": "Totally Confident", "speed": "Speed Fast" },
+  10: { "confidence": "Totally Confident", "speed": "Speed Very Fast" },
 }
 
 // Weight Slider ------------------------------
@@ -561,6 +578,10 @@ const v$ = useVuelidate(validations, state)
 
 
 
+
+
+
+
 /**-------------------------------------------------------------------------
  * Set up data from the cache.
  * Set up Validations for pesky forms.
@@ -571,6 +592,12 @@ onMounted(() => {
   // load data from cache/store.
   const cache = store.getAllPassengersList()[props.index]
   //console.log("Passenger cache", cache)		// works! Gives an empty cache if bad data.
+
+
+  // default values.
+  state.confidence = -1
+
+
 
   // Load into our form fields, careful for undefined, etc.
   if (cache !== undefined) {
@@ -592,6 +619,8 @@ onMounted(() => {
     if (cache.description !== undefined) state.description = cache.description
   }
   vueTimingHack.value = true
+
+  console.log('state.confidence', state.confidence)
 })
 
 

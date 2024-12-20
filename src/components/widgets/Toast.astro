@@ -1,0 +1,28 @@
+---
+---
+
+
+<script>
+  import Toastify from 'toastify-js';
+  import "toastify-js/src/toastify.css";
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.getElementById('toastButton');
+    button.addEventListener('click', () => {
+      Toastify({
+        text: "This is a toast notification!",
+        duration: 3000,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "linear-gradient(to right, #00b09b, #96c93d)",
+        },
+      }).showToast();
+    });
+  });
+</script>
+
+
+<button id="toastButton" class="z-50 cursor-pointer">Show Toast</button>

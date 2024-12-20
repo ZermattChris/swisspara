@@ -9,20 +9,26 @@ export default {
 
     // fake local api.
 		if ( api.isLocalAPI() ) {
-			const loadingDelay = 500
-			return new Promise((resolve) => {
-				setTimeout(() => {
-					resolve(
-						[
-							{
-									"max-pilots":10,
-									"book-future-months":12,
-									"video-cost":40
-							}
-						]
-					);
-				}, loadingDelay);
-			});
+
+
+      const path = "http://spzadmin.local:88/api/v1/settings"
+      console.log('Calling Local Server API: ', path)
+      const promisedJSON = api.callAPI(path)
+
+			// const loadingDelay = 500
+			// return new Promise((resolve) => {
+			// 	setTimeout(() => {
+			// 		resolve(
+			// 			[
+			// 				{
+			// 						"max-pilots":10,
+			// 						"book-future-months":12,
+			// 						"video-cost":40
+			// 				}
+			// 			]
+			// 		);
+			// 	}, loadingDelay);
+			// });
 		}
 
     // Staging API
