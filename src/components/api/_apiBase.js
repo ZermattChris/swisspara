@@ -83,6 +83,7 @@ export default {
       }
       // ...
     } catch (error) {
+      const errorAPIHost = document.location.hostname
       const errorPathMsg = 'Error calling ' + this.getAPIType() + ' API :: ' + pPath
       var errMsg = ''
       if (error.message.includes('Failed to fetch')) {
@@ -92,14 +93,14 @@ export default {
       }
 
       Toastify({
-        text: errMsg + '\n\n' + errorPathMsg,
+        text: errMsg + '\n\n' + errorPathMsg + '\n\n' + errorAPIHost,
         duration: 6000,
         close: true,
         gravity: "bottom", // `top` or `bottom`
         position: "center", // `left`, `center` or `right`
         stopOnFocus: true, // Prevents dismissing of toast on hover
         style: {
-          background: "rgba(255,255,255, 0.97)",
+          background: "rgba(255, 255, 224, 0.97)",
           color: "black"
         }, 
       }).showToast();

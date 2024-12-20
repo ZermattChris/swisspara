@@ -274,6 +274,24 @@
         </div>
 
 
+
+        <!-- Confidence Message field.  -->
+        <div v-if="Number(state.confidence) > -1 && Number(state.confidence) < 2" class="mt-12 mx-auto">
+          <!-- Message if Age/Sex/Weight/Ability are iffy -->
+          <p :id="`contact-warning_${index}`" class="mt-2 px-6 text-sm text-gray-700">
+            TODO: Assistance and/or tricky user values , message goes here.
+          </p>
+
+          <div class="mt-2 px-6">
+            <label for="assistanceMsg" class="  text-orange-700 text-sm">
+              *Please describe your abilities:
+            </label>
+            <textarea :value="state.description" @change="onChangedPassDescription" @focusout="onFocusoutDescription"
+              id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 "
+              :class="passDescriptionMissing ? 'border-red-400  border-[2px]' : ''"></textarea>
+          </div>
+        </div>
+
         <!-- Weight Slider.  -->
         <div class="mt-12 font-medium text-center text-gray-900 text-sm">Your Weight:</div>
         <Slider v-if="vueTimingHack" :id="`wghtSlider_${index}`" v-model.number="state.weightKg" :min="weightSliderMin"
@@ -314,23 +332,6 @@
         </Slider>
 
 
-
-        <!-- Confidence Message field.  -->
-        <div v-if="Number(state.confidence) == 0" class="mt-12 mx-auto">
-          <!-- Message if Age/Sex/Weight/Ability are iffy -->
-          <p :id="`contact-warning_${index}`" class="mt-2 px-6 text-sm text-gray-700">
-            TODO: Assistance and/or tricky user values , message goes here.
-          </p>
-
-          <div class="mt-2 px-6">
-            <label for="assistanceMsg" class="  text-orange-700 text-sm">
-              *Please describe your abilities:
-            </label>
-            <textarea :value="state.description" @change="onChangedPassDescription" @focusout="onFocusoutDescription"
-              id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 "
-              :class="passDescriptionMissing ? 'border-red-400  border-[2px]' : ''"></textarea>
-          </div>
-        </div>
 
       </div> <!-- ******************* END: Passenger inputs. ******************* -->
 
