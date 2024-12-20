@@ -56,18 +56,18 @@
 					<!-- {{ index }} Slide. <br/>
 					{{ date }} Date. <br/>
 					{{ dayObj }} dayObj. <br/> -->
-
-					<TimeSlot
-						:date="date"
-						:dayObject="dayObj"
-						:slideIndex="index"	
-						:selectedSlide="selectedSlideIndex"
-						:flightDate="flightDate"
-						@passengers-updated="onPassengerCount"
-						@pagevalid="onTimeSlotUpdated"
-					>
-					</TimeSlot>
-
+          <keep-alive>
+            <TimeSlot
+              :date="date"
+              :dayObject="dayObj"
+              :slideIndex="index"	
+              :selectedSlide="selectedSlideIndex"
+              :flightDate="flightDate"
+              @passengers-updated="onPassengerCount"
+              @pagevalid="onTimeSlotUpdated"
+            >
+            </TimeSlot>
+          </keep-alive>
 
 				</div>
 			</div>
@@ -211,6 +211,9 @@
 				// Need to set the initial slide to match the FlightDate.
 				selectedSlideIndex.value = findSlideIndex()
 				mySplide.value.go(selectedSlideIndex.value)		// Needs updating manually.
+
+
+        //alert("totalPassengers: ", store.getTotalPassengers())
 
 			})
 

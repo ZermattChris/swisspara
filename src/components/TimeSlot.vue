@@ -45,6 +45,11 @@
         :class="[(pilots > 0) ? 'cursor-pointer shadow-md' : '', isSlideSelected ? 'z-[3]' : '']"
         @click="onSlotClick(ev, index, pilots)">
         
+
+
+
+
+
         <!-- Pill showing Slot's Nr Passengers if greater than Zero  -->
         <span v-if="(pilots[0] > 0 && isFlightSlide && slotsCurrPassengerCount(timeHint) > 0)"
           class="absolute -right-6 top-2.5 z-50 ">
@@ -54,6 +59,10 @@
             {{ slotsCurrPassengerCount(timeHint) }}
           </button>
         </span>
+
+
+
+
 
 
         <!-- Pilots: -1 means the flight isn't available at that time.  -->
@@ -137,7 +146,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw, onUpdated } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted, toRaw, onUpdated, onActivated } from 'vue'
 import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear } from 'date-fns'
 
 import { datesStore as datesStore } from '@stores/pageDateStore.js'
@@ -164,9 +173,18 @@ const selectedSlot = ref(-1)
 let nrPassengersList = reactive({})   // Keeps track of how many passengers have been added to each timeslot.
 
 
+onActivated(() => {
+  console.log('Component is now visible and active');
+  const storedNrPassengers = localStorage._cacheTimeSlotsPassengerList ? JSON.parse(localStorage._cacheTimeSlotsPassengerList) : null
+  console.log("timeSlotStore.getTotalPassengers(): ", storedNrPassengers )
+  if(storedNrPassengers === null) {
+    // Reset the Round (1) button next to TimeSlot -- will be old, cached info that's out of date!!!
+    clearAllPassengers()
+  }
+})
+
 onMounted(() => {
 
-  // use date-fns to give me the current date and time in Zurich
 
 
   // Create a 'copy' of the dayObject and use it to track how many passengers
@@ -191,6 +209,12 @@ onMounted(() => {
     clearAllPassengers()
   }
 
+  // console.log("onMount an individ TimeSlot: ", timeSlotStore.getTotalPassengers())
+  if(timeSlotStore.getTotalPassengers() === 0) {
+    //nrPassengersList = reactive({})   // make sure is reset (no old entries after bad date reset)
+    //console.log("timeSlotStore.getTotalPassengers(): ", timeSlotStore.getTotalPassengers() )
+  }
+  
 })
 
 
@@ -244,8 +268,11 @@ function onRemovePassenger(slotNr, timeHint) {
 function slotsCurrPassengerCount(timeHint) {
   // Issues with NaN popping up on local API
   const currPassengers = nrPassengersList[timeHint]
-  if (currPassengers === undefined) {
+
+
+  if (currPassengers === undefined ) {
     //console.log("NaN in slotsCurrPassengerCount")
+//console.log('currPassengers (undefined): ', '0')
     return 0
   }
   return nrPassengersList[timeHint]
