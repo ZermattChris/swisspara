@@ -33,7 +33,7 @@ function chooseAPIServer() {
       return
     }
   
-    if (document.location.hostname === 'netlify.app') {
+    if (document.location.hostname === 'swisspara.netlify.app') {
       useLocalAPI = false
       useStagingAPI = true
       return
