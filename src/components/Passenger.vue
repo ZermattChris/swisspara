@@ -255,23 +255,27 @@
             <span v-if="Number(state.confidence) >= -1" class="italic text-sm text-gray-600 block relative -top-1">
               {{ state.confidence[state.confidence].speed }}
             </span> -->
+
+
+
+            <span v-if="typeof confidenceMessages[state.confidence]  === 'undefined' || confidenceMessages[state.confidence] === null  || Number(state.confidence) < 0  "  class="text-sm text-gray-800">
+              Please enter your Confidence Level
+            </span>
+
+            <span v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null  "   class="text-sm  block" :class="state.confidence > 1 ? 'text-gray-80' : 'text-orange-700'">
+              {{ confidenceMessages[state.confidence].confidence }}
+            </span>
+
+            <span v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null "   class="italic text-sm text-gray-600 block relative -top-1">
+              {{ confidenceMessages[state.confidence].speed }}
+            </span>
+
+            
           </template>
 
         </Slider>
 
-        {{ state.confidence }}
-
-        <div v-if="typeof confidenceMessages[state.confidence]  === 'undefined' || confidenceMessages[state.confidence] === null  || Number(state.confidence) < 0  "  class="text-sm text-gray-800">
-          Please enter your Confidence Level
-        </div>
-
-        <div v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null  ">
-          {{ confidenceMessages[state.confidence].confidence }}
-        </div>
-
-        <div v-if="typeof confidenceMessages[state.confidence]  !== 'undefined' && confidenceMessages[state.confidence] !== null  ">
-          {{ confidenceMessages[state.confidence].speed }}
-        </div>
+        <!-- {{ state.confidence }} -->
 
 
 
@@ -415,8 +419,8 @@ function onConfidenceChanged(val) {
   myForm.dispatchEvent(new Event("change"))
 }
 const confidenceMessages = {
-  0: { "confidence": "* Assistance Required *", "speed": "(see message below...)" },
-  1: { "confidence": "* Assistance Required *", "speed": "(see message below...)" },
+  0: { "confidence": "* Assistance Required *", "speed": "" },
+  1: { "confidence": "* Assistance Required *", "speed": "" },
   2: { "confidence": "Minimal Confidence", "speed": "Speed Very Slow" },
   3: { "confidence": "Minimal Confidence", "speed": "Speed Slow" },
   4: { "confidence": "A bit nerverous", "speed": "Speed Slow-ish" },
