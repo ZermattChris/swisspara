@@ -330,7 +330,7 @@
 
 
 <script>
-// import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 import _api from "@components/api/_apiBase.js"
 
