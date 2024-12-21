@@ -238,8 +238,7 @@
                 please let us know here.
               </p>
               <div class="mt-2 px-0">
-                <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
-                  class="w-full rounded-md focus:ring-indigo-600 ">
+                <textarea v-model="assistanceMsg" id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 ">
                 </textarea>
               </div>
             </div>
@@ -272,7 +271,7 @@
         <div class="flex h-6 items-center">
           <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms"
             type="checkbox"
-            class="h-6 w-6 cursor-pointer rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
+            class="relative top-0.5   h-6 w-6 cursor-pointer rounded border-gray-700 border-2 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
           <label for="terms" class="text-lg font-bold cursor-pointer text-gray-900">
@@ -368,6 +367,7 @@ export default {
       allPassengers: passengersStore.getAllPassengersList(),
 
       toggleBookingMsg: false,
+      assistanceMsg: '',
       tAndCsChecked: false,
 
       hasPhotos: flightStore.getPhotosToggle() ? true : false,
@@ -608,6 +608,7 @@ export default {
             "hasPhotosBool": this._hasPhotosBool,
             "timeSlotsList": this._timeSlotsList,
             "passengersList": this._passengersList,
+            "bookingMessage": this.assistanceMsg
           })
         });
         content = await rawResponse.json()
@@ -834,7 +835,7 @@ export default {
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease-out;
-  max-height: 200px; /* Adjust this value based on your content's height */
+  max-height: 250px; /* Adjust this value based on your content's height */
   overflow: hidden;
 }
 
@@ -844,9 +845,9 @@ export default {
   opacity: 0;
 }
 
-.content {
+/* .content {
   padding: 20px;
-}
+} */
 
 /* .showBox {
   overflow: hidden;
