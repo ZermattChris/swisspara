@@ -216,7 +216,7 @@
 
 
       <!-- Booking Notes  -->
-      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
+      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none" >
         <div class="px-4 py-5 ">
 
           <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
@@ -231,18 +231,19 @@
             </p>
           </div>
 
-          <div v-if="toggleBookingMsg">
-
-            <p class="mt-2 text-sm text-gray-700">
-              If you have any questions, special wishes or have extra information regarding your Booking,
-              please let us know here.
-            </p>
-            <div class="mt-2 px-0">
-              <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
-                class="w-full rounded-md focus:ring-indigo-600 "></textarea>
+          <Transition name="slide">
+            <div v-if="toggleBookingMsg" class="showBox content">
+              <p class="mt-2 text-sm text-gray-700">
+                If you have any questions, special wishes or have extra information regarding your Booking,
+                please let us know here.
+              </p>
+              <div class="mt-2 px-0">
+                <textarea id="assistanceMsg" name="assistanceMsg" rows="4"
+                  class="w-full rounded-md focus:ring-indigo-600 ">
+                </textarea>
+              </div>
             </div>
-
-          </div>
+          </Transition>
 
         </div>
       </div><!-- END: Booking Notes -->
@@ -271,12 +272,12 @@
         <div class="flex h-6 items-center">
           <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms"
             type="checkbox"
-            class="h-4 w-4 cursor-pointer rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
+            class="h-6 w-6 cursor-pointer rounded border-gray-700 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
-          <label for="terms" class="font-medium cursor-pointer text-gray-900">
+          <label for="terms" class="text-lg font-bold cursor-pointer text-gray-900">
             Terms &amp; Conditions
-            <span id="terms-description" class="text-gray-700 font-normal block">
+            <span id="terms-description" class="text-gray-700 text-base font-normal block">
               To complete your Booking, click this checkbox to indicate that you have read and agree to the
               <a class="underline font-bold text-indigo-800" href="#todo"
                 target="_blank">Terms&nbsp;&amp;&nbsp;Conditions</a>
@@ -828,7 +829,44 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.3s ease-out;
+  max-height: 200px; /* Adjust this value based on your content's height */
+  overflow: hidden;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.content {
+  padding: 20px;
+}
+
+/* .showBox {
+  overflow: hidden;
+}
+
+.expand-enter-active,
+.expand-leave-active {
+  transition: max-height 1s ease-out;
+}
+
+.expand-enter,
+.expand-leave-to {
+  max-height: 0;
+}
+
+.expand-enter-to,
+.expand-leave {
+  max-height: 300px;
+} */
+
 #confirmFlightGrid>div {
   padding-left: 1rem;
   padding-right: 1rem;
@@ -864,6 +902,6 @@ div.cpHeader {
   padding-bottom: 0.2em;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
-</style>import type { log } from 'node_modules/astro/dist/core/logger/core';import type { log } from
-'node_modules/astro/dist/core/logger/core'import { log } from 'astro/dist/core/logger/core'
-import type { email } from '@vuelidate/validators'
+</style>
+
+
