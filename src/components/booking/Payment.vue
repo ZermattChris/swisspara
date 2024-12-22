@@ -195,8 +195,8 @@
                 <p class="flex-none text-base font-medium">{{ totalPassengers * photoVideoPackagePrice }}.- CHF</p>
               </li>
               <!-- No Photos.  -->
-              <li v-if="!hasPhotos" class="flex items-start space-x-4 py-6">
-                <div class="relative w-32 bg-transparent overflow-hidden flex items-center justify-center">
+              <li v-if="!hasPhotos" class="flex   items-start space-x-4 py-6">
+                <div class="relative min-w-20   w-32 bg-transparent overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-red-800/50 w-full h-full z-10"></div>
                   <img src="/images/payment/photo-icon.png"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
