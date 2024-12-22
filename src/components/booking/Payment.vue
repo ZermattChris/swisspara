@@ -28,11 +28,11 @@
           </p>
           <div id="confirmPassengersGrid" style="grid-template-columns: auto 50px 50px 90px 30px;"
             class="mt-0 mx-auto   grid grid-flow-row-dense   text-sm  border-2 border-slate-50  ">
-            <div class="cpHeader pl-2">Name</div>
-            <div class="cpHeader text-center">M/F</div>
-            <div class="cpHeader text-center">Age</div>
-            <div class="cpHeader text-center">Confidence</div>
-            <div class="cpHeader text-center">
+            <div class=" pl-2">Name</div>
+            <div class=" text-center">M/F</div>
+            <div class=" text-center">Age</div>
+            <div class=" text-center">Confidence</div>
+            <div class=" text-center">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true"
                 class="h-5 w-5 ml-1">
                 <path
@@ -52,7 +52,7 @@
 
           </div>
 
-          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto"/>
+          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto" />
 
           <!-- This is the Confirm Booking Grid. -->
           <p class="mt-2 ml-4 mb-1 italic text-orange-800">
@@ -78,7 +78,7 @@
           </div>
 
 
-          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto"/>
+          <hr class="border-gray-200 border-2 mt-6 w-24 m-auto" />
 
 
           <!-- This is the Confirm Contact Grid. -->
@@ -167,9 +167,9 @@
 
             <ul role="list" class="divide-y divide-gray-200 text-sm font-medium text-gray-900">
 
+              <!-- Selected Flight  -->
               <li class="flex items-start space-x-4 py-6">
-                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg"
-                  alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps."
+                <img src="/images/payment/paraglider-icon.png" alt="Swiss Paraglide Zermatt Flight"
                   class="h-20 w-20 flex-none rounded-md object-cover object-center">
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base">
@@ -177,14 +177,14 @@
                   </h3>
                   <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
                     singleFlightPrice
-                    }}.- CHF</p>
+                  }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
 
+              <!-- Photos Package  -->
               <li v-if="hasPhotos" class="flex items-start space-x-4 py-6">
-                <img src="https://tailwindui.com/img/ecommerce-images/checkout-page-04-product-01.jpg"
-                  alt="Moss green canvas compact backpack with double top zipper, zipper front pouch, and matching carry handle and backpack straps."
+                <img src="/images/payment/photo-icon.png" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package"
                   class="h-20 w-20 flex-none rounded-md object-cover object-center">
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base">
@@ -193,6 +193,23 @@
                   <p class="text-gray-500">TODO: Photos Text here.<br> Package @ {{ photoVideoPackagePrice }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * photoVideoPackagePrice }}.- CHF</p>
+              </li>
+              <!-- No Photos.  -->
+              <li v-if="!hasPhotos" class="flex items-start space-x-4 py-6">
+                <div class="relative w-20 h-20 bg-transparent overflow-hidden flex items-center justify-center">
+                  <img src="/images/payment/photo-icon.png"
+                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
+                    class="h-20 w-20 flex-none rounded-md object-cover object-center">
+                  <div class="absolute w-[170%] h-4 bg-red-700/70  origin-center transform -rotate-45"></div>
+                </div>
+                <div class="flex-auto space-y-1">
+                  <h3 class="text-base line-through text-orange-800">
+                    Photo/Video Package
+                  </h3>
+                  <p class="text-gray-500">You haven't selected the Photo &amp; Video Package.</p>
+                </div>
+                <p class="flex-none text-base font-medium line-through  text-orange-800">{{ totalPassengers *
+                  photoVideoPackagePrice }}.- CHF</p>
               </li>
 
             </ul>
@@ -213,9 +230,8 @@
 
 
 
-
       <!-- Booking Notes  -->
-      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none" >
+      <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
         <div class="px-4 py-5 ">
 
           <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
@@ -237,8 +253,9 @@
                 please let us know here.
               </p>
               <div class="mt-2 px-0">
-                <textarea v-model="assistanceMsg" id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 ">
-                </textarea>
+                <textarea v-model="assistanceMsg" id="assistanceMsg" name="assistanceMsg" rows="4"
+                  class="w-full rounded-md focus:ring-indigo-600 ">
+            </textarea>
               </div>
             </div>
           </Transition>
@@ -253,7 +270,8 @@
 
         <h2 id="summary-heading" class="text-indigo-800 font-bold text-lg pt-4 pl-4 pb-2 shadow-sm">
           Card Details
-          <span class="block text-sm font-light text-gray-700">A valid Credit/Debit Card is required to complete your Booking.</span>
+          <span class="block text-sm font-light text-gray-700">A valid Credit/Debit Card is required to complete your
+            Booking.</span>
         </h2>
 
         <div id="stripe-card-element" class="px-4 py-5 text-gray-300 min-h-[300px]">
@@ -390,7 +408,7 @@ export default {
       // Passenger Details.
       _passengersList: passengersStore.getAllPassengersList(),
 
-      
+
       // -------- Stripe Payment Stuff --------
       apiType: _api.getAPIType(),
       stripe: null,
@@ -539,7 +557,7 @@ export default {
       }
       console.log('this.elements.submit() worked');
       this.stripeDevMessages += '✓ Stripe Elements submit() success. Payment Added to this Customer. </br>'
-      
+
 
       // Confirm the Stripe SetupIntent here.
       // Stay on this page and show the User a success message (or error and try again)
@@ -554,7 +572,7 @@ export default {
         this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
         // TODO: Remove page blocker...
         return
-      } 
+      }
 
       // We've Captured the Card. Tell the user.
       // The actual payment will be done after the flight.
@@ -595,7 +613,7 @@ export default {
       try {
         const rawResponse = await fetch(bookPath, {
           method: 'POST',
-          headers: {'Accept': 'application/json', "Content-Type": "application/json" },
+          headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
           body: JSON.stringify({
             "stripeTestMode": stripeTestMode,
             "customerId": this.stripeCustId,
@@ -627,7 +645,7 @@ export default {
       console.log('Booking Completed!', content);
       this.stripeDevMessages += '✓ Booking Complete! Order shoulbe be in our db and Emails/SMS sent... </br>'
       this.stripeDevMessages += `✓ Booking ID: ${content.bookingId}</br>`
-      
+
       // TODO: Delete localStorage???
 
 
@@ -830,7 +848,6 @@ export default {
 </script>
 
 <style scoped>
-
 /* 
 .fade-element {
   opacity: 1;
@@ -845,7 +862,8 @@ export default {
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease-out;
-  max-height: 250px; /* Adjust this value based on your content's height */
+  max-height: 250px;
+  /* Adjust this value based on your content's height */
   overflow: hidden;
 }
 
@@ -914,5 +932,3 @@ div.cpHeader {
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 </style>
-
-
