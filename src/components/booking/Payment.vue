@@ -208,8 +208,9 @@
                   </h3>
                   <p class="text-gray-500">You haven't selected the Photo &amp; Video Package.</p>
                 </div>
-                <p class="flex-none text-base font-medium line-through  text-orange-800">{{ totalPassengers *
-                  photoVideoPackagePrice }}.- CHF</p>
+                <p class="flex-none text-base font-medium line-through  text-orange-800">
+                  {{ totalPassengers * photoVideoPackagePrice }}.- CHF
+                </p>
               </li>
 
             </ul>
