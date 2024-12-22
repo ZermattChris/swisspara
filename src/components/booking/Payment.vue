@@ -196,17 +196,27 @@
               </li>
               <!-- No Photos.  -->
               <li v-if="!hasPhotos" class="flex items-start space-x-4 py-6">
-                <div class="relative w-20 h-20 bg-transparent overflow-hidden flex items-center justify-center">
+                <div class="relative w-32 bg-transparent overflow-hidden flex items-center justify-center">
+                  <div class="absolute bg-red-800/50 w-full h-full z-10"></div>
                   <img src="/images/payment/photo-icon.png"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-20 flex-none rounded-md object-cover object-center">
-                  <div class="absolute w-[170%] h-4 bg-red-700/70  origin-center transform -rotate-45"></div>
+                    class="h-20 w-20  relative -left-0.5 flex-none object-cover ">
                 </div>
+                <!-- <div class="absolute w-[170%] h-4 bg-red-700/70  origin-center transform -rotate-45"></div> -->
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base line-through text-orange-800">
                     Photo/Video Package
                   </h3>
-                  <p class="text-gray-500">You haven't selected the Photo &amp; Video Package.</p>
+                  <p class="text-gray-800">No Photo &amp; Video Package chosen.</p>
+                  <p class="text-gray-800 font-light">
+                    The Photos &amp; Videos Package is optional &ndash; you can always decide after you fly.
+                  </p>
+                  <p class="text-gray-800 ">
+                    Click here to add to your order: 
+                    <button @click="addPhotos(true)" class="rounded bg-white ml-2 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                      Add
+                    </button>
+                  </p>
                 </div>
                 <p class="flex-none text-base font-medium line-through  text-orange-800">
                   {{ totalPassengers * photoVideoPackagePrice }}.- CHF
@@ -365,7 +375,7 @@ import _Page from './_Page.vue'
 // Calendar Utils.
 import { calendarUtils as calUtils } from '@components/booking/calendarUtils.js'
 
-import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear, format } from 'date-fns'
+import { addDays, subDays, isAfter, isBefore, isEqual, parseISO, getDate, getMonth, getYear, format, add } from 'date-fns'
 
 export default {
   name: 'PagePayment',
@@ -465,6 +475,11 @@ export default {
 
 
   methods: {
+
+    addPhotos(photosBool) {
+      this.hasPhotos = photosBool
+      flightStore.addPhotos(photosBool)
+    },
 
     async setupStripe() {
 

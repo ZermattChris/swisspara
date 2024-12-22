@@ -131,6 +131,10 @@ export const pageFlightStore = reactive({
     this.photosVideos = photosBool
     localStorage.photosVideos = this.photosVideos
   },
+  addPhotos(photosBool) {
+    this.photosVideos = photosBool
+    localStorage.photosVideos = this.photosVideos
+  },
 
 
 });
