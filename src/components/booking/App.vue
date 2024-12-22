@@ -199,6 +199,7 @@ export default {
     showDevInfos() {
       if (document.location) {
         let host = new URL(document.location).hostname
+        if (host == 'swisspara.netlify.app') return false
         if (host == 'swissparaglide.com') return false
       }
       return true
