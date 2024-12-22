@@ -114,7 +114,6 @@
     </div><!-- END: Confirm Booking Wrapper.  -->
 
 
-
     <!-- Payment Block -->
     <div id="checkoutWrapper" v-show="hasConfirmedBooking === true">
       <div>
@@ -831,6 +830,17 @@ export default {
 </script>
 
 <style scoped>
+
+/* 
+.fade-element {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
+
+.fade-element.fade-out {
+  opacity: 0;
+} */
+
 
 .slide-enter-active,
 .slide-leave-active {

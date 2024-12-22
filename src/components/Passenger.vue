@@ -280,21 +280,27 @@
 
 
         <!-- Confidence Message field.  -->
-        <div v-if="Number(state.confidence) > -1 && Number(state.confidence) < 2" class="mt-12 mx-auto">
-          <!-- Message if Age/Sex/Weight/Ability are iffy -->
-          <p :id="`contact-warning_${index}`" class="mt-2 px-6 text-sm text-gray-700">
-            TODO: Assistance and/or tricky user values , message goes here.
-          </p>
+        <Transition name="slide">
+          <div v-if="Number(state.confidence) > -1 && Number(state.confidence) < 2" class="mt-12 mx-auto ">
+            <!-- Message if Age/Sex/Weight/Ability are iffy -->
+            <p :id="`contact-warning_${index}`" class="mt-0 px-6 text-sm text-gray-700">
+              It looks like you're not quite sure about your abilities. Please describe them below (this helps us to
+              make sure you have a great flight).
+            </p>
 
-          <div class="mt-2 px-6">
-            <label for="assistanceMsg" class="  text-orange-700 text-sm">
-              *Please describe your abilities:
-            </label>
-            <textarea :value="state.description" @change="onChangedPassDescription" @focusout="onFocusoutDescription"
-              id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 "
-              :class="passDescriptionMissing ? 'border-red-400  border-[2px]' : ''"></textarea>
+            <div class="mt-2 px-6">
+              <label for="assistanceMsg" class="  text-orange-700 text-sm">
+                *Please describe your abilities:
+              </label>
+              <textarea :value="state.description" @change="onChangedPassDescription" @focusout="onFocusoutDescription"
+                id="assistanceMsg" name="assistanceMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 "
+                :class="passDescriptionMissing ? 'border-red-400  border-[2px]' : ''"></textarea>
+            </div>
           </div>
-        </div>
+        </Transition>
+
+
+
 
         <!-- Weight Slider.  -->
         <div class="mt-12 font-medium text-center text-gray-900 text-sm">Your Weight:</div>
@@ -419,8 +425,8 @@ function onConfidenceChanged(val) {
   myForm.dispatchEvent(new Event("change"))
 }
 const confidenceMessages = {
-  0: { "confidence": "* Assistance Required *", "speed": "" },
-  1: { "confidence": "* Assistance Required *", "speed": "" },
+  0: { "confidence": "* Assistance Required *", "speed": "-" },
+  1: { "confidence": "* Assistance Required *", "speed": "-" },
   2: { "confidence": "Minimal Confidence", "speed": "Speed Very Slow" },
   3: { "confidence": "Minimal Confidence", "speed": "Speed Slow" },
   4: { "confidence": "A bit nerverous", "speed": "Speed Slow-ish" },
@@ -739,7 +745,22 @@ function isContactInfoValid() {
 </script>
 
 
-<style>
+<style scoped>
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 0.5s ease-out;
+  max-height: 250px; /* Adjust this value based on your content's height */
+  overflow: hidden;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+
 /* Hide the Country drop button.  */
 div.m-input-wrapper-right {
   display: none !important;
