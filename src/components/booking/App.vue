@@ -9,7 +9,8 @@
     <div id="sizeBox" class="w-full max-[320px]:w-11/12
         mx-auto 
         px-0 sm:px-0
-        pt-4 pb-6 sm:py-6 md:py-8" @click="onBackgroundClick">
+        pt-4 pb-6 sm:py-6 md:py-8" @click="onBackgroundClick"
+    >
 
       <component :is="currentPageName" @pagevalid="onPageValidEvent">
       </component>
@@ -158,6 +159,9 @@ export default {
 
   mounted() {
 
+    // Hide loading...
+    document.getElementById('loading-spinner').style.display = 'none';
+    
     //console.log("currentPageName: ", this.currentPageName)
 
     // Send our page list as strings to the store.

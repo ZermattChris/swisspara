@@ -1,21 +1,33 @@
 ---
+import Layout from "@layouts/LayoutBooking.astro";
 
-
-import Layout from '@layouts/LayoutBooking.astro';
-
-import BookingApp from '@components/booking/App.vue';
-
-
-
+import BookingApp from "@components/booking/App.vue";
 ---
 
-<Layout title="Swiss Paraglide Zermatt - Book your Tandem Paragliding Flight directly online!">
-	<main>
-		
-		
-		<BookingApp client:only="vue"/>
-		  
+<Layout
+  title="Swiss Paraglide Zermatt - Book your Tandem Paragliding Flight directly online!"
+>
+  <main>
 
-	</main>
+    <div id="loading-spinner" class="text-center relative">
+      <img class="block" src="/images/loading-spinner.gif" alt="Loading..." />
+      <div class="text-gray-400  relative -top-20">
+        Loading...
+      </div>
+    </div>
+
+    <BookingApp client:only="vue" />
+
+  </main>
+
 </Layout>
 
+<style>
+  #loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+  }
+</style>
