@@ -48,8 +48,8 @@
       </button>
 
 
-      <div  class="select-none absolute text-sm text-center" @dblclick="onResetLocalStorage">
-        <div id="reset"  v-if="showDevInfos" class="relative -top-2   py-1 px-2  text-xs text-gray-500  min-h-2 min-w-6 bg-yellow-200">
+      <div  class="select-none absolute text-sm text-center  -top-2  py-1 px-2   min-h-2 min-w-6 bg-yellow-200" @dblclick="onResetLocalStorage">
+        <div id="reset"  v-if="showDevInfos" class="relative    text-xs text-gray-500  ">
           API: {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
         </div>
