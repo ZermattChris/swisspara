@@ -49,8 +49,8 @@
 
       <span></span>
 
-      <span id="reset"  class="select-none absolute text-sm" @dblclick="onResetLocalStorage">
-        <span v-if="showDevInfos">
+      <span  class="select-none absolute text-sm" @dblclick="onResetLocalStorage">
+        <span id="reset"  v-if="showDevInfos">
           {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
         </span>
