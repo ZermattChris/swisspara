@@ -48,12 +48,12 @@
       </button>
 
 
-      <span  class="select-none absolute text-sm" @dblclick="onResetLocalStorage">
-        <span id="reset"  v-if="showDevInfos" class="text-xs text-gray-500  min-h-2 min-w-6 bg-yellow-200">
-          {{ getAPIType }} <br />
+      <div  class="select-none absolute text-sm text-center" @dblclick="onResetLocalStorage">
+        <div id="reset"  v-if="showDevInfos" class="relative -top-2   py-1 px-2  text-xs text-gray-500  min-h-2 min-w-6 bg-yellow-200">
+          API: {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
-        </span>
-      </span>
+        </div>
+      </div>
 
 
       <button @click="nextPage" type="button" id="nextBtn"
@@ -202,7 +202,7 @@ export default {
     },
 
     getAPIType() {
-      return 'API: ' + api.getAPIType()    // LIVE, STAGING or LOCAL
+      return api.getAPIType()    // LIVE, STAGING or LOCAL
     },
 
     currentPageName() {
