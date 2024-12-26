@@ -49,12 +49,11 @@
 
       <span></span>
 
-      <span id="reset" v-if="showDevInfos" class="select-none absolute text-sm" @dblclick="onResetLocalStorage">
-
-        {{ getAPIType }} <br />
-
-        {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
-
+      <span id="reset"  class="select-none absolute text-sm" @dblclick="onResetLocalStorage">
+        <span v-if="showDevInfos">
+          {{ getAPIType }} <br />
+          {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
+        </span>
       </span>
 
 
@@ -69,12 +68,6 @@
             clip-rule="evenodd" />
         </svg>
       </button>
-
-      <!-- <footer id="footbar" 
-                class="absolute -bottom-2 w-screen h-8 "
-            >
-                <p class="pt-1 text-center text-[0.75em] text-gray-400">© <span id="year">2023</span> Swiss Paraglide Zermatt. All rights reserved.</p>
-            </footer> -->
 
     </div>
 
@@ -161,7 +154,7 @@ export default {
 
     // Hide loading...
     document.getElementById('loading-spinner').style.display = 'none';
-    
+
     //console.log("currentPageName: ", this.currentPageName)
 
     // Send our page list as strings to the store.

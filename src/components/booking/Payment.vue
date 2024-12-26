@@ -177,7 +177,7 @@
                   </h3>
                   <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
                     singleFlightPrice
-                  }}.- CHF</p>
+                    }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
@@ -212,8 +212,9 @@
                     The Photos &amp; Videos Package is optional &ndash; you can always decide after you fly.
                   </p>
                   <p class="text-gray-800 ">
-                    Click here to add to your order: 
-                    <button @click="addPhotos(true)" class="rounded bg-white ml-2 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                    Click here to add to your order:
+                    <button @click="addPhotos(true)"
+                      class="rounded bg-white ml-2 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                       Add
                     </button>
                   </p>
@@ -299,12 +300,14 @@
         <div class="flex h-6 items-center">
           <input id="terms" @change="onTAndCsChecked" aria-describedby="comments-description" name="terms"
             type="checkbox"
-            class="relative top-0.5   h-6 w-6 cursor-pointer rounded border-gray-700 border-2 text-orange-600 focus:ring-gray-300" />
+            class="relative top-0.5   h-6 w-6 cursor-pointer rounded shadow-md border-gray-700 border-2 text-orange-600 focus:ring-gray-300" />
         </div>
         <div class="ml-3 text-sm leading-6">
-          <label for="terms" class="text-lg font-bold cursor-pointer text-gray-900">
-            Terms &amp; Conditions
-            <span id="terms-description" class="text-gray-700 text-base font-normal block">
+          <label for="terms" class="text-lg font-bold cursor-pointer text-gray-900 ">
+            <span class="block text-shadow text-shadow-blur-2 text-shadow-gray-300">
+              Terms &amp; Conditions
+            </span>
+            <span id="terms-description" class="text-gray-700 text-base font-normal ">
               To complete your Booking, click this checkbox to indicate that you have read and agree to the
               <a class="underline font-bold text-indigo-800" href="#todo"
                 target="_blank">Terms&nbsp;&amp;&nbsp;Conditions</a>
@@ -315,7 +318,7 @@
       </div> <!-- END: T&C's checkbox.  -->
 
       <!-- Book Flight Btn -->
-      <div class="text-center mt-6 mb-6">
+      <div class="text-center mt-6 mb-6 ">
         <button type="button" @click="bookFlight()"
           class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 "
           :class="_isPageValid && stripeInputsCompleted ? 'hover:bg-indigo-500' : 'opacity-50'"
@@ -350,6 +353,28 @@
     <!-- hasConfirmedBooking: {{hasConfirmedBooking}} -- 
     storageHashChanged: {{ storageHashChanged }} -->
 
+
+    <!-- Modal Dialog :: Page Blocker and Infos connecting to Stripe to Capture Card. -->
+    <Modal ref="modal" showCloseButton="false">
+      <template v-slot:title>
+        Stripe Payment...
+      </template>
+
+      <div>
+        <p>
+          Completing your Booking reservation...
+        </p>
+
+        <p>
+         {{ stripeFeedbackMessage }}
+        </p>
+      </div>
+
+    </Modal>
+
+
+
+
   </div>
 
   <div id="footer-spacer" class="h-14"></div>
@@ -372,6 +397,9 @@ import { pagePassengersStore as passengersStore } from '@stores/pagePassengersSt
 // Parent component for all "Pages"
 import _Page from './_Page.vue'
 
+
+import Modal from "@components/Modal.vue"
+
 // Calendar Utils.
 import { calendarUtils as calUtils } from '@components/booking/calendarUtils.js'
 
@@ -383,6 +411,11 @@ export default {
 
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+
+  components: {
+    Modal,
+  },
+
 
   data() {
     return {
@@ -476,6 +509,10 @@ export default {
 
   methods: {
 
+    openModal() {
+      this.$refs.modal.openModal();
+    },
+
     addPhotos(photosBool) {
       this.hasPhotos = photosBool
       flightStore.addPhotos(photosBool)
@@ -554,6 +591,9 @@ export default {
      * Customer has clicked the "Book Flight" button.
      */
     async bookFlight() {
+
+      // Open Stripe blocker dialog.
+      this.openModal()
 
       this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
 
@@ -683,6 +723,7 @@ export default {
     },
 
 
+    // Show Stripe infos on dev.
     showDevInfos() {
       if (document.location) {
         let host = new URL(document.location).hostname
@@ -864,6 +905,12 @@ export default {
 </script>
 
 <style scoped>
+
+#closeDialogBtn {
+  display: none;
+}
+
+
 /* 
 .fade-element {
   opacity: 1;

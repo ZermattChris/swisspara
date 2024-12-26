@@ -53,7 +53,7 @@
                   </p>
                 </div>
   
-                <div class="mt-4 flex justify-end">
+                <div v-if="showCloseButton === true" class="mt-4 flex justify-end">
                   <button
                     id="closeDialogBtn"
                     type="button"
@@ -77,7 +77,10 @@
 
   // ----------- Props ------------
   defineProps({
-
+    showCloseButton:  {
+      type: Boolean,
+      default: true
+    }
   })
 
 

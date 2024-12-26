@@ -41,5 +41,6 @@ module.exports = {
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/forms'),
     require('preline/plugin'),
+    require('@designbycode/tailwindcss-text-shadow')
   ],
 }
