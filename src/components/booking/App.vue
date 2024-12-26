@@ -48,8 +48,8 @@
       </button>
 
 
-      <div  class="select-none absolute text-sm text-center  -top-2  py-1 px-2   min-h-2 min-w-6 bg-yellow-200" @dblclick="onResetLocalStorage">
-        <div id="reset"  v-if="showDevInfos" class="relative    text-xs text-gray-500  ">
+      <div  class="select-none absolute text-sm text-center  " @dblclick="onResetLocalStorage">
+        <div id="reset"  v-if="showDevInfos" class="relative  -top-2  py-1 px-2   min-h-4 min-w-8 bg-yellow-200  text-xs text-gray-500  ">
           API: {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
         </div>
@@ -195,7 +195,7 @@ export default {
     showDevInfos() {
       if (document.location) {
         let host = new URL(document.location).hostname
-        if (host == 'swisspara.netlify.app') return false
+        if (host == 'swisspara.netlify.app') return true
         if (host == 'swissparaglide.com') return false
       }
       return true
