@@ -53,6 +53,9 @@
           API: {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
         </div>
+        <div class="emptyResetBox -top-2   min-h-4 min-w-8">
+          &nbsp;
+        </div>
       </div>
 
 
