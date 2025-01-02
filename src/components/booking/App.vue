@@ -154,6 +154,9 @@ export default {
 
   mounted() {
 
+    // TODO: probably need to handle as per other API calls, so using local, staging or live.
+    this.setupErrorCatcher()
+
     // Hide loading...
     document.getElementById('loading-spinner').style.display = 'none';
 
@@ -240,6 +243,22 @@ export default {
 
 
   methods: {
+
+    // move this to Store for API calls.
+    setupErrorCatcher() {
+      // Catch any unhandled errors and send to our server API.
+      window.onerror = function(message, source, lineno, colno, error) {
+        console.error("Caught error:", message, "at", source, ":", lineno, ":", colno)
+
+        // Send to our server.
+        // What to send?? Localstorage??
+        //settingsAPI.sendErrorToServer(message, source, lineno, colno, error)
+
+
+        return false
+      }
+    },
+
 
     // ===================== Global Data Checks =====================
     allPagesDataCheck() {

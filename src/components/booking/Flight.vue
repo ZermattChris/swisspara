@@ -187,7 +187,8 @@ export default {
     // Only display the flights that are available for online booking.
     onlineFlightsList() {
       let rawFlightsList = flightsStore._flightsList
-      return rawFlightsList.filter(f => f.show_online === 1)
+      // return rawFlightsList.filter(f => f.show_online === 1)
+      return rawFlightsList
     },
 
     photosBool() {

@@ -211,10 +211,10 @@
                   <p class="text-gray-800 font-light">
                     The Photos &amp; Videos Package is optional &ndash; you can always decide after you fly.
                   </p>
-                  <p class="text-gray-800 ">
-                    Click here to add to your order:
-                    <button @click="addPhotos(true)"
-                      class="rounded bg-white ml-2 px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                  <p class="pt-4 text-gray-800 ">
+                    Photos &amp; Videos Package:
+                    <button @click="addPhotos(true)" class="rounded bg-white ml-2 px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                      <svg class="h-4 w4 inline relative -top-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
                       Add
                     </button>
                   </p>
@@ -344,7 +344,7 @@
 
 
       <div v-if="showDevInfos()" class="text-xl text-indigo-800 font-bold">DEV Messages::</div>
-      <div v-if="showDevInfos()" v-html="stripeDevMessages">
+      <div v-if="showDevInfos()" v-html="stripeDevMessages" class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
 
       </div>
 
@@ -354,15 +354,24 @@
     storageHashChanged: {{ storageHashChanged }} -->
 
 
+
+
+
+
+
+
     <!-- Modal Dialog :: Page Blocker and Infos connecting to Stripe to Capture Card. -->
     <Modal ref="modal" showCloseButton="false">
       <template v-slot:title>
-        Stripe Payment...
+        Completing your Booking reservation...
       </template>
 
       <div>
         <p>
-          Completing your Booking reservation...
+          Connecting to our secure payment gateway to capture your card details.
+        </p>
+        <p>
+          Please do not reload :-)
         </p>
 
         <p>
@@ -371,6 +380,9 @@
       </div>
 
     </Modal>
+
+
+
 
 
 
@@ -454,6 +466,7 @@ export default {
 
 
       // -------- Stripe Payment Stuff --------
+      stripeFeedbackMessage: '',    // show to user in the Modal blocker after they hit "Book Flight"
       apiType: _api.getAPIType(),
       stripe: null,
       elements: null,
@@ -512,6 +525,30 @@ export default {
     openModal() {
       this.$refs.modal.openModal();
     },
+    closeModal() {
+      this.$refs.modal.closeModal();
+    },
+
+    // async checkTimeSlotsStillAvailable() {
+      
+    //   // Check and make sure that the user's Timeslot choices still have availability.
+    //   let flightDate = dateStore.getFlightDate()
+    //   let pSlotsStillValid = await timeStore.arePassengersTimeSlotsStillAvailable(flightDate)
+
+    //   if (pSlotsStillValid === false) {
+    //     this.timeSlotNoLongerAvailable = true
+    //     //console.log("(Server Data) Time Slot no longer Available, please choose another.")
+    //     // reset the User's selected TimeSlots (passengers) to 0
+    //     timeStore.setTimeSlotsPassengersList('')
+        
+    //     return false
+    //   } else {
+    //     //console.log("(Server Data) Time Slot still Available.")
+    //   }
+    //   return true
+
+    // },
+
 
     addPhotos(photosBool) {
       this.hasPhotos = photosBool
@@ -595,6 +632,25 @@ export default {
       // Open Stripe blocker dialog.
       this.openModal()
 
+
+      // Should this better just be on the Server for making a Booking?? Yes.
+      // this.stripeFeedbackMessage = "Checking chosen flights still available...<br>"
+      // if (this.checkTimeSlotsStillAvailable() === false) {
+      //   this.stripeFeedbackMessage = "Chosen TimeSlot has been booked already. Please try again.<br>"
+      //   this.closeModal()
+      // } else {
+      //   this.stripeFeedbackMessage = "TimeSlot is still available.<br>"
+      // }
+
+
+
+
+
+
+
+
+      this.stripeFeedbackMessage += "Connecting...<br>"
+
       this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
 
       const secret = this._secret
@@ -626,6 +682,9 @@ export default {
         // **************** This is where the SetupIntent fails. ****************
         console.error('Stripe confirmSetup returned an Error', error.message);
         this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
+
+
+        this.stripeFeedbackMessage = '✘ Sorry! There was an error in Capturing your card. Please try again (or call us if you get stuck).'
         // TODO: Remove page blocker...
         return
       }
@@ -692,7 +751,7 @@ export default {
         console.error(error.message);
         this.stripeDevMessages += '✘ New Booking API Error. ' + error.message + ' </br>'
         // Maybe delete the Stripe Customer number here and retry??
-        // TODO: In theory this only happens if the Stiper Customer is deleted...
+        // TODO: In theory this only happens if the Stripe Customer is deleted...
         return
       }
 
@@ -725,11 +784,12 @@ export default {
 
     // Show Stripe infos on dev.
     showDevInfos() {
-      if (document.location) {
-        let host = new URL(document.location).hostname
-        if (host == 'swissparaglide.com') return false
-      }
-      return true
+      return appStore.appShowStripeDevOutputOnPayment()
+      // if (document.location) {
+      //   let host = new URL(document.location).hostname
+      //   if (host == 'swissparaglide.com') return false
+      // }
+      // return true
     },
 
     /**

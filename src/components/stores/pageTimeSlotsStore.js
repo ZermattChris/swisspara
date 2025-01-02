@@ -64,7 +64,18 @@ export const pageTimeSlotsStore = reactive({
     let passList = toRaw(this.getTimeSlotsPassengersList())
     const keys = Object.keys(passList)
 
-    await this.callAPI()       // refresh the TimeSlots data from the server.
+    try {
+      await this.callAPI()       // refresh the TimeSlots data from the server.
+    } catch (error) {
+      // If we are calling the above with a stale Flight Date, then the API call will fail. 404 not found.
+      // Clear flight dates and send back to step one.
+      console.log("Error in arePassengersTimeSlotsStillAvailable() -> callAPI()" + error.message )
+      localStorage.removeItem('flightDate')
+      localStorage.removeItem('arriveDate')
+      localStorage.removeItem('departDate')
+      // go back to step one
+      this._navigate(1)
+    }
 
 
     let cachedSlotList = localStorage._cacheTimeSlotsList ? JSON.parse(localStorage._cacheTimeSlotsList) : {}

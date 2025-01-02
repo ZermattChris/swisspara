@@ -243,7 +243,27 @@ export const appStore = reactive({
 
   _nrOfPageItems() {
     return Object.keys(appStore.pageItems).length
-  }
+  },
+
+
+  appShowStripeDevOutputOnPayment() {
+
+    // If the URL has a query string of ?stripe=true
+    let params = new URL(document.location).searchParams
+    if (params.has("stripe")) {
+      console.log("Stripe Dev Output: ", params.get("stripe"))
+      if (params.get("stripe") === 'true') return true
+      if (params.get("stripe") === 'false') return false
+    }
+
+    // Otherwise, Show on all dev sites, but not on the live site.
+    if (document.location) {
+      let host = new URL(document.location).hostname
+      if (host == 'swisspara.netlify.app') return true
+      if (host == 'swissparaglide.com') return false
+    }
+    return true
+  },
 
 
 });
