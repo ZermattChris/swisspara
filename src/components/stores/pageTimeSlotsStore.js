@@ -61,6 +61,7 @@ export const pageTimeSlotsStore = reactive({
    */
   async arePassengersTimeSlotsStillAvailable(flightDate) {
 
+    let nrPilotsStillValid = true
     let passList = toRaw(this.getTimeSlotsPassengersList())
     const keys = Object.keys(passList)
 
@@ -68,13 +69,9 @@ export const pageTimeSlotsStore = reactive({
       await this.callAPI()       // refresh the TimeSlots data from the server.
     } catch (error) {
       // If we are calling the above with a stale Flight Date, then the API call will fail. 404 not found.
-      // Clear flight dates and send back to step one.
       console.log("Error in arePassengersTimeSlotsStillAvailable() -> callAPI()" + error.message )
-      localStorage.removeItem('flightDate')
-      localStorage.removeItem('arriveDate')
-      localStorage.removeItem('departDate')
-      // go back to step one
-      this._navigate(1)
+      nrPilotsStillValid = false
+      return nrPilotsStillValid
     }
 
 
@@ -86,7 +83,6 @@ export const pageTimeSlotsStore = reactive({
 
 
     // This gives us access to the number of passengers selected by the user in each time slot for the flight Date.
-    let nrPilotsStillValid = true
     let x = 0
     for (const index in keys) {
       let key = keys[index]

@@ -375,7 +375,7 @@
         </p>
 
         <p>
-         {{ stripeFeedbackMessage }}
+         {{ bookingModalMessage }}
         </p>
       </div>
 
@@ -466,7 +466,7 @@ export default {
 
 
       // -------- Stripe Payment Stuff --------
-      stripeFeedbackMessage: '',    // show to user in the Modal blocker after they hit "Book Flight"
+      bookingModalMessage: '',    // show to user in the Modal blocker after they hit "Book Flight"
       apiType: _api.getAPIType(),
       stripe: null,
       elements: null,
@@ -498,7 +498,7 @@ export default {
 
 
     // TODO: Need to get the Public Key from a env var.
-    this.stripe = Stripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
+    this.stripe = await Stripe('pk_test_51Nv2ecBAgiPA9UQuIh20l4wMpRuJUsRbTXZPOWyk8KkaNFppi4cdvvotjYyC5NV0LBSD0W1RI1X3xuGo6nf1n6Jv00HSFqUI9L');
 
 
     const secret = this._secret
@@ -529,31 +529,27 @@ export default {
       this.$refs.modal.closeModal();
     },
 
-    // async checkTimeSlotsStillAvailable() {
+    async checkTimeSlotsStillAvailable() {
       
-    //   // Check and make sure that the user's Timeslot choices still have availability.
-    //   let flightDate = dateStore.getFlightDate()
-    //   let pSlotsStillValid = await timeStore.arePassengersTimeSlotsStillAvailable(flightDate)
+      // Check and make sure that the user's Timeslot choices still have availability.
+      let flightDate = dateStore.getFlightDate()
+      let pSlotsStillValid = await timeStore.arePassengersTimeSlotsStillAvailable(flightDate)
 
-    //   if (pSlotsStillValid === false) {
-    //     this.timeSlotNoLongerAvailable = true
-    //     //console.log("(Server Data) Time Slot no longer Available, please choose another.")
-    //     // reset the User's selected TimeSlots (passengers) to 0
-    //     timeStore.setTimeSlotsPassengersList('')
+      if (pSlotsStillValid === false) {
+        this.timeSlotNoLongerAvailable = true
+        //console.log("(Server Data) Time Slot no longer Available, please choose another.")
+        // reset the User's selected TimeSlots (passengers) to 0
+        timeStore.setTimeSlotsPassengersList('')
         
-    //     return false
-    //   } else {
-    //     //console.log("(Server Data) Time Slot still Available.")
-    //   }
-    //   return true
+        return false
+      }
 
-    // },
+      //console.log("(Server Data) Time Slot still Available.")
+      return true
 
-
-    addPhotos(photosBool) {
-      this.hasPhotos = photosBool
-      flightStore.addPhotos(photosBool)
     },
+
+
 
     async setupStripe() {
 
@@ -624,6 +620,13 @@ export default {
 
     },
 
+
+    async stripeCaptureCustomerCard() {
+      
+    },
+
+
+
     /**
      * Customer has clicked the "Book Flight" button.
      */
@@ -632,14 +635,45 @@ export default {
       // Open Stripe blocker dialog.
       this.openModal()
 
+      // Check if the TimeSlots are still available.
+      const stillHasPilotsFlag = this.checkTimeSlotsStillAvailable()
+      if (stillHasPilotsFlag === false) {
+        this.bookingModalMessage = "We're very sorry, but your TimeSlot has been booked already. Please try again.<br>"
+        localStorage.removeItem('flightDate')
+        localStorage.removeItem('arriveDate')
+        localStorage.removeItem('departDate')
+
+        // TODO: Not closeModal() but rather give a "Close" button for the user after they've read above message.
+        // --->
+
+        this.closeModal()
+        // go back to step one
+        appStore._navigate(1)
+        return
+      }
+
+      // Do Stripe Customer/Card Capture
+
+      // Create Booking on our backend
+
+      // Close modal dialog.
+      this.closeModal()
+
+
+      // TODO: Need to recheck avail here (skip below msg)
+
+
+
+
+
 
       // Should this better just be on the Server for making a Booking?? Yes.
-      // this.stripeFeedbackMessage = "Checking chosen flights still available...<br>"
+      // this.bookingModalMessage = "Checking chosen flights still available...<br>"
       // if (this.checkTimeSlotsStillAvailable() === false) {
-      //   this.stripeFeedbackMessage = "Chosen TimeSlot has been booked already. Please try again.<br>"
+      //   this.bookingModalMessage = "Chosen TimeSlot has been booked already. Please try again.<br>"
       //   this.closeModal()
       // } else {
-      //   this.stripeFeedbackMessage = "TimeSlot is still available.<br>"
+      //   this.bookingModalMessage = "TimeSlot is still available.<br>"
       // }
 
 
@@ -649,7 +683,7 @@ export default {
 
 
 
-      this.stripeFeedbackMessage += "Connecting...<br>"
+      this.bookingModalMessage += "Connecting...<br>"
 
       this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
 
@@ -684,7 +718,7 @@ export default {
         this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
 
 
-        this.stripeFeedbackMessage = '✘ Sorry! There was an error in Capturing your card. Please try again (or call us if you get stuck).'
+        this.bookingModalMessage = '✘ Sorry! There was an error in Capturing your card. Please try again (or call us if you get stuck).'
         // TODO: Remove page blocker...
         return
       }
@@ -781,6 +815,10 @@ export default {
       return this.totalPassengers * (this.singleFlightPrice + (this.hasPhotos ? this.photoVideoPackagePrice : 0))
     },
 
+    addPhotos(photosBool) {
+      this.hasPhotos = photosBool
+      flightStore.addPhotos(photosBool)
+    },
 
     // Show Stripe infos on dev.
     showDevInfos() {

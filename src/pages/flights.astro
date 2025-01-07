@@ -8,7 +8,32 @@ import Layout from "@layouts/Layout.astro";
   title="Flights :: Swiss Paraglide Zermatt - Tandem Paragliding Flights in front of the Matterhorn."
 >
 
+  <script>
+    // Set the localstorage value for the flight type when one of the Book Online Now! buttons is clicked
+    // make a function where the flight int is passed in on click
+    // then set the localstorage value to the flight int
 
+    document.getElementById('bookClassicBtn').addEventListener('click', function(event) {
+      // event.preventDefault();
+      setFlightType(1);
+    });
+    document.getElementById('bookScenicBtn').addEventListener('click', function(event) {
+      // event.preventDefault();
+      setFlightType(2);
+    });
+    document.getElementById('bookEliteBtn').addEventListener('click', function(event) {
+      // event.preventDefault();
+      setFlightType(3);
+    });
+
+
+    function setFlightType(flightType) {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('selectedFlight', flightType);
+      }
+    }
+
+  </script>
 
   <div class="py-12 "
     style="background: no-repeat url('/images/paragliding/Swiss-Paraglide-Zermatt-Matterhorn-Classic-Flying.jpg'); background-size:cover; background-attachment:fixed;"
@@ -131,6 +156,7 @@ import Layout from "@layouts/Layout.astro";
             </ul>
           </div>
           <a
+            id="bookScenicBtn"
             href="/book-now?flight=Scenic"
             aria-describedby="tier-freelancer"
             class="mt-8 block rounded-md py-2 px-3  text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300"
@@ -263,7 +289,8 @@ import Layout from "@layouts/Layout.astro";
             </ul>
           </div>
           <a
-          href="/book-now?flight=Classic"
+            id="bookClassicBtn"
+            href="/book-now?flight=Classic"
             aria-describedby="tier-startup"
             class="mt-8 block rounded-md py-2 px-3   text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500"
             >Book Online Now!</a
@@ -382,7 +409,8 @@ import Layout from "@layouts/Layout.astro";
             </ul>
           </div>
           <a
-          href="/book-now?flight=Elite"
+            id="bookEliteBtn"
+            href="/book-now?flight=Elite"
             aria-describedby="tier-enterprise"
             class="mt-8 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300"
             >Book Online Now!</a
@@ -419,6 +447,4 @@ import Layout from "@layouts/Layout.astro";
   </div>
 
 
-
-  <style></style>
 </Layout>
