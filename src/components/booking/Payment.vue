@@ -643,7 +643,7 @@ export default {
         localStorage.removeItem('arriveDate')
         localStorage.removeItem('departDate')
 
-        // TODO: Not closeModal() but rather give a "Close" button for the user after they've read above message.
+        // TODO: Not closeModal() but rather give a choose "New Flight Date" button for the user after they've read above message.
         // --->
 
         this.closeModal()

@@ -9,7 +9,7 @@ import Layout from "@layouts/Layout.astro";
 
     <div
       id="detailsBox"
-      class="py-12"
+      class="py-6 md:py-12"
       style="background: no-repeat url('/images/paragliding/Winter-paragliding-zermatt-swiss-paraglide.jpg'); background-size:cover; background-attachment:fixed;"
     >
 
@@ -52,17 +52,25 @@ import Layout from "@layouts/Layout.astro";
         </svg>        
         
         Note: your card is not charged when making the booking
-        (you will be charged after the flight, or upon late cancellation).
-        This is similar to how hotels or car rentals work.
+        (you will be charged after the flight, or upon late
+        <a
+          class="font-medium underline"
+          href="/terms-and-conditions#cancellations"
+          >cancellation
+        </a>
+        ).
       </p>
 
       <p>
-        Please have a valid Credit Card or Cash with you on the day of your flight, so 
-        we can complete payment after you fly. We only charge you after flying as otherwise 
-        the banks charge all of us if we have to refund due to poor weather.
+        Please have a <strong>valid Credit Card or Cash</strong> with you on the day of your flight, so 
+        we can complete payment after you fly. We only charge after your flight.
       </p>
 
-      <p class="bg-none text-sm text-gray-700 mt-2">
+      <button hx-get="http://spzadmin.local:88/api/v1/htmx/availflightstoday/" hx-swap="innerHTML">
+        How many flights are available today?
+      </button>
+
+      <!-- <p class="bg-none text-sm text-gray-700 mt-2">
         Please be on time at your Meeting Point. It is possible that we'll be running a few minutes late &ndash;
         please wait for us. (we will try to contact you if we are delayed more than 15 minutes &ndash; please be 
         contactable on your phone!).
@@ -71,7 +79,7 @@ import Layout from "@layouts/Layout.astro";
           href="/terms-and-conditions#cancellations"
           >Terms &amp; Conditions... (Cancellations)
         </a>
-      </p>
+      </p> -->
 
 
       </div>
