@@ -67,6 +67,11 @@ export default {
     return useLocalAPI
   },
 
+  getServerPath() {
+    if (useLocalAPI) return "http://spzadmin.local:88/api/v1"
+    if (useStagingAPI) return "admin.swissparaglide.com/api/v1"   // TODO: Need a staging version of the Server.
+    return "admin.swissparaglide.com/api/v1"
+  },
 
   async callAPI(pPath) {
 

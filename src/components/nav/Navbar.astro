@@ -3,6 +3,9 @@
 // import paraImg from "@images/Swiss-Paraglide-Zermatt-in-front-of-Matthorn-summer-lowres.jpg";
 
 import SVGLogo from "@components/nav/Logo.astro";
+
+//import apibase from '@components/api/_apiBase.js'
+//const serverPath = apibase.getServerPath();
 ---
 
 <nav
@@ -16,15 +19,50 @@ import SVGLogo from "@components/nav/Logo.astro";
     <a href="/" aria-label="Return to Swiss Paraglide Zermatt's home page">
       <SVGLogo />
     </a>
+
+    <!-- <div
+      class="absolute -bottom-12 left-0 z-50  bg-white/90 text-black text-sm px-2 py-1 rounded-md"
+      hx-trigger="load"
+      hx-get="http://spzadmin.local:88/api/v1/htmx/availflightstoday/"
+      hx-target="#nrFlightsAvail"
+    >
+      Spaces today: 
+      <div
+        id="nrFlightsAvail"
+        class="inline-block font-bold text-md  ml-1 w-6 h-6  text-center rounded-full bg-lime-300 border border-lime-700">
+        &nbsp;
+      </div>
+    </div>
+    <div
+      class="absolute -bottom-[5.5rem] left-0 z-50  bg-white/90 text-black text-sm px-2 py-1 rounded-md"
+      hx-trigger="load"
+      hx-get="http://spzadmin.local:88/api/v1/htmx/availflightstoday/2025-01-10"
+      hx-target="#nrFlightsAvailTomorrow"
+    >
+      Spaces tomorrow: 
+      <div
+        id="nrFlightsAvailTomorrow"
+        class="inline-block font-bold text-md  ml-1 w-6 h-6  text-center rounded-full bg-lime-300 border border-lime-700">
+        &nbsp;
+      </div>
+    </div>
+
+    <div
+      id="non-zero-message"
+      class="hidden"
+      _="on htmx:afterOnLoad 
+        if #nrFlightsAvail.innerHTML != '0'
+          remove .hidden from me
+        else
+          add .hidden to me"
+    >
+      The value is not zero!
+    </div> -->
   </div>
 
   <!-- Book Now button that's shown on small screens (with Hamburger)  -->
   <div id="smallBookNowBtn" class="relative -top-2 md:hidden">
-    <a
-      class="block text-center"
-      href="/book-now"
-      aria-label="Book Now!"
-    >
+    <a class="block text-center" href="/book-now" aria-label="Book Now!">
       <!-- SVG Book Now! Button  -->
       <button
         type="button"

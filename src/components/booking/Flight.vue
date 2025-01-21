@@ -30,7 +30,8 @@
     </div>
 
     <FlightSelector v-if="loading === false" @change="onChange" :list="onlineFlightsList" :flightId="selectedFlightId"
-      class="mr-4"></FlightSelector>
+      class="mr-4">
+    </FlightSelector>
 
     <!-- Photos & Videos toggle switch  -->
     <PhotosToggle :label='photosToggleLabel' :description="photosToggleDesc" :enabled="photosBool"
@@ -85,6 +86,14 @@
         </p>
       </div>
     </div> <!-- END:: Winter  -->
+ 
+
+
+    <p class="mt-6 mb-12 text-center bg-slate-100 rounded-full border border-slate-300 p-4 my-4 mx-6">
+      Not sure which flight to choose?  <br>
+      <a href="/flights" class="text-[color:var(--booking-hilite)] underline">Learn more about our flights...</a>
+    </p>
+
 
   </div>
 
@@ -175,7 +184,9 @@ export default {
 
 
     flightObject() {
-      return flightsStore.getFlightObj()
+      const flObj = flightsStore.getFlightObj()
+      console.log("flightObject: ", flObj)
+      return flObj
     },
 
     flightsList() {
@@ -288,13 +299,13 @@ export default {
   }, // methods
 
 
-  watch: {
+  // watch: {
 
-  }, // watch
+  // }, // watch
 
 
 
 }
 
 
-</script>import type { datesStore } from '../stores/pageDateStore'
+</script>

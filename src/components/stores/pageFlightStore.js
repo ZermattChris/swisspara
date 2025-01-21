@@ -38,11 +38,11 @@ export const pageFlightStore = reactive({
 
     const unwrappedObj = toRaw(this._flightsList[0])
     // if ( JSON.stringify(unwrappedObj) !== '{}') {
-      if (Object.keys(unwrappedObj).length === 0) {
-        console.log("this._flightsList is empty -> grabbing data from API call.")
-        this.callAPI()
-        return
-      }
+    if (Object.keys(unwrappedObj).length === 0) {
+      console.log("this._flightsList is empty -> grabbing data from API call.")
+      this.callAPI()
+      return
+    }
     // }
 
     console.log("Using data from cache.")
@@ -52,12 +52,27 @@ export const pageFlightStore = reactive({
     if (this.selectedFlight > 0) {
 
       let found = false
-      for (const aFlyObj of this._flightsList) {
+
+      const rawFlightList = toRaw(this._flightsList);
+      const keys = Object.keys(rawFlightList)
+      let doneForEach = false;
+      keys.forEach(key => {
+        if (doneForEach) return;
+        const aFlyObj = rawFlightList[key]
         if (aFlyObj.id === this.selectedFlight) {
           found = true
-          break
+          doneForEach = true; // Set flag to true
+          return;
         }
-      }
+      })
+
+      // for (const aFlyObj of this._flightsList) {
+      //   if (aFlyObj.id === this.selectedFlight) {
+      //     found = true
+      //     break
+      //   }
+      // }
+
       if (found === false) {
         console.log("Selected flight not found in current list, deleting selected flight.")
         this.selectedFlight = -1
@@ -113,12 +128,26 @@ export const pageFlightStore = reactive({
   getFlightObj() {
     let foundFlObj = {}
     // Return the flight object for the given flight id.
-    for (const aFlyObj of this._flightsList) {
+    const rawFlightList = toRaw(this._flightsList);
+    console.log("this._flightsList - rawFlightList: ", this._flightsList, rawFlightList)
+    const keys = Object.keys(rawFlightList)
+    keys.forEach(key => {
+      const aFlyObj = rawFlightList[key]
+      console.log(aFlyObj)
       if (aFlyObj.id === this.getFlightChosen()) {
         //console.log("FOUND aFlyObj:", aFlyObj)
         foundFlObj = aFlyObj
       }
-    }
+    })
+
+
+
+    // for (const aFlyObj of this._flightsList) {
+    //   if (aFlyObj.id === this.getFlightChosen()) {
+    //     //console.log("FOUND aFlyObj:", aFlyObj)
+    //     foundFlObj = aFlyObj
+    //   }
+    // }
     return foundFlObj
   },
 

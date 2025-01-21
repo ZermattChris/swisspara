@@ -8,14 +8,14 @@
 			  v-for="(flight, id) in list"
 			  :key="flight.name"
 			  :value="flight.id"
-			  v-slot="{ active, checked }"
+        :disabled=!flight.show_online
+			  v-slot="{ active, checked, disabled }"
 			>
 			  <div
 				:class="[
-				  active
-					? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white '
-					: '',
-				  checked? ' bg-slate-100  ' : ' bg-white  text-black  shadow-md',
+				  active ? 'ring-2 ring-indigo-600/100 border-black/10  ring-offset-2 ring-offset-white ' : '',
+				  checked ? ' bg-slate-100  ' : ' bg-white  text-black  shadow-md',
+          disabled ? 'opacity-50 cursor-not-allowed' : ''
 				]"
 				class="ring-offset-2 r relative flex cursor-pointer rounded-lg px-4 py-4 border-2 border-slate-300"
 			  >
@@ -27,11 +27,11 @@
 						:class="checked ? 'text-black' : 'text-gray-800'"
 						class="font-medium"
 					  >
-					  {{ flight.id }}	{{ flight.name.charAt(0).toUpperCase() + flight.name.slice(1) }}
+					  {{ flight.name.charAt(0).toUpperCase() + flight.name.slice(1) }} {{ !flight.show_online ? '(Summer Only)' : '' }}	
 					  </RadioGroupLabel>
 					  <RadioGroupDescription
               as="span"
-              :class="checked ? 'text-sky-100' : 'text-gray-500'"
+              :class="checked ? 'text-sky-100' : 'text-gray-500' "
               class="inline"
 					  >
 					  </RadioGroupDescription>
@@ -54,6 +54,7 @@
   
   <script>
 	import { RadioGroup, RadioGroupLabel, RadioGroupDescription, RadioGroupOption } from '@headlessui/vue'
+  import { toRaw } from 'vue'
 	
 
 	export default {
@@ -74,7 +75,7 @@
 				currentId: this.flightId,
         
 
-      		}
+      }
 		},
 
 		methods: {
@@ -96,12 +97,16 @@
 		watch: {
 
 			currentId(selectdIndex) {
-				for (const obj of this.list) {
-					if (obj.id == selectdIndex) {
+        const rawList = toRaw(this.list);
+        //console.log("rawList: ", rawList)
+        const keys = Object.keys(rawList)
+        keys.forEach(key => {
+          const obj = rawList[key]
+          if (obj.id == selectdIndex) {
 						//console.log("Found it", obj.id, obj.name)
 						this.$emit( 'change', selectdIndex )
 					}
-				}
+        })
 			},
 
 		}, // watch
