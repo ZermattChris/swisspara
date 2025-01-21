@@ -15,16 +15,11 @@ export default defineConfig(
     integrations: [
       vue({ devtools: true }),
       tailwind(), 
-      sitemap(),
-      // htmx(),
-      // hyperscript()
+      sitemap()
     ],
     vite: {
       build: {
-        sourcemap: true,
-        // rollupOptions: {
-        //   external: ['htmx.org'],
-        // },
+        sourcemap: true
       }
     },
     prefetch: {
