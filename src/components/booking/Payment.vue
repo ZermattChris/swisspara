@@ -169,13 +169,13 @@
 
               <!-- Selected Flight  -->
               <li class="flex items-start space-x-4 py-6">
-                <img src="/images/payment/paraglider-icon.png" alt="Swiss Paraglide Zermatt Flight"
-                  class="h-20 w-20 flex-none rounded-md object-cover object-center">
+                <img src="/images/payment/paraglider-icon.jpg" alt="Swiss Paraglide Zermatt Flight"
+                  class="h-20 w-20 p-1 bg-white flex-none rounded-md shadow-md object-cover object-center">
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base">
                     {{ totalPassengers }}x {{ flightName }} Paragliding Flight
                   </h3>
-                  <p class="text-gray-500">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
+                  <p class="text-gray-700">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
                     singleFlightPrice
                     }}.- CHF</p>
                 </div>
@@ -184,25 +184,37 @@
 
               <!-- Photos Package  -->
               <li v-if="hasPhotos" class="flex items-start space-x-4 py-6">
-                <img src="/images/payment/photo-icon.png" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package"
-                  class="h-20 w-20 flex-none rounded-md object-cover object-center">
+                <div class="relative  bg-white  h-20 w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
+                  <div class="absolute bg-none w-full h-full z-10"></div>
+                  <!-- <img src="/images/payment/photo-icon.png"
+                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
+                    class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected" class="h-20 w-16 flex-none rounded-md  object-center">
+                    <path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z"></path>
+                  </svg>
+                </div>
+
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base">
                     {{ totalPassengers }}x Photo/Video Package
                   </h3>
-                  <p class="text-gray-500">TODO: Photos Text here.<br> Package @ {{ photoVideoPackagePrice }}.- CHF</p>
+                  <p class="text-gray-700">Our Photos &amp; Videos Package<br>  @ {{ photoVideoPackagePrice }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * photoVideoPackagePrice }}.- CHF</p>
               </li>
+
               <!-- No Photos.  -->
               <li v-if="!hasPhotos" class="flex   items-start space-x-4 py-6">
-                <div class="relative min-w-20   w-32 bg-transparent overflow-hidden flex items-center justify-center">
+                <div class="relative  bg-white h-20 w-20 min-w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-red-800/50 w-full h-full z-10"></div>
-                  <img src="/images/payment/photo-icon.png"
+                  <!-- <img src="/images/payment/photo-icon.png"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-20  relative -left-0.5 flex-none object-cover ">
+                    class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected" class="h-20 w-16 flex-none rounded-md  object-center">
+                    <path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z"></path>
+                  </svg>
                 </div>
-                <!-- <div class="absolute w-[170%] h-4 bg-red-700/70  origin-center transform -rotate-45"></div> -->
+                
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base line-through text-orange-800">
                     Photo/Video Package
@@ -212,7 +224,7 @@
                     The Photos &amp; Videos Package is optional &ndash; you can always decide after you fly.
                   </p>
                   <p class="pt-4 text-gray-800 ">
-                    Photos &amp; Videos Package:
+                    Photos/Videos Package:
                     <button @click="addPhotos(true)" class="rounded bg-white ml-2 px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                       <svg class="h-4 w4 inline relative -top-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
                       Add
