@@ -22,7 +22,7 @@
           <div class="fixed inset-0 bg-black/50" ></div>
         </TransitionChild>
   
-        <div class="fixed inset-0 overflow-y-auto">
+        <div class="fixed inset-0 overflow-y-auto" @click.stop="console.log('zzz')" >
           <div
             class=" flex min-h-full items-center justify-center p-4 text-center"
           >
@@ -91,8 +91,12 @@
   }
 
   function closeModal(ev) {
-    if (typeof ev.target === 'undefined') return
-    if (ev.target.id !== 'closeDialogBtn') return   // Give the 'close' button an id.
+    // if (!ev) {
+    //   isOpen.value = false
+    //   return
+    // }
+    // if (typeof ev.target === 'undefined') return
+    //if (ev.target.id !== 'closeDialogBtn') return   // Give the 'close' button an id.
     isOpen.value = false
   }
 
@@ -118,6 +122,8 @@
     // Close on Enter or Return keys
     if (e.key === 'Enter') { 
       //console.log('ENTER key pressed')
+      e.stopPropagation()
+      return
     }
 
   }

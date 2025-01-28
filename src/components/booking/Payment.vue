@@ -219,7 +219,7 @@
                   <h3 class="text-base line-through text-orange-800">
                     Photo/Video Package
                   </h3>
-                  <p class="text-gray-800">No Photo &amp; Video Package chosen.</p>
+                  <!-- <p class="text-gray-800">No Photo &amp; Video Package chosen.</p> -->
                   <p class="text-gray-800 font-light">
                     The Photos &amp; Videos Package is optional &ndash; you can always decide after you fly.
                   </p>
@@ -357,10 +357,40 @@
 
       <div v-if="showDevInfos()" class="text-xl text-indigo-800 font-bold">DEV Messages::</div>
       <div v-if="showDevInfos()" v-html="stripeDevMessages" class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
+      </div>
 
+
+      <div class="text-center mt-6 mb-6 ">
+        <button type="button" @click="bookFlight()"
+          class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          XXXXXX
+        </button>
       </div>
 
     </div>
+
+
+    <SimpleModal ref="simpleModal">
+      <template v-slot:title>
+        Completing your Booking reservation...
+      </template>
+      Spinner here <br>
+      Just a moment...
+      <p v-if="isFlightSlotNoLongerValid">
+        We're very sorry, but your selected Time Slot has been booked already. Please try again.
+      </p>
+      <template v-slot:buttons>
+        <button v-if="isFlightSlotNoLongerValid" @click="changeFlightDate" class="px-4 py-2 bg-blue-500 text-white rounded">
+          Choose a New Time...
+        </button>
+      </template>
+    </SimpleModal>
+
 
     <!-- hasConfirmedBooking: {{hasConfirmedBooking}} -- 
     storageHashChanged: {{ storageHashChanged }} -->
@@ -373,7 +403,7 @@
 
 
     <!-- Modal Dialog :: Page Blocker and Infos connecting to Stripe to Capture Card. -->
-    <Modal ref="modal" showCloseButton="false">
+    <!-- <Modal ref="modal" showCloseButton="false">
       <template v-slot:title>
         Completing your Booking reservation...
       </template>
@@ -391,7 +421,7 @@
         </p>
       </div>
 
-    </Modal>
+    </Modal> -->
 
 
 
@@ -423,6 +453,7 @@ import _Page from './_Page.vue'
 
 
 import Modal from "@components/Modal.vue"
+import SimpleModal from "@components/SimpleModal.vue"
 
 // Calendar Utils.
 import { calendarUtils as calUtils } from '@components/booking/calendarUtils.js'
@@ -438,6 +469,7 @@ export default {
 
   components: {
     Modal,
+    SimpleModal,
   },
 
 
@@ -490,6 +522,10 @@ export default {
       stripeDevMessages: '',
       stripeBookingMessages: '',
 
+      isModalOpen: false,
+      modalKey: 10,
+      isFlightSlotNoLongerValid: false,     //  if the Slot user has chosen is no longer avail. Let's the Booking blocking dialog show a "Change Flight Date..." button.
+
     }
   },
 
@@ -534,12 +570,18 @@ export default {
 
   methods: {
 
+
     openModal() {
-      this.$refs.modal.openModal();
+      this.$refs.simpleModal.open()
     },
     closeModal() {
-      this.$refs.modal.closeModal();
+      this.$refs.simpleModal.close()
     },
+    changeFlightDate() {
+      appStore._navigate(3)   // Step #3 - Time Slots
+    },
+
+
 
     async checkTimeSlotsStillAvailable() {
       
@@ -549,14 +591,14 @@ export default {
 
       if (pSlotsStillValid === false) {
         this.timeSlotNoLongerAvailable = true
-        //console.log("(Server Data) Time Slot no longer Available, please choose another.")
+        console.log("(Server Data) Time Slot no longer Available, please choose another.")
         // reset the User's selected TimeSlots (passengers) to 0
         timeStore.setTimeSlotsPassengersList('')
         
         return false
       }
 
-      //console.log("(Server Data) Time Slot still Available.")
+      console.log("(Server Data) Time Slot still Available.")
       return true
 
     },
@@ -647,20 +689,21 @@ export default {
       // Open Stripe blocker dialog.
       this.openModal()
 
+
+      // //alert("between")
+      //
+      // setTimeout(() => {
+      //     this.closeModal()
+      // }, 3000);
+    
+      // return // temp
+
       // Check if the TimeSlots are still available.
       const stillHasPilotsFlag = this.checkTimeSlotsStillAvailable()
       if (stillHasPilotsFlag === false) {
-        this.bookingModalMessage = "We're very sorry, but your TimeSlot has been booked already. Please try again.<br>"
-        localStorage.removeItem('flightDate')
-        localStorage.removeItem('arriveDate')
-        localStorage.removeItem('departDate')
-
-        // TODO: Not closeModal() but rather give a choose "New Flight Date" button for the user after they've read above message.
-        // --->
-
-        this.closeModal()
-        // go back to step one
-        appStore._navigate(1)
+        // Not closeModal() but rather give a choose "New Flight Time Slot" button for the user after they've read above message.
+        //console.log('Time Slot no longer available. Please choose another.')
+        this.isFlightSlotNoLongerValid = true
         return
       }
 
@@ -669,7 +712,8 @@ export default {
       // Create Booking on our backend
 
       // Close modal dialog.
-      this.closeModal()
+      // this.closeModal()
+      return
 
 
       // TODO: Need to recheck avail here (skip below msg)
