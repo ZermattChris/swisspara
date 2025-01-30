@@ -24,16 +24,25 @@
         Ooops! Time Slot No Longer Available.
       </h2>
 
-      <p v-if="!isFlightSlotNoLongerValid" class="mt-2">
+      <p v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed" class="mt-2">
         Please wait while we complete your Booking...
       </p>
       <p v-if="isFlightSlotNoLongerValid" class="mt-2">
         Unfortunately, the Time Slot you have chosen is no longer available. Please choose a different Time for your flight.
       </p>
+      <p v-if="stripeElementsSubmitFailed" class="mt-2">
+        There was a problem capturing your card details. Please try again. <br><br>
+        {{ stripeElementsSubmitFailedMsg }}
+      </p>
+
+      
 
       <div class="mt-4 flex justify-end">
         <button v-if="isFlightSlotNoLongerValid" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="changeFlightDate()">
           Change Time...
+        </button>
+        <button v-if="stripeElementsSubmitFailed" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="closeModal()">
+          Close
         </button>
       </div>
     </div>
@@ -530,6 +539,8 @@ export default {
 
       isModalOpen: false,
       isFlightSlotNoLongerValid: false,     //  if the Slot user has chosen is no longer avail. Let's the Booking blocking dialog show a "Change Flight Date..." button.
+      stripeElementsSubmitFailed: false,    // Show feedback to user in Dialog after Book Now pushed.
+      stripeElementsSubmitFailedMsg: '',    // ...
 
     }
   },
@@ -664,7 +675,7 @@ export default {
         console.error(error.message);
       }
 
-      console.log("API /setup returned: ", content)
+      //console.log("API /setup returned: ", content)
 
       // Don't save the client secret anywhere.
       const secret = content.client_secret
@@ -681,10 +692,33 @@ export default {
     },
 
 
-    async stripeCaptureCustomerCard() {
+    // async stripeCaptureCustomerCard() {
 
+    // },
+
+
+    /**
+     * Stripe Elements data collection.
+     * Show the user any problems and let them retry.
+     * 
+     * This method returns a Promise which resolves with a result object. If this method succeeds, 
+     * the result object contains the selected payment method type in the selectedPaymentMethod field. 
+     * If this method fails, the result object contains a localized error message in the error.message field.
+     */
+    async stripe_submitElements() {
+      const secret = this._secret
+      const cardElement = this.cardElement
+      const elements = this.elements
+      var result = await this.elements.submit();
+      if (result.error) {
+        // Log Handle error here. TODO - API to track our issues...
+        this.stripeElementsSubmitFailedMsg = result.error.message   // Show to User in dialog and let them retry.
+        this.stripeDevMessages += 'Stripe Elements submit() failed: ' + result.error.message + '</br>'
+        this.stripeDevMessages += 'TODO: Log to our backend API JS error tracker...</br>'
+        return false
+      }
+      return true
     },
-
 
 
     /**
@@ -692,33 +726,43 @@ export default {
      */
     async bookFlight() {
 
+
+      this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
+
       // Open Stripe blocker dialog.
       this.openModal()
 
 
-      // //alert("between")
-      //
-      // setTimeout(() => {
-      //     this.closeModal()
-      // }, 3000);
 
-      // return // temp
-
-      // Check if the TimeSlots are still available.
+      // 1. Check if the TimeSlots are still available.
       var stillHasPilotsFlag = await this.checkTimeSlotsStillAvailable()
       if (stillHasPilotsFlag === false) {
         // Not closeModal() but rather give a choose "New Flight Time Slot" button for the user after they've read above message.
-        console.log('Time Slot bad - trying to update pesky Dialog box...')
+        this.stripeDevMessages += 'Time Slot bad - trying to update pesky Dialog box...'
         this.isFlightSlotNoLongerValid = true
         return
       }
+      this.stripeDevMessages += '✓ Time Slot still good -- continue with Booking... </br>'
 
-      // Do Stripe Customer/Card Capture
 
-      // Create Booking on our backend
 
+      // 2. Do Stripe Customer/Card Capture
+      const okayEls = await this.stripe_submitElements()
+      if (okayEls === false) {
+        this.stripeDevMessages += '✓ Stripe Elements submit() FAILED. Retry??? </br>'
+        // Show the User a message in the Modal dialog.
+        // Show a "Retry" button that just reloads the page?
+        return
+      }
+      this.stripeDevMessages += '✓ Stripe Elements data collection okay -- continue with Booking... </br>'
+
+
+
+      // 3. Create Booking on our backend
+
+
+      
       // Close modal dialog.
-      console.log('Time Slot still good -- continue with Booking...')
       this.closeModal()
       return
 
@@ -746,9 +790,9 @@ export default {
 
 
 
-      this.bookingModalMessage += "Connecting...<br>"
+      // this.bookingModalMessage += "Connecting...<br>"
 
-      this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
+      // this.stripeDevMessages += '-> Book Flight Btn pushed. </br>'
 
       const secret = this._secret
       const cardElement = this.cardElement
@@ -762,7 +806,7 @@ export default {
         console.error('this.elements.submit()', error);
         this.stripeDevMessages += '✓ Stripe Elements submit() FAILED. Retry??? </br>'
         // TODO: Remove page blocker...
-        return
+        return false
       }
       console.log('this.elements.submit() worked');
       this.stripeDevMessages += '✓ Stripe Elements submit() success. Payment Added to this Customer. </br>'
