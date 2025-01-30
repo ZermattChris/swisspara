@@ -251,14 +251,11 @@
               <!-- Photos Package  -->
               <li v-if="hasPhotos" class="flex items-start space-x-4 py-6">
                 <div
-                  class="relative  bg-white  h-20 w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
+                  class="relative  bg-white  h-20 w-20 rounded-md sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-none w-full h-full z-10"></div>
-                  <!-- <img src="/images/payment/photo-icon.png"
-                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-16 flex-none rounded-md  object-center">
+                    class="h-20 w-16 flex-none  object-center">
                     <path
                       d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z">
                     </path>
@@ -277,14 +274,11 @@
               <!-- No Photos.  -->
               <li v-if="!hasPhotos" class="flex   items-start space-x-4 py-6">
                 <div
-                  class="relative  bg-white h-20 w-20 min-w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
+                  class="relative  bg-white h-20 w-20 min-w-20 rounded-md sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-red-800/50 w-full h-full z-10"></div>
-                  <!-- <img src="/images/payment/photo-icon.png"
-                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
-                    class="h-20 w-16 flex-none rounded-md  object-center">
+                    class="h-20 w-16 flex-none  object-center">
                     <path
                       d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z">
                     </path>
@@ -434,7 +428,6 @@
 
       </div> <!-- END: Book Flight Btn -->
 
-      <!-- <p>{{ this.stripeInputsCompleted === true ? 'Stripe Good!' : 'Stripe xxx' }}</p> -->
 
 
       <div v-if="showDevInfos()" class="text-xl text-indigo-800 font-bold">DEV Messages::</div>
@@ -442,18 +435,6 @@
         class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
       </div>
 
-
-      <div class="text-center mt-6 mb-6 ">
-        <button type="button" @click="bookFlight()"
-          class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          XXXXXX
-        </button>
-      </div>
 
     </div>
 
