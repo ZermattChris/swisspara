@@ -7,9 +7,9 @@
       3. How Many Flying?
     </h1>
 
-    <h4 class="mt-2 mb-6 text-xl text-center text-indigo-900">
+    <h4 class="mt-2 mb-6 text-xl text-center text-indigo-900 ">
       Your Selected Flight: 
-      <span class="font-bold  text-indigo-900 rounded border border-gray-400 py-1 px-2">{{flightName()}}</span>
+      <span class="font-bold  text-indigo-900 bg-lime-300 rounded border border-gray-400 py-1 px-2">{{flightName()}}</span>
     </h4>
 
     <p class="text-center">

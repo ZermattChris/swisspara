@@ -1,5 +1,49 @@
 <template>
 
+  <div v-if="isModalOpen" id="processingPaymentBlockerDialog"
+    class="fixed inset-0 bg-gray-800 opacity-75 z-50">
+  </div>
+
+  <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
+    <div class="w-full max-w-md bg-white/100 mx-2 p-8 rounded-md sm:rounded-2xl shadow-xl">
+      
+
+      <svg id="spinner"  v-if="!isFlightSlotNoLongerValid"  class="inline-block mr-3 size-6 animate-spin text-indigo-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+
+      <svg id="time-slot-fail"  v-if="isFlightSlotNoLongerValid"  class="inline-block mr-3 size-6 text-orange-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" >
+        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path>
+      </svg>
+
+      <h2 v-if="!isFlightSlotNoLongerValid" class="inline-block text-lg font-bold text-indigo-800">
+        Processing Booking
+      </h2>
+      <h2 v-if="isFlightSlotNoLongerValid" class="inline-block text-lg font-bold text-orange-800">
+        Ooops! Time Slot No Longer Available.
+      </h2>
+
+      <p v-if="!isFlightSlotNoLongerValid" class="mt-2">
+        Please wait while we complete your Booking...
+      </p>
+      <p v-if="isFlightSlotNoLongerValid" class="mt-2">
+        Unfortunately, the Time Slot you have chosen is no longer available. Please choose a different Time for your flight.
+      </p>
+
+      <div class="mt-4 flex justify-end">
+        <button v-if="isFlightSlotNoLongerValid" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="changeFlightDate()">
+          Change Time...
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
   <div id="headerBox" class=" mx-auto pb-4 md:pb-6 py-[3vw] w-full max-w-lg sm:w-3/4 md:w-4/5 lg:w-1/2  ">
 
     <h1
@@ -177,20 +221,25 @@
                   </h3>
                   <p class="text-gray-700">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
                     singleFlightPrice
-                    }}.- CHF</p>
+                  }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
 
               <!-- Photos Package  -->
               <li v-if="hasPhotos" class="flex items-start space-x-4 py-6">
-                <div class="relative  bg-white  h-20 w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
+                <div
+                  class="relative  bg-white  h-20 w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-none w-full h-full z-10"></div>
                   <!-- <img src="/images/payment/photo-icon.png"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
                     class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected" class="h-20 w-16 flex-none rounded-md  object-center">
-                    <path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"
+                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
+                    class="h-20 w-16 flex-none rounded-md  object-center">
+                    <path
+                      d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z">
+                    </path>
                   </svg>
                 </div>
 
@@ -198,23 +247,28 @@
                   <h3 class="text-base">
                     {{ totalPassengers }}x Photo/Video Package
                   </h3>
-                  <p class="text-gray-700">Our Photos &amp; Videos Package<br>  @ {{ photoVideoPackagePrice }}.- CHF</p>
+                  <p class="text-gray-700">Our Photos &amp; Videos Package<br> @ {{ photoVideoPackagePrice }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * photoVideoPackagePrice }}.- CHF</p>
               </li>
 
               <!-- No Photos.  -->
               <li v-if="!hasPhotos" class="flex   items-start space-x-4 py-6">
-                <div class="relative  bg-white h-20 w-20 min-w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
+                <div
+                  class="relative  bg-white h-20 w-20 min-w-20 sm:rounded-lg bg-transparent  shadow-md overflow-hidden flex items-center justify-center">
                   <div class="absolute bg-red-800/50 w-full h-full z-10"></div>
                   <!-- <img src="/images/payment/photo-icon.png"
                     alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
                     class="h-20 w-20  relative -left-0.5 flex-none object-cover "> -->
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected" class="h-20 w-16 flex-none rounded-md  object-center">
-                    <path d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z"></path>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                    alt="Swiss Paraglide Zermatt - Photo &amp; Video Package not selected"
+                    class="h-20 w-16 flex-none rounded-md  object-center">
+                    <path
+                      d="M20.7134 8.12811L20.4668 8.69379C20.2864 9.10792 19.7136 9.10792 19.5331 8.69379L19.2866 8.12811C18.8471 7.11947 18.0555 6.31641 17.0677 5.87708L16.308 5.53922C15.8973 5.35653 15.8973 4.75881 16.308 4.57612L17.0252 4.25714C18.0384 3.80651 18.8442 2.97373 19.2761 1.93083L19.5293 1.31953C19.7058 0.893489 20.2942 0.893489 20.4706 1.31953L20.7238 1.93083C21.1558 2.97373 21.9616 3.80651 22.9748 4.25714L23.6919 4.57612C24.1027 4.75881 24.1027 5.35653 23.6919 5.53922L22.9323 5.87708C21.9445 6.31641 21.1529 7.11947 20.7134 8.12811ZM9 3H14V5H9.82843L7.82843 7H4V19H20V11H22V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V6C2 5.44772 2.44772 5 3 5H7L9 3ZM12 18C8.96243 18 6.5 15.5376 6.5 12.5C6.5 9.46243 8.96243 7 12 7C15.0376 7 17.5 9.46243 17.5 12.5C17.5 15.5376 15.0376 18 12 18ZM12 16C13.933 16 15.5 14.433 15.5 12.5C15.5 10.567 13.933 9 12 9C10.067 9 8.5 10.567 8.5 12.5C8.5 14.433 10.067 16 12 16Z">
+                    </path>
                   </svg>
                 </div>
-                
+
                 <div class="flex-auto space-y-1">
                   <h3 class="text-base line-through text-orange-800">
                     Photo/Video Package
@@ -225,8 +279,14 @@
                   </p>
                   <p class="pt-4 text-gray-800 ">
                     Photos/Videos Package:
-                    <button @click="addPhotos(true)" class="rounded bg-white ml-2 px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                      <svg class="h-4 w4 inline relative -top-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+                    <button @click="addPhotos(true)"
+                      class="rounded bg-white ml-2 px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                      <svg class="h-4 w4 inline relative -top-0.5" xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                          d="M11 11V7H13V11H17V13H13V17H11V13H7V11H11ZM12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z">
+                        </path>
+                      </svg>
                       Add
                     </button>
                   </p>
@@ -356,7 +416,8 @@
 
 
       <div v-if="showDevInfos()" class="text-xl text-indigo-800 font-bold">DEV Messages::</div>
-      <div v-if="showDevInfos()" v-html="stripeDevMessages" class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
+      <div v-if="showDevInfos()" v-html="stripeDevMessages"
+        class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
       </div>
 
 
@@ -373,57 +434,6 @@
       </div>
 
     </div>
-
-
-    <SimpleModal ref="simpleModal">
-      <template v-slot:title>
-        Completing your Booking reservation...
-      </template>
-      Spinner here <br>
-      Just a moment...
-      <p v-if="isFlightSlotNoLongerValid">
-        We're very sorry, but your selected Time Slot has been booked already. Please try again.
-      </p>
-      <template v-slot:buttons>
-        <button v-if="isFlightSlotNoLongerValid" @click="changeFlightDate" class="px-4 py-2 bg-blue-500 text-white rounded">
-          Choose a New Time...
-        </button>
-      </template>
-    </SimpleModal>
-
-
-    <!-- hasConfirmedBooking: {{hasConfirmedBooking}} -- 
-    storageHashChanged: {{ storageHashChanged }} -->
-
-
-
-
-
-
-
-
-    <!-- Modal Dialog :: Page Blocker and Infos connecting to Stripe to Capture Card. -->
-    <!-- <Modal ref="modal" showCloseButton="false">
-      <template v-slot:title>
-        Completing your Booking reservation...
-      </template>
-
-      <div>
-        <p>
-          Connecting to our secure payment gateway to capture your card details.
-        </p>
-        <p>
-          Please do not reload :-)
-        </p>
-
-        <p>
-         {{ bookingModalMessage }}
-        </p>
-      </div>
-
-    </Modal> -->
-
-
 
 
 
@@ -452,9 +462,6 @@ import { pagePassengersStore as passengersStore } from '@stores/pagePassengersSt
 import _Page from './_Page.vue'
 
 
-import Modal from "@components/Modal.vue"
-import SimpleModal from "@components/SimpleModal.vue"
-
 // Calendar Utils.
 import { calendarUtils as calUtils } from '@components/booking/calendarUtils.js'
 
@@ -468,8 +475,7 @@ export default {
   emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
 
   components: {
-    Modal,
-    SimpleModal,
+
   },
 
 
@@ -523,7 +529,6 @@ export default {
       stripeBookingMessages: '',
 
       isModalOpen: false,
-      modalKey: 10,
       isFlightSlotNoLongerValid: false,     //  if the Slot user has chosen is no longer avail. Let's the Booking blocking dialog show a "Change Flight Date..." button.
 
     }
@@ -572,10 +577,10 @@ export default {
 
 
     openModal() {
-      this.$refs.simpleModal.open()
+      this.isModalOpen = true
     },
     closeModal() {
-      this.$refs.simpleModal.close()
+      this.isModalOpen = false
     },
     changeFlightDate() {
       appStore._navigate(3)   // Step #3 - Time Slots
@@ -584,7 +589,7 @@ export default {
 
 
     async checkTimeSlotsStillAvailable() {
-      
+
       // Check and make sure that the user's Timeslot choices still have availability.
       let flightDate = dateStore.getFlightDate()
       let pSlotsStillValid = await timeStore.arePassengersTimeSlotsStillAvailable(flightDate)
@@ -593,8 +598,9 @@ export default {
         this.timeSlotNoLongerAvailable = true
         console.log("(Server Data) Time Slot no longer Available, please choose another.")
         // reset the User's selected TimeSlots (passengers) to 0
-        timeStore.setTimeSlotsPassengersList('')
-        
+        // timeStore.setTimeSlotsPassengersList('')
+        timeStore.setTotalPassengers(0) // force the customer to re-choose all passener Times.
+
         return false
       }
 
@@ -676,7 +682,7 @@ export default {
 
 
     async stripeCaptureCustomerCard() {
-      
+
     },
 
 
@@ -695,14 +701,14 @@ export default {
       // setTimeout(() => {
       //     this.closeModal()
       // }, 3000);
-    
+
       // return // temp
 
       // Check if the TimeSlots are still available.
-      const stillHasPilotsFlag = this.checkTimeSlotsStillAvailable()
+      var stillHasPilotsFlag = await this.checkTimeSlotsStillAvailable()
       if (stillHasPilotsFlag === false) {
         // Not closeModal() but rather give a choose "New Flight Time Slot" button for the user after they've read above message.
-        //console.log('Time Slot no longer available. Please choose another.')
+        console.log('Time Slot bad - trying to update pesky Dialog box...')
         this.isFlightSlotNoLongerValid = true
         return
       }
@@ -712,7 +718,8 @@ export default {
       // Create Booking on our backend
 
       // Close modal dialog.
-      // this.closeModal()
+      console.log('Time Slot still good -- continue with Booking...')
+      this.closeModal()
       return
 
 
@@ -1059,7 +1066,6 @@ export default {
 </script>
 
 <style scoped>
-
 #closeDialogBtn {
   display: none;
 }
