@@ -174,9 +174,9 @@ let nrPassengersList = reactive({})   // Keeps track of how many passengers have
 
 
 onActivated(() => {
-  console.log('Component is now visible and active');
+  //console.log('Component is now visible and active');
   const storedNrPassengers = localStorage._cacheTimeSlotsPassengerList ? JSON.parse(localStorage._cacheTimeSlotsPassengerList) : null
-  console.log("timeSlotStore.getTotalPassengers(): ", storedNrPassengers )
+  //console.log("timeSlotStore.getTotalPassengers(): ", storedNrPassengers )
   if(storedNrPassengers === null) {
     // Reset the Round (1) button next to TimeSlot -- will be old, cached info that's out of date!!!
     clearAllPassengers()

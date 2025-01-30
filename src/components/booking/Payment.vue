@@ -8,20 +8,26 @@
     <div class="w-full max-w-md bg-white/100 mx-2 p-8 rounded-md sm:rounded-2xl shadow-xl">
       
 
-      <svg id="spinner"  v-if="!isFlightSlotNoLongerValid"  class="inline-block mr-3 size-6 animate-spin text-indigo-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <svg id="spinner"  v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled"  class="inline-block mr-3 size-6 animate-spin text-indigo-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
 
-      <svg id="time-slot-fail"  v-if="isFlightSlotNoLongerValid"  class="inline-block mr-3 size-6 text-orange-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" >
+      <svg id="failed"  v-if="isFlightSlotNoLongerValid || stripeElementsSubmitFailed || stripeConfirmSetupFailed || bookFlightAPIFaled"  class="inline-block mr-3 size-6 text-orange-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" >
         <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path>
       </svg>
 
-      <h2 v-if="!isFlightSlotNoLongerValid" class="inline-block text-lg font-bold text-indigo-800">
+      <h2 v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled" class="inline-block text-lg font-bold text-indigo-800">
         Processing Booking
       </h2>
       <h2 v-if="isFlightSlotNoLongerValid" class="inline-block text-lg font-bold text-orange-800">
         Ooops! Time Slot No Longer Available.
+      </h2>
+      <h2 v-if="stripeElementsSubmitFailed || stripeConfirmSetupFailed" class="inline-block text-lg font-bold text-orange-800">
+        Not able to Capture your Card
+      </h2>
+      <h2 v-if="bookFlightAPIFaled" class="inline-block text-lg font-bold text-orange-800">
+        Not able to complete your Booking
       </h2>
 
       <p v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed" class="mt-2">
@@ -31,11 +37,18 @@
         Unfortunately, the Time Slot you have chosen is no longer available. Please choose a different Time for your flight.
       </p>
       <p v-if="stripeElementsSubmitFailed" class="mt-2">
-        There was a problem capturing your card details. Please try again. <br><br>
+        There was a problem capturing your card &ndash; please try again. <br><br>
         {{ stripeElementsSubmitFailedMsg }}
       </p>
+      <p v-if="stripeElementsSubmitFailed" class="mt-2">
+        There was a problem capturing your card &ndash; please try again. <br><br>
+        {{ stripeConfirmSetupFailedMsg }}
+      </p>
+      <p v-if="bookFlightAPIFaled" class="mt-2">
+        Our Booking Server has returned an error &ndash; please try again (or call us) <br><br>
+        {{ bookFlightAPIFaledMsg }}
+      </p>
 
-      
 
       <div class="mt-4 flex justify-end">
         <button v-if="isFlightSlotNoLongerValid" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="changeFlightDate()">
@@ -327,7 +340,7 @@
       <div class="mb-6  overflow-hidden rounded-lg bg-white border-[1px] border-gray-300 shadow select-none">
         <div class="px-4 py-5 ">
 
-          <div id="clickBox" @click="toggleBookingMsg = !toggleBookingMsg" class="cursor-pointer  ">
+          <div id="clickBox" @click="onClickedBookingMsg()" class="cursor-pointer  ">
             <svg class="w-6 h-6 inline relative -top-0.5 fill-orange-700" xmlns="http://www.w3.org/2000/svg" height="48"
               viewBox="0 -960 960 960">
               <path
@@ -335,7 +348,7 @@
             </svg>
 
             <p class="text-sm inline ml-1 text-gray-700">
-              Click here if you want to add an optional Booking Message...
+              Click to add an optional Booking Message...
             </p>
           </div>
 
@@ -346,7 +359,7 @@
                 please let us know here.
               </p>
               <div class="mt-2 px-0">
-                <textarea v-model="assistanceMsg" id="assistanceMsg" name="assistanceMsg" rows="4"
+                <textarea v-model="optionalBookingMsg" ref="bookingMsgInput" id="optionalBookingMsg" name="optionalBookingMsg" rows="4"
                   class="w-full rounded-md focus:ring-indigo-600 ">
             </textarea>
               </div>
@@ -458,6 +471,8 @@
 <script>
 import { loadStripe } from '@stripe/stripe-js'
 
+import { ref, nextTick } from 'vue'
+
 import _api from "@components/api/_apiBase.js"
 
 // Stores
@@ -499,7 +514,7 @@ export default {
       allPassengers: passengersStore.getAllPassengersList(),
 
       toggleBookingMsg: false,
-      assistanceMsg: '',
+      optionalBookingMsg: '',
       tAndCsChecked: false,
 
       hasPhotos: flightStore.getPhotosToggle() ? true : false,
@@ -537,10 +552,19 @@ export default {
       stripeDevMessages: '',
       stripeBookingMessages: '',
 
+
+
       isModalOpen: false,
       isFlightSlotNoLongerValid: false,     //  if the Slot user has chosen is no longer avail. Let's the Booking blocking dialog show a "Change Flight Date..." button.
+
       stripeElementsSubmitFailed: false,    // Show feedback to user in Dialog after Book Now pushed.
       stripeElementsSubmitFailedMsg: '',    // ...
+
+      stripeConfirmSetupFailed: false,
+      stripeConfirmSetupFailedMsg: '',      // ...
+
+      bookFlightAPIFaled: false,
+      bookFlightAPIFaledMsg: '',      // ...
 
     }
   },
@@ -706,11 +730,12 @@ export default {
      * If this method fails, the result object contains a localized error message in the error.message field.
      */
     async stripe_submitElements() {
-      const secret = this._secret
+      //const secret = this._secret
       const cardElement = this.cardElement
       const elements = this.elements
-      var result = await this.elements.submit();
+      var result = await this.elements.submit()
       if (result.error) {
+        cardElement.clear();
         // Log Handle error here. TODO - API to track our issues...
         this.stripeElementsSubmitFailedMsg = result.error.message   // Show to User in dialog and let them retry.
         this.stripeDevMessages += 'Stripe Elements submit() failed: ' + result.error.message + '</br>'
@@ -719,6 +744,27 @@ export default {
       }
       return true
     },
+
+
+    /**
+     * Stripe Confirm setup -- saves card for future transaction.
+     * Returns false if fails.
+     * Otherwise returns the SetupIntent id string.
+     */
+     async stripe_confirmSetup() {
+      const secret = this._secret
+      const elements = this.elements
+      var { setupIntent, error } = await this.stripe.confirmSetup({
+        clientSecret: secret,
+        elements,
+        redirect: 'if_required'
+      })
+      if (error) {
+        this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
+        return {failed: true, message: error.message }
+      }
+      return {failed: false, message: setupIntent.id }
+     },
 
 
     /**
@@ -734,7 +780,7 @@ export default {
 
 
 
-      // 1. Check if the TimeSlots are still available.
+      // ----- 1. Check if the TimeSlots are still available. ----- 
       var stillHasPilotsFlag = await this.checkTimeSlotsStillAvailable()
       if (stillHasPilotsFlag === false) {
         // Not closeModal() but rather give a choose "New Flight Time Slot" button for the user after they've read above message.
@@ -746,32 +792,109 @@ export default {
 
 
 
-      // 2. Do Stripe Customer/Card Capture
-      const okayEls = await this.stripe_submitElements()
+      // ----- 2. Do Stripe Customer/Card Capture ----- 
+      var okayEls = await this.stripe_submitElements()
       if (okayEls === false) {
-        this.stripeDevMessages += '✓ Stripe Elements submit() FAILED. Retry??? </br>'
-        // Show the User a message in the Modal dialog.
-        // Show a "Retry" button that just reloads the page?
+        this.stripeElementsSubmitFailed = true
         return
       }
       this.stripeDevMessages += '✓ Stripe Elements data collection okay -- continue with Booking... </br>'
 
+      // Capture
+      const {failed, message} = await this.stripe_confirmSetup()
+      if (failed === true) {
+        this.stripeConfirmSetupFailed = true
+        this.stripeConfirmSetupFailedMsg = 'There was an error in Capturing your card.<br>' + message + '<br>'
+        return
+      }
+      const setupIntentId = message
+      this.stripeDevMessages += '✓ Stripe SetupIntent okay -- setupIntent id: ' + message + '<br> -> Continue with Booking<br>'
 
 
-      // 3. Create Booking on our backend
+
+      // ----- 3. Create Booking on our backend ----- 
+      let stripeTestMode = true
+
+      let host = new URL(document.location).hostname
+      let bookPath = 'http://spzadmin.local:88/api/v1/book'   // Local or Staging.
+      if (host == 'localhost') {
+        this.stripeDevMessages += '• LOCAL DEV API -> New Booking called on: ' + bookPath + '</br>'
+      } else if (host == 'swisspara.netlify.app') {
+        bookPath = 'https://admin.swissparaglide.com/api/v1/book'
+        this.stripeDevMessages += '• STAGING API -> New Booking called on: ' + bookPath + '</br>'
+      } else {
+        // Live Stripe calls.
+        // 'https://swissparaglide.com'
+        stripeTestMode = false
+        bookPath = 'https://admin.swissparaglide.com/api/v1/book'
+        this.stripeDevMessages += '• Live API -> New Booking called on: ' + bookPath + '</br>'
+      }
+
+      let stripeTestModeString = stripeTestMode ? 'true' : 'false'
+      this.stripeDevMessages += `• Stripe TEST Mode: ${stripeTestModeString}</br>`
+
+      // Create a new Booking via our API
+      let content = {}
+      try {
+        const rawResponse = await fetch(bookPath, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', "Content-Type": "application/json" },
+          body: JSON.stringify({
+            "stripeTestMode": stripeTestMode,
+            "customerId": this.stripeCustId,
+            "setupIntentId": setupIntentId,
+            "flightDate": this._flightDate,
+            "arriveDate": this._arriveDateTime,
+            "departDate": this._departDateTime,
+            "selectedFlightId": this._selectedFlightId,
+            "hasPhotosBool": this._hasPhotosBool,
+            "timeSlotsList": this._timeSlotsList,
+            "passengersList": this._passengersList,
+            "bookingMessage": this.optionalBookingMsg
+          })
+        });
+        content = await rawResponse.json()
+        if (!rawResponse.ok) {
+          throw new Error(`Status: ${rawResponse.status}. Returned: ${content.message}`)
+        }
+      } catch (error) {
+        console.error(error.message)
+        this.stripeDevMessages += '✘ New Booking API Error. ' + error.message + ' </br>'
+        // TODO: In theory this only happens if the Stripe Customer is deleted...
+
+        this.bookFlightAPIFaled = false
+        this.bookFlightAPIFaledMsg = error.message
+
+        return
+      }
 
 
-      
+
+      console.log('Booking Completed!', content);
+      this.stripeDevMessages += '✓ Booking Complete! Order should be in our db and (TODO) Emails/SMS sent... </br>'
+      this.stripeDevMessages += `✓ Booking ID: ${content.bookingId}</br>`
+
+      // TODO: Delete localStorage???
+
+
+
+
+
       // Close modal dialog.
       this.closeModal()
-      return
-
-
-      // TODO: Need to recheck avail here (skip below msg)
 
 
 
+      // redirect to "Thanks" page, with order overview and option to resend email.
+      this.stripeDevMessages += '-> Continue to Thanks page.<br>'
 
+    },
+
+
+
+
+    // Remove in a bit -- original working Stripe code below, before refactor.
+    async _old_working_booking_call_to_backend_API() {
 
 
       // Should this better just be on the Server for making a Booking?? Yes.
@@ -881,7 +1004,7 @@ export default {
             "hasPhotosBool": this._hasPhotosBool,
             "timeSlotsList": this._timeSlotsList,
             "passengersList": this._passengersList,
-            "bookingMessage": this.assistanceMsg
+            "bookingMessage": this.optionalBookingMsg
           })
         });
         content = await rawResponse.json()
@@ -906,6 +1029,17 @@ export default {
 
 
     },
+
+
+    onClickedBookingMsg() {
+      this.toggleBookingMsg = !this.toggleBookingMsg
+      if (this.toggleBookingMsg === true) {
+        nextTick(() => {
+          this.$refs.bookingMsgInput.focus()
+        });
+      }
+    },
+
 
     // Handle when the Stripe Card element is completed.
     onStripeElementsChange(ev) {
