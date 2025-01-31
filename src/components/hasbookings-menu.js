@@ -6,16 +6,16 @@ console.log("hasBookings", hasBookings)
 
 // If we have a booking, then show the button.
 const bookingsButton = document.querySelector("#viewBookings");
-const bookingsBtnLink = document.querySelector("#viewBookingsLink");
+const bookingsBtnTxt = document.querySelector("#viewBookingsTxt");
 
 const bookingsCount = hasBookings.length
 
 if ( bookingsCount > 0) {
   if (bookingsCount === 1) {
-    bookingsBtnLink.innerHTML = "View your Booking..."
+    bookingsBtnTxt.innerHTML = "View your Booking..."
   }
   if (bookingsCount > 1) {
-    bookingsBtnLink.innerHTML = "View your Bookings..."
+    bookingsBtnTxt.innerHTML = "View your Bookings..."
   }
   // Show the button.
   setTimeout(() => {
