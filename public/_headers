@@ -4,7 +4,7 @@
 
 
   # We need access to our payment gateway.
-  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Origin: https://admin.swissparaglide.com, https://swisspara.netlify.app
   # Access-Control-Allow-Headers: 'Origin, X-Requested-With, Content-Type, Accept'
   
   Content-Security-Policy: default-src 'self';   base-uri 'self';   object-src 'none';   connect-src https://admin.swissparaglide.com;  https://*.google-analytics.com;   font-src 'self' data:  https://fonts.gstatic.com;   frame-src https://js.stripe.com    img-src 'self' www.googletagmanager.com https://*.google-analytics.com https://media.swissparaglide.com;   script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com/v3 https://www.googletagmanager.com;   style-src 'self' 'unsafe-inline'  https://fonts.googleapis.com/;   worker-src 'none';   child-src 'none';   form-action 'self';   frame-ancestors 'self';   upgrade-insecure-requests;
