@@ -9,7 +9,7 @@
     <p class="pb-4 ">
       We only ask for the passenger information that is required to help make your flight fun,
       enjoyable &amp; safe.
-      <span class="italic text-gray-500 block pt-1">We never share any information with 3rd parties.</span>
+      <span class="italic text-gray-500 block pt-1">We <span class="underline">never</span> share any information with 3rd parties.</span>
     </p>
     
     <Passenger

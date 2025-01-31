@@ -50,17 +50,25 @@
 
       <!-- ******************* START: Contact Person form inputs. ******************* -->
       <div :id="`contactInputs_${index}`" class="pt-4" v-if="index === 1">
-        <p :id="`contact-warning_${index}`" class="mt-0 mb-4 px-4 text-sm text-gray-700">
+
+        <!-- Get your phone and email right!  -->
+        <p :id="`contact-warning_${index}`" class="mt-0 mb-4  px-8 italic text-sm text-gray-500">
+          <span class="font-medium text-red-700 not-italic">Important!</span>
+          Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when
+          traveling.
+        </p>
+
+        <!-- <p :id="`contact-warning_${index}`" class="mt-0 mb-4 px-4 text-sm text-gray-700">
           Please make sure that your Phone Number &amp; Email are correct &ndash; and that you have
           <span class="underline">access</span> to them when traveling.
-        </p>
+        </p> -->
 
         <!-- Phone Number. -->
         <div class="relative">
           <!-- <label for="contactPhone" class="mt-2 px-2 block text-sm font-medium leading-6 text-gray-900">Phone</label> -->
-          <MazPhoneNumberInput :id="`contactPhone_${index}`" class=" px-2" v-model="phoneNumber" show-code-on-list
+          <MazPhoneNumberInput :id="`contactPhone_${index}`" class=" px-10" v-model="phoneNumber" show-code-on-list
             noValidationSuccess :preferred-countries="['CH', 'US', 'GB', 'KR', 'FR', 'NL', 'DE', 'SG']"
-            :ignored-countries="['AC']" size="md" countrySelectorWidth="6rem" @update="onPhoneUpdated($event)"
+            :ignored-countries="['AC']" size="md" countrySelectorWidth="7rem" @update="onPhoneUpdated($event)"
             @focusout="onPhoneUpdated" />
           <div v-if="phoneNumberValid === false && phoneNumber !== undefined"
             class="pointer-events-none absolute inset-y-0 right-2 top-0.5 flex items-center pr-3 z-10">
@@ -72,7 +80,7 @@
         </div>
 
         <!-- Contact Email.  -->
-        <div class="px-2 pt-2">
+        <div class="px-10 pt-2">
           <!-- <label for="email" class="mt-2 block text-sm font-medium leading-6 text-gray-900">Email</label> -->
           <div class="relative mt-1 rounded-md shadow-sm">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 ">
@@ -90,14 +98,8 @@
           </div>
         </div>
 
-        <!-- Get your phone and email right!  -->
-        <p :id="`contact-warning_${index}`" class="mt-2 px-4 italic text-sm text-gray-500">
-          <span class="font-medium text-red-700 not-italic">Important!</span>
-          Please make sure that your Phone Number &amp; Email are correct &ndash; and that you can access them when
-          traveling.
-        </p>
 
-        <div class="px-4 mt-4 inset-0 flex items-center" aria-hidden="true">
+        <div class="px-4 mt-8 inset-0 flex items-center" aria-hidden="true">
           <div class="w-full border-t border-gray-300"></div>
         </div>
 
@@ -221,8 +223,50 @@
         </div>
 
 
+
+        <!-- Weight Slider.  -->
+        <div class="mt-8 font-medium text-center text-gray-900 text-sm">Your Weight:</div>
+        <Slider v-if="vueTimingHack" :id="`wghtSlider_${index}`" v-model.number="state.weightKg" :min="weightSliderMin"
+          :max="weightSliderMax" :step="weightSliderStep" class="mt-0 mb-2 mx-4">
+          <!-- Small kg Icon.  -->
+          <template v-slot:preIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true"
+              class="h-8 w-8 py-1.5">
+              <path
+                d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z">
+              </path>
+            </svg>
+          </template>
+          <!-- Big kg Icon.  -->
+          <template v-slot:postIcon>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" class="h-8 w-8">
+              <path
+                d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z">
+              </path>
+            </svg>
+          </template>
+
+          <!-- Weight Message (below slider)  -->
+          <template v-slot:message>
+            <span v-if="Number(state.weightKg) === -1" class="text-sm text-gray-600">
+              Please enter your Weight
+            </span>
+            <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-sm text-gray-800">
+              <span class="font-bold">
+                {{ weightConverter.kg }}&nbsp;<span class="font-semibold">Kilos</span>
+              </span>,
+              <span class="font-light">
+                {{ parseInt(weightConverter.pounds) }}&nbsp;Pounds,
+                {{ weightConverter.stone }}&nbsp;Stone
+              </span>
+            </span>
+          </template>
+        </Slider>
+
+
+
         <!-- Confidence Slider.  -->
-        <div class="mt-8 font-medium text-center text-gray-900 text-sm">
+        <div class="mt-14 font-medium text-center text-gray-900 text-sm">
           Confidence &amp; Running Ability: {{ state.confidence > -1 ? state.confidence : '' }}
         </div>
         <Slider v-if="vueTimingHack" :id="`confSlider_${index}`" v-model.number="state.confidence" :min="confSliderMin"
@@ -298,48 +342,6 @@
             </div>
           </div>
         </Transition>
-
-
-
-
-        <!-- Weight Slider.  -->
-        <div class="mt-12 font-medium text-center text-gray-900 text-sm">Your Weight:</div>
-        <Slider v-if="vueTimingHack" :id="`wghtSlider_${index}`" v-model.number="state.weightKg" :min="weightSliderMin"
-          :max="weightSliderMax" :step="weightSliderStep" class="mt-0 mb-2 mx-4">
-          <!-- Small kg Icon.  -->
-          <template v-slot:preIcon>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true"
-              class="h-8 w-8 py-1.5">
-              <path
-                d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z">
-              </path>
-            </svg>
-          </template>
-          <!-- Big kg Icon.  -->
-          <template v-slot:postIcon>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-hidden="true" class="h-8 w-8">
-              <path
-                d="M12,3A4,4 0 0,1 16,7C16,7.73 15.81,8.41 15.46,9H18C18.95,9 19.75,9.67 19.95,10.56C21.96,18.57 22,18.78 22,19A2,2 0 0,1 20,21H4A2,2 0 0,1 2,19C2,18.78 2.04,18.57 4.05,10.56C4.25,9.67 5.05,9 6,9H8.54C8.19,8.41 8,7.73 8,7A4,4 0 0,1 12,3M12,5A2,2 0 0,0 10,7A2,2 0 0,0 12,9A2,2 0 0,0 14,7A2,2 0 0,0 12,5M6,11V19H8V16.5L9,17.5V19H11V17L9,15L11,13V11H9V12.5L8,13.5V11H6M15,11C13.89,11 13,11.89 13,13V17C13,18.11 13.89,19 15,19H18V14H16V17H15V13H18V11H15Z">
-              </path>
-            </svg>
-          </template>
-
-          <!-- Weight Message (below slider)  -->
-          <template v-slot:message>
-            <span v-if="Number(state.weightKg) === -1" class="text-sm text-gray-600">
-              Please enter your Weight
-            </span>
-            <span v-if="Number(state.weightKg) >= weightSliderMin" class="text-sm text-gray-800">
-              <span class="font-bold">
-                {{ weightConverter.kg }}&nbsp;<span class="font-semibold">Kilos</span>
-              </span>,
-              <span class="font-light">
-                {{ parseInt(weightConverter.pounds) }}&nbsp;Pounds,
-                {{ weightConverter.stone }}&nbsp;Stone
-              </span>
-            </span>
-          </template>
-        </Slider>
 
 
 

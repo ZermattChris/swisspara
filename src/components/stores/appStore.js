@@ -27,7 +27,7 @@ export const appStore = reactive({
   _userHasConfirmedBooking: localStorage._confirmedBooking,
   hasStorageChanged() {
     const currLSHash = this._generateStorageHash() + ''     // make sure is string.
-    console.log("currLSHash", currLSHash, "_savedStorageHash", this._savedStorageHash)
+    //console.log("currLSHash", currLSHash, "_savedStorageHash", this._savedStorageHash)
     if (currLSHash === this._savedStorageHash) {
       //console.log("-> LocalStorage has NOT changed.")
       return false
@@ -201,29 +201,68 @@ export const appStore = reactive({
   badCacheDataReset(consoleMessage) {
     console.warn("-> Found bad Cache data, calling badCacheDataReset() in App: ", consoleMessage)
 
-    localStorage.removeItem("page");
-    localStorage.removeItem("_cacheFlightsList");   // Settings
-
-    // Step 1
-    localStorage.removeItem("flightDate");
-    localStorage.removeItem("arriveDate");
-    localStorage.removeItem("arriveTime");
-    localStorage.removeItem("departDate");
-    localStorage.removeItem("departTime");
-    // Step 2
-    localStorage.removeItem("selectedFlight");
-    localStorage.removeItem("photosVideos");
-    // Step 3
-    localStorage.removeItem("_cacheTimeSlotsList");
-    localStorage.removeItem("_cacheTimeSlotsPassengerList");
+    this.clearAppLocalStorage()
 
     // Navigate back to page 1.
     this.gotoPage(1)
   },
 
 
+  /**
+   * Called after Booking is completed. This is used to ad
+   * a new Footer Menu item that goes the the "Thanks" page.
+   */
+  addBookingToLocalStorage(bookingId) {
+    // Grab the current list of completed bookings.
+    let bookingsObjList = localStorage.completedBookingsList ? JSON.parse(localStorage.completedBookingsList) : null
+
+    // If there's no list, create a new one.
+    if (bookingsObjList === null) {
+      bookingsObjList = [{bookingId: bookingId}]
+      localStorage.completedBookingsList = JSON.stringify(bookingsObjList)
+      return true
+    }
+
+    // Check if this bookingId is already in the list.
+    for (const aBooking of bookingsObjList) {
+      if (aBooking.bookingId === bookingId) {
+        return false
+      }
+    }
+    // Add this id to the list.
+    bookingsObjList.push({bookingId: bookingId})
+    localStorage.completedBookingsList = JSON.stringify(bookingsObjList)
+    return true
+    
+  },
+
 
   //---------------------
+
+  // Clear out everything that the app uses for collecting a New Booking.
+  // Called after a successful booking.
+  clearAppLocalStorage() {
+    localStorage.removeItem("page")
+    localStorage.removeItem("_cacheFlightsList")   // Settings
+    localStorage.removeItem("_savedStorageHash")
+
+    // Step 1
+    localStorage.removeItem("flightDate")
+    localStorage.removeItem("arriveDate")
+    localStorage.removeItem("arriveTime")
+    localStorage.removeItem("departDate")
+    localStorage.removeItem("departTime")
+    // Step 2
+    localStorage.removeItem("selectedFlight")
+    localStorage.removeItem("photosVideos")
+    // Step 3
+    localStorage.removeItem("_cacheTimeSlotsList")
+    localStorage.removeItem("_cacheTimeSlotsPassengerList")
+    localStorage.removeItem("_cachePassengersList")
+    // Step 4 -- Payment
+    localStorage.removeItem("_confirmedBooking")
+    localStorage.removeItem("stripeCustId")
+  },
 
   resetLocalStorage() {
     localStorage.clear()

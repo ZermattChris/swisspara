@@ -1,29 +1,41 @@
 <template>
 
-  <div v-if="isModalOpen" id="processingPaymentBlockerDialog"
-    class="fixed inset-0 bg-gray-800 opacity-75 z-50">
+  <div v-if="isModalOpen" id="processingPaymentBlockerDialog" class="fixed inset-0 bg-gray-800 opacity-75 z-50">
   </div>
 
   <div v-if="isModalOpen" class="fixed inset-0 flex items-center justify-center z-50">
     <div class="w-full max-w-md bg-white/100 mx-2 p-8 rounded-md sm:rounded-2xl shadow-xl">
-      
 
-      <svg id="spinner"  v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled"  class="inline-block mr-3 size-6 animate-spin text-indigo-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+
+      <svg id="spinner"
+        v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled"
+        class="inline-block mr-3 size-6 animate-spin text-indigo-700 relative bottom-0.5"
+        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
       </svg>
 
-      <svg id="failed"  v-if="isFlightSlotNoLongerValid || stripeElementsSubmitFailed || stripeConfirmSetupFailed || bookFlightAPIFaled"  class="inline-block mr-3 size-6 text-orange-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" >
-        <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z"></path>
+      <svg id="failed"
+        v-if="isFlightSlotNoLongerValid || stripeElementsSubmitFailed || stripeConfirmSetupFailed || bookFlightAPIFaled"
+        class="inline-block mr-3 size-6 text-orange-700 relative bottom-0.5" xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor" viewBox="0 0 24 24">
+        <path
+          d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM11 15H13V17H11V15ZM11 7H13V13H11V7Z">
+        </path>
       </svg>
 
-      <h2 v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled" class="inline-block text-lg font-bold text-indigo-800">
+      <h2
+        v-if="!isFlightSlotNoLongerValid && !stripeElementsSubmitFailed && !stripeConfirmSetupFailed && !bookFlightAPIFaled"
+        class="inline-block text-lg font-bold text-indigo-800">
         Processing Booking
       </h2>
       <h2 v-if="isFlightSlotNoLongerValid" class="inline-block text-lg font-bold text-orange-800">
         Ooops! Time Slot No Longer Available.
       </h2>
-      <h2 v-if="stripeElementsSubmitFailed || stripeConfirmSetupFailed" class="inline-block text-lg font-bold text-orange-800">
+      <h2 v-if="stripeElementsSubmitFailed || stripeConfirmSetupFailed"
+        class="inline-block text-lg font-bold text-orange-800">
         Not able to Capture your Card
       </h2>
       <h2 v-if="bookFlightAPIFaled" class="inline-block text-lg font-bold text-orange-800">
@@ -34,7 +46,8 @@
         Please wait while we complete your Booking...
       </p>
       <p v-if="isFlightSlotNoLongerValid" class="mt-2">
-        Unfortunately, the Time Slot you have chosen is no longer available. Please choose a different Time for your flight.
+        Unfortunately, the Time Slot you have chosen is no longer available. Please choose a different Time for your
+        flight.
       </p>
       <p v-if="stripeElementsSubmitFailed" class="mt-2">
         There was a problem capturing your card &ndash; please try again. <br><br>
@@ -51,10 +64,12 @@
 
 
       <div class="mt-4 flex justify-end">
-        <button v-if="isFlightSlotNoLongerValid" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="changeFlightDate()">
+        <button v-if="isFlightSlotNoLongerValid" id="close-modal"
+          class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="changeFlightDate()">
           Change Time...
         </button>
-        <button v-if="stripeElementsSubmitFailed" id="close-modal" class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="closeModal()">
+        <button v-if="stripeElementsSubmitFailed" id="close-modal"
+          class="bg-indigo-700 text-white font-bold px-4 py-2 rounded" @click="closeModal()">
           Close
         </button>
       </div>
@@ -243,7 +258,7 @@
                   </h3>
                   <p class="text-gray-700">TODO: Flight Description Text here.<br> {{ flightName }} @ {{
                     singleFlightPrice
-                  }}.- CHF</p>
+                    }}.- CHF</p>
                 </div>
                 <p class="flex-none text-base font-medium">{{ totalPassengers * singleFlightPrice }}.- CHF</p>
               </li>
@@ -353,8 +368,8 @@
                 please let us know here.
               </p>
               <div class="mt-2 px-0">
-                <textarea v-model="optionalBookingMsg" ref="bookingMsgInput" id="optionalBookingMsg" name="optionalBookingMsg" rows="4"
-                  class="w-full rounded-md focus:ring-indigo-600 ">
+                <textarea v-model="optionalBookingMsg" ref="bookingMsgInput" id="optionalBookingMsg"
+                  name="optionalBookingMsg" rows="4" class="w-full rounded-md focus:ring-indigo-600 ">
             </textarea>
               </div>
             </div>
@@ -397,7 +412,7 @@
             </span>
             <span id="terms-description" class="text-gray-700 text-base font-normal ">
               To complete your Booking, click this checkbox to indicate that you have read and agree to the
-              <a class="underline font-bold text-indigo-800" href="#todo"
+              <a class="underline font-bold text-indigo-800" href="/terms-and-conditions"
                 target="_blank">Terms&nbsp;&amp;&nbsp;Conditions</a>
               of Swiss Paraglide Zermatt's Customer Agreement.
             </span>
@@ -519,6 +534,10 @@ export default {
       // Passenger Details.
       _passengersList: passengersStore.getAllPassengersList(),
 
+      // Stripe loading recursive vars (if Stripe fails to load).
+      stripeLoadAttempts: 0,
+      stripeLoadMaxAttempts: 3,
+
 
       // -------- Stripe Payment Stuff --------
       bookingModalMessage: '',    // show to user in the Modal blocker after they hit "Book Flight"
@@ -560,7 +579,19 @@ export default {
     // Creates or finds a Stripe User.
     // Creates a SetupIntent for the User.
     // Saves the Booking data to the DB (for future confirmation via Webhook).
-    this._secret = await this.setupStripe()
+    //this._secret = await this.setupStripe()
+    this._secret = await this.recursiveSetupStripe()
+
+    // If Stripe setup fails (seems to fairly often...), then we should retry 3x times
+    if (this._secret === false) {
+
+
+    }
+
+
+
+
+
     this.stripeDevMessages += `• Stripe Setup API complete -> Secret has been returned: ${this._secret} </br>`
 
     // Initialize Stripe
@@ -586,10 +617,45 @@ export default {
     this.cardElement.mount('#stripe-card-element')
     this.stripeDevMessages += '• Stripe Card Element mounted. </br>'
 
+
+    // test temp remove
+    // let res = appStore.addBookingToLocalStorage('fake-booking-hash#2')
+    // console.log("Booking added to LocalStorage: ", res)
   },
 
 
   methods: {
+
+
+    /**
+     * Stripe setup was often failing with a Network error.
+     * Doing a recursive call here to try 3 times before giving up.
+     * TODO: Need to show the user a message if this fails.
+     */
+    async recursiveSetupStripe() {
+      const delay = 100; // Delay in milliseconds
+
+      if (this.stripeLoadAttempts < this.stripeLoadMaxAttempts) {
+        this.stripeLoadAttempts++ 
+        const secret = await this.setupStripe()
+
+        if (secret !== false) {
+          console.log("Stripe setup returned a secret, stopping attempts.")
+          return secret // Success
+        } else {
+          console.log(`Stripe setup failed. Attempt ${this.stripeLoadAttempts}, trying again...`)
+          setTimeout(await this.recursiveSetupStripe(), delay); // Wait 1 second before trying again
+        }
+      } else {
+        console.log("Stripe setup :: Maximum attempts reached. Stopping.")
+        // Show some sort of Stripe loading error here??
+        throw new Error("Stripe this.setupStripe() failed after 3 attempts. Payment Page.")
+      }
+
+    },
+
+
+
 
 
     openModal() {
@@ -677,7 +743,11 @@ export default {
         }
 
       } catch (error) {
+        // Am getting fairly regular stripe network errors here on local dev.
+        // Maybe pull this code out and retry a few times if this happens.
+        console.log('Stripe haveing a Network error... Maybe refactor to a multiple call if remains a problem?? ', error)
         console.error(error.message);
+        return false // Error -- have calling method wait and retry.
       }
 
       //console.log("API /setup returned: ", content)
@@ -732,7 +802,7 @@ export default {
      * Returns false if fails.
      * Otherwise returns the SetupIntent id string.
      */
-     async stripe_confirmSetup() {
+    async stripe_confirmSetup() {
       const secret = this._secret
       const elements = this.elements
       var { setupIntent, error } = await this.stripe.confirmSetup({
@@ -742,10 +812,10 @@ export default {
       })
       if (error) {
         this.stripeDevMessages += '✘ Stripe SetupIntent Error. Reason: ' + error.message + ' </br>'
-        return {failed: true, message: error.message }
+        return { failed: true, message: error.message }
       }
-      return {failed: false, message: setupIntent.id }
-     },
+      return { failed: false, message: setupIntent.id }
+    },
 
 
     /**
@@ -782,7 +852,7 @@ export default {
       this.stripeDevMessages += '✓ Stripe Elements data collection okay -- continue with Booking... </br>'
 
       // Capture
-      const {failed, message} = await this.stripe_confirmSetup()
+      const { failed, message } = await this.stripe_confirmSetup()
       if (failed === true) {
         this.stripeConfirmSetupFailed = true
         this.stripeConfirmSetupFailedMsg = 'There was an error in Capturing your card.<br>' + message + '<br>'
@@ -855,8 +925,16 @@ export default {
       this.stripeDevMessages += '✓ Booking Complete! Order should be in our db and (TODO) Emails/SMS sent... </br>'
       this.stripeDevMessages += `✓ Booking ID: ${content.bookingId}</br>`
 
-      // TODO: Delete localStorage???
+      // Add the localStorage BookingsList.
+      let addedBool = appStore.addBookingToLocalStorage(content.bookingId)
+      if (addedBool === true) {
+        this.stripeDevMessages += '✓ Booking added to LocalStorage. </br>'
+      } else {
+        this.stripeDevMessages += '✘ Booking NOT added to LocalStorage. </br>'
+      }
 
+      // Reset the Booking data in LocalStorage.
+      appStore.clearAppLocalStorage()
 
 
 
@@ -867,10 +945,9 @@ export default {
 
 
       // redirect to "Thanks" page, with order overview and option to resend email.
-      this.stripeDevMessages += '-> Continue to Thanks page.<br>'
+      this.stripeDevMessages += '🥳 🥳 🥳 Continue to Thanks page.<br>'
 
     },
-
 
 
 
@@ -1024,7 +1101,7 @@ export default {
 
     // Handle when the Stripe Card element is completed.
     onStripeElementsChange(ev) {
-      console.log("Stripe Valid: ", ev.complete)
+      //console.log("Stripe Valid: ", ev.complete)
       if (ev.complete === true) {
         this.stripeInputsCompleted = true
       } else {
@@ -1058,13 +1135,12 @@ export default {
      */
     valid() {
       // Overriden from the base '_Page' class.
-      console.log('-> Payment.vue: valid()')
+      //console.log('-> Payment.vue: valid()')
 
-      // if (this.hasConfirmedBooking === false) return false
-      // // Check if Stripe is happy...
+      if (this.hasConfirmedBooking === false) return false
 
       // // and T&Cs are checked
-      // if (this.tAndCsChecked === false) return false
+      if (this.tAndCsChecked === false) return false
 
       return true
 
@@ -1204,7 +1280,7 @@ export default {
      */
     // TODO: remove this - use valid() method instead.
     _isPageValid() {
-      console.log("Payment._isPageValid() is deprecated")
+      //console.log("Payment._isPageValid() is deprecated")
 
       if (this.hasConfirmedBooking === false) return false
 
