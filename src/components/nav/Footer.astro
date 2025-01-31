@@ -1,5 +1,14 @@
-<footer id="footbar" class="z-40 left-0 w-screen">
-  <div class="mx-auto py-4 overflow-hidden  pt-8">
+<footer id="footbar" class="z-40 left-0 w-screen relative">
+
+  <!-- Add a dynamic menu that is displayed if there is a Completed Booking in localStorage -->
+  <div id="viewBookings" class="mx-auto  w-56 relative bottom-2 text-center py-2 px-4 border border-gray-400 rounded-md bg-blue-100 z-[110]   opacity-0 transition-opacity duration-1000 ease-in-out">
+    <a id="viewBookingsLink" href="/bookings" rel="nofollow" class="text-lg text-black font-medium drop-shadow-md">
+      View your Booking...
+    </a>
+  </div>
+
+  <div class="mx-auto mt-8 py-4 overflow-hidden  pt-0">
+
     <nav
       class="ml-8 md:ml-0   pl-12 md:pl-0 md:mt-8   md:mb-2 columns-2 md:flex md:justify-center md:space-x-12"
       aria-label="Footer"
