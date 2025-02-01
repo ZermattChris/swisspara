@@ -635,21 +635,27 @@ export default {
     async recursiveSetupStripe() {
       const delay = 100; // Delay in milliseconds
 
-      if (this.stripeLoadAttempts < this.stripeLoadMaxAttempts) {
-        this.stripeLoadAttempts++ 
-        const secret = await this.setupStripe()
 
-        if (secret !== false) {
-          console.log("Stripe setup returned a secret, stopping attempts.")
-          return secret // Success
+      try {
+        if (this.stripeLoadAttempts < this.stripeLoadMaxAttempts) {
+          this.stripeLoadAttempts++ 
+          const secret = await this.setupStripe()
+
+          if (secret !== false) {
+            console.log("Stripe setup returned a secret, stopping attempts.")
+            return secret // Success
+          } else {
+            console.log(`Stripe setup failed. Attempt ${this.stripeLoadAttempts}, trying again...`)
+            setTimeout(await this.recursiveSetupStripe(), delay); // Wait 1 second before trying again
+          }
         } else {
-          console.log(`Stripe setup failed. Attempt ${this.stripeLoadAttempts}, trying again...`)
-          setTimeout(await this.recursiveSetupStripe(), delay); // Wait 1 second before trying again
+          console.log("Stripe setup :: Maximum attempts reached. Stopping.")
+          throw new Error("Stripe this.setupStripe() failed after 3 attempts. Payment Page.")
         }
-      } else {
-        console.log("Stripe setup :: Maximum attempts reached. Stopping.")
-        // Show some sort of Stripe loading error here??
-        throw new Error("Stripe this.setupStripe() failed after 3 attempts. Payment Page.")
+      } catch (error) {
+        // Was an issue creating a New Stripe customer/setup.
+          // Show some sort of Stripe loading error here??
+        console.log('Was an issue creating a New Stripe customer/setup. ', error)
       }
 
     },
@@ -916,6 +922,8 @@ export default {
         this.bookFlightAPIFaled = false
         this.bookFlightAPIFaledMsg = error.message
 
+        // TODO: !!! Show the user an Error message in the Dialog.
+
         return
       }
 
@@ -933,19 +941,22 @@ export default {
         this.stripeDevMessages += '✘ Booking NOT added to LocalStorage. </br>'
       }
 
-      // Reset the Booking data in LocalStorage.
-      appStore.clearAppLocalStorage()
-
-
-
-
       // Close modal dialog.
       this.closeModal()
 
 
-
       // redirect to "Thanks" page, with order overview and option to resend email.
       this.stripeDevMessages += '🥳 🥳 🥳 Continue to Thanks page.<br>'
+
+      // Go to Thanks (Bookings) Page.
+      setTimeout(() => {
+      
+        // Reset the Booking data in LocalStorage.
+        appStore.clearAppLocalStorage()
+        appStore.gotoPage(1)
+        window.location.href = '/bookings?thanks=true'
+
+      }, 50);
 
     },
 
