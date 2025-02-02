@@ -1,15 +1,26 @@
 ---
 import Layout from "@layouts/Layout.astro";
 
+// Need to grab the correct server path for the HTMX API call.
+const { hostname } = Astro.url;
+console.log("hostname: ", hostname);
+let targetServerPath = "failed to set targetServerPath";
+
+if (hostname === "swisspara.netlify.app") {
+  targetServerPath = "https://swisspara.netlify.app";
+} else if (hostname === "swissparaglide.com'") {
+  targetServerPath = "https://swissparaglide.com'";
+} else {
+  targetServerPath = "http://spzadmin.local:88";
+}
+console.log("htmx target path: ", targetServerPath);
+
 ---
 
-<Layout
-  title="Your Bookings with Swiss Paraglide Zermatt - Info Page"
->
+<Layout title="Your Bookings with Swiss Paraglide Zermatt - Info Page">
   <main>
     <div class="bg-gray-50 pt-6 pb-24 sm:py-32">
-      <div class="mx-auto px-6 lg:px-8   max-w-2xl lg:max-w-7xl">
-
+      <div class="mx-auto px-6 lg:px-8 max-w-2xl lg:max-w-7xl">
         <p
           class="mx-auto mt-2 max-w-4xl text-balance text-center text-4xl font-base font-bold tracking-tight text-gray-950 sm:text-5xl"
         >
@@ -17,54 +28,54 @@ import Layout from "@layouts/Layout.astro";
         </p>
 
         <p class="max-w-2xl mx-auto text-md mt-4 text-gray-700 text-center">
-          Thank you for booking with Swiss Paraglide Zermatt! <br>
+          Thank you for booking with Swiss Paraglide Zermatt! <br />
           Here's a listing of the flights you have booked with us.
         </p>
 
-        <div  id="top"    class="relative w-0 h-0 -top-16" ></div>
+        <div id="top" class="relative w-0 h-0 -top-16"></div>
+
+        <div class="mt-8">bookings list goes here... HTMX call.
+
+          <div hx-get="{{targetServerPath}}/graph" hx-trigger="load">
+            <img alt="Result loading..." class="htmx-indicator" width="150" src="/img/bars.svg"/>
+          </div>
 
 
-        <div class="mt-8">
-          bookings list goes here... (iframe from admin??)
         </div>
-        
-
-        
       </div>
     </div>
   </main>
-
-  <style>
-
-    .item-title {
-      margin-top: 0rem;
-      color: #b45309;
-      font-size: 1.2rem;
-    }
-
-    .myGrid dd{
-      margin-bottom: 0.5rem;
-    }
-
-    #quickLinks a {
-      color: #2a313d;
-      text-shadow: 0 0 5px white, 0 0 3px white;
-
-    } 
-
-    .toTop {
-      font-size: small;
-      color: #374151;
-      cursor: pointer;
-    }
-
-      .toTop::before {
-        display: inline-block;
-        width: 0.7rem;
-        margin-right: 3px;
-        vertical-align: middle;
-        content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" ><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" /></svg>');
-      }
-
-  </style>
 </Layout>
+
+<style scoped>
+  .item-title {
+    margin-top: 0rem;
+    color: #b45309;
+    font-size: 1.2rem;
+  }
+
+  .myGrid dd {
+    margin-bottom: 0.5rem;
+  }
+
+  #quickLinks a {
+    color: #2a313d;
+    text-shadow:
+      0 0 5px white,
+      0 0 3px white;
+  }
+
+  .toTop {
+    font-size: small;
+    color: #374151;
+    cursor: pointer;
+  }
+
+  .toTop::before {
+    display: inline-block;
+    width: 0.7rem;
+    margin-right: 3px;
+    vertical-align: middle;
+    content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" ><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" /></svg>');
+  }
+</style>

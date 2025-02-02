@@ -9,6 +9,11 @@ export const appStore = reactive({
   // Max pilots, video cost, etc.
   _appSettings: await settingsAPI.get(),
 
+  // // The Thanks page is separate from the other Nav.
+  // // It can only be visited once after successful Booking has completed.
+  // _thanksPage: null,
+  // _thanksPageFlag: false,
+
   getVideoPrice() {
     return this._appSettings['video-cost'] ? this._appSettings['video-cost'] : -1
   },
@@ -75,12 +80,22 @@ export const appStore = reactive({
 
 
 
+  // /**
+  //  * Called after Bookinng success.
+  //  * Goes to the Thanks Vue page.
+  //  */
+  // gotoThanks() {
+  //   console.log("-> gotoThanks()")
+  //   this._thanksPageFlag = true
+  // },
+
 
   /**
    * Set up the list of Navigation Page names. Called from App mounted() hook.
    * @param {Component} listOfPageNames 
    */
   initNav(listOfPageNames) {
+
     let x = 1
     for (const aPage of listOfPageNames) {
       this.pageItems[x] = { 'component': markRaw(aPage) }
@@ -104,6 +119,7 @@ export const appStore = reactive({
    * @returns {String} pageName
    */
   currentPageName() {
+
     const nrPageItems = this._nrOfPageItems()
     if (nrPageItems == 0) return
 

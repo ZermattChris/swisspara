@@ -492,7 +492,7 @@ export default {
   stepperName: 'Confirm',
 
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-  emits: ['pagevalid'], // Parent class - needs to be here too... _Page.vue
+  emits: ['pagevalid', 'bookingCompleted'], // Parent class - needs to be here too... _Page.vue
 
   components: {
 
@@ -948,15 +948,21 @@ export default {
       // redirect to "Thanks" page, with order overview and option to resend email.
       this.stripeDevMessages += '🥳 🥳 🥳 Continue to Thanks page.<br>'
 
-      // Go to Thanks (Bookings) Page.
-      setTimeout(() => {
+      // // Go to Thanks (Bookings) Page.
+      // setTimeout(() => {
       
-        // Reset the Booking data in LocalStorage.
-        appStore.clearAppLocalStorage()
-        appStore.gotoPage(1)
-        window.location.href = '/bookings?thanks=true'
+      //   // Reset the Booking data in LocalStorage.
+      //   appStore.clearAppLocalStorage()
+      //   appStore.gotoPage(1)
+      //   window.location.href = '/bookings?thanks=true'
 
-      }, 50);
+      // }, 50);
+
+      // appStore.gotoThanks()
+
+      // I think I need to send an Event to the main App and have it swap out the 
+      // dynamic Vue component for the Thanks page (which then clears the LocalStorage).
+      this.$emit('bookingCompleted')
 
     },
 

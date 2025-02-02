@@ -23,14 +23,16 @@ const { title } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-
-
     <title>{title}</title>
+
+    <script is:inline src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"  crossorigin="anonymous"></script>
+
   </head>
   <body>
+    <script src="@components/hamburger-menu.js"></script>
+
     <div class="flex flex-col h-screen justify-between">
       <Navbar />
-      <script src="@components/hamburger-menu.js"></script>
 
 
         
@@ -38,8 +40,10 @@ const { title } = Astro.props;
       <slot />
 
       <Footer />
-      <script src="@components/hasbookings-menu.js"></script>
     </div>
+
+    <script src="@components/hasbookings-menu.js"></script>
+    
   </body>
 </html>
 

@@ -4,7 +4,7 @@
 const currentPath = window.location.pathname
 //console.log(currentPath)
 const pathArray = window.location.pathname.split('/').filter(segment => segment !== "")   // removes empty strings from array
-console.log('pathArray', pathArray); // Outputs an array of path segments
+//console.log('pathArray', pathArray); // Outputs an array of path segments
 if (pathArray[0] !== 'bookings') {
   //console.log("Not on Bookings Page, so show the button in footer")
 
