@@ -4,7 +4,7 @@
   <!-- Listen to current page's validity events.  -->
   <div id="app" class="absolute top-[80px] w-full min-h-[450px] overflow-hidden">
 
-    <Stepper v-if="currPage.name.toLowerCase() != 'thanks' " :pages="pages" class="mt-6 mb-6"></Stepper>
+    <Stepper  :pages="pages" class="mt-6 mb-6"></Stepper>
 
     <div id="sizeBox" class="w-full max-[320px]:w-11/12
         mx-auto 
@@ -12,15 +12,11 @@
         pt-4 pb-6 sm:py-6 md:py-8" @click="onBackgroundClick"
     >
 
-      <component 
-        :is="currPage" 
-        @pagevalid="onPageValidEvent" 
-        @bookingCompleted="displayThanksPage()"
-      ></component>
+      <component :is="currentPageName" @pagevalid="onPageValidEvent" @resetApp="onResetLocalStorage">
+      </component>
 
     </div>
   </div>
-
 
 
   <!-- <a @click="gotoPage(1)" href="#">Page 1</a>
@@ -36,9 +32,8 @@
       mx-auto 
       bg-gray-100">
 
-    <div class="max-w-xl min-h-8  flex justify-around m-auto">
-
-      <button v-if="currPage.name.toLowerCase() != 'thanks' " @click="prevPage" type="button" id="prevBtn"
+    <div class="max-w-xl flex justify-around m-auto">
+      <button  @click="prevPage" type="button" id="prevBtn"
         class="
                     text-sm lg:text-lg
                     min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5  font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -56,6 +51,7 @@
         <div id="reset"  v-if="showDevInfos" class="relative  -top-2  py-1 px-2   min-h-4 min-w-8 bg-yellow-200  text-xs text-gray-500  ">
           API: {{ getAPIType }} <br />
           {{ isPageValid ? 'Page: valid' : 'Page: invalid' }}
+          <br> Is Thanks Page?: {{ thanksPage }}
         </div>
         <div class="emptyResetBox -top-2   min-h-4 min-w-8">
           &nbsp;
@@ -63,7 +59,7 @@
       </div>
 
 
-      <button v-if="currPage.name.toLowerCase() != 'thanks' " @click="nextPage" type="button" id="nextBtn"
+      <button  @click="nextPage" type="button" id="nextBtn"
         class="text-sm lg:text-lg min-w-[8em] inline-flex items-center justify-center gap-x-1.5 rounded-md bg-indigo-600 px-2.5 py-1.5 font-semibold text-white shadow-sm  outline outline-2 outline-offset-2 outline-indigo-600"
         :class="[nextBtnHidden, nextBtnDisabledClass, { 'hover:bg-indigo-500': nextBtnDisabledProp }]"
         :disabled="nextBtnDisabledProp">
@@ -79,21 +75,10 @@
 
     <p class="mt-2 block text-center text-xs text-gray-500" aria-hidden="true">
       &copy; {{ currentYear }} by Swiss Paraglide Zermatt. All rights reserved.
-      <a id="testlink" @click="gotoThanksPage()" href="#">gotoThanksPage()</a>
     </p>
 
 
   </div>
-
-  <!-- <div class="fixed bottom-3 right-0 left-0 rounded overflow-auto p-6">
-        <div class="flex justify-center">
-            <div class="animate-bounce bg-white dark:bg-slate-800 p-2 w-8 h-8 ring-1 ring-slate-900/5 dark:ring-slate-200/20 shadow rounded-full flex items-center justify-center">
-                <svg class="w-6 h-6 text-violet-500" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                </svg>
-            </div>
-        </div>
-    </div> -->
 
 </template>
 
@@ -106,7 +91,7 @@ import { isAfter, isBefore } from 'date-fns'
 
 
 import api from '@components/api/_apiBase.js'
-import settingsAPI from "@components/api/settingsAPI.js"
+// import settingsAPI from "@components/api/settingsAPI.js"
 
 // Pages.
 import PageDate from '@components/booking/Date.vue'
@@ -114,8 +99,8 @@ import PageFlight from '@components/booking/Flight.vue'
 import PageTime from '@components/booking/Time.vue'
 import PagePassengers from '@components/booking/Passengers.vue'
 import PagePay from '@components/booking/Payment.vue'
-import PageThanks from '@components/booking/Thanks.vue'
 
+import Thanks from '@components/booking/Thanks.vue'
 
 import Stepper from '@components/Stepper.vue'
 
@@ -137,7 +122,7 @@ export default {
     PagePassengers,
     PagePay,
     Stepper,
-    PageThanks,
+    Thanks,
 
     // PagePaySuccess,     // Not included in the initNav() below, as not part of Prev | Next navigation
     // PagePayFailed,      // Not included in the initNav() below, as not part of Prev | Next navigation
@@ -146,7 +131,7 @@ export default {
 
   data() {
     return {
-      currPage: null,
+      // currPage: appStore.currentPageName(),
       isPageValid: false,              // Page is 'valid | completed' called from each Page's custom event.
       currentYear: '',
       pages: [
@@ -155,25 +140,15 @@ export default {
         shallowRef(PageTime),
         shallowRef(PagePassengers),
         shallowRef(PagePay),
+        shallowRef(Thanks),
       ],
-      thanksPage: shallowRef(PageThanks),
     };
-  },
-
-  created() {
-    this.currPage = this.pages[0]   // start with first Page on creation of App.
   },
 
   mounted() {
 
     // TODO: probably need to handle as per other API calls, so using local, staging or live.
     this.setupErrorCatcher()
-
-    this.currPage = appStore.currentPageName()
-    console.log("currPage", this.currPage)
-    this.currPage = this.thanksPage
-    console.log("currPage+", this.currPage)
-    console.log("currPage+ name", this.currPage.name)
 
     // Hide loading...
     document.getElementById('loading-spinner').style.display = 'none';
@@ -214,18 +189,6 @@ export default {
 
   computed: {
 
-    // currentPageName: {
-    //   // getter
-    //   get() {
-    //     return appStore.currentPageName()
-    //   },
-    //   // setter
-    //   set(newValue) {
-    //     this.currPage = newValue
-    //   }
-    // },
-
-
     // shows a bit of dev info between the Prev | Next buttons.
     showDevInfos() {
       if (document.location) {
@@ -240,10 +203,10 @@ export default {
       return api.getAPIType()    // LIVE, STAGING or LOCAL
     },
 
-    // currentPageName() {
-    //   //console.log("currentPageName: ", appStore.currentPageName())
-    //   return appStore.currentPageName()
-    // },
+    currentPageName() {
+      //console.log("currentPageName: ", appStore.currentPageName())
+      return appStore.currentPageName()
+    },
 
     /**
      * Used to control the 'disabled' .class of the Next button.
@@ -272,13 +235,6 @@ export default {
 
 
   methods: {
-
-    displayThanksPage() {
-      console.log("captured the completed booking event on the app container...")
-      //this.currPage = this.pages[0]   // start with first Page on creation of App.
-      
-    },
-
 
     // move this to Store for API calls.
     setupErrorCatcher() {

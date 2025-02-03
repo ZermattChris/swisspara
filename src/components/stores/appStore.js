@@ -9,15 +9,11 @@ export const appStore = reactive({
   // Max pilots, video cost, etc.
   _appSettings: await settingsAPI.get(),
 
-  // // The Thanks page is separate from the other Nav.
-  // // It can only be visited once after successful Booking has completed.
-  // _thanksPage: null,
-  // _thanksPageFlag: false,
+  // thanksPageFlag: false,
 
   getVideoPrice() {
     return this._appSettings['video-cost'] ? this._appSettings['video-cost'] : -1
   },
-
 
   page: +localStorage.page || 1,
 
@@ -163,7 +159,10 @@ export const appStore = reactive({
   },
   // Are we on the last Page?
   isNavEnd() {
-    if (this.page >= this._nrOfPageItems()) return true
+    // if (this.page >= this._nrOfPageItems()) return true
+    // As we've added a non-Nav Thanks Page, need to hard-code the end.
+    const nrPages = 5
+    if (this.page >= nrPages) return true
     return false
   },
 

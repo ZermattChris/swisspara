@@ -8,7 +8,7 @@
     </h1>
 
     <h4 class="mt-2 mb-6 text-xl text-center text-indigo-900 ">
-      Thanks for booking with us. 
+      Thanks for booking with us.
     </h4>
 
     <p class="">
@@ -20,15 +20,30 @@
     </p>
 
     <p class="">
-      Please check your Email Inbox (and Spam folder) for the confirmation. Please 
-      note that it can sometimes take a few minutes for Emails to arrive. If you made a 
-      mistake entering your email address or the email doesn't arrive, click the resend 
+      Please check your Email Inbox (and Spam folder) for the confirmation. Please
+      note that it can sometimes take a few minutes for Emails to arrive. If you made a
+      mistake entering your email address or the email doesn't arrive, click the resend
       button above.
     </p>
 
     <p class="">
       See you soon! ~ The Swiss Paraglide Team
     </p>
+
+
+    <!-- test  -->
+    <button type="button" @click="resetVueApp()"
+      class="inline-flex items-center gap-x-2 rounded-md bg-orange-700 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M12.75 15l3-3m0 0l-3-3m3 3h-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      resetVueApp - works
+    </button>
+
+
+
 
   </div>
 
@@ -39,11 +54,19 @@
 
 import { reactive, toValue, toRaw } from 'vue'
 
+// Parent component for all "Pages"
+import _Page from './_Page.vue'
+
+
 export default {
   name: 'Thanks',
 
+  extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
+
+  emits: ['resetApp'],
+
   components: {
-    
+
   },
 
   data() {
@@ -53,11 +76,11 @@ export default {
   },
 
   created() {
-    
+
   },
 
   unmounted() {
-    
+
     console.log('Thanks Page unmounted()')
 
   },
@@ -71,17 +94,30 @@ export default {
 
 
     uu() {
-      
+
     },
 
   }, // computed
 
   methods: {
 
-    flightName() {
-      var fObj = flightsStore.getFlightObj()
-      return this.capitalizeFirstLetter(fObj.name)
+    // Temp. for testing.
+    resetVueApp() {
+      // This does the same as double-clicking on the Dev reset field between the
+      // Previous and Next buttons. Event is handled by App.vue 
+      this.$emit('resetApp')
     },
+
+
+    /**
+     * This method must be overrided in each of these Page components.
+     * This Thanks page doesn't use it, but it must be here.
+     */
+    valid() {
+      // Overriden from the base '_Page' class.
+      return true
+    },
+
 
   }, // methods.
 

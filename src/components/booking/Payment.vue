@@ -450,7 +450,6 @@
         class="text-sm   border rounded border-gray-500 shadow bg-gray-50 py-2 px-4">
       </div>
 
-
     </div>
 
 
@@ -492,7 +491,7 @@ export default {
   stepperName: 'Confirm',
 
   extends: _Page,   // Parent class handles the valid page event emitting back to the App Shell.
-  emits: ['pagevalid', 'bookingCompleted'], // Parent class - needs to be here too... _Page.vue
+  emits: ['pagevalid', 'resetApp'], // Parent class - needs to be here too... _Page.vue
 
   components: {
 
@@ -626,6 +625,13 @@ export default {
 
   methods: {
 
+    // // Temp. for testing.
+    // resetVueApp() {
+    //   // This does the same as double-clicking on the Dev reset field between the
+    //   // Previous and Next buttons. Event is handled by App.vue 
+    //   this.$emit('resetApp')
+    // },
+
 
     /**
      * Stripe setup was often failing with a Network error.
@@ -661,9 +667,6 @@ export default {
     },
 
 
-
-
-
     openModal() {
       this.isModalOpen = true
     },
@@ -673,7 +676,6 @@ export default {
     changeFlightDate() {
       appStore._navigate(3)   // Step #3 - Time Slots
     },
-
 
 
     async checkTimeSlotsStillAvailable() {
@@ -771,11 +773,6 @@ export default {
       return secret
 
     },
-
-
-    // async stripeCaptureCustomerCard() {
-
-    // },
 
 
     /**
@@ -948,21 +945,20 @@ export default {
       // redirect to "Thanks" page, with order overview and option to resend email.
       this.stripeDevMessages += '🥳 🥳 🥳 Continue to Thanks page.<br>'
 
-      // // Go to Thanks (Bookings) Page.
-      // setTimeout(() => {
-      
-      //   // Reset the Booking data in LocalStorage.
-      //   appStore.clearAppLocalStorage()
-      //   appStore.gotoPage(1)
-      //   window.location.href = '/bookings?thanks=true'
 
-      // }, 50);
+      // // Go to Thanks (Bookings) Page.
+      // appStore.gotoPage(1)
+      // location.reload()
+
+
+
+
+      setTimeout(() => {
+        console.log('Redirecting to Thanks page...')
+        appStore.gotoPage(6)  // Thanks
+      }, 3000);
 
       // appStore.gotoThanks()
-
-      // I think I need to send an Event to the main App and have it swap out the 
-      // dynamic Vue component for the Thanks page (which then clears the LocalStorage).
-      this.$emit('bookingCompleted')
 
     },
 
